@@ -11,10 +11,21 @@ export interface AdminUser {
   createdAt: string
   createdBy: string
   lastLoginAt: string | null
+  managedWebsites?: string[]
 }
 
 export interface CreateAdminInput {
   username: string
   password: string
   role: AdminRole
+  status?: AdminStatus
+  managedWebsites?: string[]
+}
+
+export interface UpdateAdminInput {
+  username: string
+  password?: string
+  role: AdminRole
+  status: AdminStatus
+  managedWebsites: string[]
 }

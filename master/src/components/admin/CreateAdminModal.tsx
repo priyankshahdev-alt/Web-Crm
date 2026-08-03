@@ -167,7 +167,7 @@ export function CreateAdminModal({
                 onClick={() => {
                   handleFieldChange('username', generateUsername())
                 }}
-                className="inline-flex h-full items-center gap-1.5 rounded-r-lg border border-l-0 border-slate-300 bg-white px-3 text-xs font-semibold text-indigo-600 transition hover:bg-indigo-50"
+                className="inline-flex h-full items-center gap-1.5 rounded-r-xl border border-l-0 border-line bg-white px-3 text-xs font-semibold text-brand transition hover:bg-brand-soft"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -202,7 +202,7 @@ export function CreateAdminModal({
                 onClick={() => {
                   handleFieldChange('password', generatePassword())
                 }}
-                className="inline-flex h-full items-center gap-1.5 rounded-r-lg border border-l-0 border-slate-300 bg-white px-3 text-xs font-semibold text-indigo-600 transition hover:bg-indigo-50"
+                className="inline-flex h-full items-center gap-1.5 rounded-r-xl border border-l-0 border-line bg-white px-3 text-xs font-semibold text-brand transition hover:bg-brand-soft"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -225,7 +225,7 @@ export function CreateAdminModal({
           <div>
             <label
               htmlFor="admin-role"
-              className="block text-sm font-medium text-slate-700"
+              className="block text-sm font-medium text-ink"
             >
               Access scope
             </label>
@@ -236,7 +236,7 @@ export function CreateAdminModal({
                 onChange={(event) =>
                   handleFieldChange('role', event.target.value as AdminRole)
                 }
-                className="block w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-100"
+                className="block w-full rounded-xl border border-line bg-white px-3 py-2 text-sm text-ink shadow-sm focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20"
               >
                 <option value="site">Site Admin</option>
                 <option value="master">Master Admin</option>
