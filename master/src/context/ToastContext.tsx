@@ -85,34 +85,34 @@ function ToastItemView({
   onDismiss: (id: string) => void
 }) {
   const variantStyles: Record<ToastVariant, string> = {
-    success: 'border-emerald-200 bg-emerald-50',
-    error: 'border-red-200 bg-red-50',
-    info: 'border-sky-200 bg-sky-50',
+    success: 'border-success/20 bg-success/10',
+    error: 'border-danger/20 bg-danger/10',
+    info: 'border-info/20 bg-info/10',
   }
   const iconStyles: Record<ToastVariant, string> = {
-    success: 'text-emerald-600',
-    error: 'text-red-600',
-    info: 'text-sky-600',
+    success: 'text-success',
+    error: 'text-danger',
+    info: 'text-info',
   }
 
   return (
     <div
-      className={`pointer-events-auto flex items-start gap-3 rounded-xl border p-4 shadow-lg shadow-slate-900/5 ${variantStyles[toast.variant]}`}
+      className={`pointer-events-auto flex items-start gap-3 rounded-xl border p-4 shadow-pop ${variantStyles[toast.variant]}`}
     >
       <span className={`mt-0.5 text-lg leading-none ${iconStyles[toast.variant]}`}>
         {toast.variant === 'success' ? '✓' : toast.variant === 'error' ? '✕' : 'ℹ'}
       </span>
       <div className="min-w-0 flex-1">
-        <p className="text-sm font-semibold text-slate-900">{toast.title}</p>
+        <p className="text-sm font-semibold text-ink">{toast.title}</p>
         {toast.description ? (
-          <p className="mt-0.5 text-sm text-slate-600">{toast.description}</p>
+          <p className="mt-0.5 text-sm text-muted">{toast.description}</p>
         ) : null}
       </div>
       <button
         type="button"
         aria-label="Dismiss notification"
         onClick={() => onDismiss(toast.id)}
-        className="rounded-md p-1 text-slate-400 transition hover:bg-slate-900/5 hover:text-slate-600"
+        className="rounded-md p-1 text-faint transition hover:bg-soft hover:text-ink"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

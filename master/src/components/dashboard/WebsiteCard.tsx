@@ -1,4 +1,5 @@
 import type { Website } from '../../types/website'
+import { ChevronRightIcon } from '../icons'
 
 interface WebsiteCardProps {
   website: Website
@@ -7,19 +8,25 @@ interface WebsiteCardProps {
 
 export function WebsiteCard({ website, index }: WebsiteCardProps) {
   return (
-    <div className="flex items-start gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-slate-900 text-sm font-bold text-white">
+    <div
+      className="group relative flex animate-rise items-start gap-4 rounded-2xl border border-line bg-white p-6 shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:shadow-card-hover"
+      style={{ animationDelay: `${150 + index * 50}ms` }}
+    >
+      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand-soft text-sm font-bold text-brand transition-colors duration-200 group-hover:bg-brand group-hover:text-white">
         {index + 1}
       </div>
-      <div className="min-w-0">
-        <h4 className="truncate text-sm font-semibold text-slate-900">
+      <div className="min-w-0 flex-1">
+        <h4 className="truncate text-base font-semibold text-ink">
           {website.name}
         </h4>
-        <p className="mt-0.5 truncate text-xs font-medium text-indigo-600">
+        <p className="mt-0.5 truncate text-xs font-medium text-brand">
           {website.url}
         </p>
-        <p className="mt-1 text-xs text-slate-500">{website.description}</p>
+        <p className="mt-1 text-sm text-muted">{website.description}</p>
       </div>
+      <span className="absolute right-4 top-1/2 flex h-8 w-8 -translate-y-1/2 translate-x-1 items-center justify-center rounded-full bg-soft text-muted opacity-0 transition-all duration-200 group-hover:translate-x-0 group-hover:opacity-100">
+        <ChevronRightIcon className="h-4 w-4" />
+      </span>
     </div>
   )
 }

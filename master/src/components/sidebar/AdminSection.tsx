@@ -4,7 +4,7 @@ import { adminService } from '../../services/adminService'
 
 const ADMINS_UPDATED_EVENT = 'admins:updated'
 
-export function SidebarAdminSection() {
+export function SidebarAdminSection({ mobile = false }: { mobile?: boolean }) {
   const location = useLocation()
   const [count, setCount] = useState(0)
 
@@ -29,31 +29,24 @@ export function SidebarAdminSection() {
     <Link
       to="/admin"
       aria-current={active ? 'page' : undefined}
-        className={`flex items-center justify-between gap-3 rounded-lg px-3 py-2 text-sm font-semibold transition ${
-          active
-            ? 'bg-indigo-50 text-indigo-700'
-            : 'text-slate-700 hover:bg-indigo-50 hover:text-indigo-700'
+      className={`flex items-center gap-2 text-sm font-semibold transition-colors duration-150 ${
+        mobile
+          ? 'rounded-xl px-3.5 py-2.5'
+          : 'rounded-full px-3.5 py-1.5'
+      } ${
+        active
+          ? 'bg-brand-soft text-brand'
+          : 'text-muted hover:bg-soft hover:text-ink'
+      }`}
+    >
+      Admin
+      <span
+        className={`inline-flex h-5 min-w-5 items-center justify-center rounded-full px-1 text-[11px] font-semibold ${
+          active ? 'bg-white text-brand' : 'bg-soft text-ink'
         }`}
       >
-        <span className="flex items-center gap-3">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-            className="h-5 w-5"
-            aria-hidden="true"
-          >
-            <path
-              fillRule="evenodd"
-              d="M7.5 6a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0ZM3.751 20.105a8.25 8.25 0 0 1 16.498 0 .75.75 0 0 1-.437.695A18.683 18.683 0 0 1 12 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 0 1-.437-.695Z"
-              clipRule="evenodd"
-            />
-          </svg>
-          Admin
-        </span>
-        <span className="rounded-full bg-indigo-100 px-2 py-0.5 text-xs font-semibold text-indigo-700">
-          {count}
-        </span>
-      </Link>
+        {count}
+      </span>
+    </Link>
   )
 }

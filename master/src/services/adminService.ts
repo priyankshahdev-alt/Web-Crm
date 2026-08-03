@@ -1,4 +1,4 @@
-import type { AdminUser, CreateAdminInput } from '../types/admin'
+import type { AdminUser, CreateAdminInput, UpdateAdminInput } from '../types/admin'
 
 const STORAGE_KEY = 'master-crm.admins.v1'
 const STORAGE_OWNER_KEY = 'master-crm.current-master'
@@ -64,14 +64,48 @@ export const adminService = {
       username: normalized,
       password: input.password,
       role: input.role,
-      status: 'active',
+      status: input.status ?? 'active',
       createdAt: now,
       createdBy: CURRENT_MASTER,
       lastLoginAt: null,
     }
+    if (input.managedWebsites) {
+      admin.managedWebsites = input.managedWebsites
+    }
 
     persist([...admins, admin])
     return admin
+  },
+
+  async update(id: string, input: UpdateAdminInput): Promise<AdminUser> {
+    await delay(450)
+    const admins = readStored()
+    const existing = admins.find((admin) => admin.id === id)
+    if (!existing) {
+      throw new Error('Admin not found')
+    }
+
+    const normalized = input.username.trim()
+    const usernameTaken = admins.some(
+      (admin) =>
+        admin.id !== id &&
+        admin.username.toLowerCase() === normalized.toLowerCase(),
+    )
+    if (usernameTaken) {
+      throw new DuplicateUsernameError(input.username)
+    }
+
+    const updated: AdminUser = {
+      ...existing,
+      username: normalized,
+      password: input.password ?? existing.password,
+      role: input.role,
+      status: input.status,
+      managedWebsites: input.managedWebsites,
+    }
+
+    persist(admins.map((admin) => (admin.id === id ? updated : admin)))
+    return updated
   },
 
   async remove(id: string): Promise<void> {

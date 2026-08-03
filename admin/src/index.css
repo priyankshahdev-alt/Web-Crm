@@ -1,9 +1,11 @@
 :root {
-  --color-bg: #f4f5f7;
+  --color-bg: #f8fafc;
   --color-surface: #ffffff;
-  --color-border: #e6e8ec;
-  --color-text: #1f2937;
-  --color-text-muted: #6b7280;
+  --color-border: #e5e7eb;
+  --color-soft: #f1f5f9;
+  --color-faint: #94a3b8;
+  --color-text: #0f172a;
+  --color-text-muted: #64748b;
   --color-primary: #4f46e5;
   --color-primary-hover: #4338ca;
   --color-primary-soft: #eef2ff;
@@ -11,10 +13,10 @@
   --color-teal-soft: #ccfbf1;
   --color-coral: #e11d48;
   --color-coral-soft: #ffe4e6;
-  --color-success: #16a34a;
-  --color-success-soft: #f0fdf4;
-  --color-warning: #d97706;
-  --color-warning-soft: #fffbeb;
+  --color-success: #10b981;
+  --color-success-soft: #ecfdf5;
+  --color-warning: #f59e0b;
+  --color-warning-soft: #fef3c7;
   --color-danger: #dc2626;
   --color-danger-soft: #fef2f2;
 
@@ -22,13 +24,31 @@
   --radius: 12px;
   --radius-lg: 16px;
 
-  --shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.05);
-  --shadow-md: 0 2px 8px rgba(16, 24, 40, 0.06);
-  --shadow-lg: 0 8px 24px rgba(16, 24, 40, 0.1);
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.04),
+    0 1px 3px rgba(15, 23, 42, 0.06);
+  --shadow-md: 0 2px 4px rgba(15, 23, 42, 0.05),
+    0 8px 20px rgba(15, 23, 42, 0.08);
+  --shadow-lg: 0 4px 8px rgba(15, 23, 42, 0.06),
+    0 16px 32px rgba(15, 23, 42, 0.12);
+  --shadow-card-hover: 0 8px 16px rgba(15, 23, 42, 0.08),
+    0 24px 48px rgba(15, 23, 42, 0.12);
+  --shadow-pop: 0 4px 6px rgba(15, 23, 42, 0.05),
+    0 12px 28px rgba(15, 23, 42, 0.14);
 
   --navbar-height: 68px;
 
   --font: system-ui, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 *,
@@ -80,7 +100,7 @@ select {
 .page {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 32px;
 }
 
 .page__header {
@@ -99,13 +119,17 @@ select {
 }
 
 .page__header--center .page__title {
-  font-size: 30px;
+  font-size: 32px;
   font-weight: 800;
+  letter-spacing: -0.02em;
+  animation: rise-in 0.5s ease-out both;
 }
 
 .page__header--center .page__subtitle {
   max-width: 560px;
   font-size: 15px;
+  animation: rise-in 0.5s ease-out both;
+  animation-delay: 60ms;
 }
 
 .page__title {
@@ -124,7 +148,7 @@ select {
 .card {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius);
+  border-radius: var(--radius-lg);
   box-shadow: var(--shadow-sm);
   transition:
     box-shadow 0.15s ease,

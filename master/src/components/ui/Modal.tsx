@@ -75,25 +75,25 @@ export function Modal({
       <div
         ref={panelRef}
         tabIndex={-1}
-        className="relative w-full max-w-lg rounded-2xl bg-white shadow-2xl outline-none"
+        className="relative w-full max-w-lg max-h-[calc(100dvh-2rem)] overflow-y-auto rounded-2xl border border-line bg-white shadow-2xl outline-none"
       >
-        <div className="flex items-start justify-between gap-4 border-b border-slate-100 px-6 py-4">
+        <div className="flex items-start justify-between gap-4 border-b border-line px-4 py-4 sm:px-6">
           <div>
             <h2
               id="modal-title"
-              className="text-lg font-semibold text-slate-900"
+              className="text-lg font-semibold text-ink"
             >
               {title}
             </h2>
             {description ? (
-              <p className="mt-0.5 text-sm text-slate-500">{description}</p>
+              <p className="mt-0.5 text-sm text-muted">{description}</p>
             ) : null}
           </div>
           <button
             type="button"
             aria-label="Close"
             onClick={onClose}
-            className="rounded-md p-1 text-slate-400 transition hover:bg-slate-100 hover:text-slate-600"
+            className="rounded-md p-1 text-faint transition hover:bg-soft hover:text-ink"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -105,13 +105,13 @@ export function Modal({
             </svg>
           </button>
         </div>
-        <div className="px-6 py-5">{children}</div>
+        <div className="px-4 py-5 sm:px-6">{children}</div>
         {footer ? (
-          <div className="flex justify-end gap-3 border-t border-slate-100 px-6 py-4">
+          <div className="flex flex-wrap justify-end gap-3 border-t border-line px-4 py-4 sm:px-6">
             {footer}
           </div>
         ) : (
-          <div className="flex justify-end gap-3 border-t border-slate-100 px-6 py-4">
+          <div className="flex flex-wrap justify-end gap-3 border-t border-line px-4 py-4 sm:px-6">
             <Button variant="secondary" onClick={onClose}>
               Close
             </Button>
