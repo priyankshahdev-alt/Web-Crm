@@ -1,11 +1,10 @@
-import { useEffect, useState, type FormEvent } from 'react'
+import { useState } from 'react'
 import type { AdminUser } from '../../types/admin'
 import type { ManagedWebsite } from '../../types/website'
 import { adminService } from '../../services/adminService'
 import { useToast } from '../../context/ToastContext'
 import { Button } from '../ui/Button'
 import { Modal } from '../ui/Modal'
-import { Input } from '../ui/Input'
 
 interface DeleteAdminModalProps {
   open: boolean
@@ -20,19 +19,24 @@ interface DeleteAdminModalProps {
 export function DeleteAdminModal({
   open,
   admin,
+  websites,
+  isLastMaster,
+  isSelf,
   onClose,
   onDeleted,
 }: DeleteAdminModalProps) {
   const toast = useToast()
-  const [deleting, setDeleting] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
 
-  const managedSiteIds = admin?.managedWebsites ?? MANAGED_WEBSITES.map((s) => s.id)
-  const managedSites = MANAGED_WEBSITES.filter((site) =>
+  const blocked = isLastMaster || isSelf
+
+  const managedSiteIds = admin?.managedWebsites ?? websites.map((site) => site.id)
+  const managedSites = websites.filter((site) =>
     managedSiteIds.includes(site.id),
   )
 
   const handleConfirm = async () => {
-    if (!admin) return
+    if (!admin || blocked) return
 
     setSubmitting(true)
     try {
@@ -74,11 +78,11 @@ export function DeleteAdminModal({
             Cancel
           </Button>
           <Button
-            type="submit"
-            form="delete-admin-form"
+            type="button"
             variant="danger"
             onClick={handleConfirm}
-            loading={deleting}
+            loading={submitting}
+            disabled={blocked}
           >
             Delete Admin
           </Button>
@@ -87,31 +91,39 @@ export function DeleteAdminModal({
     >
       {blocked ? (
         <p className="text-sm text-muted">
-          This will permanently remove{' '}
-          <span className="font-semibold text-ink">{admin?.username}</span> and
-          revoke their access to{' '}
-          <span className="font-semibold text-ink">
-            {managedSites.length} managed website
-            {managedSites.length === 1 ? '' : 's'}
-          </span>
-          . This action cannot be undone.
+          {isLastMaster
+            ? 'At least one Master Admin must always exist. Assign another admin as Master Admin before deleting this one.'
+            : 'You are signed in as this admin. Sign in with a different admin account before deleting it.'}
         </p>
+      ) : (
+        <>
+          <p className="text-sm text-muted">
+            This will permanently remove{' '}
+            <span className="font-semibold text-ink">{admin?.username}</span> and
+            revoke their access to{' '}
+            <span className="font-semibold text-ink">
+              {managedSites.length} managed website
+              {managedSites.length === 1 ? '' : 's'}
+            </span>
+            . This action cannot be undone.
+          </p>
 
-        {managedSites.length > 0 ? (
-          <div className="rounded-xl border border-warning/25 bg-warning/10 px-3.5 py-3">
-            <p className="text-xs font-semibold text-warning">
-              Access will be revoked from these websites:
-            </p>
-            <ul className="mt-1.5 space-y-1">
-              {managedSites.map((site) => (
-                <li key={site.id} className="text-sm text-ink">
-                  {site.name}
-                </li>
-              ))}
-            </ul>
-          </div>
-        ) : null}
-      </div>
+          {managedSites.length > 0 ? (
+            <div className="rounded-xl border border-warning/25 bg-warning/10 px-3.5 py-3">
+              <p className="text-xs font-semibold text-warning">
+                Access will be revoked from these websites:
+              </p>
+              <ul className="mt-1.5 space-y-1">
+                {managedSites.map((site) => (
+                  <li key={site.id} className="text-sm text-ink">
+                    {site.name}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
+        </>
+      )}
     </Modal>
   )
 }
