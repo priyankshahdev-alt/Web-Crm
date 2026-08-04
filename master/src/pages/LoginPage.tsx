@@ -1,16 +1,16 @@
 import { useState, type FormEvent } from 'react'
 import { Navigate, useNavigate } from 'react-router-dom'
-import { getCurrentMaster, signIn } from '../lib/session'
+import { getCurrentMaster } from '../lib/session'
+import { useAuth } from '../context/AuthContext'
+import { apiErrorMessage } from '../lib/api'
 import { Button } from '../components/ui/Button'
 import { Input } from '../components/ui/Input'
 import { DashboardIcon } from '../components/icons'
 
-const delay = (ms: number): Promise<void> =>
-  new Promise((resolve) => setTimeout(resolve, ms))
-
 export function LoginPage() {
   const navigate = useNavigate()
-  const [username, setUsername] = useState('')
+  const { login } = useAuth()
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [submitting, setSubmitting] = useState(false)
@@ -21,16 +21,21 @@ export function LoginPage() {
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    const trimmed = username.trim()
+    const trimmed = email.trim()
     if (!trimmed || !password) {
-      setError('Enter a username and password to continue.')
+      setError('Enter your email and password to continue.')
       return
     }
     setError('')
     setSubmitting(true)
-    await delay(400)
-    signIn()
-    navigate('/', { replace: true })
+    try {
+      await login({ email: trimmed, password })
+      navigate('/', { replace: true })
+    } catch (err) {
+      setError(apiErrorMessage(err, 'Sign in failed. Check your credentials.'))
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   return (
@@ -48,14 +53,15 @@ export function LoginPage() {
 
         <form onSubmit={handleSubmit} noValidate className="space-y-5">
           <Input
-            label="Username"
-            value={username}
+            label="Email"
+            type="email"
+            value={email}
             onChange={(event) => {
-              setUsername(event.target.value)
+              setEmail(event.target.value)
               setError('')
             }}
-            autoComplete="username"
-            placeholder="master"
+            autoComplete="email"
+            placeholder="master@webcrm.com"
           />
           <Input
             label="Password"

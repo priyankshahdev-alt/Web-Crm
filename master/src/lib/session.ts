@@ -1,21 +1,29 @@
-const STORAGE_OWNER_KEY = 'master-crm.current-master'
-const CURRENT_MASTER = 'master'
+import { clearSession, getUser } from './tokenStorage'
 
 export interface MasterSession {
   username: string
+  email: string
+  isMaster: boolean
 }
 
+/** Current session (read from stored user), or null when signed out. */
 export function getCurrentMaster(): MasterSession | null {
-  const stored = localStorage.getItem(STORAGE_OWNER_KEY)
-  if (!stored) return null
-  return { username: stored }
+  const user = getUser()
+  if (!user) return null
+  return {
+    username: user.email,
+    email: user.email,
+    isMaster: user.isMaster,
+  }
 }
 
+/** No-op retained for compatibility; sessions are created through auth login. */
 export function signIn(): MasterSession {
-  localStorage.setItem(STORAGE_OWNER_KEY, CURRENT_MASTER)
-  return { username: CURRENT_MASTER }
+  const session = getCurrentMaster()
+  if (session) return session
+  throw new Error('No session')
 }
 
 export function signOut(): void {
-  localStorage.removeItem(STORAGE_OWNER_KEY)
+  clearSession()
 }

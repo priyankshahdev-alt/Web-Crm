@@ -1,94 +1,57 @@
+import { http } from '../lib/api'
 import type { Role } from '../types/role'
-import { randomUUID } from '../utils/uuid'
-
-const STORAGE_KEY = 'master-crm.roles.v1'
 
 const ROLES_UPDATED_EVENT = 'roles:updated'
 
-const makeRole = (
-  id: string,
-  name: string,
-  description: string,
-): Role => ({
-  id,
-  name,
-  description,
-  createdAt: new Date().toISOString(),
-})
+interface ServerRole {
+  id: string
+  name: string
+  key: string
+  description: string | null
+  isSystem: boolean
+  createdAt: string
+  _count?: { memberships: number }
+}
 
-const seedRoles = (): Role[] => [
-  makeRole('role-admin', 'Admin', 'Access to a single managed website'),
-  makeRole(
-    'role-website-user',
-    'Website User',
-    'View-only access to website data',
-  ),
-]
-
-const delay = (ms: number): Promise<void> =>
-  new Promise((resolve) => setTimeout(resolve, ms))
-
-const readStored = (): Role[] => {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY)
-    if (!raw) {
-      const seeded = seedRoles()
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(seeded))
-      return seeded
-    }
-    const parsed: unknown = JSON.parse(raw)
-    if (!Array.isArray(parsed)) return seedRoles()
-    const stored = parsed.filter(
-      (role): role is Role =>
-        !!role &&
-        typeof role === 'object' &&
-        'id' in role &&
-        'name' in role &&
-        'description' in role &&
-        'createdAt' in role,
-    )
-    const withoutStale = stored.filter(
-      (role) =>
-        role.name !== 'Master Admin' && role.name !== 'Site Admin',
-    )
-    const existingNames = new Set(withoutStale.map((role) => role.name))
-    const defaults = seedRoles().filter((role) => !existingNames.has(role.name))
-    const merged = [...defaults, ...withoutStale]
-    if (merged.length !== stored.length) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(merged))
-    }
-    return merged
-  } catch {
-    return seedRoles()
+function toRole(role: ServerRole): Role {
+  return {
+    id: role.id,
+    name: role.name,
+    key: role.key,
+    description: role.description ?? '',
+    isSystem: role.isSystem,
+    createdAt: role.createdAt,
+    memberCount: role._count?.memberships ?? 0,
   }
+}
+
+/** Build a unique `key` for a new role from its name. */
+function keyFromName(name: string): string {
+  const base = name
+    .toLowerCase()
+    .replace(/[^a-z0-9_]+/g, '_')
+    .replace(/^_+|_+$/g, '')
+  return base || 'role'
 }
 
 export const roleService = {
   async list(): Promise<Role[]> {
-    await delay(200)
-    return readStored()
+    const roles = await http.get<ServerRole[]>('/roles')
+    return roles.map(toRole)
   },
 
   async create(input: { name: string; description: string }): Promise<Role> {
-    await delay(450)
-    const roles = readStored()
-    const role: Role = {
-      id: randomUUID(),
+    const role = await http.post<ServerRole>('/roles', {
       name: input.name.trim(),
-      description: input.description.trim(),
-      createdAt: new Date().toISOString(),
-    }
-    localStorage.setItem(STORAGE_KEY, JSON.stringify([...roles, role]))
+      key: keyFromName(input.name),
+      description: input.description.trim() || null,
+    })
     window.dispatchEvent(new CustomEvent(ROLES_UPDATED_EVENT))
-    return role
+    return toRole(role)
   },
 
   async remove(id: string): Promise<void> {
-    await delay(200)
-    localStorage.setItem(
-      STORAGE_KEY,
-      JSON.stringify(readStored().filter((role) => role.id !== id)),
-    )
+    await http.delete(`/roles/${id}`)
     window.dispatchEvent(new CustomEvent(ROLES_UPDATED_EVENT))
   },
 }

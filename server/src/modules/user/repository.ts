@@ -59,6 +59,12 @@ export const userRepository = {
               role: { select: { key: true, name: true } },
             },
           },
+          assignments: {
+            select: {
+              organization: { select: { id: true, slug: true, name: true } },
+            },
+          },
+          roles: { select: { role: { select: { key: true, name: true } } } },
         },
         orderBy: { [params.sortBy]: params.sortOrder },
         skip: params.skip,

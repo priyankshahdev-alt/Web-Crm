@@ -1,8 +1,8 @@
-import type { Website } from '../../types/website'
+import type { ManagedWebsite } from '../../types/website'
 import { ChevronRightIcon } from '../icons'
 
 interface WebsiteCardProps {
-  website: Website
+  website: ManagedWebsite
   index: number
 }
 
@@ -23,6 +23,9 @@ export function WebsiteCard({ website, index }: WebsiteCardProps) {
           {website.url}
         </p>
         <p className="mt-1 text-sm text-muted">{website.description}</p>
+        <p className="mt-1.5 text-[11px] font-semibold uppercase tracking-[0.06em] text-faint">
+          {website.pages} pages · {website.status.toLowerCase()}
+        </p>
       </div>
       <span className="absolute right-4 top-1/2 flex h-8 w-8 -translate-y-1/2 translate-x-1 items-center justify-center rounded-full bg-soft text-muted opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100">
         <ChevronRightIcon className="h-4 w-4" />

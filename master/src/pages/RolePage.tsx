@@ -3,13 +3,8 @@ import type { Role } from '../types/role'
 import { roleService, ROLES_UPDATED_EVENT } from '../services/roleService'
 import { CreateRoleModal } from '../components/role/CreateRoleModal'
 import { Button } from '../components/ui/Button'
-import {
-  ChevronDownIcon,
-  GlobeIcon,
-  PlusIcon,
-  ShieldIcon,
-} from '../components/icons'
-import { MANAGED_WEBSITES } from '../data/websites'
+import { Pill } from '../components/ui/Pill'
+import { PlusIcon, ShieldIcon } from '../components/icons'
 
 const formatDate = (iso: string): string =>
   new Date(iso).toLocaleDateString(undefined, {
@@ -18,42 +13,10 @@ const formatDate = (iso: string): string =>
     day: 'numeric',
   })
 
-type PermissionKey = 'view' | 'edit' | 'delete'
-type WebsitePermissions = Record<string, PermissionKey[]>
-
-const PERMISSIONS: PermissionKey[] = ['view', 'edit', 'delete']
-const PERMISSION_STORAGE_KEY = 'master-crm.website-permissions.v1'
-const WEBSITE_USER_ROLE = 'Website User'
-
 export function RolePage() {
   const [roles, setRoles] = useState<Role[]>([])
   const [loading, setLoading] = useState(true)
   const [modalOpen, setModalOpen] = useState(false)
-  const [expandedRole, setExpandedRole] = useState<string | null>(null)
-  const [permissions, setPermissions] = useState<WebsitePermissions>(() => {
-    try {
-      const raw = localStorage.getItem(PERMISSION_STORAGE_KEY)
-      if (!raw) return {}
-      const parsed: unknown = JSON.parse(raw)
-      return parsed && typeof parsed === 'object'
-        ? (parsed as WebsitePermissions)
-        : {}
-    } catch {
-      return {}
-    }
-  })
-
-  const togglePermission = (websiteId: string, permission: PermissionKey) => {
-    setPermissions((current) => {
-      const selected = current[websiteId] ?? []
-      const next = selected.includes(permission)
-        ? selected.filter((item) => item !== permission)
-        : [...selected, permission]
-      const updated = { ...current, [websiteId]: next }
-      localStorage.setItem(PERMISSION_STORAGE_KEY, JSON.stringify(updated))
-      return updated
-    })
-  }
 
   const loadRoles = useCallback(async () => {
     setLoading(true)
@@ -132,9 +95,15 @@ export function RolePage() {
                 </th>
                 <th
                   scope="col"
-                  className="w-full border-b-2 border-line px-5 py-3.5 text-center text-[11px] font-semibold uppercase tracking-[0.08em] text-faint"
+                  className="w-full border-b-2 border-line px-5 py-3.5 text-left text-[11px] font-semibold uppercase tracking-[0.08em] text-faint"
                 >
                   Description
+                </th>
+                <th
+                  scope="col"
+                  className="border-b-2 border-line px-5 py-3.5 text-left text-[11px] font-semibold uppercase tracking-[0.08em] text-faint"
+                >
+                  Members
                 </th>
                 <th
                   scope="col"
@@ -145,128 +114,38 @@ export function RolePage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-soft">
-              {roles.map((role) => {
-                const isWebsiteUser = role.name === WEBSITE_USER_ROLE
-                const expanded = expandedRole === role.id
-                return (
-                  <Fragment key={role.id}>
-                    <tr
-                      onClick={
-                        isWebsiteUser
-                          ? () => setExpandedRole(expanded ? null : role.id)
-                          : undefined
-                      }
-                      className={`transition-colors duration-150 hover:bg-row-hover ${
-                        isWebsiteUser ? 'cursor-pointer' : ''
-                      }`}
-                    >
-                      <td className="whitespace-nowrap px-5 py-4">
-                        <div className="flex items-center gap-3">
-                          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-soft text-brand">
-                            <ShieldIcon className="h-4 w-4" />
-                          </span>
+              {roles.map((role) => (
+                <Fragment key={role.id}>
+                  <tr className="transition-colors duration-150 hover:bg-row-hover">
+                    <td className="whitespace-nowrap px-5 py-4">
+                      <div className="flex items-center gap-3">
+                        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-soft text-brand">
+                          <ShieldIcon className="h-4 w-4" />
+                        </span>
+                        <div>
                           <span className="font-medium text-ink">
                             {role.name}
                           </span>
-                        </div>
-                      </td>
-                      <td className="w-full px-5 py-4 text-center text-muted">
-                        {role.description}
-                      </td>
-                      <td className="whitespace-nowrap px-5 py-4 text-muted">
-                        <span className="inline-flex items-center gap-2">
-                          {formatDate(role.createdAt)}
-                          {isWebsiteUser && (
-                            <ChevronDownIcon
-                              className={`h-4 w-4 text-faint transition-transform duration-200 ${
-                                expanded ? 'rotate-180' : ''
-                              }`}
-                            />
+                          {role.isSystem && (
+                            <Pill variant="neutral" className="ml-2">
+                              System
+                            </Pill>
                           )}
-                        </span>
-                      </td>
-                    </tr>
-                    {isWebsiteUser && expanded && (
-                      <tr>
-                        <td colSpan={3} className="bg-soft/60 px-5 pb-5">
-                          <div className="mb-3">
-                            <p className="text-sm font-semibold text-ink">
-                              Website access
-                            </p>
-                            <p className="text-xs text-muted">
-                              Assign view, edit and delete permissions per
-                              website.
-                            </p>
-                          </div>
-                          <div className="divide-y divide-soft overflow-hidden rounded-xl border border-line bg-white">
-                            {MANAGED_WEBSITES.map((website) => {
-                              const selected = permissions[website.id] ?? []
-                              return (
-                                <div
-                                  key={website.id}
-                                  className="flex flex-wrap items-center justify-between gap-3 px-4 py-3"
-                                >
-                                  <div className="flex items-center gap-3">
-                                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-soft text-brand">
-                                      <GlobeIcon className="h-4 w-4" />
-                                    </span>
-                                    <div>
-                                      <p className="text-sm font-medium text-ink">
-                                        {website.name}
-                                      </p>
-                                      <p className="text-xs text-muted">
-                                        {website.url}
-                                      </p>
-                                    </div>
-                                  </div>
-                                  <div className="flex items-center gap-4">
-                                    {PERMISSIONS.map((permission) => {
-                                      const checked = selected.includes(
-                                        permission,
-                                      )
-                                      return (
-                                        <label
-                                          key={permission}
-                                          className="flex items-center gap-2"
-                                        >
-                                          <span className="text-xs font-semibold capitalize text-muted">
-                                            {permission}
-                                          </span>
-                                          <button
-                                            type="button"
-                                            role="switch"
-                                            aria-checked={checked}
-                                            aria-label={permission}
-                                            onClick={() =>
-                                              togglePermission(
-                                                website.id,
-                                                permission,
-                                              )
-                                            }
-                                            className={`relative h-5 w-9 shrink-0 rounded-full transition-colors duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand/40 ${
-                                              checked ? 'bg-brand' : 'bg-soft'
-                                            }`}
-                                          >
-                                            <span
-                                              className={`absolute left-0.5 top-0.5 h-4 w-4 rounded-full bg-white shadow transition-transform duration-150 ${
-                                                checked ? 'translate-x-4' : ''
-                                              }`}
-                                            />
-                                          </button>
-                                        </label>
-                                      )
-                                    })}
-                                  </div>
-                                </div>
-                              )
-                            })}
-                          </div>
-                        </td>
-                      </tr>
-                    )}
-                  </Fragment>
-                )
-              })}
+                        </div>
+                      </div>
+                    </td>
+                    <td className="w-full px-5 py-4 text-muted">
+                      {role.description || role.key}
+                    </td>
+                    <td className="whitespace-nowrap px-5 py-4 text-muted">
+                      {role.memberCount}
+                    </td>
+                    <td className="whitespace-nowrap px-5 py-4 text-muted">
+                      {formatDate(role.createdAt)}
+                    </td>
+                  </tr>
+                </Fragment>
+              ))}
             </tbody>
           </table>
         </div>
