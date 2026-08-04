@@ -1,6 +1,6 @@
 {
   "name": "webcrm-ucs",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "UCS — connect an existing static website to the WebCrm platform: verify domain, analyze the site, import content into WebCrm, and keep your static site in sync.",
   "type": "module",
   "bin": {

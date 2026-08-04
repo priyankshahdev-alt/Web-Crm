@@ -1,3 +1,6 @@
+import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import path from 'node:path';
 import { error, log } from './logger.js';
 import { runSetup, type SetupFlags } from './commands/setup.js';
 import { runStatus, type StatusFlags } from './commands/status.js';
@@ -5,7 +8,10 @@ import { runAnalyze, type AnalyzeFlags } from './commands/analyze.js';
 import { runImport, type ImportFlags } from './commands/import.js';
 import { runPull, type PullFlags } from './commands/pull.js';
 
-const VERSION = '0.1.0';
+const PACKAGE_JSON = JSON.parse(
+  readFileSync(path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'package.json'), 'utf8'),
+) as { version: string };
+const VERSION = PACKAGE_JSON.version;
 
 type ParsedArgs = {
   flags: Record<string, string | boolean>;
