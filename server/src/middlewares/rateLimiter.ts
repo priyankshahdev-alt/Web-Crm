@@ -39,3 +39,16 @@ export const donationLimiter = rateLimit({
     errors: [{ code: 'RATE_LIMITED', message: 'Too many donation attempts' }],
   },
 });
+
+export const verificationLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  limit: 5,
+  standardHeaders: 'draft-8',
+  legacyHeaders: false,
+  message: {
+    success: false,
+    message: 'Too many verification checks, please try again later.',
+    data: null,
+    errors: [{ code: 'RATE_LIMITED', message: 'Too many verification checks' }],
+  },
+});

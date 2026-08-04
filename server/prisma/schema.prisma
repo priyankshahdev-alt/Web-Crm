@@ -26,9 +26,10 @@ model Organization {
   city      String?
   state     String?
   country   String?
-  logoUrl   String?
-  taxId     String?
-  createdAt DateTime @default(now())
+  logoUrl       String?
+  taxId         String?
+  assetsVersion Int      @default(1)
+  createdAt     DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   settings     OrganizationSetting[]
@@ -73,6 +74,8 @@ model Organization {
   projectStats    ProjectStat[]
   galleryItems    GalleryItem[]
   teamMembers     TeamMember[]
+  externalDomains ExternalDomain[]
+  apiKeys         ApiKey[]
 
   @@index([slug])
 }
@@ -80,6 +83,54 @@ model Organization {
 enum OrgStatus {
   ACTIVE
   SUSPENDED
+}
+
+enum DomainVerificationStatus {
+  PENDING
+  VERIFIED
+  FAILED
+}
+
+enum DomainVerificationMethod {
+  META_TAG
+  FILE
+  DNS_TXT
+}
+
+model ExternalDomain {
+  id                String                  @id @default(uuid()) @db.Uuid
+  organizationId    String                  @db.Uuid
+  domain            String
+  verificationToken String
+  method            DomainVerificationMethod @default(META_TAG)
+  status            DomainVerificationStatus @default(PENDING)
+  verifiedAt        DateTime?
+  lastCheckedAt     DateTime?
+  createdAt         DateTime                @default(now())
+  updatedAt         DateTime                @updatedAt
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, domain])
+  @@index([organizationId])
+}
+
+model ApiKey {
+  id             String    @id @default(uuid()) @db.Uuid
+  organizationId String    @db.Uuid
+  name           String
+  keyPrefix      String
+  keyHash        String    @unique
+  scopes         String[]
+  isActive       Boolean   @default(true)
+  expiresAt      DateTime?
+  lastUsedAt     DateTime?
+  revokedAt      DateTime?
+  createdAt      DateTime  @default(now())
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
 }
 
 model OrganizationSetting {

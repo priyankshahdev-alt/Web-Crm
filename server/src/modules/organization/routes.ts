@@ -11,6 +11,8 @@ import {
   updateOrganizationSchema,
   updateSettingsSchema,
 } from './schema';
+import verificationRouter from '../verification/routes';
+import importRouter from '../import/routes';
 
 const router = Router();
 
@@ -49,6 +51,9 @@ router.put(
   validate(updateSettingsSchema),
   asyncHandler(organizationController.updateSettings),
 );
+
+router.use('/:id/verify', verificationRouter);
+router.use('/:id/import', importRouter);
 
 router.get('/:id/users', authenticate(), rbac('user:view'), ...organizationController.listUsers);
 router.post(
