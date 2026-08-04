@@ -1,10 +1,9 @@
 import { useMemo, useState, type ReactNode } from 'react'
 import type { AdminUser } from '../../types/admin'
 import { MANAGED_WEBSITES } from '../../data/websites'
-import { useDropdown } from '../../hooks/useDropdown'
+import { useAnimatedNumber } from '../../hooks/useAnimatedNumber'
 import {
   BarChartIcon,
-  ChevronDownIcon,
   GaugeIcon,
   GlobeIcon,
   TrendingDownIcon,
@@ -108,7 +107,7 @@ const QUICK_STATS: QuickStat[] = [
 const STATUS_TOTAL = STATUS_DATA.reduce((sum, datum) => sum + datum.value, 0)
 
 const cardClass =
-  'rounded-xl border border-line bg-white p-6 shadow-[0_1px_2px_rgba(0,0,0,0.03)]'
+  'rounded-[18px] border border-line bg-white p-6 shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-card-hover sm:p-7'
 
 const buildGrowthData = (
   admins: AdminUser[],
@@ -178,7 +177,9 @@ function CardHeader({
   return (
     <div className="mb-5 flex flex-wrap items-start justify-between gap-3">
       <div className="flex min-w-0 items-start gap-3">
-        <span className="mt-0.5 shrink-0 text-muted">{icon}</span>
+        <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-brand-soft text-brand">
+          {icon}
+        </span>
         <div className="min-w-0">
           <h3 className="text-base font-semibold leading-tight text-ink">
             {title}
@@ -188,6 +189,41 @@ function CardHeader({
       </div>
       {trailing}
     </div>
+  )
+}
+
+function AnimatedNumber({
+  value,
+  format = (value: number) => Math.round(value).toString(),
+  className,
+}: {
+  value: number
+  format?: (value: number) => string
+  className?: string
+}) {
+  const animated = useAnimatedNumber(value)
+  return <span className={className}>{format(animated)}</span>
+}
+
+function EngagementBarShape(props: {
+  x?: number
+  y?: number
+  width?: number
+  height?: number
+  index?: number
+}) {
+  const { x = 0, y = 0, width = 0, height = 0, index = 0 } = props
+  return (
+    <rect
+      x={x}
+      y={y}
+      width={width}
+      height={height}
+      rx={6}
+      fill="url(#engagementGradient)"
+      className="engagement-bar"
+      style={{ animationDelay: `${index * 130}ms` }}
+    />
   )
 }
 
@@ -279,23 +315,15 @@ function DonutTooltip({ active, payload }: DonutTooltipProps) {
   const sites = STATUS_SITES[status] ?? []
   const color = item.payload?.color ?? '#CBD5E1'
   return (
-    <div className="rounded-lg border border-soft bg-white px-3 py-2.5 shadow-pop">
-      <div className="flex items-center gap-2 text-sm font-semibold text-ink">
-        <span
-          className="h-2 w-2 rounded-full"
-          style={{ backgroundColor: color }}
-        />
-        {status}
-        <span className="text-xs font-medium text-muted">{item.value}</span>
-      </div>
+    <div className="flex items-center gap-2 whitespace-nowrap rounded-lg border border-soft bg-white px-3 py-2 text-xs shadow-pop">
+      <span
+        className="h-2 w-2 shrink-0 rounded-full"
+        style={{ backgroundColor: color }}
+      />
+      <span className="text-sm font-semibold text-ink">{status}</span>
+      <span className="font-medium text-muted">{item.value}</span>
       {sites.length > 0 ? (
-        <ul className="mt-1.5 space-y-0.5">
-          {sites.map((site) => (
-            <li key={site} className="text-xs text-muted">
-              {site} — {status}
-            </li>
-          ))}
-        </ul>
+        <span className="text-muted">— {sites.join(', ')}</span>
       ) : null}
     </div>
   )
@@ -399,70 +427,50 @@ const QUICK_VERDICT = (() => {
   }
 })()
 
-interface RangeOption {
-  label: string
-  months: number
-}
-
-const monthsToDate = new Date().getMonth() + 1
-
-const RANGE_OPTIONS: RangeOption[] = [
-  { label: 'Last 3 months', months: 3 },
-  { label: 'Last 6 months', months: 6 },
-  { label: 'Last 12 months', months: 12 },
-  { label: 'Year to date', months: monthsToDate },
-]
-
-function RangeFilter({
-  value,
-  options,
-  onChange,
-}: {
-  value: number
-  options: RangeOption[]
-  onChange: (months: number) => void
-}) {
-  const { open, toggle, close, rootRef } = useDropdown()
-  const currentLabel = options.find((option) => option.months === value)?.label
+function QuickStatItem({ stat }: { stat: QuickStat }) {
+  const animated = useAnimatedNumber(stat.value)
+  const status = metricStatus(stat.value)
+  const formatted =
+    stat.value % 1 === 0
+      ? String(Math.round(animated))
+      : (Math.round(animated * 10) / 10).toFixed(1)
 
   return (
-    <div className="relative" ref={rootRef}>
-      <button
-        type="button"
-        onClick={toggle}
-        aria-haspopup="listbox"
-        aria-expanded={open}
-        className="flex items-center gap-2 rounded-full border border-line bg-white py-2 pl-4 pr-3 text-sm font-medium text-ink shadow-sm transition hover:border-slate-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand/30"
+    <div className="flex flex-col items-center gap-1.5">
+      <div
+        className="relative flex h-20 w-20 items-center justify-center rounded-full"
+        style={{
+          background: `radial-gradient(circle, ${stat.color}1A 0%, transparent 70%)`,
+        }}
       >
-        {currentLabel ?? 'Custom range'}
-        <ChevronDownIcon
-          className={`h-4 w-4 text-muted transition-transform ${
-            open ? 'rotate-180' : ''
-          }`}
-        />
-      </button>
-      {open ? (
-        <div
-          role="listbox"
-          className="absolute right-0 top-full z-50 mt-2 w-44 rounded-xl border border-soft bg-white p-1.5 shadow-pop"
-        >
-          {options.map((option) => (
-            <button
-              key={option.months}
-              type="button"
-              role="option"
-              aria-selected={option.months === value}
-              onClick={() => {
-                onChange(option.months)
-                close()
-              }}
-              className="block w-full rounded-lg px-3 py-2 text-left text-sm font-medium text-ink transition hover:bg-soft"
-            >
-              {option.label}
-            </button>
-          ))}
-        </div>
-      ) : null}
+        <StatRing value={animated} color={stat.color} track={stat.track} />
+        <span className="absolute text-[15px] font-bold tabular-nums text-ink">
+          {formatted}
+          {stat.suffix}
+        </span>
+      </div>
+      <span className="text-[13px] font-medium text-muted">{stat.label}</span>
+      <span className={`text-xs font-semibold ${status.cls}`}>
+        {status.label}
+      </span>
+      <span className="flex items-center gap-1 text-[11px] font-medium text-muted">
+        {stat.trend > 0 ? (
+          <>
+            <TrendingUpIcon className="h-3.5 w-3.5 text-success" />
+            {stat.trend.toFixed(1)}% vs last week
+          </>
+        ) : stat.trend < 0 ? (
+          <>
+            <TrendingDownIcon className="h-3.5 w-3.5 text-danger" />
+            {Math.abs(stat.trend).toFixed(1)}% vs last week
+          </>
+        ) : (
+          <span className="flex items-center gap-1">
+            <span className="h-1 w-1 rounded-full bg-faint" />
+            Steady vs last week
+          </span>
+        )}
+      </span>
     </div>
   )
 }
@@ -573,7 +581,7 @@ export function PlatformInsights({ admins }: PlatformInsightsProps) {
 
   return (
     <section aria-labelledby="insights-title" className="mt-8 sm:mt-10">
-      <div className="mb-8 flex animate-rise flex-wrap items-end justify-between gap-x-6 gap-y-4">
+      <div className="mb-8 flex animate-dash-rise flex-wrap items-end justify-between gap-x-6 gap-y-4">
         <div>
           <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-eyebrow">
             Analytics
@@ -585,16 +593,11 @@ export function PlatformInsights({ admins }: PlatformInsightsProps) {
             Live metrics across the managed websites.
           </p>
         </div>
-        <RangeFilter
-          value={growthMonths}
-          options={RANGE_OPTIONS}
-          onChange={setGrowthMonths}
-        />
       </div>
 
       <div className="grid gap-6 lg:grid-cols-3">
         <div
-          className={`${cardClass} flex animate-rise flex-col lg:col-span-2`}
+          className={`${cardClass} flex animate-dash-rise flex-col lg:col-span-2`}
           style={{ animationDelay: '170ms' }}
         >
           <CardHeader
@@ -606,9 +609,10 @@ export function PlatformInsights({ admins }: PlatformInsightsProps) {
             }
           />
           <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-            <span className="text-[40px] font-bold leading-none tracking-[-0.02em] text-ink">
-              {currentMonth}
-            </span>
+            <AnimatedNumber
+              value={currentMonth}
+              className="text-[40px] font-bold leading-none tracking-[-0.02em] text-ink"
+            />
             <span className="text-sm font-medium text-muted">
               admins added this month
             </span>
@@ -664,6 +668,10 @@ export function PlatformInsights({ admins }: PlatformInsightsProps) {
                     stroke: '#FFFFFF',
                     strokeWidth: 2,
                   }}
+                  isAnimationActive
+                  animationBegin={150}
+                  animationDuration={1400}
+                  animationEasing="ease-in-out"
                 />
                 <Line
                   type="monotone"
@@ -673,6 +681,7 @@ export function PlatformInsights({ admins }: PlatformInsightsProps) {
                   strokeDasharray="4 4"
                   dot={false}
                   activeDot={false}
+                  isAnimationActive={false}
                 />
               </AreaChart>
             </ResponsiveContainer>
@@ -694,7 +703,7 @@ export function PlatformInsights({ admins }: PlatformInsightsProps) {
         </div>
 
         <div
-          className={`${cardClass} flex animate-rise flex-col`}
+          className={`${cardClass} flex animate-dash-rise flex-col`}
           style={{ animationDelay: '220ms' }}
         >
           <CardHeader
@@ -710,7 +719,10 @@ export function PlatformInsights({ admins }: PlatformInsightsProps) {
               <div className="absolute inset-0 cursor-pointer drop-shadow-[0_8px_16px_rgba(15,23,42,0.10)]">
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
-                    <Tooltip content={<DonutTooltip />} />
+                    <Tooltip
+                      content={<DonutTooltip />}
+                      position={{ x: 154, y: 28 }}
+                    />
                     <Pie
                       data={STATUS_DATA}
                       dataKey="value"
@@ -721,6 +733,10 @@ export function PlatformInsights({ admins }: PlatformInsightsProps) {
                       cornerRadius={6}
                       strokeWidth={2}
                       stroke="#FFFFFF"
+                      isAnimationActive
+                      animationBegin={200}
+                      animationDuration={1300}
+                      animationEasing="ease-out"
                       onMouseEnter={(_, index) =>
                         setHoveredStatus(STATUS_DATA[index]!.name)
                       }
@@ -744,9 +760,10 @@ export function PlatformInsights({ admins }: PlatformInsightsProps) {
                 </ResponsiveContainer>
               </div>
               <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
-                <span className="text-3xl font-bold leading-none text-ink">
-                  {STATUS_TOTAL}
-                </span>
+                <AnimatedNumber
+                  value={STATUS_TOTAL}
+                  className="text-3xl font-bold leading-none text-ink"
+                />
                 <span className="mt-1 text-[11px] font-medium uppercase tracking-[0.08em] text-faint">
                   Total sites
                 </span>
@@ -794,7 +811,7 @@ export function PlatformInsights({ admins }: PlatformInsightsProps) {
         </div>
 
         <div
-          className={`${cardClass} flex animate-rise flex-col lg:col-span-2`}
+          className={`${cardClass} flex animate-dash-rise flex-col lg:col-span-2`}
           style={{ animationDelay: '270ms' }}
         >
           <CardHeader
@@ -808,9 +825,11 @@ export function PlatformInsights({ admins }: PlatformInsightsProps) {
             }
           />
           <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-            <span className="text-[40px] font-bold leading-none tracking-[-0.02em] text-ink">
-              {totalVisits.toLocaleString()}
-            </span>
+            <AnimatedNumber
+              value={totalVisits}
+              format={(value) => Math.round(value).toLocaleString()}
+              className="text-[40px] font-bold leading-none tracking-[-0.02em] text-ink"
+            />
             <span className="text-sm font-medium text-muted">
               visits this month
             </span>
@@ -858,10 +877,10 @@ export function PlatformInsights({ admins }: PlatformInsightsProps) {
                 />
                 <Bar
                   dataKey="visits"
-                  fill="url(#engagementGradient)"
                   radius={[6, 6, 0, 0]}
                   maxBarSize={52}
-                  activeBar={{ fill: '#4338CA' }}
+                  isAnimationActive={false}
+                  shape={<EngagementBarShape />}
                 />
               </BarChart>
             </ResponsiveContainer>
@@ -869,7 +888,7 @@ export function PlatformInsights({ admins }: PlatformInsightsProps) {
         </div>
 
         <div
-          className={`${cardClass} flex animate-rise flex-col`}
+          className={`${cardClass} flex animate-dash-rise flex-col`}
           style={{ animationDelay: '320ms' }}
         >
           <CardHeader
@@ -903,56 +922,9 @@ export function PlatformInsights({ admins }: PlatformInsightsProps) {
             </div>
           </div>
           <div className="mt-6 grid flex-1 grid-cols-2 gap-x-6 gap-y-6">
-            {QUICK_STATS.map((stat) => {
-              const status = metricStatus(stat.value)
-              return (
-                <div
-                  key={stat.label}
-                  className="flex flex-col items-center gap-1.5"
-                >
-                  <div
-                    className="relative flex h-20 w-20 items-center justify-center rounded-full"
-                    style={{
-                      background: `radial-gradient(circle, ${stat.color}1A 0%, transparent 70%)`,
-                    }}
-                  >
-                    <StatRing
-                      value={stat.value}
-                      color={stat.color}
-                      track={stat.track}
-                    />
-                    <span className="absolute text-[15px] font-bold tabular-nums text-ink">
-                      {stat.value}
-                      {stat.suffix}
-                    </span>
-                  </div>
-                  <span className="text-[13px] font-medium text-muted">
-                    {stat.label}
-                  </span>
-                  <span className={`text-xs font-semibold ${status.cls}`}>
-                    {status.label}
-                  </span>
-                  <span className="flex items-center gap-1 text-[11px] font-medium text-muted">
-                    {stat.trend > 0 ? (
-                      <>
-                        <TrendingUpIcon className="h-3.5 w-3.5 text-success" />
-                        {stat.trend.toFixed(1)}% vs last week
-                      </>
-                    ) : stat.trend < 0 ? (
-                      <>
-                        <TrendingDownIcon className="h-3.5 w-3.5 text-danger" />
-                        {Math.abs(stat.trend).toFixed(1)}% vs last week
-                      </>
-                    ) : (
-                      <span className="flex items-center gap-1">
-                        <span className="h-1 w-1 rounded-full bg-faint" />
-                        Steady vs last week
-                      </span>
-                    )}
-                  </span>
-                </div>
-              )
-            })}
+            {QUICK_STATS.map((stat) => (
+              <QuickStatItem key={stat.label} stat={stat} />
+            ))}
           </div>
         </div>
       </div>

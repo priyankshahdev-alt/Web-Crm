@@ -173,7 +173,7 @@ export function AdminPage() {
       ) : (
         <div className="rounded-2xl border border-line bg-white shadow-card">
           <div className="overflow-x-auto">
-            <table className="min-w-[760px] text-sm">
+            <table className="min-w-[760px] w-full text-sm">
             <thead>
               <tr>
                 <th
