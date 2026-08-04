@@ -48,6 +48,7 @@ export class ApiClient {
   constructor(
     public baseUrl: string,
     public accessToken?: string,
+    public apiKey?: string,
   ) {}
 
   private url(path: string): string {
@@ -56,7 +57,8 @@ export class ApiClient {
 
   private headers(): Record<string, string> {
     const headers: Record<string, string> = { 'content-type': 'application/json' };
-    if (this.accessToken) headers.authorization = `Bearer ${this.accessToken}`;
+    if (this.apiKey) headers.authorization = `Bearer ${this.apiKey}`;
+    else if (this.accessToken) headers.authorization = `Bearer ${this.accessToken}`;
     return headers;
   }
 

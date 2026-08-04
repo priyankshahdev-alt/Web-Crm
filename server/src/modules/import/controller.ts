@@ -8,8 +8,14 @@ import { importService } from './service';
 
 export const importController = {
   run: asyncHandler(async (req: Request, res: Response) => {
-    const id = req.params.id;
-    await assertCanManageOrg(req, id);
+    const apiKeyAuthed = Boolean((req as Request & { apiKeyId?: string }).apiKeyId);
+    const id = apiKeyAuthed
+      ? (req as Request & { activeOrg?: { id: string } }).activeOrg?.id ?? req.params.id
+      : req.params.id;
+
+    if (!apiKeyAuthed) {
+      await assertCanManageOrg(req, id);
+    }
 
     const org = await organizationRepository.findById(id);
     if (!org) throw ApiError.notFound('Organization not found');

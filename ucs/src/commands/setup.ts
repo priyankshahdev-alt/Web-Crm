@@ -1,6 +1,6 @@
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
-import { ApiClient, type DomainInstruction } from '../api.js';
+import { ApiClient, type DomainInstruction, type VerifiedDomain } from '../api.js';
 import { ask, confirm, select } from '../prompts.js';
 import { log, section, info, success, warn, error, yellow, dim } from '../logger.js';
 import { saveConfig, IMPORT_FILE_NAME, type UcsConfig } from '../config.js';
@@ -32,12 +32,11 @@ async function waitForVerification(
   method: string,
   maxAttempts = 6,
   delayMs = 5000,
-): Promise<string | null> {
+): Promise<VerifiedDomain | null> {
   for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
     info(`Checking verification (attempt ${attempt}/${maxAttempts})${attempt > 1 ? ' \u2026' : ''}`);
     try {
-      const result = await client.checkDomain(orgId, domainId, method);
-      return result.status;
+      return await client.checkDomain(orgId, domainId, method);
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err);
       if (attempt < maxAttempts) {
@@ -142,10 +141,17 @@ export async function runSetup(flags: SetupFlags): Promise<void> {
   }
 
   const verified = await waitForVerification(client, orgId, claim.id, method, flags.yes ? 1 : 6);
-  if (verified !== 'VERIFIED') {
+  if (!verified || verified.status !== 'VERIFIED') {
     throw new Error('Domain verification did not pass. Check the token and try again with `ucs setup --domain <domain>` to resume.');
   }
   success(`Domain verified: ${domain}`);
+
+  // The verified site key lets future import/pull calls run without an admin session.
+  const siteApiKey = verified.apiKey?.key;
+  if (siteApiKey) {
+    client.apiKey = siteApiKey;
+    success('Received site API key — stored for passwordless imports.');
+  }
 
   // Source: live URL or folder.
   let source = flags.source;
@@ -187,6 +193,7 @@ export async function runSetup(flags: SetupFlags): Promise<void> {
     domainId,
     siteName: siteName ?? orgSlug,
     accessToken: client.accessToken,
+    apiKey: siteApiKey,
     updatedAt: new Date().toISOString(),
   };
   const configPath = await saveConfig(config);

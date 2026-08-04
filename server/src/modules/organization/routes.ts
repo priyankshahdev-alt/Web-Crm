@@ -13,6 +13,7 @@ import {
 } from './schema';
 import verificationRouter from '../verification/routes';
 import importRouter from '../import/routes';
+import apiKeyRouter from '../api-key/routes';
 
 const router = Router();
 
@@ -54,6 +55,7 @@ router.put(
 
 router.use('/:id/verify', verificationRouter);
 router.use('/:id/import', importRouter);
+router.use('/:id/api-keys', apiKeyRouter);
 
 router.get('/:id/users', authenticate(), rbac('user:view'), ...organizationController.listUsers);
 router.post(

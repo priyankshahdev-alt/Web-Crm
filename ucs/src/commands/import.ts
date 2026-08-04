@@ -27,14 +27,15 @@ export async function runImport(fileArg: string | undefined, flags: ImportFlags)
   const apiUrl = flags.apiUrl ?? config.apiUrl ?? process.env.WCRM_API_URL ?? 'http://localhost:4000/api/v1';
 
   let accessToken = config.accessToken;
-  if (!accessToken) {
+  let apiKey = config.apiKey;
+  if (!accessToken && !apiKey) {
     const email = await ask('Admin email', { required: true });
     const password = await ask('Admin password', { secret: true, required: true });
     const login = await new ApiClient(apiUrl).login(email, password);
     accessToken = login.accessToken;
   }
 
-  const client = new ApiClient(apiUrl, accessToken);
+  const client = new ApiClient(apiUrl, accessToken, apiKey);
 
   let orgId = config.orgId;
   if (flags.org) {

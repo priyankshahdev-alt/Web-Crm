@@ -49,14 +49,4 @@ export const verificationRepository = {
       data: { status, verifiedAt, lastCheckedAt: checkedAt },
     });
   },
-
-  async createApiKey(data: {
-    organizationId: string;
-    name: string;
-    keyPrefix: string;
-    keyHash: string;
-    scopes: string[];
-  }) {
-    return prisma.apiKey.create({ data });
-  },
 };

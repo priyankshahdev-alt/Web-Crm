@@ -5,18 +5,13 @@ import { DomainVerificationStatus, DomainVerificationMethod } from '@prisma/clie
 import { ApiError } from '../../utils/ApiError';
 import { recordAudit } from '../../utils/audit';
 import { assertCanManageOrg } from '../organization/service';
-import { hashApiKey } from '../../middlewares/apiKey';
+import { issueApiKey } from '../api-key/service';
 import { safeFetch, validateDomain } from './ssrf';
 import { verificationRepository } from './repository';
 import type { CheckDomainInput, ClaimDomainInput } from './schema';
 
 function generateToken(): string {
   return randomBytes(24).toString('base64url');
-}
-
-function generateApiKey(): { key: string; keyPrefix: string; keyHash: string } {
-  const key = `wcrm_${randomBytes(24).toString('base64url')}`;
-  return { key, keyPrefix: key.slice(0, 12), keyHash: hashApiKey(key) };
 }
 
 function instructions(domain: string, token: string, method: DomainVerificationMethod) {
@@ -150,13 +145,10 @@ export const verificationService = {
       verifiedAt,
     );
 
-    const { key, keyPrefix, keyHash } = generateApiKey();
-    const apiKey = await verificationRepository.createApiKey({
+    const apiKey = await issueApiKey({
       organizationId,
       name: `External site — ${record.domain}`,
-      keyPrefix,
-      keyHash,
-      scopes: ['site:read'],
+      scopes: ['site:read', 'site:import'],
     });
 
     await recordAudit({
@@ -177,8 +169,8 @@ export const verificationService = {
       verifiedAt: verifiedAt.toISOString(),
       apiKey: {
         id: apiKey.id,
-        key,
-        keyPrefix,
+        key: apiKey.key,
+        keyPrefix: apiKey.keyPrefix,
         name: apiKey.name,
         scopes: apiKey.scopes,
         note: 'This key is shown only once. Store it safely.',
