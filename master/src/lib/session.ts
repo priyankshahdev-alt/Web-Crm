@@ -1,21 +1,32 @@
-const STORAGE_OWNER_KEY = 'master-crm.current-master'
-const CURRENT_MASTER = 'master'
+const STORAGE_SESSION_KEY = 'master-crm.session'
 
 export interface MasterSession {
+  accessToken: string
+  refreshToken: string
   username: string
+  email: string
+  firstName: string
+  lastName: string
+  isMaster: boolean
 }
 
 export function getCurrentMaster(): MasterSession | null {
-  const stored = localStorage.getItem(STORAGE_OWNER_KEY)
-  if (!stored) return null
-  return { username: stored }
+  try {
+    const stored = localStorage.getItem(STORAGE_SESSION_KEY)
+    if (!stored) return null
+    const parsed = JSON.parse(stored) as MasterSession
+    if (!parsed.accessToken || !parsed.username) return null
+    return parsed
+  } catch {
+    return null
+  }
 }
 
-export function signIn(): MasterSession {
-  localStorage.setItem(STORAGE_OWNER_KEY, CURRENT_MASTER)
-  return { username: CURRENT_MASTER }
+export function signIn(session: MasterSession): MasterSession {
+  localStorage.setItem(STORAGE_SESSION_KEY, JSON.stringify(session))
+  return session
 }
 
 export function signOut(): void {
-  localStorage.removeItem(STORAGE_OWNER_KEY)
+  localStorage.removeItem(STORAGE_SESSION_KEY)
 }
