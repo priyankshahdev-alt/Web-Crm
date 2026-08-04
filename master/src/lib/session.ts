@@ -1,6 +1,8 @@
 import { clearSession, getUser } from './tokenStorage'
 
 export interface MasterSession {
+  accessToken: string
+  refreshToken: string
   username: string
   email: string
   isMaster: boolean

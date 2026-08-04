@@ -20,31 +20,19 @@ interface DeleteAdminModalProps {
 export function DeleteAdminModal({
   open,
   admin,
-  websites,
-  isLastMaster,
-  isSelf,
   onClose,
   onDeleted,
 }: DeleteAdminModalProps) {
   const toast = useToast()
-  const [confirmText, setConfirmText] = useState('')
-  const [submitting, setSubmitting] = useState(false)
+  const [deleting, setDeleting] = useState(false)
 
-  useEffect(() => {
-    if (open) setConfirmText('')
-  }, [open])
+  const managedSiteIds = admin?.managedWebsites ?? MANAGED_WEBSITES.map((s) => s.id)
+  const managedSites = MANAGED_WEBSITES.filter((site) =>
+    managedSiteIds.includes(site.id),
+  )
 
-  const managedSiteNames =
-    admin?.managedWebsites
-      ?.map((id) => websites.find((site) => site.id === id)?.name ?? id)
-      .filter(Boolean) ?? []
-
-  const canConfirm = confirmText === admin?.email
-  const blocked = isLastMaster || isSelf
-
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    if (!admin || blocked || !canConfirm) return
+  const handleConfirm = async () => {
+    if (!admin) return
 
     setSubmitting(true)
     try {
@@ -89,8 +77,8 @@ export function DeleteAdminModal({
             type="submit"
             form="delete-admin-form"
             variant="danger"
-            loading={submitting}
-            disabled={!canConfirm}
+            onClick={handleConfirm}
+            loading={deleting}
           >
             Delete Admin
           </Button>
@@ -99,33 +87,31 @@ export function DeleteAdminModal({
     >
       {blocked ? (
         <p className="text-sm text-muted">
-          {isLastMaster
-            ? 'Create another Master Admin before attempting to delete this one.'
-            : 'Use the account settings page to deactivate your own account if needed.'}
+          This will permanently remove{' '}
+          <span className="font-semibold text-ink">{admin?.username}</span> and
+          revoke their access to{' '}
+          <span className="font-semibold text-ink">
+            {managedSites.length} managed website
+            {managedSites.length === 1 ? '' : 's'}
+          </span>
+          . This action cannot be undone.
         </p>
-      ) : (
-        <form id="delete-admin-form" onSubmit={handleSubmit} noValidate>
-          <div className="space-y-4">
-            <div className="rounded-xl bg-danger/5 px-4 py-3 text-sm text-danger">
-              <p className="font-semibold">Deleting {admin?.email}</p>
-              {managedSiteNames.length > 0 ? (
-                <p className="mt-1 text-xs text-muted">
-                  Managed sites: {managedSiteNames.join(', ')}
-                </p>
-              ) : null}
-            </div>
-            <Input
-              label={`Type "${admin?.email}" to confirm`}
-              type="text"
-              value={confirmText}
-              onChange={(event) => setConfirmText(event.target.value)}
-              error={!canConfirm && confirmText.length > 0 ? 'Email does not match' : undefined}
-              autoComplete="off"
-              spellCheck={false}
-            />
+
+        {managedSites.length > 0 ? (
+          <div className="rounded-xl border border-warning/25 bg-warning/10 px-3.5 py-3">
+            <p className="text-xs font-semibold text-warning">
+              Access will be revoked from these websites:
+            </p>
+            <ul className="mt-1.5 space-y-1">
+              {managedSites.map((site) => (
+                <li key={site.id} className="text-sm text-ink">
+                  {site.name}
+                </li>
+              ))}
+            </ul>
           </div>
-        </form>
-      )}
+        ) : null}
+      </div>
     </Modal>
   )
 }
