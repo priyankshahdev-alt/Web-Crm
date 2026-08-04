@@ -20,6 +20,13 @@ export const CONFIG_FILE_NAME = 'config.json';
 export const IMPORT_FILE_NAME = 'webcrm-import.json';
 export const PULL_FILE_NAME = 'webcrm.json';
 
+/** Default WebCrm API base URL (override with WCRM_API_URL or --api-url). */
+export const DEFAULT_API_URL = 'http://localhost:4000/api/v1';
+
+export function resolveApiUrl(override?: string): string {
+  return (override ?? process.env.WCRM_API_URL ?? DEFAULT_API_URL).trim();
+}
+
 async function isProjectRoot(dir: string): Promise<boolean> {
   return fs
     .access(path.join(dir, 'package.json'))

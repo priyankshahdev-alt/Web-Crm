@@ -15,6 +15,9 @@ npx webcrm-ucs --help
 
 Requires Node.js 18+.
 
+By default `ucs` talks to the **hosted WebCrm backend**; set `WCRM_API_URL` or
+use `--api-url` to point it at another instance (e.g. your local dev server).
+
 ## Quick start
 
 ```bash
@@ -30,6 +33,11 @@ ucs setup --domain example.org --source https://example.org
 3. **Import** — pushes pages, menus, media, teams, testimonials and more into
    WebCrm (merge or replace mode).
 
+On successful verification WebCrm issues a **site API key** for your domain.
+`ucs` stores it and uses it for subsequent `import`/`pull` calls, so you don't
+need an admin session each time. Manage keys in the admin panel under
+**Website → Site Sync (UCS)**.
+
 Then run `ucs pull` after edits in WebCrm to refresh `webcrm.json`, which your
 static site renders.
 
@@ -43,7 +51,8 @@ static site renders.
 | `ucs import [file]`    | Import a `webcrm-import.json` into WebCrm.               |
 | `ucs pull`             | Fetch live WebCrm site data into `webcrm.json`.          |
 
-Run `ucs <command> --help` for full options.
+Every command accepts `--api-url <url>` to override the backend. Run
+`ucs <command> --help` for full options.
 
 ## Configuration
 
@@ -53,9 +62,9 @@ project root. It also writes `webcrm-import.json` (analyzer output) and
 
 ### Environment
 
-| Variable        | Default                          | Used by       |
-| --------------- | -------------------------------- | ------------- |
-| `WCRM_API_URL`  | `http://localhost:4000/api/v1`   | All commands  |
+| Variable        | Default                             | Used by       |
+| --------------- | ----------------------------------- | ------------- |
+| `WCRM_API_URL`  | `https://webcrm-api.vercel.app/api/v1` | All commands |
 
 ## Non-interactive (CI) setup
 

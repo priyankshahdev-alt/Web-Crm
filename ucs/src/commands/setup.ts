@@ -3,7 +3,7 @@ import path from 'node:path';
 import { ApiClient, type DomainInstruction, type VerifiedDomain } from '../api.js';
 import { ask, confirm, select } from '../prompts.js';
 import { log, section, info, success, warn, error, yellow, dim } from '../logger.js';
-import { saveConfig, IMPORT_FILE_NAME, type UcsConfig } from '../config.js';
+import { saveConfig, IMPORT_FILE_NAME, resolveApiUrl, type UcsConfig } from '../config.js';
 import { analyze } from '../analyzer/index.js';
 
 const DOMAIN_RE = /^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?)+$/i;
@@ -70,7 +70,7 @@ function printPreview(result: { model: { pages?: unknown[]; media?: unknown[]; m
 }
 
 export async function runSetup(flags: SetupFlags): Promise<void> {
-  const apiUrl = (flags.apiUrl ?? process.env.WCRM_API_URL ?? 'http://localhost:4000/api/v1').trim();
+  const apiUrl = resolveApiUrl(flags.apiUrl);
   const interactive = !flags.yes;
 
   section('WebCrm UCS setup');

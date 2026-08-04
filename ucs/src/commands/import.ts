@@ -2,7 +2,7 @@ import path from 'node:path';
 import { ApiClient } from '../api.js';
 import { ask } from '../prompts.js';
 import { log, section, info, success } from '../logger.js';
-import { loadConfig, readJsonFile, requireConfig } from '../config.js';
+import { loadConfig, readJsonFile, requireConfig, resolveApiUrl } from '../config.js';
 
 export interface ImportFlags {
   apiUrl?: string;
@@ -24,7 +24,7 @@ export async function runImport(fileArg: string | undefined, flags: ImportFlags)
   }
 
   const config = requireConfig(await loadConfig());
-  const apiUrl = flags.apiUrl ?? config.apiUrl ?? process.env.WCRM_API_URL ?? 'http://localhost:4000/api/v1';
+  const apiUrl = resolveApiUrl(flags.apiUrl);
 
   let accessToken = config.accessToken;
   let apiKey = config.apiKey;

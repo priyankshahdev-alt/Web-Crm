@@ -1,6 +1,6 @@
 import { ApiClient } from '../api.js';
 import { log, section, info, success, warn, yellow, dim, error } from '../logger.js';
-import { loadConfig } from '../config.js';
+import { loadConfig, resolveApiUrl } from '../config.js';
 
 export interface StatusFlags {
   apiUrl?: string;
@@ -13,7 +13,7 @@ export async function runStatus(flags: StatusFlags): Promise<void> {
     return;
   }
 
-  const apiUrl = flags.apiUrl ?? config.apiUrl ?? process.env.WCRM_API_URL ?? 'http://localhost:4000/api/v1';
+  const apiUrl = resolveApiUrl(flags.apiUrl);
 
   section('UCS status');
   log(`${yellow('API server:')}   ${apiUrl}`);

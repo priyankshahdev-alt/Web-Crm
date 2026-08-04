@@ -1,7 +1,7 @@
 import path from 'node:path';
 import { ApiClient } from '../api.js';
 import { log, section, success, yellow, dim } from '../logger.js';
-import { loadConfig, requireConfig, writeJsonFile, PULL_FILE_NAME } from '../config.js';
+import { loadConfig, requireConfig, writeJsonFile, resolveApiUrl, PULL_FILE_NAME } from '../config.js';
 
 export interface PullFlags {
   apiUrl?: string;
@@ -10,7 +10,7 @@ export interface PullFlags {
 
 export async function runPull(flags: PullFlags): Promise<void> {
   const config = requireConfig(await loadConfig());
-  const apiUrl = flags.apiUrl ?? config.apiUrl ?? process.env.WCRM_API_URL ?? 'http://localhost:4000/api/v1';
+  const apiUrl = resolveApiUrl(flags.apiUrl);
   const output = path.resolve(flags.output ?? PULL_FILE_NAME);
 
   const client = new ApiClient(apiUrl);
