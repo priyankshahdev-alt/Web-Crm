@@ -1,7 +1,10 @@
 import { http } from '../lib/api'
+import { withCache, invalidate } from '../lib/cache'
 import type { Role } from '../types/role'
 
 const ROLES_UPDATED_EVENT = 'roles:updated'
+const ROLES_LIST_KEY = 'roles:list'
+const ROLES_LIST_TTL_MS = 10_000
 
 interface ServerRole {
   id: string
@@ -36,7 +39,9 @@ function keyFromName(name: string): string {
 
 export const roleService = {
   async list(): Promise<Role[]> {
-    const roles = await http.get<ServerRole[]>('/roles')
+    const roles = await withCache(ROLES_LIST_KEY, ROLES_LIST_TTL_MS, () =>
+      http.get<ServerRole[]>('/roles'),
+    )
     return roles.map(toRole)
   },
 
@@ -46,12 +51,14 @@ export const roleService = {
       key: keyFromName(input.name),
       description: input.description.trim() || null,
     })
+    invalidate(ROLES_LIST_KEY)
     window.dispatchEvent(new CustomEvent(ROLES_UPDATED_EVENT))
     return toRole(role)
   },
 
   async remove(id: string): Promise<void> {
     await http.delete(`/roles/${id}`)
+    invalidate(ROLES_LIST_KEY)
     window.dispatchEvent(new CustomEvent(ROLES_UPDATED_EVENT))
   },
 }

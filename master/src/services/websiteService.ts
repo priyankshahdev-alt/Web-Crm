@@ -1,5 +1,9 @@
 import { http } from '../lib/api'
+import { withCache } from '../lib/cache'
 import type { ManagedWebsite } from '../types/website'
+
+const WEBSITES_LIST_KEY = 'websites:list'
+const WEBSITES_LIST_TTL_MS = 30_000
 
 export interface DashboardOverview {
   organizations: number
@@ -36,7 +40,9 @@ interface OrganizationRow {
 
 export const websiteService = {
   async list(): Promise<ManagedWebsite[]> {
-    const rows = await http.get<OrganizationRow[]>('/dashboard/websites')
+    const rows = await withCache(WEBSITES_LIST_KEY, WEBSITES_LIST_TTL_MS, () =>
+      http.get<OrganizationRow[]>('/dashboard/websites'),
+    )
     return rows.map((row) => ({
       id: row.id,
       name: row.name,

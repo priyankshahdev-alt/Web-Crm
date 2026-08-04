@@ -1,5 +1,9 @@
 import { http } from '../lib/api'
+import { withCache, invalidate } from '../lib/cache'
 import type { AdminUser, CreateAdminInput, UpdateAdminInput } from '../types/admin'
+
+const ADMINS_LIST_KEY = 'admins:list'
+const ADMINS_LIST_TTL_MS = 10_000
 
 interface ServerUser {
   id: string
@@ -77,7 +81,9 @@ function readApiError(
 
 export const adminService = {
   async list(): Promise<AdminUser[]> {
-    const result = await http.get<Paginated<ServerUser>>('/users?limit=100')
+    const result = await withCache(ADMINS_LIST_KEY, ADMINS_LIST_TTL_MS, () =>
+      http.get<Paginated<ServerUser>>('/users?limit=100'),
+    )
     return result.items
       .filter(
         (user) =>
@@ -103,6 +109,7 @@ export const adminService = {
         userId: created.id,
       })
     }
+    invalidate(ADMINS_LIST_KEY)
 
     return toAdminUser({
       ...created,
@@ -132,6 +139,7 @@ export const adminService = {
     for (const organizationId of toRemove) {
       await http.delete(`/organizations/${organizationId}/admins/${id}`)
     }
+    invalidate(ADMINS_LIST_KEY)
 
     return toAdminUser({
       ...updated,
@@ -143,6 +151,7 @@ export const adminService = {
 
   async remove(id: string): Promise<void> {
     await http.delete(`/users/${id}`)
+    invalidate(ADMINS_LIST_KEY)
   },
 
   errorMessage: readApiError,

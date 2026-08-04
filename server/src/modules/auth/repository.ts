@@ -15,6 +15,51 @@ export interface CreateRefreshTokenInput {
 }
 
 export const authRepository = {
+  /**
+   * Single query used at login: user + platform roles/permissions +
+   * active memberships. Lets the login handler compute the full auth
+   * context and session response without extra round trips.
+   */
+  async findLoginUser(email: string) {
+    return prisma.user.findUnique({
+      where: { email },
+      select: {
+        id: true,
+        email: true,
+        firstName: true,
+        lastName: true,
+        passwordHash: true,
+        isMaster: true,
+        isActive: true,
+        roles: {
+          select: {
+            role: {
+              select: {
+                key: true,
+                permissions: { select: { permission: { select: { code: true } } } },
+              },
+            },
+          },
+        },
+        memberships: {
+          select: {
+            isCurrent: true,
+            isActive: true,
+            organization: { select: { id: true, slug: true, name: true, logoUrl: true } },
+            role: {
+              select: {
+                key: true,
+                name: true,
+                permissions: { select: { permission: { select: { code: true } } } },
+              },
+            },
+          },
+        },
+        permissions: { select: { permission: { select: { code: true } } } },
+      },
+    });
+  },
+
   async findUserByEmail(email: string) {
     return prisma.user.findUnique({
       where: { email },
