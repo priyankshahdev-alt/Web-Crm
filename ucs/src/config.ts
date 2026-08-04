@@ -21,7 +21,7 @@ export const IMPORT_FILE_NAME = 'webcrm-import.json';
 export const PULL_FILE_NAME = 'webcrm.json';
 
 /** Default WebCrm API base URL (override with WCRM_API_URL or --api-url). */
-export const DEFAULT_API_URL = 'http://localhost:4000/api/v1';
+export const DEFAULT_API_URL = 'https://web-crm-green.vercel.app/api/v1';
 
 export function resolveApiUrl(override?: string): string {
   return (override ?? process.env.WCRM_API_URL ?? DEFAULT_API_URL).trim();

@@ -64,7 +64,7 @@ project root. It also writes `webcrm-import.json` (analyzer output) and
 
 | Variable        | Default                             | Used by       |
 | --------------- | ----------------------------------- | ------------- |
-| `WCRM_API_URL`  | `https://webcrm-api.vercel.app/api/v1` | All commands |
+| `WCRM_API_URL`  | `https://web-crm-green.vercel.app/api/v1` | All commands |
 
 ## Non-interactive (CI) setup
 
