@@ -7,6 +7,7 @@ import Websites from '../pages/Websites'
 import WebsiteDetail from '../pages/WebsiteDetail'
 import Settings from '../pages/Settings'
 import Login from '../pages/Login'
+import Ucs from '../pages/Ucs'
 
 /**
  * Application route tree.
@@ -33,6 +34,7 @@ export const router = createBrowserRouter([
       { index: true, element: <Dashboard /> },
       { path: 'websites', element: <Websites /> },
       { path: 'websites/:id', element: <WebsiteDetail /> },
+      { path: 'websites/:id/ucs', element: <Ucs /> },
       { path: 'settings', element: <Settings /> },
     ],
   },

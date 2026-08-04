@@ -386,6 +386,11 @@ select {
   background: #d1fae5;
 }
 
+.status-badge--pending {
+  color: #b45309;
+  background: #fef3c7;
+}
+
 .status-badge--inactive {
   color: #475569;
   background: #e2e8f0;

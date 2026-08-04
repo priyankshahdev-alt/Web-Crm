@@ -84,3 +84,37 @@ Recommended host: Render / Railway / Fly.io / VPS. Enable health check at `/heal
 - [ ] Upload a test media file
 - [ ] Login as master, create a test org + user
 - [ ] `GET /api/v1/site/:slug` returns the seeded page/section tree
+
+## 7. Vercel (serverless)
+
+The repo ships a serverless entry point. Set the **Root Directory** to `server`
+in the Vercel project, then push to GitHub (or run `vercel` from `server/`).
+
+Deploy config already in place:
+
+- `api/index.ts` — exports the Express app as a serverless function.
+- `vercel.json` — rewrites every path to `/api/index` (the app still serves
+  everything under `/api/v1`).
+- `vercel-build` — `prisma generate && npm run build`.
+
+Environment variables (all the same as section 2), plus:
+
+- `DATABASE_URL` — use the Supabase **pooler** URL (port `6543`) so serverless
+  cold starts share a connection pool. Keep `DIRECT_URL` for migrations.
+- `CLIENT_URL` — comma-separated list of allowed origins (admin panel, frontends).
+
+Database migrations are applied against `DIRECT_URL` before/at first deploy
+(`npx prisma db push` or `prisma migrate deploy`); there is no long-running
+process to run them inside Vercel.
+
+Timeouts: the default function limit is 60s (`maxDuration` is set). The UCS
+`import`/`verify` endpoints make outbound requests and should fit within it for
+typical NGO static sites. Upgrade to a paid plan for up to 300s if crawls grow.
+
+Verify after deploy:
+
+```bash
+curl https://<your-app>.vercel.app/health
+curl https://<your-app>.vercel.app/api/v1/site/<slug>
+```
+

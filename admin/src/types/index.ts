@@ -213,3 +213,46 @@ export interface UserRecord {
   createdAt: string
   updatedAt: string
 }
+
+/** A website API key (raw secret only present on create). */
+export interface ApiKeyRecord {
+  id: string
+  name: string
+  keyPrefix: string
+  scopes: string[]
+  isActive: boolean
+  lastUsedAt: string | null
+  expiresAt: string | null
+  revokedAt: string | null
+  createdAt: string
+  key?: string
+  note?: string
+}
+
+export interface ApiKeyCreateInput {
+  name: string
+  scopes?: string[]
+}
+
+export type DomainVerificationStatus = 'PENDING' | 'VERIFIED' | 'FAILED'
+export type DomainVerificationMethod = 'META_TAG' | 'FILE' | 'DNS_TXT'
+
+export interface VerifiedDomain {
+  id: string
+  domain: string
+  method: DomainVerificationMethod
+  status: DomainVerificationStatus
+  token: string
+  verifiedAt: string | null
+  lastCheckedAt: string | null
+  createdAt: string
+  instructions?: string[]
+  apiKey?: {
+    id: string
+    key: string
+    keyPrefix: string
+    name: string
+    scopes: string[]
+  }
+}
+

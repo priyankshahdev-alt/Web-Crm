@@ -1,0 +1,56 @@
+{
+  "name": "webcrm-ucs",
+  "version": "0.2.1",
+  "description": "UCS — connect an existing static website to the WebCrm platform: verify domain, analyze the site, import content into WebCrm, and keep your static site in sync.",
+  "type": "module",
+  "bin": {
+    "ucs": "dist/index.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "main": "dist/index.js",
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run build",
+    "pack": "npm pack"
+  },
+  "keywords": [
+    "webcrm",
+    "ucs",
+    "static-site",
+    "cms",
+    "import",
+    "cli",
+    "ngo"
+  ],
+  "license": "MIT",
+  "author": "WebCrm",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ucs-company/Web-Crm.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ucs-company/Web-Crm/issues"
+  },
+  "homepage": "https://github.com/ucs-company/Web-Crm",
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.5",
+    "typescript": "^5.7.3"
+  }
+}

@@ -365,6 +365,10 @@ function WebsiteDetail() {
             )}
           </p>
         </div>
+        <Link to={`/websites/${id}/ucs`} className="btn btn--primary">
+          <Globe size={16} />
+          Site Sync (UCS)
+        </Link>
       </header>
 
       {pageError && <div className="page-error">{pageError}</div>}

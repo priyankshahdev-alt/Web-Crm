@@ -97,7 +97,7 @@ const orgSettings: Record<string, Settings> = {
 };
 
 const PERMISSION_RESOURCES: { resource: string; actions: string[] }[] = [
-  { resource: 'organization', actions: ['view', 'create', 'update', 'delete', 'settings', 'assign'] },
+  { resource: 'organization', actions: ['view', 'create', 'update', 'delete', 'settings', 'assign', 'import'] },
   { resource: 'user', actions: ['view', 'create', 'update', 'delete', 'assign'] },
   { resource: 'role', actions: ['view', 'create', 'update', 'delete'] },
   { resource: 'audit', actions: ['view'] },
@@ -131,7 +131,7 @@ const PERMISSION_RESOURCES: { resource: string; actions: string[] }[] = [
   { resource: 'settings', actions: ['view', 'update'] },
 ];
 
-const ALL_ACTIONS = new Set(['view', 'create', 'update', 'delete', 'settings', 'assign']);
+const ALL_ACTIONS = new Set(['view', 'create', 'update', 'delete', 'settings', 'assign', 'import']);
 
 function permissionCodes(
   resources: { resource: string; actions: string[] }[],
@@ -150,7 +150,13 @@ function permissionCodes(
 const MASTER_PERMISSIONS = permissionCodes(PERMISSION_RESOURCES);
 const ADMIN_PERMISSIONS = permissionCodes(PERMISSION_RESOURCES, (action, resource) => {
   if (resource === 'organization') {
-    return action === 'view' || action === 'create' || action === 'update' || action === 'settings';
+    return (
+      action === 'view' ||
+      action === 'create' ||
+      action === 'update' ||
+      action === 'settings' ||
+      action === 'import'
+    );
   }
   if (resource === 'role') return action === 'view';
   if (resource === 'user') return action !== 'delete';
@@ -1073,19 +1079,22 @@ async function seedSiteTemplate(
 async function main(): Promise<void> {
   console.log('Seeding WebCrm database...');
 
-  const existingPermission = await prisma.permission.count();
-  if (existingPermission === 0) {
-    const permissionRows = PERMISSION_RESOURCES.flatMap(({ resource, actions }) =>
-      actions.map((action) => ({
-        code: `${resource}:${action}`,
-        resource,
-        action,
-        description: `${action} ${resource}`,
-      })),
-    );
-    await prisma.permission.createMany({ data: permissionRows });
-    console.log(`Created ${permissionRows.length} permissions.`);
+  const permissionRows = PERMISSION_RESOURCES.flatMap(({ resource, actions }) =>
+    actions.map((action) => ({
+      code: `${resource}:${action}`,
+      resource,
+      action,
+      description: `${action} ${resource}`,
+    })),
+  );
+  for (const row of permissionRows) {
+    await prisma.permission.upsert({
+      where: { code: row.code },
+      update: { resource: row.resource, action: row.action, description: row.description },
+      create: { ...row },
+    });
   }
+  console.log(`Upserted ${permissionRows.length} permissions.`);
 
   const permissionByCode = new Map<string, string>();
   for (const p of await prisma.permission.findMany()) {

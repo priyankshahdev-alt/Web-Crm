@@ -6,6 +6,8 @@ declare global {
       user?: AuthUser;
       activeOrg?: ActiveOrg;
       orgIds?: string[];
+      apiKeyId?: string;
+      apiKeyScopes?: string[];
       pagination?: {
         page: number;
         limit: number;
