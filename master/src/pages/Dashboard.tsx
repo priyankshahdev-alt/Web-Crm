@@ -3,7 +3,6 @@ import type { AdminUser } from '../types/admin'
 import { MANAGED_WEBSITES } from '../data/websites'
 import { adminService } from '../services/adminService'
 import { AdminStackCard } from '../components/dashboard/AdminStackCard'
-import { AdminTable } from '../components/dashboard/AdminTable'
 import { WebsiteCard } from '../components/dashboard/WebsiteCard'
 import { PlatformInsights } from '../components/dashboard/PlatformInsights'
 import { CreateAdminModal } from '../components/admin/CreateAdminModal'
@@ -13,17 +12,11 @@ import { PlusIcon } from '../components/icons'
 
 export function Dashboard() {
   const [admins, setAdmins] = useState<AdminUser[]>([])
-  const [loading, setLoading] = useState(true)
   const [modalOpen, setModalOpen] = useState(false)
 
   const loadAdmins = useCallback(async () => {
-    setLoading(true)
-    try {
-      const result = await adminService.list()
-      setAdmins(result)
-    } finally {
-      setLoading(false)
-    }
+    const result = await adminService.list()
+    setAdmins(result)
   }, [])
 
   useEffect(() => {
@@ -36,7 +29,7 @@ export function Dashboard() {
 
   return (
     <div className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 sm:py-10 lg:px-10 lg:py-12">
-      <header className="mb-10 animate-rise">
+      <header className="mb-10 animate-dash-rise">
         <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-eyebrow">
           Overview
         </p>
@@ -51,7 +44,7 @@ export function Dashboard() {
 
       <section
         aria-labelledby="admin-stack-title"
-        className="mb-10 animate-rise"
+        className="mb-10 animate-dash-rise"
         style={{ animationDelay: '40ms' }}
       >
         <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
@@ -70,20 +63,6 @@ export function Dashboard() {
           adminCount={admins.length}
           onClick={() => setModalOpen(true)}
         />
-      </section>
-
-      <section
-        aria-labelledby="admin-list-title"
-        className="mb-10 animate-rise"
-        style={{ animationDelay: '80ms' }}
-      >
-        <h2
-          id="admin-list-title"
-          className="mb-4 text-xl font-semibold text-ink"
-        >
-          Admin users
-        </h2>
-        <AdminTable admins={admins} loading={loading} />
       </section>
 
       <section aria-labelledby="websites-title">

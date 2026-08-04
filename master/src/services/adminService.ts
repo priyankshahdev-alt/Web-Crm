@@ -1,4 +1,5 @@
 import type { AdminUser, CreateAdminInput, UpdateAdminInput } from '../types/admin'
+import { randomUUID } from '../utils/uuid'
 
 const STORAGE_KEY = 'master-crm.admins.v1'
 const STORAGE_OWNER_KEY = 'master-crm.current-master'
@@ -60,7 +61,7 @@ export const adminService = {
 
     const now = new Date().toISOString()
     const admin: AdminUser = {
-      id: crypto.randomUUID(),
+      id: randomUUID(),
       username: normalized,
       password: input.password,
       role: input.role,

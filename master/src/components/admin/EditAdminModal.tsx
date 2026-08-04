@@ -1,4 +1,4 @@
-import { useEffect, useState, type FormEvent } from 'react'
+import { useEffect, useRef, useState, type FormEvent } from 'react'
 import type { AdminRole, AdminStatus, AdminUser } from '../../types/admin'
 import { MANAGED_WEBSITES } from '../../data/websites'
 import { adminService } from '../../services/adminService'
@@ -39,6 +39,7 @@ export function EditAdminModal({
   onUpdated,
 }: EditAdminModalProps) {
   const toast = useToast()
+  const formRef = useRef<HTMLFormElement>(null)
   const [form, setForm] = useState<FormState>({
     username: '',
     password: '',
@@ -113,7 +114,12 @@ export function EditAdminModal({
     const nextErrors = validate(form)
     if (Object.keys(nextErrors).length > 0) {
       setErrors(nextErrors)
-      toast.error({ title: 'Fix the errors below' })
+      setTimeout(() => {
+        const firstInvalid = formRef.current?.querySelector<HTMLElement>(
+          'input[aria-invalid="true"]',
+        )
+        firstInvalid?.focus()
+      }, 0)
       return
     }
 
@@ -175,7 +181,7 @@ export function EditAdminModal({
         </>
       }
     >
-      <form id="edit-admin-form" onSubmit={handleSubmit} noValidate>
+      <form id="edit-admin-form" ref={formRef} onSubmit={handleSubmit} noValidate>
         <div className="space-y-5">
           <Input
             label="Username"

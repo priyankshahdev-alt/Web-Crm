@@ -1,9 +1,9 @@
-import { useCallback, useState, type FormEvent } from 'react'
+import { useCallback, useRef, useState, type FormEvent } from 'react'
 import type { AdminRole, AdminStatus, AdminUser } from '../../types/admin'
 import { adminService } from '../../services/adminService'
 import { MANAGED_WEBSITES } from '../../data/websites'
 import { generatePassword, generateUsername } from '../../utils/generators'
-import { useToast } from '../../context/ToastContext'
+import { useToast, ToastItemView } from '../../context/ToastContext'
 import { Button } from '../ui/Button'
 import { Input } from '../ui/Input'
 import { GlobeIcon, PlusIcon, RefreshIcon } from '../icons'
@@ -27,13 +27,13 @@ interface FormErrors {
 
 const ALL_SITE_IDS = MANAGED_WEBSITES.map((site) => site.id)
 
-const INITIAL_FORM: FormState = {
+const createInitialForm = (): FormState => ({
   username: '',
   password: '',
   role: 'site',
   status: 'active',
-  managedWebsiteIds: ALL_SITE_IDS,
-}
+  managedWebsiteIds: [...ALL_SITE_IDS],
+})
 
 const USERNAME_PATTERN = /^[a-zA-Z0-9._-]+$/
 
@@ -42,7 +42,9 @@ const selectClass =
 
 export function AddAdminSection({ onCreated }: AddAdminSectionProps) {
   const toast = useToast()
-  const [form, setForm] = useState<FormState>(INITIAL_FORM)
+  const formRef = useRef<HTMLFormElement>(null)
+  const inlineToasts = toast.toasts.filter((item) => item.inline)
+  const [form, setForm] = useState<FormState>(createInitialForm)
   const [errors, setErrors] = useState<FormErrors>({})
   const [submitting, setSubmitting] = useState(false)
 
@@ -100,7 +102,7 @@ export function AddAdminSection({ onCreated }: AddAdminSectionProps) {
   }
 
   const resetForm = useCallback(() => {
-    setForm(INITIAL_FORM)
+    setForm(createInitialForm())
     setErrors({})
   }, [])
 
@@ -109,7 +111,12 @@ export function AddAdminSection({ onCreated }: AddAdminSectionProps) {
     const nextErrors = validate(form)
     if (Object.keys(nextErrors).length > 0) {
       setErrors(nextErrors)
-      toast.error({ title: 'Fix the errors below' })
+      setTimeout(() => {
+        const firstInvalid = formRef.current?.querySelector<HTMLElement>(
+          'input[aria-invalid="true"]',
+        )
+        firstInvalid?.focus()
+      }, 0)
       return
     }
 
@@ -125,17 +132,26 @@ export function AddAdminSection({ onCreated }: AddAdminSectionProps) {
       toast.success({
         title: 'Admin created',
         description: `Admin user "${admin.username}" is now active.`,
+        inline: true,
       })
       onCreated(admin)
       resetForm()
     } catch (err) {
       if (err instanceof Error) {
-        toast.error({ title: 'Could not create admin', description: err.message })
+        toast.error({
+          title: 'Could not create admin',
+          description: err.message,
+          inline: true,
+        })
         if (err.name === 'DuplicateUsernameError') {
           setErrors({ username: err.message })
         }
       } else {
-        toast.error({ title: 'Could not create admin', description: 'Something went wrong.' })
+        toast.error({
+          title: 'Could not create admin',
+          description: 'Something went wrong.',
+          inline: true,
+        })
       }
     } finally {
       setSubmitting(false)
@@ -177,7 +193,7 @@ export function AddAdminSection({ onCreated }: AddAdminSectionProps) {
         </Button>
       </div>
 
-      <form onSubmit={handleSubmit} noValidate className="mt-6">
+      <form onSubmit={handleSubmit} ref={formRef} noValidate className="mt-6">
         <div className="grid gap-5 md:grid-cols-2">
           <Input
             label="Username"
@@ -319,6 +335,18 @@ export function AddAdminSection({ onCreated }: AddAdminSectionProps) {
             </div>
           </div>
         </div>
+
+        {inlineToasts.length > 0 ? (
+          <div className="mt-4 flex w-full max-w-sm flex-col gap-3">
+            {inlineToasts.map((item) => (
+              <ToastItemView
+                key={item.id}
+                toast={item}
+                onDismiss={toast.dismiss}
+              />
+            ))}
+          </div>
+        ) : null}
 
         <div className="mt-6 flex flex-wrap justify-end gap-3 border-t border-line pt-5">
           <Button type="submit" loading={submitting}>

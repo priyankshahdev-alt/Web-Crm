@@ -37,7 +37,7 @@ export function SidebarRoleSection({ mobile = false }: { mobile?: boolean }) {
           : 'text-muted hover:bg-soft hover:text-ink'
       }`}
     >
-      Role
+      Role & Permission
       <span
         className={`inline-flex h-5 min-w-5 items-center justify-center rounded-full px-1 text-[11px] font-semibold ${
           active ? 'bg-white text-brand' : 'bg-soft text-ink'

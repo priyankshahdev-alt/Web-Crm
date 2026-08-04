@@ -8,23 +8,28 @@ import {
   type ReactNode,
 } from 'react'
 import type { ToastVariant } from '../components/ui/Toast'
+import { randomUUID } from '../utils/uuid'
 
-interface ToastItem {
+export interface ToastItem {
   id: string
   variant: ToastVariant
   title: string
   description?: string
+  inline?: boolean
 }
 
 interface ToastOptions {
   title: string
   description?: string
+  inline?: boolean
 }
 
 interface ToastContextValue {
   showToast: (variant: ToastVariant, options: ToastOptions) => void
   success: (options: ToastOptions) => void
   error: (options: ToastOptions) => void
+  toasts: ToastItem[]
+  dismiss: (id: string) => void
 }
 
 const ToastContext = createContext<ToastContextValue | null>(null)
@@ -43,9 +48,12 @@ export function ToastProvider({ children }: { children: ReactNode }) {
   }, [])
 
   const showToast = useCallback(
-    (variant: ToastVariant, { title, description }: ToastOptions) => {
-      const id = crypto.randomUUID()
-      setToasts((current) => [...current, { id, variant, title, description }])
+    (variant: ToastVariant, { title, description, inline }: ToastOptions) => {
+      const id = randomUUID()
+      setToasts((current) => [
+        ...current,
+        { id, variant, title, description, inline },
+      ])
       const timer = setTimeout(() => dismiss(id), TOAST_DURATION_MS)
       timersRef.current.set(id, timer)
     },
@@ -57,8 +65,10 @@ export function ToastProvider({ children }: { children: ReactNode }) {
       showToast,
       success: (options) => showToast('success', options),
       error: (options) => showToast('error', options),
+      toasts,
+      dismiss,
     }),
-    [showToast],
+    [showToast, toasts, dismiss],
   )
 
   return (
@@ -67,17 +77,19 @@ export function ToastProvider({ children }: { children: ReactNode }) {
       <div
         aria-live="polite"
         role="status"
-        className="pointer-events-none fixed right-4 top-4 z-[100] flex w-full max-w-sm flex-col gap-3"
+        className="pointer-events-none fixed right-4 top-20 z-[100] flex w-full max-w-sm flex-col gap-3"
       >
-        {toasts.map((toast) => (
-          <ToastItemView key={toast.id} toast={toast} onDismiss={dismiss} />
-        ))}
+        {toasts
+          .filter((toast) => !toast.inline)
+          .map((toast) => (
+            <ToastItemView key={toast.id} toast={toast} onDismiss={dismiss} />
+          ))}
       </div>
     </ToastContext.Provider>
   )
 }
 
-function ToastItemView({
+export function ToastItemView({
   toast,
   onDismiss,
 }: {

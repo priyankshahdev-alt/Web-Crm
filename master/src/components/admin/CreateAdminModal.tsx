@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState, type FormEvent } from 'react'
+import { useCallback, useEffect, useRef, useState, type FormEvent } from 'react'
 import type { AdminRole, AdminUser } from '../../types/admin'
 import { adminService } from '../../services/adminService'
 import { generatePassword, generateUsername } from '../../utils/generators'
@@ -38,6 +38,7 @@ export function CreateAdminModal({
   onCreated,
 }: CreateAdminModalProps) {
   const toast = useToast()
+  const formRef = useRef<HTMLFormElement>(null)
   const [form, setForm] = useState<FormState>(INITIAL_FORM)
   const [errors, setErrors] = useState<FormErrors>({})
   const [submitting, setSubmitting] = useState(false)
@@ -94,7 +95,12 @@ export function CreateAdminModal({
     const nextErrors = validate(form)
     if (Object.keys(nextErrors).length > 0) {
       setErrors(nextErrors)
-      toast.error({ title: 'Fix the errors below' })
+      setTimeout(() => {
+        const firstInvalid = formRef.current?.querySelector<HTMLElement>(
+          'input[aria-invalid="true"]',
+        )
+        firstInvalid?.focus()
+      }, 0)
       return
     }
 
@@ -151,7 +157,7 @@ export function CreateAdminModal({
         </>
       }
     >
-      <form id="create-admin-form" onSubmit={handleSubmit} noValidate>
+      <form id="create-admin-form" ref={formRef} onSubmit={handleSubmit} noValidate>
         <div className="space-y-5">
           <Input
             label="Username"
