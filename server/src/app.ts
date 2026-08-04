@@ -39,3 +39,7 @@ export function createApp(): Express {
 
   return app;
 }
+
+// Vercel Serverless Function entry when Vercel auto-detects this file:
+// the default export must be a function or a server (Express app instance).
+export default createApp();
