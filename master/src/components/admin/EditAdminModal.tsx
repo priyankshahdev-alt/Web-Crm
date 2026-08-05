@@ -1,5 +1,5 @@
 import { useEffect, useState, type FormEvent } from 'react'
-import type { AdminUser } from '../../types/admin'
+import type { AdminStatus, AdminUser } from '../../types/admin'
 import type { ManagedWebsite } from '../../types/website'
 import { adminService } from '../../services/adminService'
 import { useToast } from '../../context/ToastContext'
@@ -23,7 +23,7 @@ export function EditAdminModal({
   onUpdated,
 }: EditAdminModalProps) {
   const toast = useToast()
-  const [status, setStatus] = useState<'active' | 'disabled'>('active')
+  const [status, setStatus] = useState<AdminStatus>('active')
   const [managedWebsites, setManagedWebsites] = useState<string[]>([])
   const [submitting, setSubmitting] = useState(false)
 

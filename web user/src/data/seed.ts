@@ -46,13 +46,13 @@ export function buildSeed(): {
   media: MediaAsset[]
   folders: MediaFolder[]
   forms: CmsForm[]
-  seo: SeoMeta
-  settings: WebsiteSettings
+  seo: SeoMeta[]
+  settings: WebsiteSettings[]
   activity: ActivityLog[]
   approvals: ApprovalRequest[]
   notifications: Notification[]
-  stats: DashboardStats
-  profile: ProfileUser
+  stats: DashboardStats[]
+  profile: ProfileUser[]
 } {  const now = Date.now()
   const ago = (days: number) => new Date(now - days * 86_400_000).toISOString()
   const ahead = (days: number) => new Date(now + days * 86_400_000).toISOString()
@@ -789,12 +789,12 @@ export function buildSeed(): {
     media,
     folders,
     forms,
-    seo,
-    settings,
+    seo: [seo],
+    settings: [settings],
     activity,
     approvals,
     notifications,
-    stats,
-    profile,
+    stats: [stats],
+    profile: [profile],
   }
 }

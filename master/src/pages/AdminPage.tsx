@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import type { AdminUser } from '../types/admin'
+import type { AdminStatus, AdminUser } from '../types/admin'
 import type { ManagedWebsite } from '../types/website'
 import { adminService } from '../services/adminService'
 import { websiteService } from '../services/websiteService'
@@ -9,7 +9,7 @@ import { DeleteAdminModal } from '../components/admin/DeleteAdminModal'
 import { AddAdminSection } from '../components/admin/AddAdminSection'
 import { Pagination } from '../components/ui/Pagination'
 import { Button } from '../components/ui/Button'
-import { Pill } from '../components/ui/Pill'
+import { Pill, type PillVariant } from '../components/ui/Pill'
 import { useToast } from '../context/ToastContext'
 import { useCurrentUserRole } from '../hooks/useCurrentUserRole'
 import { useAuth } from '../context/AuthContext'
@@ -25,6 +25,15 @@ import {
 const ADMINS_UPDATED_EVENT = 'admins:updated'
 const COPY_FEEDBACK_MS = 1500
 const PAGE_SIZE = 5
+
+const STATUS_PILL: Record<AdminStatus, { variant: PillVariant; label: string }> =
+  {
+    active: { variant: 'success', label: 'Active' },
+    inactive: { variant: 'neutral', label: 'Inactive' },
+    pending: { variant: 'warning', label: 'Pending' },
+    suspended: { variant: 'danger', label: 'Suspended' },
+    disabled: { variant: 'danger', label: 'Disabled' },
+  }
 
 const formatDate = (iso: string): string =>
   new Date(iso).toLocaleDateString(undefined, {
@@ -134,17 +143,17 @@ export function AdminPage() {
     <div className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 sm:py-10 lg:px-10 lg:py-12">
       <header className="mb-10 flex flex-wrap items-start justify-between gap-4 animate-rise">
         <div>
-          <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-eyebrow">
+          <p className="text-xs font-semibold uppercase tracking-[0.08em] text-blue-600">
             Administration
           </p>
-          <h1 className="mt-2 text-[32px] font-bold leading-tight tracking-[-0.02em] text-ink">
+          <h1 className="mt-2 text-3xl font-bold leading-tight tracking-[-0.02em] text-gray-900">
             Admin
           </h1>
-          <p className="mt-1.5 text-sm text-muted">
+          <p className="mt-1.5 text-sm text-gray-500">
             Admin users created on the platform and the websites they manage.
           </p>
         </div>
-        <Button onClick={() => setModalOpen(true)}>
+        <Button variant="violet" onClick={() => setModalOpen(true)}>
           <PlusIcon className="h-4 w-4" />
           Add admin
         </Button>
@@ -250,15 +259,12 @@ export function AdminPage() {
                       </Pill>
                     </td>
                     <td className="whitespace-nowrap px-5 py-4">
-                      {admin.status === 'active' ? (
-                        <Pill variant="success" dot>
-                          Active
-                        </Pill>
-                      ) : (
-                        <Pill variant="danger" dot>
-                          Disabled
-                        </Pill>
-                      )}
+                      <Pill
+                        variant={STATUS_PILL[admin.status].variant}
+                        dot
+                      >
+                        {STATUS_PILL[admin.status].label}
+                      </Pill>
                     </td>
                     <td className="whitespace-nowrap px-5 py-4 text-muted">
                       {formatDate(admin.createdAt)}

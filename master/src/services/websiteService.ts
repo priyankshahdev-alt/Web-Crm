@@ -5,6 +5,8 @@ import type { ManagedWebsite } from '../types/website'
 const WEBSITES_LIST_KEY = 'websites:list'
 const WEBSITES_LIST_TTL_MS = 30_000
 
+const TEST_FIXTURE_SLUGS = new Set(['mann-local-test', 'master-int-1785837202'])
+
 export interface DashboardOverview {
   organizations: number
   users: number
@@ -43,7 +45,9 @@ export const websiteService = {
     const rows = await withCache(WEBSITES_LIST_KEY, WEBSITES_LIST_TTL_MS, () =>
       http.get<OrganizationRow[]>('/dashboard/websites'),
     )
-    return rows.map((row) => ({
+    return rows
+      .filter((row) => !TEST_FIXTURE_SLUGS.has(row.slug))
+      .map((row) => ({
       id: row.id,
       name: row.name,
       slug: row.slug,

@@ -14,7 +14,7 @@ http.interceptors.request.use((config) => {
     config.headers.Authorization = `Bearer ${session.accessToken}`
   }
   if (session?.currentOrgId) {
-    config.headers['X-Org-Id'] = session.currentOrgId
+    config.headers['X-Organization-Id'] = session.currentOrgId
   }
   return config
 })

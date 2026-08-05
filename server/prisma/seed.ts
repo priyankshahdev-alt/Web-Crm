@@ -9,6 +9,11 @@ const ADMIN_EMAIL = 'admin@webcrm.com';
 const ADMIN_PASSWORD = 'Admin@123456';
 const SITE_USER_PASSWORD = 'Site@123456';
 
+// Demo website CMS account for the Being Sevak site (shown on the web-user login page).
+const DEMO_USER_EMAIL = 'rahul@beingsevak.org';
+const DEMO_USER_PASSWORD = 'Rahul@123456';
+const DEMO_ORG_SLUG = 'being-sevak';
+
 type Settings = Record<string, unknown>;
 
 const orgSettings: Record<string, Settings> = {
@@ -1274,6 +1279,32 @@ async function main(): Promise<void> {
     }
 
     console.log(`Organization ready: ${name} (website user: ${siteUserEmail})`);
+  }
+
+  const demoOrg = await prisma.organization.findUnique({ where: { slug: DEMO_ORG_SLUG } });
+  if (demoOrg) {
+    const demoUser = await prisma.user.upsert({
+      where: { email: DEMO_USER_EMAIL },
+      update: { firstName: 'Rahul', lastName: 'Mehta', isActive: true },
+      create: {
+        email: DEMO_USER_EMAIL,
+        passwordHash: await argon2.hash(DEMO_USER_PASSWORD),
+        firstName: 'Rahul',
+        lastName: 'Mehta',
+      },
+    });
+    await prisma.organizationUser.upsert({
+      where: { organizationId_userId: { organizationId: demoOrg.id, userId: demoUser.id } },
+      update: { roleId: websiteUserRoleId, isCurrent: true, isActive: true },
+      create: {
+        organizationId: demoOrg.id,
+        userId: demoUser.id,
+        roleId: websiteUserRoleId,
+        isCurrent: true,
+        isActive: true,
+      },
+    });
+    console.log(`Demo website user ready: ${DEMO_USER_EMAIL}`);
   }
 
   console.log('Seeding complete.');

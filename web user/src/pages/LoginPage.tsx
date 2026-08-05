@@ -99,8 +99,7 @@ export function LoginPage() {
                 Email: <span className="font-mono text-brand">rahul@beingsevak.org</span>
               </p>
               <p className="mt-0.5">
-                Password: any 8+ characters{' '}
-                <span className="text-faint">(e.g. 12345678)</span>
+                Password: <span className="font-mono text-brand">Rahul@123456</span>
               </p>
               {liveMode ? (
                 <p className="mt-2 font-medium text-success">Live backend detected — real data in use.</p>

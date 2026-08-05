@@ -7,6 +7,11 @@ import { useToast } from '../../context/ToastContext'
 import { Button } from '../ui/Button'
 import { Input } from '../ui/Input'
 import { Modal } from '../ui/Modal'
+import { CheckIcon } from '../icons'
+import {
+  CredentialFields,
+  type CredentialFieldKey,
+} from './CredentialFields'
 
 interface CreateAdminModalProps {
   open: boolean
@@ -33,6 +38,7 @@ const INITIAL_FORM: FormState = {
 }
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+const COPY_FEEDBACK_MS = 1500
 
 export function CreateAdminModal({
   open,
@@ -45,6 +51,12 @@ export function CreateAdminModal({
   const [form, setForm] = useState<FormState>(INITIAL_FORM)
   const [errors, setErrors] = useState<FormErrors>({})
   const [submitting, setSubmitting] = useState(false)
+  const [created, setCreated] = useState<{
+    email: string
+    password: string
+  } | null>(null)
+  const [copied, setCopied] = useState<CredentialFieldKey | null>(null)
+  const copyTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const resetAndGenerate = useCallback(() => {
     setForm({
@@ -56,8 +68,38 @@ export function CreateAdminModal({
   }, [])
 
   useEffect(() => {
-    if (open) resetAndGenerate()
+    if (open) {
+      resetAndGenerate()
+      setCreated(null)
+      setCopied(null)
+    }
   }, [open, resetAndGenerate])
+
+  useEffect(
+    () => () => {
+      if (copyTimer.current) clearTimeout(copyTimer.current)
+    },
+    [],
+  )
+
+  const copyCredential = async (field: CredentialFieldKey) => {
+    if (!created) return
+    const value = field === 'username' ? created.email : created.password
+    try {
+      await navigator.clipboard.writeText(value)
+      setCopied(field)
+      if (copyTimer.current) clearTimeout(copyTimer.current)
+      copyTimer.current = setTimeout(() => setCopied(null), COPY_FEEDBACK_MS)
+      toast.success({
+        title: field === 'username' ? 'Username copied' : 'Password copied',
+        description: `${
+          field === 'username' ? 'Username' : 'Password'
+        } copied to clipboard.`,
+      })
+    } catch {
+      toast.error({ title: 'Could not copy' })
+    }
+  }
 
   const validate = (values: FormState): FormErrors => {
     const nextErrors: FormErrors = {}
@@ -126,7 +168,7 @@ export function CreateAdminModal({
         description: `Admin user "${admin.email}" is now active.`,
       })
       onCreated(admin)
-      onClose()
+      setCreated({ email: form.email.trim(), password: form.password })
     } catch (err) {
       const { message, field } = adminService.errorMessage(err)
       toast.error({ title: 'Could not create admin', description: message })
@@ -141,27 +183,58 @@ export function CreateAdminModal({
       open={open}
       onClose={onClose}
       title="Create Admin"
-      description="A generated password is filled in for you and can be edited."
+      description={
+        created
+          ? 'Your admin was created successfully.'
+          : 'A generated password is filled in for you and can be edited.'
+      }
       footer={
-        <>
-          <Button
-            type="button"
-            variant="secondary"
-            onClick={onClose}
-            disabled={submitting}
-          >
-            Cancel
+        created ? (
+          <Button type="button" onClick={onClose}>
+            Done
           </Button>
-          <Button
-            type="submit"
-            form="create-admin-form"
-            loading={submitting}
-          >
-            Create Admin
-          </Button>
-        </>
+        ) : (
+          <>
+            <Button
+              type="button"
+              variant="secondary"
+              onClick={onClose}
+              disabled={submitting}
+            >
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              form="create-admin-form"
+              loading={submitting}
+            >
+              Create Admin
+            </Button>
+          </>
+        )
       }
     >
+      {created ? (
+        <div className="space-y-5">
+          <div className="flex items-center gap-3 rounded-xl border border-success/20 bg-success/10 p-4">
+            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-success text-white">
+              <CheckIcon className="h-5 w-5" />
+            </span>
+            <div>
+              <p className="text-sm font-semibold text-ink">Admin created</p>
+              <p className="mt-0.5 text-xs text-muted">
+                Save these credentials now — the password won't be shown again.
+              </p>
+            </div>
+          </div>
+          <CredentialFields
+            username={created.email}
+            password={created.password}
+            copied={copied}
+            onCopy={copyCredential}
+          />
+        </div>
+      ) : (
       <form id="create-admin-form" ref={formRef} onSubmit={handleSubmit} noValidate>
         <div className="space-y-5">
           <Input
@@ -251,6 +324,7 @@ export function CreateAdminModal({
           </div>
         </div>
       </form>
+      )}
     </Modal>
   )
 }

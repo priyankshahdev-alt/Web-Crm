@@ -1,14 +1,16 @@
 import type { ActivityLog, ApprovalRequest, Notification, SeoMeta, WebsiteSettings } from '../types'
 import { store } from './store'
 
+function firstItem<T>(rows: T[]): T {
+  return Array.isArray(rows) ? rows[0] : (rows as unknown as T)
+}
+
 export const settingsService = {
   async get(): Promise<WebsiteSettings> {
-    const items = await store.all<WebsiteSettings>('settings')
-    return items[0]
+    return firstItem(await store.all<WebsiteSettings>('settings'))
   },
   async update(patch: Partial<WebsiteSettings>): Promise<WebsiteSettings> {
-    const items = await store.all<WebsiteSettings>('settings')
-    const current = items[0]
+    const current = firstItem(await store.all<WebsiteSettings>('settings'))
     const updated = { ...current, ...patch, updatedAt: new Date().toISOString() }
     await store.update<WebsiteSettings>('settings', current.id, updated)
     return updated
@@ -17,12 +19,10 @@ export const settingsService = {
 
 export const seoService = {
   async get(): Promise<SeoMeta> {
-    const items = await store.all<SeoMeta>('seo')
-    return items[0]
+    return firstItem(await store.all<SeoMeta>('seo'))
   },
   async update(patch: Partial<SeoMeta>): Promise<SeoMeta> {
-    const items = await store.all<SeoMeta>('seo')
-    const current = items[0]
+    const current = firstItem(await store.all<SeoMeta>('seo'))
     const updated = { ...current, ...patch }
     await store.set<SeoMeta[]>('seo', [updated])
     return updated

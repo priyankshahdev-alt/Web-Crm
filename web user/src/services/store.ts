@@ -42,13 +42,13 @@ export interface SeedShape {
   media: MediaAsset[]
   folders: MediaFolder[]
   forms: CmsForm[]
-  seo: SeoMeta
-  settings: WebsiteSettings
+  seo: SeoMeta[]
+  settings: WebsiteSettings[]
   activity: ActivityLog[]
   approvals: ApprovalRequest[]
   notifications: Notification[]
-  stats: DashboardStats
-  profile: ProfileUser
+  stats: DashboardStats[]
+  profile: ProfileUser[]
 }
 
 export type StoreKey = keyof SeedShape

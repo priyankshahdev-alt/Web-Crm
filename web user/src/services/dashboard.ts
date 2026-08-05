@@ -27,7 +27,8 @@ export const dashboardService = {
       store.all<{ status: string }>('blogs'),
       store.all<{ size: number }>('media'),
     ])
-    const stats = (await store.all<DashboardStats>('stats'))[0]
+    const rows = await store.all<DashboardStats>('stats')
+    const stats = Array.isArray(rows) ? rows[0] : (rows as unknown as DashboardStats)
     const publishedPages =
       pages.filter((p) => p.status === 'PUBLISHED').length + projects.filter((p) => p.status === 'PUBLISHED').length + events.filter((e) => e.status === 'PUBLISHED').length + blogs.filter((b) => b.status === 'PUBLISHED').length
     const draftPages =
@@ -46,21 +47,21 @@ export const dashboardService = {
   },
 
   async profile(): Promise<ProfileUser> {
-    const profiles = await store.all<ProfileUser>('profile')
-    return profiles[0]
+    const rows = await store.all<ProfileUser>('profile')
+    return Array.isArray(rows) ? rows[0] : (rows as unknown as ProfileUser)
   },
 
   async updateProfile(patch: Partial<ProfileUser>): Promise<ProfileUser> {
-    const profiles = await store.all<ProfileUser>('profile')
-    const current = profiles[0]
+    const rows = await store.all<ProfileUser>('profile')
+    const current = Array.isArray(rows) ? rows[0] : (rows as unknown as ProfileUser)
     const updated = { ...current, ...patch }
     await store.set<ProfileUser[]>('profile', [updated])
     return updated
   },
 
   async revokeSession(sessionId: string): Promise<ProfileUser> {
-    const profiles = await store.all<ProfileUser>('profile')
-    const current = profiles[0]
+    const rows = await store.all<ProfileUser>('profile')
+    const current = Array.isArray(rows) ? rows[0] : (rows as unknown as ProfileUser)
     const updated = {
       ...current,
       sessions: current.sessions.filter((session) => session.id !== sessionId),

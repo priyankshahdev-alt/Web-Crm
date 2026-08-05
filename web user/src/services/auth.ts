@@ -51,6 +51,9 @@ export const authService = {
       if (isAxiosError(error)) {
         // Backend answered with real credentials — surface the error.
         if (error.response) {
+          if (error.response.status >= 500) {
+            throw new Error('Backend is unreachable, please try again')
+          }
           throw new Error('Invalid email or password')
         }
       }

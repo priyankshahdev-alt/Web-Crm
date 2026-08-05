@@ -7,6 +7,8 @@ import {
   removeEntity,
   updateEntity,
 } from './crud'
+import { http, isLiveMode } from './api'
+import { store } from './store'
 import type { ListParams, Paginated } from './store'
 
 export const cmsService = {
@@ -52,7 +54,29 @@ export const cmsService = {
 
 export const menuService = {
   async all(): Promise<Menu[]> {
-    return getAllEntities<Menu>('menus', 'menus')
+    if (isLiveMode()) {
+      try {
+        const { data } = await http.get('/menus', { params: { limit: 100 } })
+        const payload = data.data
+        const list: Menu[] = Array.isArray(payload)
+          ? (payload as Menu[])
+          : ((payload?.items as Menu[]) ?? [])
+        const full = await Promise.all(
+          list.map(async (menu) => {
+            try {
+              const { data: detail } = await http.get(`/menus/${menu.id}`)
+              return (detail.data as Menu) ?? menu
+            } catch {
+              return menu
+            }
+          }),
+        )
+        return full
+      } catch {
+        /* fall through to store */
+      }
+    }
+    return store.all<Menu>('menus')
   },
 
   async get(id: string): Promise<Menu | null> {
