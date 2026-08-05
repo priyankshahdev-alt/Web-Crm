@@ -1,6 +1,14 @@
 import { useEffect } from 'react';
+import { useSite } from '../context/SiteContext';
 
 const AboutBSCT = () => {
+  const { getSetting, getSection } = useSite();
+  const storySection = getSection('about', 'story');
+  const storyParagraphs = (storySection?.content?.paragraphs || []).filter(
+    (p) => p && p.trim(),
+  );
+  const aboutDesc =
+    storyParagraphs.join(' ') || getSetting('site.description', '');
   useEffect(() => {
     const revealEls = document.querySelectorAll('.reveal');
     const revealObserver = new IntersectionObserver((entries) => {
@@ -290,10 +298,8 @@ const AboutBSCT = () => {
               With <span>Compassion & Dignity</span>
             </h1>
             <p>
-              Being Sevak Charitable Trust is a dedicated non-profit organization working since 2015 with a mission to serve
-              humanity through compassion, care, and inclusive development. Guided by the belief of &quot;Sevak Bano&quot; Become a
-              Servant of Society the organization is committed to create meaningful change in the lives of underprivileged
-              communities, specially-abled individuals, women, and children across India.
+              {aboutDesc ||
+                'Being Sevak Charitable Trust is a dedicated non-profit organization working since 2015 with a mission to serve humanity through compassion, care, and inclusive development. Guided by the belief of "Sevak Bano" Become a Servant of Society the organization is committed to create meaningful change in the lives of underprivileged communities, specially-abled individuals, women, and children across India.'}
             </p>
             <div className="hero-buttons">
               <a href="#about" className="donate-btn">Know More</a>

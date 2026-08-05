@@ -214,7 +214,8 @@ export function HomepageEditorPage() {
     if (!page) return
     setSaving(true)
     try {
-      await cmsService.saveSections(page.id, sections)
+      const result = await cmsService.saveSections(page.id, sections)
+      if (result) setPage(result)
       toast('Homepage saved', { variant: 'success', description: 'Your latest changes are stored.' })
     } finally {
       setSaving(false)

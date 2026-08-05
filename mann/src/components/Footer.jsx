@@ -1,9 +1,12 @@
 import { Link } from "react-router-dom";
-import { footerPrograms, footerLegal, contact } from "../data/site";
+import { footerPrograms, footerLegal } from "../data/site";
+import { useSiteData } from "../api/useSiteData";
 import { img } from "../utils/images";
 
 // ============ SOFT MODERN FOOTER ============
 export default function Footer() {
+  const { data } = useSiteData();
+  const contact = data.contact;
   return (
     <footer className="bg-on-surface text-white py-24">
       <div className="max-w-container-max mx-auto px-8">

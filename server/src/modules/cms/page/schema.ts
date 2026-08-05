@@ -18,6 +18,22 @@ export const createPageSchema = z
   })
   .strict();
 
+export const sectionPatchSchema = z
+  .object({
+    id: z.string().uuid(),
+    pageId: z.string().uuid().optional(),
+    organizationId: z.string().optional(),
+    type: z.string().min(1).max(100),
+    name: z.string().max(300).nullable().optional(),
+    sortOrder: z.coerce.number().int().min(0).optional(),
+    isActive: z.boolean().optional(),
+    settings: z.record(z.string(), z.unknown()).nullable().optional(),
+    content: z.record(z.string(), z.unknown()).nullable().optional(),
+    createdAt: z.string().optional(),
+    updatedAt: z.string().optional(),
+  })
+  .strict();
+
 export const updatePageSchema = z
   .object({
     slug: z
@@ -33,6 +49,7 @@ export const updatePageSchema = z
     template: z.string().max(100).optional(),
     sortOrder: z.coerce.number().int().min(0).optional(),
     isHome: z.boolean().optional(),
+    sections: z.array(sectionPatchSchema).max(200).optional(),
   })
   .strict()
   .refine((data) => Object.keys(data).length > 0, {
@@ -83,6 +100,7 @@ export const listPagesSchema = z
 
 export type CreatePageInput = z.infer<typeof createPageSchema>;
 export type UpdatePageInput = z.infer<typeof updatePageSchema>;
+export type SectionPatch = z.infer<typeof sectionPatchSchema>;
 export type CreateSectionInput = z.infer<typeof createSectionSchema>;
 export type UpdateSectionInput = z.infer<typeof updateSectionSchema>;
 export type ReorderSectionsInput = z.infer<typeof reorderSectionsSchema>;

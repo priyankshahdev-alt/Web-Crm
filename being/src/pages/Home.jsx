@@ -1,7 +1,32 @@
 import { Link } from 'react-router-dom';
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { useSite } from '../context/SiteContext';
 
 export default function Home() {
+  const { getSetting, getSection, getSlides, getStats } = useSite();
+
+  // Live WebCrm content (falls back to the static sections when unavailable)
+  const cmsSlides = getSlides();
+  const liveHero = cmsSlides.length > 0;
+  const siteName = getSetting('site.siteName', 'Being Sevak Charitable Trust');
+  const waNumber = (getSetting('whatsapp.number', '') || getSetting('contact.phone', '')).replace(/\D+/g, '') || '918879035035';
+  const waLink = `https://wa.me/${waNumber}?text=${encodeURIComponent(`Hello ${siteName}, I would like to know more.`)}`;
+  const storySection = getSection('about', 'story');
+  const storyParagraphs = (storySection?.content?.paragraphs || []).filter(
+    (p) => p && p.trim(),
+  );
+  const aboutDesc =
+    storyParagraphs.join(' ') || getSetting('site.description', '');
+  const cmsStats = getStats();
+  const staticStats = [
+    { value: '20000', label: 'Women Supported' },
+    { value: '12', label: 'States Connected' },
+    { value: '4500', label: 'Support Programs' },
+    { value: '300000', label: 'Supported Children' },
+    { value: '1000000', label: 'Beneficiaries Reached' },
+  ];
+  const statsItems = cmsStats || staticStats;
+
   // Mobile menu
 
 
@@ -23,7 +48,7 @@ export default function Home() {
 
   // Hero Slider
   const [currentSlide, setCurrentSlide] = useState(0);
-  const totalSlides = 8;
+  const totalSlides = liveHero ? cmsSlides.length : 8;
 
   // Impact Stories
   const [currentImpact, setCurrentImpact] = useState(0);
@@ -86,7 +111,7 @@ export default function Home() {
       setCurrentSlide((prev) => (prev + 1) % totalSlides);
     }, 5000);
     return () => clearInterval(timer);
-  }, []);
+  }, [totalSlides]);
 
   // Impact Stats Animation with IntersectionObserver
   useEffect(() => {
@@ -324,12 +349,19 @@ export default function Home() {
         .basket-empty-msg{display:none;text-align:center;color:#e53935;font-size:12px;margin-top:8px;font-family:'Montserrat',sans-serif}
         .basket-empty-msg.show{display:block}
         .basket-field-err{display:block;color:#e53935;font-size:11px;margin-top:4px;font-family:'Open Sans',sans-serif;padding-left:80px}
+        .slide-content{position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:0 8%;text-align:left;background:linear-gradient(to right,rgba(3,22,62,0.66),rgba(3,22,62,0.18) 60%,transparent)}
+        .slide-title{font-family:'Montserrat',sans-serif;font-size:2.6rem;font-weight:900;color:#fff;text-transform:uppercase;line-height:1.15;margin-bottom:10px;max-width:760px}
+        .slide-subtitle{font-family:'Open Sans',sans-serif;font-size:1.1rem;color:#eaf4fb;max-width:640px;margin-bottom:18px;line-height:1.6}
+        .slide-cta{display:inline-block;background:#00A3DA;color:#fff;font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.9rem;padding:12px 28px;border-radius:4px;text-transform:uppercase;letter-spacing:1px;text-decoration:none;transition:background 0.2s}
+        .slide-cta:hover{background:#315371}
+        .slide-bg-mobile{display:none}
+        @media(max-width:768px){.slide-title{font-size:1.5rem}.slide-subtitle{font-size:0.95rem}.slide-content{padding:0 6%}.slide-bg-mobile{display:block}}
         @media(max-width:500px){.basket-panel{width:100vw}}
       `}</style>
 
       {/* BEING SEVAK CHARITABLE TRUST ALERT BANNER */}
       <div className="alert-banner">
-        <span className="alert-text">Being Sevak Charitable Trust</span>
+        <span className="alert-text">{siteName}</span>
         <Link to="/about" className="alert-link">Learn More</Link>
       </div>
 
@@ -374,6 +406,32 @@ export default function Home() {
 
       {/* HERO BANNER / SLIDESHOW */}
       <section className="hero-slider">
+        {liveHero
+          ? cmsSlides.map((s, i) => (
+              <div className={`slide ${currentSlide === i ? 'active' : ''}`} key={s.id || i}>
+                <div
+                  className="slide-bg"
+                  style={{ backgroundImage: `url(${s.imageUrl})` }}
+                ></div>
+                {s.mobileImageUrl && (
+                  <div
+                    className="slide-bg slide-bg-mobile"
+                    style={{ backgroundImage: `url(${s.mobileImageUrl})` }}
+                  ></div>
+                )}
+                {(s.title || s.subtitle || s.ctaLabel) && (
+                  <div className="slide-content">
+                    {s.title && <h2 className="slide-title">{s.title}</h2>}
+                    {s.subtitle && <p className="slide-subtitle">{s.subtitle}</p>}
+                    {s.ctaLabel && s.ctaUrl && (
+                      <a href={s.ctaUrl} className="slide-cta">{s.ctaLabel}</a>
+                    )}
+                  </div>
+                )}
+              </div>
+            ))
+          : (
+            <>
         <div className={`slide ${currentSlide === 0 ? 'active' : ''}`} id="slide1">
           <div className="slide-bg slide-bg-1"></div>
         </div>
@@ -398,6 +456,8 @@ export default function Home() {
         <div className={`slide ${currentSlide === 7 ? 'active' : ''}`} id="slide8">
           <div className="slide-bg slide-bg-8"></div>
         </div>
+            </>
+          )}
         <div className="slider-controls">
           <button className="slider-arrow prev" onClick={() => setCurrentSlide((prev) => (prev - 1 + totalSlides) % totalSlides)}>
             <i className="fas fa-chevron-left"></i>
@@ -427,9 +487,8 @@ export default function Home() {
         <div className="about-right">
           <h2>ABOUT BEING SEVAK CHARITABLE TRUST</h2>
           <p>
-            Being Sevak Charitable Trust is a national non-profit organization serving society since 2015 through
-            healthcare, education, women empowerment, vocational training, and child development, inspired by the vision of
-            "Sevak Bano" and selfless service.
+            {aboutDesc ||
+              'Being Sevak Charitable Trust is a national non-profit organization serving society since 2015 through healthcare, education, women empowerment, vocational training, and child development, inspired by the vision of "Sevak Bano" and selfless service.'}
           </p>
           <div className="about-boxes">
             <div className="about-box">
@@ -1222,26 +1281,12 @@ export default function Home() {
             <p>Since 2015, Being Sevak has been serving communities across India</p>
           </div>
           <div className="stats-grid">
-            <div className="stat-item">
-              <span className="stat-num" data-target="20000">{impactAnimated ? '20000' : '0'}</span>
-              <span className="stat-label">Women Supported</span>
-            </div>
-            <div className="stat-item">
-              <span className="stat-num" data-target="12">{impactAnimated ? '12' : '0'}</span>
-              <span className="stat-label">States Connected</span>
-            </div>
-            <div className="stat-item">
-              <span className="stat-num" data-target="4500">{impactAnimated ? '4500' : '0'}</span>
-              <span className="stat-label">Support Programs</span>
-            </div>
-            <div className="stat-item">
-              <span className="stat-num" data-target="300000">{impactAnimated ? '300000' : '0'}</span>
-              <span className="stat-label">Supported Children</span>
-            </div>
-            <div className="stat-item">
-              <span className="stat-num" data-target="1000000">{impactAnimated ? '1000000' : '0'}</span>
-              <span className="stat-label">Beneficiaries Reached</span>
-            </div>
+            {statsItems.map((it, i) => (
+              <div className="stat-item" key={i}>
+                <span className="stat-num" data-target={it.value}>{impactAnimated ? it.value : '0'}</span>
+                <span className="stat-label">{it.label}</span>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -1528,7 +1573,7 @@ export default function Home() {
 
       {/* WhatsApp Floating Button */}
       <a
-        href="https://wa.me/918879035035?text=Hello%20Being%20Sevak%20Charitable%20Trust%2C%20I%20would%20like%20to%20know%20more."
+        href={waLink}
         target="_blank"
         rel="noopener noreferrer"
         className="whatsapp-float"

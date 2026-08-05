@@ -1,6 +1,23 @@
 import { Link } from 'react-router-dom';
+import { useSite } from '../context/SiteContext';
 
 export default function Footer() {
+  const { getSetting } = useSite();
+  const phone = getSetting('contact.phone', '+91 8879035035');
+  const email = getSetting('contact.email', 'being.sevak@gmail.com');
+  const address = getSetting('contact.address', 'MUMBAI, INDIA');
+  const tagline = getSetting(
+    'site.tagline',
+    'Serving humanity with compassion, dignity, and hope — empowering lives through food, education, healthcare, and community support',
+  );
+  const copyright = getSetting(
+    'footer.copyright',
+    '© 2026 Copyright 2023 Being Sevak Charitable Trust. All rights reserved. Registered Charity No. E-31948',
+  );
+  const socialFb = getSetting('social.facebook', '');
+  const socialIg = getSetting('social.instagram', '');
+  const socialYt = getSetting('social.youtube', '');
+  const socialLi = getSetting('social.linkedin', '');
   return (
     <footer className="footer">
       <div className="footer-inner">
@@ -9,8 +26,7 @@ export default function Footer() {
             <img src="/images/logo11.png" alt="Being Sevak Logo" className="footer-logo-img" />
             <img src="/images/bs.png" alt="Text Logo" className="BS-text-logo" />
           </div>
-          <p className="footer-desc"> Serving humanity with compassion, dignity, and hope — empowering lives through food,
-            education, healthcare, and community support</p>
+          <p className="footer-desc"> {tagline}</p>
         </div>
         <div className="footer-col">
           <h4>About Us</h4>
@@ -47,25 +63,25 @@ export default function Footer() {
             <li><Link to="/ngo-collaboration">NGO Collaboration</Link></li>
           </ul>
           <div className="social-icons">
-            <a href="https://www.facebook.com/share/1P33YzE6HM/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer">
+            <a href={socialFb ? `https://www.facebook.com/${socialFb}` : 'https://www.facebook.com/share/1P33YzE6HM/?mibextid=wwXIfr'} target="_blank" rel="noopener noreferrer">
               <i className="fab fa-facebook-f"></i>
             </a>
-            <a href="https://www.instagram.com/beingsevak?igsh=MTRjam5nNjU4a2w1Mw==" target="_blank" rel="noopener noreferrer">
+            <a href={socialIg ? `https://www.instagram.com/${socialIg}` : 'https://www.instagram.com/beingsevak?igsh=MTRjam5nNjU4a2w1Mw=='} target="_blank" rel="noopener noreferrer">
               <i className="fab fa-instagram"></i>
             </a>
-            <a href="https://youtube.com/@beingsevak?si=T_qcPUg699KmS8_2" target="_blank" rel="noopener noreferrer">
+            <a href={socialYt ? `https://www.youtube.com/@${socialYt}` : 'https://youtube.com/@beingsevak?si=T_qcPUg699KmS8_2'} target="_blank" rel="noopener noreferrer">
               <i className="fab fa-youtube"></i>
             </a>
-            <a href="https://www.linkedin.com/company/www-linkedin-cominshwetashah2658ba102/" target="_blank" rel="noopener noreferrer">
+            <a href={socialLi ? `https://www.linkedin.com/company/${socialLi}` : 'https://www.linkedin.com/company/www-linkedin-cominshwetashah2658ba102/'} target="_blank" rel="noopener noreferrer">
               <i className="fab fa-linkedin-in"></i>
             </a>
           </div>
         </div>
         <div className="footer-col">
           <h4>Contact</h4>
-          <a href="tel:+918879035035" className="footer-contact-link"><i className="fas fa-phone"></i>+91 8879035035</a>
-          <a href="mailto:being.sevak@gmail.com" className="footer-contact-link"><i className="fas fa-envelope"></i>being.sevak@gmail.com</a>
-          <p><i className="fas fa-map-marker-alt"></i> MUMBAI, INDIA</p>
+          <a href={`tel:${phone.replace(/\s+/g, '')}`} className="footer-contact-link"><i className="fas fa-phone"></i>{phone}</a>
+          <a href={`mailto:${email}`} className="footer-contact-link"><i className="fas fa-envelope"></i>{email}</a>
+          <p><i className="fas fa-map-marker-alt"></i> {address}</p>
           <div className="footer-badges">
             <a href="/brochure/BSCT E-Brochure.pdf" className="brochure-btn" download>
               <i className="fas fa-file-pdf"></i> Brochure
@@ -77,7 +93,7 @@ export default function Footer() {
         </div>
       </div>
       <div className="footer-bottom">
-        <p>&copy; 2026 Copyright 2023 Being Sevak Charitable Trust. All rights reserved. Registered Charity No. E-31948</p>
+        <p>{copyright}</p>
         <div className="footer-links">
           <Link to="/terms">Terms &amp; Conditions</Link>
         </div>

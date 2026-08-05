@@ -1,7 +1,6 @@
 import type { CmsPage, Menu, PageSection } from '../types'
 import {
   createEntity,
-  getAllEntities,
   getEntity,
   listEntities,
   removeEntity,
@@ -17,7 +16,26 @@ export const cmsService = {
   },
 
   async allPages(): Promise<CmsPage[]> {
-    return getAllEntities<CmsPage>('pages', 'pages')
+    if (isLiveMode()) {
+      try {
+        const { data } = await http.get('/pages', { params: { limit: 100 } })
+        const list: CmsPage[] = (data.data.items as CmsPage[]) ?? []
+        const full = await Promise.all(
+          list.map(async (page) => {
+            try {
+              const { data: detail } = await http.get(`/pages/${page.id}`)
+              return (detail.data as CmsPage) ?? page
+            } catch {
+              return page
+            }
+          }),
+        )
+        return full
+      } catch {
+        /* fall through to store */
+      }
+    }
+    return store.all<CmsPage>('pages')
   },
 
   async getPage(id: string): Promise<CmsPage | null> {
