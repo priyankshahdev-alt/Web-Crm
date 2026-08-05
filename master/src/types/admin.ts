@@ -1,4 +1,9 @@
-export type AdminStatus = 'active' | 'disabled'
+export type AdminStatus =
+  | 'active'
+  | 'inactive'
+  | 'pending'
+  | 'suspended'
+  | 'disabled'
 
 export type AdminRole = 'master' | 'site'
 

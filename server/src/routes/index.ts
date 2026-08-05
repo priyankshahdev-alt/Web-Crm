@@ -19,6 +19,10 @@ import entityRouter from '../modules/entities/index';
 
 const router = Router();
 
+router.get('/health', (_req, res) => {
+  res.json({ success: true, message: 'OK', data: { status: 'up', timestamp: new Date().toISOString() }, errors: null });
+});
+
 router.use('/auth', authRouter);
 router.use('/organizations', organizationRouter);
 router.use('/users', userRouter);
