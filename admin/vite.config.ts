@@ -10,7 +10,7 @@ export default defineConfig({
       // and keeps `BASE_URL` relative so the same build works in production
       // behind a reverse proxy.
       '/api': {
-        target: 'http://localhost:4000',
+        target: 'https://web-crm-green.vercel.app',
         changeOrigin: true,
       },
     },

@@ -1,116 +1,158 @@
+import { http } from '../lib/api'
+import { withCache, invalidate } from '../lib/cache'
 import type { AdminUser, CreateAdminInput, UpdateAdminInput } from '../types/admin'
-import { randomUUID } from '../utils/uuid'
 
-const STORAGE_KEY = 'master-crm.admins.v1'
-const STORAGE_OWNER_KEY = 'master-crm.current-master'
+const ADMINS_LIST_KEY = 'admins:list'
+const ADMINS_LIST_TTL_MS = 10_000
 
-const CURRENT_MASTER = 'master'
+interface ServerUser {
+  id: string
+  email: string
+  firstName: string
+  lastName: string | null
+  isMaster: boolean
+  isActive: boolean
+  lastLoginAt: string | null
+  createdAt: string
+  updatedAt: string
+  memberships?: Array<{
+    organization: { id: string; slug: string; name: string }
+  }>
+  assignments?: Array<{
+    organization: { id: string; slug: string; name: string }
+  }>
+  roles?: Array<{ role: { key: string; name: string } }>
+}
 
-export class DuplicateUsernameError extends Error {
-  constructor(public readonly username: string) {
-    super(`Username "${username}" is already taken`)
-    this.name = 'DuplicateUsernameError'
+interface Paginated<T> {
+  items: T[]
+  page: number
+  limit: number
+  total: number
+  totalPages: number
+}
+
+const ADMIN_ROLE_KEY = 'admins'
+
+function toAdminUser(user: ServerUser): AdminUser {
+  return {
+    id: user.id,
+    email: user.email,
+    username: user.email,
+    password: '',
+    role: user.isMaster ? 'master' : 'site',
+    status: user.isActive ? 'active' : 'disabled',
+    createdAt: user.createdAt,
+    createdBy: '',
+    lastLoginAt: user.lastLoginAt,
+    managedWebsites: (user.assignments ?? []).map(
+      (entry) => entry.organization.id,
+    ),
   }
 }
 
-const delay = (ms: number): Promise<void> =>
-  new Promise((resolve) => setTimeout(resolve, ms))
-
-const readStored = (): AdminUser[] => {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY)
-    if (!raw) return []
-    const parsed: unknown = JSON.parse(raw)
-    return Array.isArray(parsed) ? (parsed as AdminUser[]) : []
-  } catch {
-    return []
+export class AdminCreateError extends Error {
+  constructor(message: string, public readonly field?: string) {
+    super(message)
+    this.name = 'AdminCreateError'
   }
 }
 
-const persist = (admins: AdminUser[]): void => {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(admins))
-  localStorage.setItem(STORAGE_OWNER_KEY, CURRENT_MASTER)
-  window.dispatchEvent(new CustomEvent('admins:updated'))
+/** Error message + optional field extracted from the API envelope. */
+function readApiError(
+  err: unknown,
+  fallback = 'Something went wrong.',
+): { message: string; field?: string } {
+  if (typeof err === 'object' && err !== null && 'response' in err) {
+    const data = (err as {
+      response?: { data?: { message?: unknown; errors?: unknown } }
+    }).response?.data
+    if (typeof data?.message === 'string' && data.message) {
+      const field = Array.isArray(data.errors)
+        ? (data.errors[0]?.details?.[0]?.path?.[0] as string | undefined)
+        : undefined
+      return { message: data.message, field }
+    }
+  }
+  return {
+    message: err instanceof Error && err.message ? err.message : fallback,
+  }
 }
 
 export const adminService = {
   async list(): Promise<AdminUser[]> {
-    await delay(200)
-    return readStored()
-  },
-
-  async usernameExists(username: string): Promise<boolean> {
-    await delay(150)
-    const normalized = username.trim().toLowerCase()
-    if (!normalized) return false
-    return readStored().some(
-      (admin) => admin.username.toLowerCase() === normalized,
+    const result = await withCache(ADMINS_LIST_KEY, ADMINS_LIST_TTL_MS, () =>
+      http.get<Paginated<ServerUser>>('/users?limit=100'),
     )
+    return result.items
+      .filter(
+        (user) =>
+          user.isMaster ||
+          (user.roles ?? []).some((entry) => entry.role.key === ADMIN_ROLE_KEY),
+      )
+      .map(toAdminUser)
   },
 
   async create(input: CreateAdminInput): Promise<AdminUser> {
-    await delay(450)
-    const admins = readStored()
-    const normalized = input.username.trim()
-    const usernameTaken = admins.some(
-      (admin) => admin.username.toLowerCase() === normalized.toLowerCase(),
-    )
-    if (usernameTaken) {
-      throw new DuplicateUsernameError(input.username)
-    }
-
-    const now = new Date().toISOString()
-    const admin: AdminUser = {
-      id: randomUUID(),
-      username: normalized,
+    const email = input.email.trim().toLowerCase()
+    const created = await http.post<ServerUser>('/users', {
+      email,
       password: input.password,
-      role: input.role,
-      status: input.status ?? 'active',
-      createdAt: now,
-      createdBy: CURRENT_MASTER,
-      lastLoginAt: null,
-    }
-    if (input.managedWebsites) {
-      admin.managedWebsites = input.managedWebsites
-    }
+      firstName: email.split('@')[0] || 'Admin',
+      role: ADMIN_ROLE_KEY,
+      isActive: input.status !== 'disabled',
+    })
 
-    persist([...admins, admin])
-    return admin
+    const assignments = input.managedWebsites ?? []
+    for (const organizationId of assignments) {
+      await http.post(`/organizations/${organizationId}/admins`, {
+        userId: created.id,
+      })
+    }
+    invalidate(ADMINS_LIST_KEY)
+
+    return toAdminUser({
+      ...created,
+      assignments: assignments.map((organizationId) => ({
+        organization: { id: organizationId, slug: '', name: '' },
+      })),
+    })
   },
 
   async update(id: string, input: UpdateAdminInput): Promise<AdminUser> {
-    await delay(450)
-    const admins = readStored()
-    const existing = admins.find((admin) => admin.id === id)
-    if (!existing) {
-      throw new Error('Admin not found')
-    }
+    const updated = await http.patch<ServerUser>(`/users/${id}`, {
+      email: input.email.trim().toLowerCase(),
+      ...(input.password ? { password: input.password } : {}),
+      isActive: input.status === 'active',
+    })
 
-    const normalized = input.username.trim()
-    const usernameTaken = admins.some(
-      (admin) =>
-        admin.id !== id &&
-        admin.username.toLowerCase() === normalized.toLowerCase(),
+    const current = new Set(input.managedWebsites)
+    const existing = new Set(
+      (updated.assignments ?? []).map((entry) => entry.organization.id),
     )
-    if (usernameTaken) {
-      throw new DuplicateUsernameError(input.username)
-    }
+    const toAdd = [...current].filter((orgId) => !existing.has(orgId))
+    const toRemove = [...existing].filter((orgId) => !current.has(orgId))
 
-    const updated: AdminUser = {
-      ...existing,
-      username: normalized,
-      password: input.password ?? existing.password,
-      role: input.role,
-      status: input.status,
-      managedWebsites: input.managedWebsites,
+    for (const organizationId of toAdd) {
+      await http.post(`/organizations/${organizationId}/admins`, { userId: id })
     }
+    for (const organizationId of toRemove) {
+      await http.delete(`/organizations/${organizationId}/admins/${id}`)
+    }
+    invalidate(ADMINS_LIST_KEY)
 
-    persist(admins.map((admin) => (admin.id === id ? updated : admin)))
-    return updated
+    return toAdminUser({
+      ...updated,
+      assignments: [...current].map((organizationId) => ({
+        organization: { id: organizationId, slug: '', name: '' },
+      })),
+    })
   },
 
   async remove(id: string): Promise<void> {
-    await delay(200)
-    persist(readStored().filter((admin) => admin.id !== id))
+    await http.delete(`/users/${id}`)
+    invalidate(ADMINS_LIST_KEY)
   },
+
+  errorMessage: readApiError,
 }

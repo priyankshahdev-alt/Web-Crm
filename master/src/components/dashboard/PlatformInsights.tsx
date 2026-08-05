@@ -1,6 +1,6 @@
 import { useMemo, useState, type ReactNode } from 'react'
 import type { AdminUser } from '../../types/admin'
-import { MANAGED_WEBSITES } from '../../data/websites'
+import type { ManagedWebsite } from '../../types/website'
 import { useAnimatedNumber } from '../../hooks/useAnimatedNumber'
 import {
   BarChartIcon,
@@ -25,6 +25,7 @@ import {
 
 interface PlatformInsightsProps {
   admins: AdminUser[]
+  websites: ManagedWebsite[]
 }
 
 interface StatusDatum {
@@ -53,14 +54,30 @@ interface QuickStat {
   trend: number
 }
 
-const STATUS_DATA: StatusDatum[] = [
-  { name: 'Active', value: 2, color: '#10B981' },
-  { name: 'Maintenance', value: 1, color: '#F59E0B' },
-]
+function buildStatusData(websites: ManagedWebsite[]): StatusDatum[] {
+  const active = websites.filter((w) => w.status === 'ACTIVE').length
+  const maintenance = websites.length - active
+  const data: StatusDatum[] = []
+  if (active > 0) {
+    data.push({ name: 'Active', value: active, color: '#10B981' })
+  }
+  if (maintenance > 0) {
+    data.push({ name: 'Maintenance', value: maintenance, color: '#F59E0B' })
+  }
+  return data
+}
 
-const STATUS_SITES: Record<string, string[]> = {
-  Active: ['Being Sevak', 'Mann Care Foundation'],
-  Maintenance: ['Aashray Foundation'],
+function buildStatusSites(
+  websites: ManagedWebsite[],
+): Record<string, string[]> {
+  return {
+    Active: websites
+      .filter((w) => w.status === 'ACTIVE')
+      .map((w) => w.name),
+    Maintenance: websites
+      .filter((w) => w.status !== 'ACTIVE')
+      .map((w) => w.name),
+  }
 }
 
 const VISITS: Record<string, number> = {
@@ -103,8 +120,6 @@ const QUICK_STATS: QuickStat[] = [
     trend: 0.8,
   },
 ]
-
-const STATUS_TOTAL = STATUS_DATA.reduce((sum, datum) => sum + datum.value, 0)
 
 const cardClass =
   'rounded-[18px] border border-line bg-white p-6 shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-card-hover sm:p-7'
@@ -301,6 +316,7 @@ function SegmentedControl({
 
 interface DonutTooltipProps {
   active?: boolean
+  sites?: Record<string, string[]>
   payload?: ReadonlyArray<{
     name?: string | number
     value?: string | number
@@ -308,11 +324,11 @@ interface DonutTooltipProps {
   }>
 }
 
-function DonutTooltip({ active, payload }: DonutTooltipProps) {
+function DonutTooltip({ active, payload, sites = {} }: DonutTooltipProps) {
   if (!active || !payload || payload.length === 0) return null
   const item = payload[0]!
   const status = String(item.name ?? '')
-  const sites = STATUS_SITES[status] ?? []
+  const siteList = sites[status] ?? []
   const color = item.payload?.color ?? '#CBD5E1'
   return (
     <div className="flex items-center gap-2 whitespace-nowrap rounded-lg border border-soft bg-white px-3 py-2 text-xs shadow-pop">
@@ -322,8 +338,8 @@ function DonutTooltip({ active, payload }: DonutTooltipProps) {
       />
       <span className="text-sm font-semibold text-ink">{status}</span>
       <span className="font-medium text-muted">{item.value}</span>
-      {sites.length > 0 ? (
-        <span className="text-muted">— {sites.join(', ')}</span>
+      {siteList.length > 0 ? (
+        <span className="text-muted">— {siteList.join(', ')}</span>
       ) : null}
     </div>
   )
@@ -475,10 +491,14 @@ function QuickStatItem({ stat }: { stat: QuickStat }) {
   )
 }
 
-export function PlatformInsights({ admins }: PlatformInsightsProps) {
+export function PlatformInsights({ admins, websites }: PlatformInsightsProps) {
   const [growthMonths, setGrowthMonths] = useState(6)
   const [hoveredStatus, setHoveredStatus] = useState<string | null>(null)
   const [selectedStatus, setSelectedStatus] = useState<string | null>(null)
+
+  const statusData = useMemo(() => buildStatusData(websites), [websites])
+  const statusSites = useMemo(() => buildStatusSites(websites), [websites])
+  const statusTotal = websites.length
 
   const growthData = useMemo(
     () => buildGrowthData(admins, growthMonths),
@@ -488,7 +508,7 @@ export function PlatformInsights({ admins }: PlatformInsightsProps) {
     () => buildPreviousGrowthData(admins, growthMonths),
     [admins, growthMonths],
   )
-  const engagementData: EngagementDatum[] = MANAGED_WEBSITES.map((site) => ({
+  const engagementData: EngagementDatum[] = websites.map((site) => ({
     name: site.name,
     visits: VISITS[site.name] ?? 0,
   }))
@@ -529,7 +549,7 @@ export function PlatformInsights({ admins }: PlatformInsightsProps) {
     return `Admin team grew by ${currentTotal} ${noun} in the last ${periodLabel}.`
   })()
   const healthyCount =
-    STATUS_DATA.find((datum) => datum.name === 'Active')?.value ?? 0
+    statusData.find((datum) => datum.name === 'Active')?.value ?? 0
 
   const cellOpacity = (name: string) => {
     if (selectedStatus && selectedStatus !== name) return 0.15
@@ -541,10 +561,13 @@ export function PlatformInsights({ admins }: PlatformInsightsProps) {
     (sum, datum) => sum + datum.visits,
     0,
   )
-  const topSite = engagementData.reduce(
-    (max, datum) => (datum.visits > max.visits ? datum : max),
-    engagementData[0]!,
-  )
+  const topSite =
+    engagementData.length > 0
+      ? engagementData.reduce(
+          (max, datum) => (datum.visits > max.visits ? datum : max),
+          engagementData[0]!,
+        )
+      : { name: 'No websites', visits: 0 }
 
   const renderGrowthDot = (props: {
     cx?: number
@@ -720,11 +743,11 @@ export function PlatformInsights({ admins }: PlatformInsightsProps) {
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
                     <Tooltip
-                      content={<DonutTooltip />}
+                      content={<DonutTooltip sites={statusSites} />}
                       position={{ x: 154, y: 28 }}
                     />
                     <Pie
-                      data={STATUS_DATA}
+                      data={statusData}
                       dataKey="value"
                       nameKey="name"
                       innerRadius="58%"
@@ -738,17 +761,17 @@ export function PlatformInsights({ admins }: PlatformInsightsProps) {
                       animationDuration={1300}
                       animationEasing="ease-out"
                       onMouseEnter={(_, index) =>
-                        setHoveredStatus(STATUS_DATA[index]!.name)
+                        setHoveredStatus(statusData[index]!.name)
                       }
                       onMouseLeave={() => setHoveredStatus(null)}
                       onClick={(_, index) => {
-                        const name = STATUS_DATA[index]!.name
+                        const name = statusData[index]!.name
                         setSelectedStatus((current) =>
                           current === name ? null : name,
                         )
                       }}
                     >
-                      {STATUS_DATA.map((datum) => (
+                      {statusData.map((datum) => (
                         <Cell
                           key={datum.name}
                           fill={datum.color}
@@ -761,7 +784,7 @@ export function PlatformInsights({ admins }: PlatformInsightsProps) {
               </div>
               <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
                 <AnimatedNumber
-                  value={STATUS_TOTAL}
+                  value={statusTotal}
                   className="text-3xl font-bold leading-none text-ink"
                 />
                 <span className="mt-1 text-[11px] font-medium uppercase tracking-[0.08em] text-faint">
@@ -772,12 +795,12 @@ export function PlatformInsights({ admins }: PlatformInsightsProps) {
             <div className="mt-5 flex items-center gap-2">
               <span className="h-2 w-2 rounded-full bg-success" />
               <span className="text-sm font-semibold text-ink">
-                {healthyCount} of {STATUS_TOTAL} sites healthy
+                {healthyCount} of {statusTotal} sites healthy
               </span>
             </div>
             <p className="mt-1 text-xs text-muted">No change this week</p>
             <div className="mt-5 flex flex-wrap justify-center gap-2">
-              {STATUS_DATA.map((datum) => {
+              {statusData.map((datum) => {
                 const selected = selectedStatus === datum.name
                 return (
                   <button

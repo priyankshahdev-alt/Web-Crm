@@ -7,7 +7,11 @@ const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
   PORT: z.coerce.number().default(4000),
   APP_URL: z.string().url().default('http://localhost:4000'),
-  CLIENT_URL: z.string().default('http://localhost:5173'),
+  CLIENT_URL: z
+    .string()
+    .default(
+      'http://localhost:5173,http://localhost:5174,https://web-crm-green.vercel.app',
+    ),
 
   DATABASE_URL: z.string().min(1),
   DIRECT_URL: z.string().min(1),

@@ -6,6 +6,7 @@ import { hashPassword, verifyPassword } from '../../utils/password';
 import { signAccessToken, signRefreshToken, verifyRefreshToken } from '../../utils/jwt';
 import { authRepository } from './repository';
 import { buildAuthUser } from './authContext';
+import type { AuthUser } from '../../types';
 import type { ChangePasswordInput, LoginInput, RefreshInput } from './schema';
 
 function addSeconds(seconds: string): Date {
@@ -23,7 +24,8 @@ function refreshExpiry(): Date {
 
 export const authService = {
   async login(input: LoginInput, req: Request) {
-    const user = await authRepository.findUserByEmail(input.email.toLowerCase().trim());
+    const email = input.email.toLowerCase().trim();
+    const user = await authRepository.findLoginUser(email);
     if (!user || !user.isActive) {
       throw ApiError.unauthorized('Invalid email or password');
     }
@@ -33,22 +35,44 @@ export const authService = {
       throw ApiError.unauthorized('Invalid email or password');
     }
 
-    const authUser = await buildAuthUser(user.id);
+    const permissions = new Set<string>(user.permissions.map((p) => p.permission.code));
+    for (const role of user.roles) {
+      for (const rp of role.role.permissions) {
+        permissions.add(rp.permission.code);
+      }
+    }
+    const memberships = user.memberships.filter((m) => m.isActive);
+    for (const membership of memberships) {
+      for (const rp of membership.role.permissions) {
+        permissions.add(rp.permission.code);
+      }
+    }
+
+    const authUser: AuthUser = {
+      id: user.id,
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      isMaster: user.isMaster,
+      roles: user.roles.map((r) => r.role.key),
+      permissions: Array.from(permissions),
+    };
+
     const accessToken = signAccessToken(authUser);
     const familyId = randomUUID();
     const refreshToken = signRefreshToken(user.id, familyId);
 
-    await authRepository.createRefreshToken({
-      userId: user.id,
-      token: refreshToken,
-      familyId,
-      expiresAt: refreshExpiry(),
-      ipAddress: req.ip,
-      userAgent: req.get('user-agent'),
-    });
-    await authRepository.updateLastLogin(user.id);
-
-    const memberships = await authRepository.findMemberships(user.id);
+    await Promise.all([
+      authRepository.createRefreshToken({
+        userId: user.id,
+        token: refreshToken,
+        familyId,
+        expiresAt: refreshExpiry(),
+        ipAddress: req.ip,
+        userAgent: req.get('user-agent'),
+      }),
+      authRepository.updateLastLogin(user.id),
+    ]);
 
     return {
       accessToken,

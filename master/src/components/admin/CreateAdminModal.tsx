@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useRef, useState, type FormEvent } from 'react'
-import type { AdminRole, AdminUser } from '../../types/admin'
+import type { AdminUser } from '../../types/admin'
+import type { ManagedWebsite } from '../../types/website'
 import { adminService } from '../../services/adminService'
-import { generatePassword, generateUsername } from '../../utils/generators'
+import { generatePassword } from '../../utils/generators'
 import { useToast } from '../../context/ToastContext'
 import { Button } from '../ui/Button'
 import { Input } from '../ui/Input'
@@ -9,31 +10,33 @@ import { Modal } from '../ui/Modal'
 
 interface CreateAdminModalProps {
   open: boolean
+  websites: ManagedWebsite[]
   onClose: () => void
   onCreated: (admin: AdminUser) => void
 }
 
 interface FormState {
-  username: string
+  email: string
   password: string
-  role: AdminRole
+  managedWebsites: string[]
 }
 
 interface FormErrors {
-  username?: string
+  email?: string
   password?: string
 }
 
 const INITIAL_FORM: FormState = {
-  username: '',
+  email: '',
   password: '',
-  role: 'site',
+  managedWebsites: [],
 }
 
-const USERNAME_PATTERN = /^[a-zA-Z0-9._-]+$/
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 export function CreateAdminModal({
   open,
+  websites,
   onClose,
   onCreated,
 }: CreateAdminModalProps) {
@@ -45,9 +48,9 @@ export function CreateAdminModal({
 
   const resetAndGenerate = useCallback(() => {
     setForm({
-      username: generateUsername(),
+      email: '',
       password: generatePassword(),
-      role: 'site',
+      managedWebsites: [],
     })
     setErrors({})
   }, [])
@@ -58,15 +61,13 @@ export function CreateAdminModal({
 
   const validate = (values: FormState): FormErrors => {
     const nextErrors: FormErrors = {}
-    const username = values.username.trim()
+    const email = values.email.trim()
     const password = values.password
 
-    if (!username) {
-      nextErrors.username = 'Username is required'
-    } else if (username.length < 3 || username.length > 32) {
-      nextErrors.username = 'Username must be between 3 and 32 characters'
-    } else if (!USERNAME_PATTERN.test(username)) {
-      nextErrors.username = 'Only letters, numbers, dots, underscores and hyphens'
+    if (!email) {
+      nextErrors.email = 'Email is required'
+    } else if (!EMAIL_PATTERN.test(email)) {
+      nextErrors.email = 'Enter a valid email address'
     }
 
     if (!password) {
@@ -85,9 +86,18 @@ export function CreateAdminModal({
     value: FormState[K],
   ) => {
     setForm((current) => ({ ...current, [field]: value }))
-    if (field === 'username' || field === 'password') {
+    if (field === 'email' || field === 'password') {
       setErrors((current) => ({ ...current, [field]: undefined }))
     }
+  }
+
+  const toggleSite = (siteId: string) => {
+    setForm((current) => ({
+      ...current,
+      managedWebsites: current.managedWebsites.includes(siteId)
+        ? current.managedWebsites.filter((id) => id !== siteId)
+        : [...current.managedWebsites, siteId],
+    }))
   }
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -107,25 +117,20 @@ export function CreateAdminModal({
     setSubmitting(true)
     try {
       const admin = await adminService.create({
-        username: form.username.trim(),
+        email: form.email.trim(),
         password: form.password,
-        role: form.role,
+        managedWebsites: form.managedWebsites,
       })
       toast.success({
         title: 'Admin created',
-        description: `Admin user "${admin.username}" is now active.`,
+        description: `Admin user "${admin.email}" is now active.`,
       })
       onCreated(admin)
       onClose()
     } catch (err) {
-      if (err instanceof Error) {
-        toast.error({ title: 'Could not create admin', description: err.message })
-        if (err.name === 'DuplicateUsernameError') {
-          setErrors({ username: err.message })
-        }
-      } else {
-        toast.error({ title: 'Could not create admin', description: 'Something went wrong.' })
-      }
+      const { message, field } = adminService.errorMessage(err)
+      toast.error({ title: 'Could not create admin', description: message })
+      if (field === 'email') setErrors({ email: message })
     } finally {
       setSubmitting(false)
     }
@@ -136,7 +141,7 @@ export function CreateAdminModal({
       open={open}
       onClose={onClose}
       title="Create Admin"
-      description="Auto-generated credentials are filled in for you and can be edited."
+      description="A generated password is filled in for you and can be edited."
       footer={
         <>
           <Button
@@ -160,37 +165,14 @@ export function CreateAdminModal({
       <form id="create-admin-form" ref={formRef} onSubmit={handleSubmit} noValidate>
         <div className="space-y-5">
           <Input
-            label="Username"
-            value={form.username}
-            onChange={(event) => handleFieldChange('username', event.target.value)}
-            error={errors.username}
-            hint="Min 3 characters. Letters, numbers, dots, underscores or hyphens."
+            label="Email"
+            type="email"
+            value={form.email}
+            onChange={(event) => handleFieldChange('email', event.target.value)}
+            error={errors.email}
+            hint="Used to sign in to the admin panel."
             autoComplete="off"
             spellCheck={false}
-            trailingAction={
-              <button
-                type="button"
-                onClick={() => {
-                  handleFieldChange('username', generateUsername())
-                }}
-                className="inline-flex h-full items-center gap-1.5 rounded-r-xl border border-l-0 border-line bg-white px-3 text-xs font-semibold text-brand transition hover:bg-brand-soft"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  className="h-3.5 w-3.5"
-                  aria-hidden="true"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M15.312 11.424a5.5 5.5 0 0 1-9.201 2.466l-.312-.311h2.433a.75.75 0 0 0 0-1.5H3.989a.75.75 0 0 0-.75.75v4.242a.75.75 0 0 0 1.5 0v-2.43l.31.31a7 7 0 0 0 11.712-3.138.75.75 0 0 0-1.449-.39Zm1.23-3.723a.75.75 0 0 0 .219-.53V2.929a.75.75 0 0 0-1.5 0V5.36l-.31-.31A7 7 0 0 0 3.239 8.188a.75.75 0 1 0 1.448.389A5.5 5.5 0 0 1 13.89 6.11l.311.31h-2.432a.75.75 0 0 0 0 1.5h4.243a.75.75 0 0 0 .53-.219Z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                Generate
-              </button>
-            }
           />
 
           <Input
@@ -229,24 +211,42 @@ export function CreateAdminModal({
           />
 
           <div>
-            <label
-              htmlFor="admin-role"
-              className="block text-sm font-medium text-ink"
-            >
-              Access scope
-            </label>
-            <div className="mt-1.5">
-              <select
-                id="admin-role"
-                value={form.role}
-                onChange={(event) =>
-                  handleFieldChange('role', event.target.value as AdminRole)
-                }
-                className="block w-full rounded-xl border border-line bg-white px-3 py-2 text-sm text-ink shadow-sm focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20"
-              >
-                <option value="site">Site Admin</option>
-                <option value="master">Master Admin</option>
-              </select>
+            <div className="flex items-center justify-between">
+              <label className="block text-sm font-medium text-ink">
+                Managed websites
+              </label>
+              <span className="text-xs text-muted">
+                {form.managedWebsites.length} selected
+              </span>
+            </div>
+            <div className="mt-2 grid grid-cols-1 gap-2">
+              {websites.map((site) => {
+                const checked = form.managedWebsites.includes(site.id)
+                return (
+                  <label
+                    key={site.id}
+                    className={`flex cursor-pointer items-center gap-3 rounded-xl border px-3 py-2.5 transition ${
+                      checked
+                        ? 'border-brand/30 bg-brand-soft/50'
+                        : 'border-line hover:bg-soft'
+                    }`}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={checked}
+                      onChange={() => toggleSite(site.id)}
+                      className="h-4 w-4 rounded border-line accent-brand focus:ring-brand"
+                    />
+                    <span className="text-sm font-medium text-ink">
+                      {site.name}
+                    </span>
+                    <span className="ml-auto text-xs text-faint">{site.url}</span>
+                  </label>
+                )
+              })}
+              {websites.length === 0 ? (
+                <p className="text-xs text-faint">No websites available yet.</p>
+              ) : null}
             </div>
           </div>
         </div>

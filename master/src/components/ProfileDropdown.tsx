@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from 'react-router-dom'
-import { getCurrentMaster, signOut } from '../lib/session'
+import { useAuth } from '../context/AuthContext'
 import { useDropdown } from '../hooks/useDropdown'
 import {
   ChevronDownIcon,
@@ -14,11 +14,12 @@ const menuItemClass =
 export function ProfileDropdown() {
   const navigate = useNavigate()
   const location = useLocation()
+  const { user, logout } = useAuth()
   const { open, toggle, close, rootRef } = useDropdown()
 
-  const session = getCurrentMaster()
-  const username = session?.username ?? 'master'
-  const displayName = username.charAt(0).toUpperCase() + username.slice(1)
+  const email = user?.email ?? 'master@webcrm.com'
+  const firstName = user?.firstName ?? 'Master'
+  const displayName = firstName.charAt(0).toUpperCase() + firstName.slice(1)
 
   const handleNavigate = (path: string) => {
     close()
@@ -26,8 +27,7 @@ export function ProfileDropdown() {
   }
 
   const handleLogout = () => {
-    signOut()
-    navigate('/login', { replace: true })
+    void logout()
   }
 
   return (
@@ -40,7 +40,7 @@ export function ProfileDropdown() {
         className="flex items-center gap-2.5 rounded-full p-1.5 transition hover:bg-soft focus:outline-none focus-visible:ring-2 focus-visible:ring-brand/40"
       >
         <span className="flex h-9 w-9 items-center justify-center rounded-full bg-brand text-sm font-bold text-white">
-          {username.charAt(0).toUpperCase()}
+          {email.charAt(0).toUpperCase()}
         </span>
         <span className="hidden text-left sm:block">
           <span className="block text-sm font-semibold leading-tight text-ink">
@@ -70,7 +70,7 @@ export function ProfileDropdown() {
               <p className="truncate text-sm font-semibold text-ink">
                 {displayName}
               </p>
-              <p className="truncate text-xs text-muted">@{username}</p>
+              <p className="truncate text-xs text-muted">{email}</p>
             </div>
           </div>
 

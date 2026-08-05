@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useState } from 'react'
 import type { AdminUser } from '../types/admin'
-import { MANAGED_WEBSITES } from '../data/websites'
+import type { ManagedWebsite } from '../types/website'
 import { adminService } from '../services/adminService'
+import { websiteService } from '../services/websiteService'
 import { AdminStackCard } from '../components/dashboard/AdminStackCard'
 import { WebsiteCard } from '../components/dashboard/WebsiteCard'
 import { PlatformInsights } from '../components/dashboard/PlatformInsights'
@@ -12,16 +13,21 @@ import { PlusIcon } from '../components/icons'
 
 export function Dashboard() {
   const [admins, setAdmins] = useState<AdminUser[]>([])
+  const [websites, setWebsites] = useState<ManagedWebsite[]>([])
   const [modalOpen, setModalOpen] = useState(false)
 
-  const loadAdmins = useCallback(async () => {
-    const result = await adminService.list()
-    setAdmins(result)
+  const load = useCallback(async () => {
+    const [adminResult, websiteResult] = await Promise.all([
+      adminService.list(),
+      websiteService.list(),
+    ])
+    setAdmins(adminResult)
+    setWebsites(websiteResult)
   }, [])
 
   useEffect(() => {
-    void loadAdmins()
-  }, [loadAdmins])
+    void load().catch(() => {})
+  }, [load])
 
   const handleAdminCreated = (admin: AdminUser) => {
     setAdmins((current) => [...current, admin])
@@ -37,8 +43,8 @@ export function Dashboard() {
           Master Dashboard
         </h1>
         <p className="mt-1.5 text-sm text-muted">
-          Manage administrators and the {MANAGED_WEBSITES.length} websites
-          under your control.
+          Manage administrators and the {websites.length} websites under your
+          control.
         </p>
       </header>
 
@@ -70,19 +76,20 @@ export function Dashboard() {
           <h2 id="websites-title" className="text-xl font-semibold text-ink">
             Managed websites
           </h2>
-          <Pill variant="brand">{MANAGED_WEBSITES.length} sites</Pill>
+          <Pill variant="brand">{websites.length} sites</Pill>
         </div>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {MANAGED_WEBSITES.map((website, index) => (
+          {websites.map((website, index) => (
             <WebsiteCard key={website.id} website={website} index={index} />
           ))}
         </div>
       </section>
 
-      <PlatformInsights admins={admins} />
+      <PlatformInsights admins={admins} websites={websites} />
 
       <CreateAdminModal
         open={modalOpen}
+        websites={websites}
         onClose={() => setModalOpen(false)}
         onCreated={handleAdminCreated}
       />

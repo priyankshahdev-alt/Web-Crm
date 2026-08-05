@@ -1,7 +1,9 @@
 /**
  * Base URL for the backend API.
  *
- * Relative (`/api/v1`) so development requests go through the Vite proxy
- * (see `vite.config.ts`) and production requests resolve on the same origin.
+ * Defaults to the hosted backend so the panel works without a local server.
+ * Override at build time with `VITE_API_URL` (e.g. point at a local server
+ * during development).
  */
-export const BASE_URL = '/api/v1'
+export const BASE_URL =
+  import.meta.env.VITE_API_URL || 'https://web-crm-green.vercel.app/api/v1'

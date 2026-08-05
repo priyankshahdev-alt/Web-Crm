@@ -1,14 +1,16 @@
 import { useState, type FormEvent } from 'react'
 import { Navigate, useNavigate } from 'react-router-dom'
-import { getCurrentMaster, signIn } from '../lib/session'
-import { login } from '../services/authService'
+import { getCurrentMaster } from '../lib/session'
+import { useAuth } from '../context/AuthContext'
+import { apiErrorMessage } from '../lib/api'
 import { Button } from '../components/ui/Button'
 import { Input } from '../components/ui/Input'
 import { DashboardIcon } from '../components/icons'
 
 export function LoginPage() {
   const navigate = useNavigate()
-  const [username, setUsername] = useState('')
+  const { login } = useAuth()
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [submitting, setSubmitting] = useState(false)
@@ -19,34 +21,19 @@ export function LoginPage() {
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    const trimmed = username.trim()
+    const trimmed = email.trim()
     if (!trimmed || !password) {
-      setError('Enter a username and password to continue.')
+      setError('Enter your email and password to continue.')
       return
     }
     setError('')
     setSubmitting(true)
     try {
-      const session = await login({ email: trimmed, password })
-      if (!session.user.isMaster) {
-        setError('Only master admins can sign in.')
-        setSubmitting(false)
-        return
-      }
-      signIn({
-        accessToken: session.accessToken,
-        refreshToken: session.refreshToken,
-        username: session.user.email,
-        email: session.user.email,
-        firstName: session.user.firstName,
-        lastName: session.user.lastName,
-        isMaster: session.user.isMaster,
-      })
+      await login({ email: trimmed, password })
       navigate('/', { replace: true })
     } catch (err) {
-      setError(
-        err instanceof Error ? err.message : 'Unable to sign in. Please try again.',
-      )
+      setError(apiErrorMessage(err, 'Sign in failed. Check your credentials.'))
+    } finally {
       setSubmitting(false)
     }
   }
@@ -66,13 +53,14 @@ export function LoginPage() {
 
         <form onSubmit={handleSubmit} noValidate className="space-y-5">
           <Input
-            label="Username"
-            value={username}
+            label="Email"
+            type="email"
+            value={email}
             onChange={(event) => {
-              setUsername(event.target.value)
+              setEmail(event.target.value)
               setError('')
             }}
-            autoComplete="username"
+            autoComplete="email"
             placeholder="master@webcrm.com"
           />
           <Input

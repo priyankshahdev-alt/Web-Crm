@@ -2,29 +2,24 @@ import { useRef, useState, type ChangeEvent } from 'react'
 import { Button } from '../components/ui/Button'
 import { Input } from '../components/ui/Input'
 import { CameraIcon } from '../components/icons'
-import { getCurrentMaster } from '../lib/session'
+import { useAuth } from '../context/AuthContext'
 import { useToast } from '../context/ToastContext'
-
-const PROFILE = {
-  name: 'Master Admin',
-  email: 'master@platform.io',
-  username: 'master',
-  role: 'Super admin',
-  joined: 'January 2025',
-}
 
 const cardClass = 'rounded-2xl border border-line bg-white p-5 shadow-card sm:p-8'
 
 export function ProfilePage() {
-  const session = getCurrentMaster()
-  const username = session?.username ?? PROFILE.username
-  const initial = username.charAt(0).toUpperCase()
+  const { user } = useAuth()
+  const toast = useToast()
 
-  const [name, setName] = useState(PROFILE.name)
-  const [email, setEmail] = useState(PROFILE.email)
+  const name = user?.firstName
+    ? [user.firstName, user.lastName].filter(Boolean).join(' ')
+    : 'Master Admin'
+  const email = user?.email ?? ''
+  const initial = (user?.firstName?.charAt(0) ?? name.charAt(0) ?? 'M').toUpperCase()
+  const roleLabel = user?.isMaster ? 'Master Admin' : 'Site Admin'
+
   const [photoUrl, setPhotoUrl] = useState<string | null>(null)
   const fileRef = useRef<HTMLInputElement>(null)
-  const toast = useToast()
 
   const handlePhotoChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
@@ -38,11 +33,6 @@ export function ProfilePage() {
       title: 'Profile updated',
       description: 'Your changes have been saved.',
     })
-  }
-
-  const handleCancel = () => {
-    setName(PROFILE.name)
-    setEmail(PROFILE.email)
   }
 
   return (
@@ -132,30 +122,21 @@ export function ProfilePage() {
             Details
           </h2>
           <p className="mt-1 text-sm text-muted">
-            Update your name and email address.
+            Your platform account details.
           </p>
 
           <div className="mt-6 grid gap-6 sm:grid-cols-2">
+            <Input label="Name" value={name} disabled />
+            <Input label="Email" type="email" value={email} disabled />
             <Input
-              label="Name"
-              value={name}
-              onChange={(event) => setName(event.target.value)}
+              label="Username"
+              value={`@${(user?.firstName ?? 'master').toLowerCase()}`}
+              disabled
             />
-            <Input
-              label="Email"
-              type="email"
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-            />
-            <Input label="Username" value={`@${username}`} disabled />
-            <Input label="Role" value={PROFILE.role} disabled />
-            <Input label="Joined" value={PROFILE.joined} disabled />
+            <Input label="Role" value={roleLabel} disabled />
           </div>
 
           <div className="mt-8 flex justify-end gap-3 border-t border-line pt-6">
-            <Button variant="ghost" onClick={handleCancel}>
-              Cancel
-            </Button>
             <Button onClick={handleSave}>Save changes</Button>
           </div>
         </section>

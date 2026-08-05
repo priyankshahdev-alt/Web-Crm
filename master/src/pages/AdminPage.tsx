@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import type { AdminUser } from '../types/admin'
-import { MANAGED_WEBSITES } from '../data/websites'
+import type { ManagedWebsite } from '../types/website'
 import { adminService } from '../services/adminService'
+import { websiteService } from '../services/websiteService'
 import { CreateAdminModal } from '../components/admin/CreateAdminModal'
 import { EditAdminModal } from '../components/admin/EditAdminModal'
 import { DeleteAdminModal } from '../components/admin/DeleteAdminModal'
@@ -11,7 +12,7 @@ import { Button } from '../components/ui/Button'
 import { Pill } from '../components/ui/Pill'
 import { useToast } from '../context/ToastContext'
 import { useCurrentUserRole } from '../hooks/useCurrentUserRole'
-import { getCurrentMaster } from '../lib/session'
+import { useAuth } from '../context/AuthContext'
 import {
   CheckIcon,
   CopyIcon,
@@ -34,7 +35,9 @@ const formatDate = (iso: string): string =>
 
 export function AdminPage() {
   const toast = useToast()
+  const { user } = useAuth()
   const [admins, setAdmins] = useState<AdminUser[]>([])
+  const [websites, setWebsites] = useState<ManagedWebsite[]>([])
   const [loading, setLoading] = useState(true)
   const [modalOpen, setModalOpen] = useState(false)
   const [editingAdmin, setEditingAdmin] = useState<AdminUser | null>(null)
@@ -61,8 +64,12 @@ export function AdminPage() {
   const loadAdmins = useCallback(async () => {
     setLoading(true)
     try {
-      const result = await adminService.list()
-      setAdmins(result)
+      const [adminResult, websiteResult] = await Promise.all([
+        adminService.list(),
+        websiteService.list(),
+      ])
+      setAdmins(adminResult)
+      setWebsites(websiteResult)
     } finally {
       setLoading(false)
     }
@@ -93,20 +100,21 @@ export function AdminPage() {
     )
   }
 
-  const getManagedSiteIds = (admin: AdminUser): string[] =>
-    admin.managedWebsites ?? MANAGED_WEBSITES.map((site) => site.id)
+  const managedSiteNames = (admin: AdminUser): string[] => {
+    const ids = new Set(admin.managedWebsites ?? [])
+    return websites
+      .filter((website) => ids.has(website.id))
+      .map((website) => website.name)
+  }
 
   const masters = admins.filter((admin) => admin.role === 'master')
   const isLastMaster =
     deletingAdmin?.role === 'master' && masters.length <= 1
-  const isSelf =
-    deletingAdmin?.username === getCurrentMaster()?.username
+  const isSelf = deletingAdmin?.id === user?.id
 
   const copyCredentials = async (admin: AdminUser) => {
     try {
-      await navigator.clipboard.writeText(
-        `Username: ${admin.username}\nPassword: ${admin.password}`,
-      )
+      await navigator.clipboard.writeText(admin.email)
       setCopiedId(admin.id)
       if (resetTimer.current) clearTimeout(resetTimer.current)
       resetTimer.current = setTimeout(
@@ -114,11 +122,11 @@ export function AdminPage() {
         COPY_FEEDBACK_MS,
       )
       toast.success({
-        title: 'Credentials copied',
-        description: `Copied login details for "${admin.username}".`,
+        title: 'Email copied',
+        description: `Copied login email for "${admin.email}".`,
       })
     } catch {
-      toast.error({ title: 'Could not copy credentials' })
+      toast.error({ title: 'Could not copy email' })
     }
   }
 
@@ -143,7 +151,10 @@ export function AdminPage() {
       </header>
 
       <div className="mb-8">
-        <AddAdminSection onCreated={handleAdminCreated} />
+        <AddAdminSection
+          websites={websites}
+          onCreated={handleAdminCreated}
+        />
       </div>
 
       {loading ? (
@@ -217,6 +228,7 @@ export function AdminPage() {
             <tbody className="divide-y divide-soft">
               {pageAdmins.map((admin) => {
                 const isCopied = copiedId === admin.id
+                const sites = managedSiteNames(admin)
                 return (
                   <tr
                     key={admin.id}
@@ -225,10 +237,10 @@ export function AdminPage() {
                     <td className="whitespace-nowrap px-5 py-4">
                       <div className="flex items-center gap-3">
                         <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-soft text-sm font-bold text-brand">
-                          {admin.username.charAt(0).toUpperCase()}
+                          {admin.email.charAt(0).toUpperCase()}
                         </span>
                         <span className="font-medium text-ink">
-                          {admin.username}
+                          {admin.email}
                         </span>
                       </div>
                     </td>
@@ -253,12 +265,10 @@ export function AdminPage() {
                     </td>
                     <td className="px-5 py-4">
                       <div className="flex max-w-xs flex-wrap gap-1.5">
-                        {getManagedSiteIds(admin).length > 0 ? (
-                          MANAGED_WEBSITES.filter((site) =>
-                            getManagedSiteIds(admin).includes(site.id),
-                          ).map((site) => (
-                            <Pill key={site.id} variant="neutral">
-                              {site.name}
+                        {sites.length > 0 ? (
+                          sites.map((name) => (
+                            <Pill key={name} variant="neutral">
+                              {name}
                             </Pill>
                           ))
                         ) : (
@@ -284,13 +294,13 @@ export function AdminPage() {
                           ) : (
                             <CopyIcon className="h-3.5 w-3.5" />
                           )}
-                          {isCopied ? 'Copied!' : 'Copy credentials'}
+                          {isCopied ? 'Copied!' : 'Copy email'}
                         </button>
                         {canManage ? (
                           <>
                             <button
                               type="button"
-                              aria-label={`Edit ${admin.username}`}
+                              aria-label={`Edit ${admin.email}`}
                               title="Edit admin"
                               onClick={() => setEditingAdmin(admin)}
                               className="flex h-8 w-8 items-center justify-center rounded-full text-muted transition-colors duration-150 hover:bg-soft hover:text-brand focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
@@ -299,7 +309,7 @@ export function AdminPage() {
                             </button>
                             <button
                               type="button"
-                              aria-label={`Delete ${admin.username}`}
+                              aria-label={`Delete ${admin.email}`}
                               title="Delete admin"
                               onClick={() => setDeletingAdmin(admin)}
                               className="flex h-8 w-8 items-center justify-center rounded-full text-muted transition-colors duration-150 hover:bg-danger/10 hover:text-danger focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-danger"
@@ -327,6 +337,7 @@ export function AdminPage() {
 
       <CreateAdminModal
         open={modalOpen}
+        websites={websites}
         onClose={() => setModalOpen(false)}
         onCreated={handleAdminCreated}
       />
@@ -334,6 +345,7 @@ export function AdminPage() {
       <EditAdminModal
         open={editingAdmin !== null}
         admin={editingAdmin}
+        websites={websites}
         onClose={() => setEditingAdmin(null)}
         onUpdated={handleAdminUpdated}
       />
@@ -341,6 +353,7 @@ export function AdminPage() {
       <DeleteAdminModal
         open={deletingAdmin !== null}
         admin={deletingAdmin}
+        websites={websites}
         isLastMaster={isLastMaster}
         isSelf={isSelf}
         onClose={() => setDeletingAdmin(null)}
