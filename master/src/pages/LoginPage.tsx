@@ -1,12 +1,10 @@
 import { useState, type FormEvent } from 'react'
 import { Navigate, useNavigate } from 'react-router-dom'
 import { getCurrentMaster, signIn } from '../lib/session'
+import { login } from '../services/authService'
 import { Button } from '../components/ui/Button'
 import { Input } from '../components/ui/Input'
 import { DashboardIcon } from '../components/icons'
-
-const delay = (ms: number): Promise<void> =>
-  new Promise((resolve) => setTimeout(resolve, ms))
 
 export function LoginPage() {
   const navigate = useNavigate()
@@ -28,9 +26,29 @@ export function LoginPage() {
     }
     setError('')
     setSubmitting(true)
-    await delay(400)
-    signIn()
-    navigate('/', { replace: true })
+    try {
+      const session = await login({ email: trimmed, password })
+      if (!session.user.isMaster) {
+        setError('Only master admins can sign in.')
+        setSubmitting(false)
+        return
+      }
+      signIn({
+        accessToken: session.accessToken,
+        refreshToken: session.refreshToken,
+        username: session.user.email,
+        email: session.user.email,
+        firstName: session.user.firstName,
+        lastName: session.user.lastName,
+        isMaster: session.user.isMaster,
+      })
+      navigate('/', { replace: true })
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : 'Unable to sign in. Please try again.',
+      )
+      setSubmitting(false)
+    }
   }
 
   return (
@@ -55,7 +73,7 @@ export function LoginPage() {
               setError('')
             }}
             autoComplete="username"
-            placeholder="master"
+            placeholder="master@webcrm.com"
           />
           <Input
             label="Password"
@@ -78,6 +96,13 @@ export function LoginPage() {
             Sign in
           </Button>
         </form>
+
+        <p className="mt-6 rounded-xl border border-line bg-slate-50 px-4 py-3 text-center text-xs text-muted">
+          Demo sign in · Username{' '}
+          <span className="font-semibold text-ink">master@webcrm.com</span>{' '}
+          · Password{' '}
+          <span className="font-semibold text-ink">Master@123456</span>
+        </p>
 
         <p className="mt-6 text-center text-xs text-muted">
           Super admin console · Master CRM

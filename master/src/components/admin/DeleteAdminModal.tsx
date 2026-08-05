@@ -19,22 +19,19 @@ interface DeleteAdminModalProps {
 export function DeleteAdminModal({
   open,
   admin,
-  isLastMaster,
-  isSelf,
   onClose,
   onDeleted,
 }: DeleteAdminModalProps) {
   const toast = useToast()
   const [deleting, setDeleting] = useState(false)
 
-  const blocked = isLastMaster || isSelf
   const managedSiteIds = admin?.managedWebsites ?? MANAGED_WEBSITES.map((s) => s.id)
   const managedSites = MANAGED_WEBSITES.filter((site) =>
     managedSiteIds.includes(site.id),
   )
 
   const handleConfirm = async () => {
-    if (!admin || blocked) return
+    if (!admin) return
 
     setDeleting(true)
     try {
@@ -73,7 +70,6 @@ export function DeleteAdminModal({
             variant="danger"
             onClick={handleConfirm}
             loading={deleting}
-            disabled={blocked}
           >
             Delete Admin
           </Button>
@@ -109,18 +105,6 @@ export function DeleteAdminModal({
               ))}
             </ul>
           </div>
-        ) : null}
-
-        {isLastMaster ? (
-          <p className="rounded-xl bg-danger/10 px-3.5 py-3 text-sm font-medium text-danger">
-            You cannot delete the only Master Admin account.
-          </p>
-        ) : null}
-
-        {isSelf ? (
-          <p className="rounded-xl bg-danger/10 px-3.5 py-3 text-sm font-medium text-danger">
-            You cannot delete your own account.
-          </p>
         ) : null}
       </div>
     </Modal>
