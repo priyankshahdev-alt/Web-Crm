@@ -586,6 +586,7 @@ export function buildSeed(): {
     socialLinks: { facebook: 'facebook.com/beingsevak', twitter: 'twitter.com/beingsevak', linkedin: 'linkedin.com/company/being-sevak', instagram: 'instagram.com/beingsevak', youtube: 'youtube.com/@beingsevak' },
     contact: { email: 'hello@beingsevak.org', phone: '+91 98200 00000', address: '12 Sevak Bhavan, MG Road', city: 'Pune', state: 'Maharashtra' },
     analytics: { gaId: 'G-XXXXXXXX', tagManagerId: 'GTM-XXXXXXX' },
+    connectedSite: { url: 'https://beingsevak.org', slug: 'being-sevak' },
     createdAt: ago(300),
     updatedAt: ago(2),
   }

@@ -1,6 +1,40 @@
 import { Link } from 'react-router-dom';
+import { usePageContent } from '../hooks/usePageContent';
 
 const CSR = () => {
+  const content = usePageContent('csr');
+
+  const pageTitle = content('csr-title', 'heading') ?? 'CSR Partnership';
+
+  const intro =
+    content('csr-intro', 'paragraphs') ?? [
+      'At Being Sevak Charitable Trust, we believe that meaningful social transformation becomes possible when corporates and NGOs come together with a shared vision for community development.',
+      'The partnership between corporates and Non-Government Organizations creates a powerful and sustainable impact. While corporates contribute valuable resources, expertise, and CSR support, NGOs bring deep grassroots understanding, community reach, and effective implementation capabilities. Together, this collaboration helps create long-term and measurable social change.',
+      'Being Sevak Charitable Trust has been actively working across various sectors including healthcare, education, women empowerment, skill development, disability inclusion, livelihood generation, and community welfare. Through our dedicated initiatives and strong community network, we continue to serve underprivileged and specially-abled individuals with compassion and commitment.',
+      'We maintain the highest standards of transparency, accountability, and ethical practices, making BSCT a trusted partner for organizations looking to create impactful CSR initiatives aligned with sustainable development goals.',
+      'We welcome corporates, institutions, and partners to collaborate with us in building an inclusive, empowered, and better society for a all.',
+    ];
+
+  const initiativesTag = content('csr-initiatives', 'tag') ?? 'WHAT WE FOCUS ON';
+  const initiativesTitle = content('csr-initiatives', 'title') ?? 'Our Initiatives';
+  const initiativesSubtitle =
+    content('csr-initiatives', 'subtitle') ?? 'These programs strengthen our role as a trusted NGO in India for CSR projects';
+  const initiatives =
+    content('csr-initiatives', 'items') ?? [
+      { iconClass: 'bs-initiative__icon--edu', icon: 'fa-graduation-cap', label: 'Education', desc: 'Empowering children & youth with quality learning opportunities' },
+      { iconClass: 'bs-initiative__icon--live', icon: 'fa-briefcase', label: 'Livelihood', desc: 'Building sustainable income sources through skill development' },
+      { iconClass: 'bs-initiative__icon--env', icon: 'fa-leaf', label: 'Environment', desc: 'Protecting nature through conservation & green initiatives' },
+      { iconClass: 'bs-initiative__icon--sport', icon: 'fa-running', label: 'Sports', desc: 'Fostering teamwork, health & excellence through sports' },
+      { iconClass: 'bs-initiative__icon--art', icon: 'fa-palette', label: 'Arts & Culture', desc: 'Preserving heritage & nurturing creative expression' },
+      { iconClass: 'bs-initiative__icon--health', icon: 'fa-heartbeat', label: 'Health & Nutrition', desc: 'Ensuring wellness & food security for communities' },
+      { iconClass: 'bs-initiative__icon--tech', icon: 'fa-cogs', label: 'Assistive Technology', desc: 'Enabling independence through innovative support tools' },
+    ];
+
+  const highlightHeading = content('csr-highlight', 'heading') ?? 'Partner With Us';
+  const highlightEmail = content('csr-highlight', 'email') ?? 'being.sevak@gmail.com';
+  const highlightPhone = content('csr-highlight', 'phone') ?? '+91 8879035035';
+  const highlightTagline = content('csr-highlight', 'tagline') ?? '"Together, We Can Create Lasting Social Impact."';
+
   return (
     <>
       <style>{`
@@ -54,104 +88,50 @@ const CSR = () => {
       `}</style>
 
       <section className="tax-box">
-        <h1>CSR Partnership</h1>
+        <h1>{pageTitle}</h1>
       </section>
 
       <section className="csr-section">
-        <div className="csr-card">
-          <p>At Being Sevak Charitable Trust, we believe that meaningful social transformation becomes possible when corporates and NGOs come together with a shared vision for community development.</p>
-        </div>
-
-        <div className="csr-card">
-          <p>The partnership between corporates and Non-Government Organizations creates a powerful and sustainable impact. While corporates contribute valuable resources, expertise, and CSR support, NGOs bring deep grassroots understanding, community reach, and effective implementation capabilities. Together, this collaboration helps create long-term and measurable social change.</p>
-        </div>
-
-        <div className="csr-card">
-          <p>Being Sevak Charitable Trust has been actively working across various sectors including healthcare, education, women empowerment, skill development, disability inclusion, livelihood generation, and community welfare. Through our dedicated initiatives and strong community network, we continue to serve underprivileged and specially-abled individuals with compassion and commitment.</p>
-        </div>
-
-        <div className="csr-card">
-          <p>We maintain the highest standards of transparency, accountability, and ethical practices, making BSCT a trusted partner for organizations looking to create impactful CSR initiatives aligned with sustainable development goals.</p>
-        </div>
-
-        <div className="csr-card">
-          <p>We welcome corporates, institutions, and partners to collaborate with us in building an inclusive, empowered, and better society for a all.</p>
-        </div>
+        {intro.map((text, i) => (
+          <div className="csr-card" key={i}>
+            <p>{text}</p>
+          </div>
+        ))}
 
         <section className="bs-initiatives">
           <div className="bs-initiatives__inner">
             <header className="bs-initiatives__head">
-              <span className="bs-initiatives__tag">WHAT WE FOCUS ON</span>
-              <h2 className="bs-initiatives__title">Our Initiatives</h2>
-              <p className="bs-initiatives__sub">These programs strengthen our role as a trusted NGO in India for CSR projects</p>
+              <span className="bs-initiatives__tag">{initiativesTag}</span>
+              <h2 className="bs-initiatives__title">{initiativesTitle}</h2>
+              <p className="bs-initiatives__sub">{initiativesSubtitle}</p>
             </header>
             <div className="bs-initiatives__grid">
-              <div className="bs-initiative">
-                <div className="bs-initiative__icon bs-initiative__icon--edu">
-                  <i className="fas fa-graduation-cap"></i>
+              {initiatives.map((item, i) => (
+                <div className="bs-initiative" key={i}>
+                  <div className={`bs-initiative__icon ${item.iconClass}`}>
+                    <i className={`fas ${item.icon}`}></i>
+                  </div>
+                  <h3 className="bs-initiative__label">{item.label}</h3>
+                  <p className="bs-initiative__desc">{item.desc}</p>
                 </div>
-                <h3 className="bs-initiative__label">Education</h3>
-                <p className="bs-initiative__desc">Empowering children &amp; youth with quality learning opportunities</p>
-              </div>
-              <div className="bs-initiative">
-                <div className="bs-initiative__icon bs-initiative__icon--live">
-                  <i className="fas fa-briefcase"></i>
-                </div>
-                <h3 className="bs-initiative__label">Livelihood</h3>
-                <p className="bs-initiative__desc">Building sustainable income sources through skill development</p>
-              </div>
-              <div className="bs-initiative">
-                <div className="bs-initiative__icon bs-initiative__icon--env">
-                  <i className="fas fa-leaf"></i>
-                </div>
-                <h3 className="bs-initiative__label">Environment</h3>
-                <p className="bs-initiative__desc">Protecting nature through conservation &amp; green initiatives</p>
-              </div>
-              <div className="bs-initiative">
-                <div className="bs-initiative__icon bs-initiative__icon--sport">
-                  <i className="fas fa-running"></i>
-                </div>
-                <h3 className="bs-initiative__label">Sports</h3>
-                <p className="bs-initiative__desc">Fostering teamwork, health &amp; excellence through sports</p>
-              </div>
-              <div className="bs-initiative">
-                <div className="bs-initiative__icon bs-initiative__icon--art">
-                  <i className="fas fa-palette"></i>
-                </div>
-                <h3 className="bs-initiative__label">Arts &amp; Culture</h3>
-                <p className="bs-initiative__desc">Preserving heritage &amp; nurturing creative expression</p>
-              </div>
-              <div className="bs-initiative">
-                <div className="bs-initiative__icon bs-initiative__icon--health">
-                  <i className="fas fa-heartbeat"></i>
-                </div>
-                <h3 className="bs-initiative__label">Health &amp; Nutrition</h3>
-                <p className="bs-initiative__desc">Ensuring wellness &amp; food security for communities</p>
-              </div>
-              <div className="bs-initiative">
-                <div className="bs-initiative__icon bs-initiative__icon--tech">
-                  <i className="fas fa-cogs"></i>
-                </div>
-                <h3 className="bs-initiative__label">Assistive Technology</h3>
-                <p className="bs-initiative__desc">Enabling independence through innovative support tools</p>
-              </div>
+              ))}
             </div>
           </div>
         </section>
 
         <div className="csr-highlight">
-          <h2>Partner With Us</h2>
+          <h2>{highlightHeading}</h2>
           <div className="csr-contact">
-            <a href="mailto:being.sevak@gmail.com" className="csr-contact-item" style={{color:'inherit',textDecoration:'none'}} onClick={(e) => { e.preventDefault(); window.location.href = 'mailto:being.sevak@gmail.com'; }}>
+            <a href={'mailto:' + highlightEmail} className="csr-contact-item" style={{color:'inherit',textDecoration:'none'}} onClick={(e) => { e.preventDefault(); window.location.href = 'mailto:' + highlightEmail; }}>
               <i className="fas fa-envelope"></i>
-              being.sevak@gmail.com
+              {highlightEmail}
             </a>
-            <a href="tel:+918879035035" className="csr-contact-item" style={{color:'inherit',textDecoration:'none'}}>
+            <a href={'tel:' + highlightPhone.replace(/\s+/g, '')} className="csr-contact-item" style={{color:'inherit',textDecoration:'none'}}>
               <i className="fas fa-phone"></i>
-              +91 8879035035
+              {highlightPhone}
             </a>
           </div>
-          <p className="csr-tagline">"Together, We Can Create Lasting Social Impact."</p>
+          <p className="csr-tagline">{highlightTagline}</p>
         </div>
       </section>
     </>

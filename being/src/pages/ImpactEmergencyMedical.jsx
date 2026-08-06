@@ -1,8 +1,43 @@
 import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
+import { usePageContent } from '../hooks/usePageContent';
 
 export default function ImpactEmergencyMedical() {
   useEffect(() => { window.scrollTo(0, 0); }, []);
+
+  const content = usePageContent('impact-emergency-medical');
+
+  const headingTag = content('impact-emergency-medical-heading', 'tag') ?? 'HEALTHCARE SUPPORT PROGRAM';
+  const headingTitle = content('impact-emergency-medical-heading', 'heading') ?? 'Emergency Medical Support';
+  const headingText =
+    content('impact-emergency-medical-heading', 'description') ??
+    'Medical emergencies can strike any family without warning. Through our Emergency Medical Support initiative, Being Sevak Charitable Trust provides timely financial assistance, treatment support, medicines, hospitalization aid, and life-saving care to underprivileged patients facing critical health conditions. Our mission is to ensure that no life is lost due to lack of medical resources or financial constraints.';
+  const mainImage = content('impact-emergency-medical-heading', 'image') ?? '/images/g54.webp';
+  const cards =
+    content('impact-emergency-medical-cards', 'items') ?? [
+      { title: 'Critical Care Assistance', description: 'Providing urgent medical aid for life-threatening illnesses, surgeries, and emergency treatments.' },
+      { title: 'Hospitalization Support', description: 'Helping financially challenged families access quality healthcare and hospitalization facilities.' },
+      { title: 'Medicines & Treatment', description: 'Supporting patients with essential medicines, diagnostics, and specialized medical care.' },
+      { title: 'Saving Precious Lives', description: 'Every contribution helps a patient receive timely treatment and a second chance at life.' },
+    ];
+  const storyTag = content('impact-emergency-medical-impact', 'tag') ?? 'IMPACT STORY';
+  const storyTitle = content('impact-emergency-medical-impact', 'heading') ?? 'Hope During a Medical Emergency';
+  const storyText =
+    content('impact-emergency-medical-impact', 'text') ??
+    'Master Imad Shaikh, an 8-month-old child suffering from congenital heart disease, came from Uttar Pradesh with his family seeking urgent medical assistance. His father worked as a labourer and his mother was a housewife. Through the support of Being Sevak Charitable Trust, he received emergency medical help and hospitalization support during a critical stage of treatment.';
+  const stats =
+    content('impact-emergency-medical-impact', 'stats') ?? [
+      { value: '2400+', label: 'Medical Relief Cases' },
+      { value: '24/7', label: 'Emergency Response' },
+      { value: '100%', label: 'Life Saving Focus' },
+    ];
+  const galleryTag = content('impact-emergency-medical-gallery', 'tag') ?? 'PROJECT GALLERY';
+  const galleryTitle = content('impact-emergency-medical-gallery', 'heading') ?? 'Moments of Impact';
+  const galleryText =
+    content('impact-emergency-medical-gallery', 'description') ??
+    'Explore glimpses of our initiatives, community outreach programs, and the positive impact created through collective efforts.';
+  const galleryImages =
+    content('impact-emergency-medical-gallery', 'images') ?? ['/images/g51.webp', '/images/g52.webp', '/images/g53.webp'];
 
   const css = `
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -64,70 +99,38 @@ export default function ImpactEmergencyMedical() {
       <section className="medical-support-section">
         <div className="medical-container">
           <div className="medical-heading">
-            <span className="medical-tag">HEALTHCARE SUPPORT PROGRAM</span>
-            <h2>Emergency Medical Support</h2>
-            <p>
-              Medical emergencies can strike any family without warning.
-              Through our Emergency Medical Support initiative, Being Sevak
-              Charitable Trust provides timely financial assistance, treatment
-              support, medicines, hospitalization aid, and life-saving care
-              to underprivileged patients facing critical health conditions.
-              Our mission is to ensure that no life is lost due to lack of
-              medical resources or financial constraints.
-            </p>
+            <span className="medical-tag">{headingTag}</span>
+            <h2>{headingTitle}</h2>
+            <p>{headingText}</p>
           </div>
 
           <div className="medical-grid">
             <div className="medical-image">
-              <img src="/images/g54.webp" alt="Emergency Medical Support" />
+              <img src={mainImage} alt="Emergency Medical Support" />
             </div>
             <div className="medical-content">
-              <div className="medical-card">
-                <h3>Critical Care Assistance</h3>
-                <p>Providing urgent medical aid for life-threatening illnesses, surgeries, and emergency treatments.</p>
-              </div>
-              <div className="medical-card">
-                <h3>Hospitalization Support</h3>
-                <p>Helping financially challenged families access quality healthcare and hospitalization facilities.</p>
-              </div>
-              <div className="medical-card">
-                <h3>Medicines & Treatment</h3>
-                <p>Supporting patients with essential medicines, diagnostics, and specialized medical care.</p>
-              </div>
-              <div className="medical-card">
-                <h3>Saving Precious Lives</h3>
-                <p>Every contribution helps a patient receive timely treatment and a second chance at life.</p>
-              </div>
+              {cards.map((card, i) => (
+                <div className="medical-card" key={i}>
+                  <h3>{card.title}</h3>
+                  <p>{card.description}</p>
+                </div>
+              ))}
             </div>
           </div>
 
           <div className="medical-impact">
             <div className="medical-story">
-              <span>IMPACT STORY</span>
-              <h3>Hope During a Medical Emergency</h3>
-              <p>
-                Master Imad Shaikh, an 8-month-old child suffering from
-                congenital heart disease, came from Uttar Pradesh with his
-                family seeking urgent medical assistance. His father worked
-                as a labourer and his mother was a housewife. Through the
-                support of Being Sevak Charitable Trust, he received
-                emergency medical help and hospitalization support during
-                a critical stage of treatment.
-              </p>
+              <span>{storyTag}</span>
+              <h3>{storyTitle}</h3>
+              <p>{storyText}</p>
             </div>
             <div className="medical-stats">
-              <div className="medical-box">
-                <h2>2400+</h2>
-                <span>Medical Relief Cases</span>
-              </div>
-              <div className="medical-box">
-                <h2>24/7</h2>
-                <span>Emergency Response</span>
-              </div>
-              <div className="medical-box">
-                <h2>100%</h2>
-                <span>Life Saving Focus</span>
-              </div>
+              {stats.map((s, i) => (
+                <div className="medical-box" key={i}>
+                  <h2>{s.value}</h2>
+                  <span>{s.label}</span>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -135,14 +138,14 @@ export default function ImpactEmergencyMedical() {
 
       <section className="shital-gallery-section">
         <div className="shital-gallery-heading">
-          <span>PROJECT GALLERY</span>
-          <h2>Moments of Impact</h2>
-          <p>Explore glimpses of our initiatives, community outreach programs, and the positive impact created through collective efforts.</p>
+          <span>{galleryTag}</span>
+          <h2>{galleryTitle}</h2>
+          <p>{galleryText}</p>
         </div>
         <div className="shital-gallery">
-          <div className="shital-gallery-item"><img src="/images/g51.webp" alt="" /></div>
-          <div className="shital-gallery-item"><img src="/images/g52.webp" alt="" /></div>
-          <div className="shital-gallery-item"><img src="/images/g53.webp" alt="" /></div>
+          {galleryImages.map((src, i) => (
+            <div className="shital-gallery-item" key={i}><img src={src} alt="" /></div>
+          ))}
         </div>
       </section>
     </>

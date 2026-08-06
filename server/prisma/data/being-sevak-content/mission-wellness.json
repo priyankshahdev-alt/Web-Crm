@@ -1,0 +1,145 @@
+{
+  "slug": "mission-wellness",
+  "title": "Mission Aarogya",
+  "metaTitle": "Mission Aarogya | Being Sevak Foundation",
+  "metaDescription": "Mission Aarogya by Being Sevak Charitable Trust provides healthcare support, medical assistance, emergency aid and wellness initiatives for underprivileged communities across India.",
+  "template": "default",
+  "sortOrder": 13,
+  "isHome": false,
+  "sections": [
+    {
+      "type": "mission-wellness-tax",
+      "name": "Page Title",
+      "sortOrder": 1,
+      "isActive": true,
+      "content": {
+        "title": "Mission Aarogya"
+      }
+    },
+    {
+      "type": "mission-wellness-hero",
+      "name": "Hero Section",
+      "sortOrder": 2,
+      "isActive": true,
+      "content": {
+        "tag": "Mission Aarogya",
+        "headingLine1": "Bringing",
+        "headingHighlight": "Health",
+        "headingLine2": "Into Every Life",
+        "description": "Mission Aarogya by Being Sevak Charitable Trust provides healthcare support, medical assistance, emergency aid and wellness initiatives for underprivileged communities across India.",
+        "image": "/images/arogya1.png"
+      }
+    },
+    {
+      "type": "wellness-hero-stats",
+      "name": "Hero Stats",
+      "sortOrder": 3,
+      "isActive": true,
+      "content": {
+        "items": [
+          { "value": "3000+", "label": "Lives Supported" },
+          { "value": "24/7", "label": "Care Support" }
+        ]
+      }
+    },
+    {
+      "type": "wellness-about",
+      "name": "About Mission",
+      "sortOrder": 4,
+      "isActive": true,
+      "content": {
+        "tag": "About Mission",
+        "headingLine1": "Helping Patients With",
+        "headingHighlight": "Care & Emergency Support",
+        "text": "Our mission supports heart patients, children and old age people by helping them during medical emergencies, hospital treatments and critical healthcare situations with compassion and care.",
+        "items": [
+          { "title": "Heart Patient Help", "description": "Supporting heart patients with emergency medical assistance." },
+          { "title": "Child Healthcare", "description": "Helping small children receive proper hospital treatment." },
+          { "title": "Old Age Support", "description": "Providing healthcare help for elderly people in need." },
+          { "title": "Hospital Assistance", "description": "Helping needy families with treatment and hospital support." }
+        ],
+        "image": "/images/arogya2.png"
+      }
+    },
+    {
+      "type": "wellness-support",
+      "name": "Our Support",
+      "sortOrder": 5,
+      "isActive": true,
+      "content": {
+        "tag": "Our Support",
+        "heading": "How We Help Schools & Colleges",
+        "cards": [
+          { "icon": "01", "title": "Washroom Renovation", "description": "We renovate old school and college toilets to provide students with clean, safe and hygienic washroom facilities." },
+          { "icon": "02", "title": "Clean Water Filters", "description": "Installing clean drinking water filters to ensure healthy and safe water access for students and staff members." },
+          { "icon": "03", "title": "Kitchen & Wash Basin Support", "description": "We help schools by building new kitchens, wash basins and hygiene areas for better cleanliness and student wellbeing." }
+        ],
+        "images": [
+          { "src": "/images/arogya4.png", "alt": "" },
+          { "src": "/images/arogya3.png", "alt": "" },
+          { "src": "/images/arogya5.png", "alt": "" }
+        ]
+      }
+    },
+    {
+      "type": "wellness-baby-care",
+      "name": "Baby Care Center",
+      "sortOrder": 6,
+      "isActive": true,
+      "content": {
+        "tag": "Baby Care Center",
+        "heading": "Safe Feeding Spaces For Mothers & Babies",
+        "text": "Our Baby Care Center initiative creates safe and comfortable feeding spaces where mothers can feed and care for their babies peacefully in public places with privacy, hygiene and proper support.",
+        "items": [
+          { "title": "Baby Feeding Rooms", "description": "Providing clean and safe feeding areas for mothers and babies." },
+          { "title": "Mother Support", "description": "Helping mothers with comfortable care facilities in public places." },
+          { "title": "Hygienic Environment", "description": "Maintaining cleanliness and safety for newborn baby care." },
+          { "title": "Public Care Centers", "description": "Setting up baby care centers at different public locations." }
+        ],
+        "image": "/images/g1.jpeg"
+      }
+    },
+    {
+      "type": "wellness-gallery",
+      "name": "Project Gallery",
+      "sortOrder": 7,
+      "isActive": true,
+      "content": {
+        "tag": "Gallery",
+        "heading": "Moments Of Support & Care",
+        "images": [
+          { "src": "/images/vision4.jpg", "alt": "Gallery", "big": true },
+          { "src": "/images/vision5.jpeg", "alt": "Gallery", "big": false },
+          { "src": "/images/vision6.jpeg", "alt": "Gallery", "big": false },
+          { "src": "/images/vision7.jpeg", "alt": "Gallery", "big": false }
+        ]
+      }
+    },
+    {
+      "type": "wellness-donation",
+      "name": "Donation CTA",
+      "sortOrder": 8,
+      "isActive": true,
+      "content": {
+        "tag": "Mission Aarogya",
+        "title": "Health is the True Wealth",
+        "description": "Your donation provides healthcare, medical support and wellness services to underprivileged communities across India.",
+        "donationUrl": "/donations/donation-inline-arogya.html"
+      }
+    },
+    {
+      "type": "wellness-testimonials",
+      "name": "Testimonials",
+      "sortOrder": 9,
+      "isActive": true,
+      "content": {
+        "heading": "What Our Donors Say",
+        "items": [
+          { "quote": "Being Sevak is doing incredible work for healthcare and needy families. Proud to support this mission.", "name": "Riya Sharma" },
+          { "quote": "Transparent work, genuine impact, and a wonderful team dedicated to helping people with dignity.", "name": "Rahul Mehta" },
+          { "quote": "Every donation creates real change. Their healthcare initiatives truly touch lives.", "name": "Anjali Verma" }
+        ]
+      }
+    }
+  ]
+}

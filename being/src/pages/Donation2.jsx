@@ -1,7 +1,31 @@
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { usePageContent } from '../hooks/usePageContent';
 
 export default function Donation2() {
+  const content = usePageContent('donate');
+
+  const heroTag = content('donate-hero', 'tag') ?? 'Support Our Mission';
+  const heroHeadingLine1 = content('donate-hero', 'headingLine1') ?? 'Choose a Project,';
+  const heroHeadingLine2 = content('donate-hero', 'headingLine2') ?? 'Make an Impact';
+  const heroText =
+    content('donate-hero', 'description') ??
+    'Your generosity fuels life-changing programs across India. Select a project below and contribute to a brighter future.';
+  const heroImage = content('donate-hero', 'image') ?? '/images/bs.png';
+  const heroStats =
+    content('donate-hero', 'stats') ?? [
+      { value: '7+', label: 'Active Missions' },
+      { value: '1000+', label: 'Lives Impacted' },
+    ];
+  const projectsTag = content('donate-projects', 'tag') ?? 'WHAT WE DO';
+  const projectsHeading = content('donate-projects', 'heading') ?? 'Our Projects';
+  const projectsText =
+    content('donate-projects', 'description') ?? 'Click on a mission to learn more and donate directly.';
+  const taxLead = content('donate-tax', 'lead') ?? 'Get';
+  const taxHighlight1 = content('donate-tax', 'highlight1') ?? '50% Exemption';
+  const taxMiddle = content('donate-tax', 'middle') ?? 'on your donation under';
+  const taxHighlight2 = content('donate-tax', 'highlight2') ?? 'Section 80G of Income Tax Act 1961';
+
   const [activeTab, setActiveTab] = useState('tab-annapurna');
 
   useEffect(() => {
@@ -17,16 +41,17 @@ export default function Donation2() {
     return () => window.removeEventListener('message', handleIframeMessage);
   }, []);
 
-  const tabs = [
-    { id: 'tab-annapurna', label: 'Mission Annapurna', icon: 'fa-utensils', title: 'Mission Annapurna', desc: 'Providing nutritious meals and dry ration kits to underprivileged children and visually impaired individuals across Mumbai.', src: '../donations/donation-inline.html' },
-    { id: 'tab-vidya', label: 'Mission Vidya', icon: 'fa-graduation-cap', title: 'Mission Vidya', desc: 'Quality education support for underprivileged children, school dropouts, and visually impaired students through scholarships and supplies.', src: '../donations/donation-vidhya.html' },
-    { id: 'tab-aurat', label: 'Mission Aurat', icon: 'fa-fist-raised', title: 'Mission Aurat', desc: 'Empowering women through education, skill development, legal awareness, health support, and self-help groups.', src: '../donations/donation-aurat.html' },
-    { id: 'tab-bezubaan', label: 'Mission Bezubaan', icon: 'fa-paw', title: 'Mission Bezubaan', desc: 'Animal welfare initiatives including rescue, medical care, feeding programs, and shelter for stray and abandoned animals.', src: '../donations/donation-bezubaan.html' },
-    { id: 'tab-atmanirbhar', label: 'Mission Atmanirbhar', icon: 'fa-hand-holding-heart', title: 'Mission Atmanirbhar', desc: 'Skill development and vocational training for visually impaired individuals, widows, and underprivileged youth to achieve self-reliance.', src: '../donations/donation-atmanirbhar.html' },
-    { id: 'tab-arogya', label: 'Mission Arogya', icon: 'fa-heartbeat', title: 'Mission Arogya', desc: 'Healthcare initiatives including medical camps, eye check-ups, health awareness drives, and medicine distribution for the needy.', src: '../donations/donation-arogya.html' },
-    { id: 'tab-eco', label: 'Mission Eco Warriors', icon: 'fa-leaf', title: 'Mission Eco Warriors', desc: 'Environmental conservation projects including tree plantation drives, beach clean-ups, recycling awareness, and sustainability education.', src: '../donations/donation-ecowarriors.html' },
-    { id: 'tab-sevaknivas', label: 'Sevak Nivas', icon: 'fa-home', title: 'Sevak Nivas', desc: 'Providing shelter, care, skill development, and independent living opportunities for visually impaired students through 12 dedicated facilities.', src: '../donations/donation-sevaknivas.html' },
-  ];
+  const tabs =
+    content('donate-projects', 'items') ?? [
+      { id: 'tab-annapurna', label: 'Mission Annapurna', icon: 'fa-utensils', title: 'Mission Annapurna', desc: 'Providing nutritious meals and dry ration kits to underprivileged children and visually impaired individuals across Mumbai.', src: '../donations/donation-inline.html' },
+      { id: 'tab-vidya', label: 'Mission Vidya', icon: 'fa-graduation-cap', title: 'Mission Vidya', desc: 'Quality education support for underprivileged children, school dropouts, and visually impaired students through scholarships and supplies.', src: '../donations/donation-vidhya.html' },
+      { id: 'tab-aurat', label: 'Mission Aurat', icon: 'fa-fist-raised', title: 'Mission Aurat', desc: 'Empowering women through education, skill development, legal awareness, health support, and self-help groups.', src: '../donations/donation-aurat.html' },
+      { id: 'tab-bezubaan', label: 'Mission Bezubaan', icon: 'fa-paw', title: 'Mission Bezubaan', desc: 'Animal welfare initiatives including rescue, medical care, feeding programs, and shelter for stray and abandoned animals.', src: '../donations/donation-bezubaan.html' },
+      { id: 'tab-atmanirbhar', label: 'Mission Atmanirbhar', icon: 'fa-hand-holding-heart', title: 'Mission Atmanirbhar', desc: 'Skill development and vocational training for visually impaired individuals, widows, and underprivileged youth to achieve self-reliance.', src: '../donations/donation-atmanirbhar.html' },
+      { id: 'tab-arogya', label: 'Mission Arogya', icon: 'fa-heartbeat', title: 'Mission Arogya', desc: 'Healthcare initiatives including medical camps, eye check-ups, health awareness drives, and medicine distribution for the needy.', src: '../donations/donation-arogya.html' },
+      { id: 'tab-eco', label: 'Mission Eco Warriors', icon: 'fa-leaf', title: 'Mission Eco Warriors', desc: 'Environmental conservation projects including tree plantation drives, beach clean-ups, recycling awareness, and sustainability education.', src: '../donations/donation-ecowarriors.html' },
+      { id: 'tab-sevaknivas', label: 'Sevak Nivas', icon: 'fa-home', title: 'Sevak Nivas', desc: 'Providing shelter, care, skill development, and independent living opportunities for visually impaired students through 12 dedicated facilities.', src: '../donations/donation-sevaknivas.html' },
+    ];
 
   useEffect(() => {
     // Meta Pixel
@@ -321,23 +346,23 @@ export default function Donation2() {
 
       <section className="hero" id="home">
         <div className="hero-content">
-          <span className="tag">Support Our Mission</span>
-          <h1>Choose a Project,<br/><span>Make an Impact</span></h1>
-          <p>Your generosity fuels life-changing programs across India. Select a project below and contribute to a brighter future.</p>
+          <span className="tag">{heroTag}</span>
+          <h1>{heroHeadingLine1}<br/><span>{heroHeadingLine2}</span></h1>
+          <p>{heroText}</p>
           <div className="hero-buttons">
             <a href="#projects" className="donate-btn">Explore Projects</a>
           </div>
         </div>
         <div className="hero-image">
           <div className="floating-card card1">
-            <h3>7+</h3>
-            <p>Active Missions</p>
+            <h3>{heroStats[0].value}</h3>
+            <p>{heroStats[0].label}</p>
           </div>
           <div className="floating-card card2">
-            <h3>1000+</h3>
-            <p>Lives Impacted</p>
+            <h3>{heroStats[1].value}</h3>
+            <p>{heroStats[1].label}</p>
           </div>
-          <img src="/images/bs.png" alt="Being Sevak" />
+          <img src={heroImage} alt="Being Sevak" />
         </div>
         <div className="blur blur1"></div>
         <div className="blur blur2"></div>
@@ -345,9 +370,9 @@ export default function Donation2() {
 
       <section className="projects-section" id="projects">
         <div className="section-header">
-          <span>WHAT WE DO</span>
-          <h2>Our Projects</h2>
-          <p>Click on a mission to learn more and donate directly.</p>
+          <span>{projectsTag}</span>
+          <h2>{projectsHeading}</h2>
+          <p>{projectsText}</p>
         </div>
 
         <div className="tabs-wrapper">
@@ -375,7 +400,7 @@ export default function Donation2() {
       </section>
 
       <section className="tax-box">
-        <p>Get <b>50% Exemption</b> on your donation under <b>Section 80G of Income Tax Act 1961</b></p>
+        <p>{taxLead} <b>{taxHighlight1}</b> {taxMiddle} <b>{taxHighlight2}</b></p>
       </section>
     </>
   );

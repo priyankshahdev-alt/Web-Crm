@@ -1,0 +1,171 @@
+{
+  "slug": "mission-bezubaan",
+  "title": "Mission Bezubaan",
+  "metaTitle": "Mission Bezubaan | Being Sevak Foundation",
+  "metaDescription": "Mission Bezubaan by Being Sevak Charitable Trust supports stray animals with food, care, shelter, rescue support and a dedicated Paw Care Center for voiceless companions.",
+  "template": "default",
+  "sortOrder": 11,
+  "isHome": false,
+  "sections": [
+    {
+      "type": "mission-bezubaan-tax",
+      "name": "Page Title",
+      "sortOrder": 1,
+      "isActive": true,
+      "content": {
+        "title": "Mission Bezubaan"
+      }
+    },
+    {
+      "type": "mission-bezubaan-hero",
+      "name": "Hero Section",
+      "sortOrder": 2,
+      "isActive": true,
+      "content": {
+        "tag": "Mission Bezubaan",
+        "headingLine1": "Be Their",
+        "headingHighlight": "Voice",
+        "headingLine2": "Feed & Protect Street Animals",
+        "description": "Mission Bezubaan by Being Sevak Charitable Trust supports stray animals with food, care, shelter and compassion. Every paw deserves love, safety and a better tomorrow.",
+        "image": "/images/b1.png"
+      }
+    },
+    {
+      "type": "bezubaan-hero-stats",
+      "name": "Hero Stats",
+      "sortOrder": 3,
+      "isActive": true,
+      "content": {
+        "items": [
+          { "value": "5000+", "label": "Animals Fed" },
+          { "value": "24/7", "label": "Care Support" }
+        ]
+      }
+    },
+    {
+      "type": "bezubaan-about",
+      "name": "About Bezubaan",
+      "sortOrder": 4,
+      "isActive": true,
+      "content": {
+        "tag": "About Bezubaan",
+        "headingLine1": "Compassion For Every",
+        "headingHighlight": "Silent Soul",
+        "text": "Mission Bezubaan works to provide nutrition, safety and medical support for stray animals living on streets. Our goal is to create a kinder and more caring world for voiceless companions.",
+        "image": "/images/b2.jpg",
+        "items": [
+          { "title": "🐾 Daily Feeding", "description": "Nutritious meals for hungry street animals." },
+          { "title": "❤️ Medical Care", "description": "Emergency treatment and healthcare support." },
+          { "title": "🚑 Rescue Support", "description": "Helping injured and abandoned animals." },
+          { "title": "🏠 Safe Shelter", "description": "Providing warmth, care and protection." }
+        ]
+      }
+    },
+    {
+      "type": "bezubaan-impact",
+      "name": "Our Impact",
+      "sortOrder": 5,
+      "isActive": true,
+      "content": {
+        "tag": "Our Impact",
+        "heading": "How We Help Street Animals",
+        "text": "Through dedicated feeding drives, rescue missions and community awareness, Mission Bezubaan is making a real difference in the lives of thousands of stray animals across India.",
+        "stats": [
+          { "value": "10K+", "label": "Meals Served" },
+          { "value": "1000+", "label": "Animals Helped" },
+          { "value": "50+", "label": "Rescue Drives" },
+          { "value": "24/7", "label": "Care Support" }
+        ],
+        "image": "/images/b3.jpg"
+      }
+    },
+    {
+      "type": "bezubaan-paw-care",
+      "name": "Paw Care Center",
+      "sortOrder": 6,
+      "isActive": true,
+      "content": {
+        "miniTitle": "Paw Care Center",
+        "heading": "We Have Opened A Dedicated Paw Care Center",
+        "text1": "We have opened a dedicated Paw Care Center in Goregaon to support and protect stray dogs in need. Our center provides safe shelter, food, and proper care for abandoned and homeless dogs.",
+        "text2": "Through this initiative, we aim to create a compassionate space where every stray dog gets love, protection, and a second chance at life.",
+        "image": "/images/dog1.jpeg",
+        "images": [
+          { "src": "/images/b4.jpg", "alt": "Gallery 1" },
+          { "src": "/images/b5.jpg", "alt": "Gallery 2" },
+          { "src": "/images/b6.jpg", "alt": "Gallery 3" }
+        ],
+        "features": [
+          { "title": "Shelter Support", "description": "Safe space for stray dogs" },
+          { "title": "Medical Care", "description": "Treatment for injured dogs" },
+          { "title": "Daily Feeding", "description": "Food & regular care support" }
+        ]
+      }
+    },
+    {
+      "type": "bezubaan-care-about",
+      "name": "Spreading Care Across The Streets",
+      "sortOrder": 7,
+      "isActive": true,
+      "content": {
+        "tag": "Spreading Care Across The Streets",
+        "headingLine1": "Helping Animals",
+        "headingHighlight": "With Love & Compassion",
+        "text": "Through continuous feeding drives and rescue efforts, Mission Bezubaan is creating hope and comfort for thousands of stray animals across communities.",
+        "items": [
+          { "title": "🐕 Food Distribution", "description": "We regularly distribute food and water to hungry animals." },
+          { "title": "🏥 Rescue Activities", "description": "Our team rescues injured and helpless animals." },
+          { "title": "💕 Care & Awareness", "description": "We encourage kindness towards animals in communities." },
+          { "title": "🏡 Shelter Support", "description": "Providing safe homes for abandoned animals." }
+        ],
+        "image": "/images/b7.jpeg"
+      }
+    },
+    {
+      "type": "bezubaan-gallery",
+      "name": "Project Gallery",
+      "sortOrder": 8,
+      "isActive": true,
+      "content": {
+        "tag": "Gallery",
+        "heading": "Moments Of Love & Care",
+        "images": [
+          { "src": "/images/b2.jpg", "alt": "Gallery 1" },
+          { "src": "/images/b3.jpg", "alt": "Gallery 2" },
+          { "src": "/images/b4.jpg", "alt": "Gallery 3" },
+          { "src": "/images/b5.jpg", "alt": "Gallery 4" },
+          { "src": "/images/b6.jpg", "alt": "Gallery 5" },
+          { "src": "/images/b7.jpeg", "alt": "Gallery 6" },
+          { "src": "/images/dog1.jpeg", "alt": "Gallery 7" },
+          { "src": "/images/b1.png", "alt": "Gallery 8" }
+        ]
+      }
+    },
+    {
+      "type": "bezubaan-donation",
+      "name": "Donation CTA",
+      "sortOrder": 9,
+      "isActive": true,
+      "content": {
+        "tag": "Mission Bezubaan",
+        "title": "Speak for Those Who Cannot Speak",
+        "description": "Our mission is to protect and care for stray and voiceless animals by providing food, medical support, shelter, and love.",
+        "donationUrl": "/donations/donation-inline-bezubaan.html"
+      }
+    },
+    {
+      "type": "bezubaan-testimonials",
+      "name": "Testimonials",
+      "sortOrder": 10,
+      "isActive": true,
+      "content": {
+        "heading": "What Our Donors Say",
+        "items": [
+          { "quote": "Being Sevak is doing incredible work for visually impaired and needy families. Proud to support this mission.", "name": "Riya Sharma" },
+          { "quote": "Transparent work, genuine impact, and a wonderful team dedicated to helping people with dignity.", "name": "Rahul Mehta" },
+          { "quote": "Every donation creates real change. Their food distribution drives truly touch lives.", "name": "Anjali Verma" }
+        ]
+      }
+    }
+  ]
+}

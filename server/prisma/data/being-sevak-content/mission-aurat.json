@@ -1,0 +1,139 @@
+{
+  "slug": "mission-aurat",
+  "title": "Mission Aurat",
+  "metaTitle": "Mission Aurat | Being Sevak Foundation",
+  "metaDescription": "Mission Aurat by Being Sevak Charitable Trust empowers women through education, skill development, healthcare awareness and self-reliance initiatives for stronger families and communities.",
+  "template": "default",
+  "sortOrder": 10,
+  "isHome": false,
+  "sections": [
+    {
+      "type": "mission-aurat-tax",
+      "name": "Page Title",
+      "sortOrder": 1,
+      "isActive": true,
+      "content": {
+        "title": "Mission Aurat"
+      }
+    },
+    {
+      "type": "mission-aurat-hero",
+      "name": "Hero Section",
+      "sortOrder": 2,
+      "isActive": true,
+      "content": {
+        "tag": "Women Empowerment Initiative",
+        "headingLine1": "Empowering",
+        "headingHighlight": "Women",
+        "headingLine2": "Creating Brighter Futures",
+        "description": "Aurat is dedicated to uplifting women through education, skill development, healthcare awareness and self-reliance. Together we can build stronger families and empowered communities.",
+        "image": "/images/aurat7.jpg"
+      }
+    },
+    {
+      "type": "aurat-hero-stats",
+      "name": "Hero Stats",
+      "sortOrder": 3,
+      "isActive": true,
+      "content": {
+        "items": [
+          { "value": "15K+", "label": "Women Supported" },
+          { "value": "120+", "label": "Awareness Drives" }
+        ]
+      }
+    },
+    {
+      "type": "aurat-about",
+      "name": "About Aurat",
+      "sortOrder": 4,
+      "isActive": true,
+      "content": {
+        "tag": "About Aurat",
+        "heading": "Supporting Women With Dignity & Opportunity",
+        "text": "Aurat focuses on helping women become independent and confident through education, awareness campaigns, vocational training and community support.",
+        "image": "/images/aurat6.jpg",
+        "items": [
+          { "title": "Education", "description": "Encouraging girls and women towards learning opportunities." },
+          { "title": "Skill Training", "description": "Providing practical training to create sustainable livelihoods." },
+          { "title": "Health Support", "description": "Promoting healthcare awareness and hygiene initiatives." },
+          { "title": "Self Reliance", "description": "Helping women build confidence and financial independence." }
+        ]
+      }
+    },
+    {
+      "type": "aurat-mission",
+      "name": "Our Mission",
+      "sortOrder": 5,
+      "isActive": true,
+      "content": {
+        "tag": "Our Mission",
+        "heading": "Building Hope Through Empowerment",
+        "items": [
+          { "number": "01", "title": "Awareness Programs", "description": "Conducting campaigns to spread awareness about women's rights, health and education." },
+          { "number": "02", "title": "Skill Development", "description": "Creating opportunities for women through practical training and workshops." },
+          { "number": "03", "title": "Community Support", "description": "Building safe and supportive communities where women can grow confidently." }
+        ]
+      }
+    },
+    {
+      "type": "aurat-impact",
+      "name": "Our Impact",
+      "sortOrder": 6,
+      "isActive": true,
+      "content": {
+        "tag": "Our Impact",
+        "heading": "Creating Positive Change Every Day",
+        "text": "Through continuous outreach and empowerment initiatives, Aurat is helping women discover confidence, independence and hope.",
+        "stats": [
+          { "value": "500+", "label": "Training Sessions" },
+          { "value": "20+", "label": "Communities Reached" },
+          { "value": "10K+", "label": "Lives Impacted" }
+        ],
+        "image": "/images/auratImpact.jpeg"
+      }
+    },
+    {
+      "type": "aurat-gallery",
+      "name": "Program Gallery",
+      "sortOrder": 7,
+      "isActive": true,
+      "content": {
+        "tag": "Program Highlights",
+        "heading": "Moments Of Empowerment",
+        "description": "Together we create opportunities, confidence and hope for women through impactful community initiatives.",
+        "images": [
+          { "src": "/images/aurat1.jpg", "alt": "Awareness Drive" },
+          { "src": "/images/aurat2.jpg", "alt": "Women Support" },
+          { "src": "/images/aurat3.jpg", "alt": "Skill Training" },
+          { "src": "/images/aurat4.jpg", "alt": "Community Care" }
+        ]
+      }
+    },
+    {
+      "type": "aurat-donation",
+      "name": "Donation CTA",
+      "sortOrder": 8,
+      "isActive": true,
+      "content": {
+        "tag": "Mission Aurat",
+        "title": "Empower Her, Empower Society",
+        "description": "Help women gain education, skills, healthcare, and opportunities to lead independent and dignified lives.",
+        "donationUrl": "/donations/donation-inline-aurat.html"
+      }
+    },
+    {
+      "type": "aurat-testimonials",
+      "name": "Testimonials",
+      "sortOrder": 9,
+      "isActive": true,
+      "content": {
+        "heading": "What Our Donors Say",
+        "items": [
+          { "quote": "Being Sevak is doing incredible work for visually impaired and needy families. Proud to support this mission.", "name": "Riya Sharma" },
+          { "quote": "Transparent work, genuine impact, and a wonderful team dedicated to helping people with dignity.", "name": "Rahul Mehta" },
+          { "quote": "Every donation creates real change. Their food distribution drives truly touch lives.", "name": "Anjali Verma" }
+        ]
+      }
+    }
+  ]
+}

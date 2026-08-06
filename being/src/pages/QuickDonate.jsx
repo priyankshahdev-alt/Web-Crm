@@ -1,17 +1,22 @@
 import { Link, useSearchParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { usePageContent } from '../hooks/usePageContent';
 
 const UNIT_PRICE = { annapurna: 500, vidhya: 400, aurat: 300, atma: 600, bezubaan: 200 };
 
-const missions = [
-  { key: 'annapurna', icon: '\u{1F33E}', name: 'Mission Annapurna', desc: 'Dry Ration Kits & Mid-Day Meals for Visually Impaired & Underprivileged Individuals' },
-  { key: 'vidhya', icon: '\u{1F4DA}', name: 'Mission Vidhya', desc: 'D.E.C \u2013 Digital Education Centre, Free digital education, Writing Pad & Stationery Kit Distribution' },
-  { key: 'aurat', icon: '\u{1F469}', name: 'Mission Aurat', desc: 'Sanitary Pad Distribution & Hygiene Kit Distribution for underprivileged women' },
-  { key: 'atma', icon: '\u{1F4AA}', name: 'Mission Atma Nirbhar', desc: 'Rozgaar Booth, Wheelchair & Tricycle Distribution, Sewing Machine & Flour Mill Distribution' },
-  { key: 'bezubaan', icon: '\u{1F43E}', name: 'Mission Bezubaan', desc: 'Animal Feeding Center, Biscuit, Milk & Pedigree Distribution for stray animals' },
-];
-
 export default function QuickDonate() {
+  const content = usePageContent('quick-donate');
+
+  const bannerText = content('quick-banner', 'text') ?? 'Being Sevak Charitable Trust';
+  const missions =
+    content('quick-missions', 'items') ?? [
+      { key: 'annapurna', icon: '\u{1F33E}', name: 'Mission Annapurna', desc: 'Dry Ration Kits & Mid-Day Meals for Visually Impaired & Underprivileged Individuals' },
+      { key: 'vidhya', icon: '\u{1F4DA}', name: 'Mission Vidhya', desc: 'D.E.C \u2013 Digital Education Centre, Free digital education, Writing Pad & Stationery Kit Distribution' },
+      { key: 'aurat', icon: '\u{1F469}', name: 'Mission Aurat', desc: 'Sanitary Pad Distribution & Hygiene Kit Distribution for underprivileged women' },
+      { key: 'atma', icon: '\u{1F4AA}', name: 'Mission Atma Nirbhar', desc: 'Rozgaar Booth, Wheelchair & Tricycle Distribution, Sewing Machine & Flour Mill Distribution' },
+      { key: 'bezubaan', icon: '\u{1F43E}', name: 'Mission Bezubaan', desc: 'Animal Feeding Center, Biscuit, Milk & Pedigree Distribution for stray animals' },
+    ];
+
   const [searchParams] = useSearchParams();
   const [quickAmt, setQuickAmt] = useState(200);
   const [activePreset, setActivePreset] = useState(200);
@@ -50,7 +55,12 @@ export default function QuickDonate() {
     setCartQty(prev => ({ ...prev, [key]: Math.max(1, prev[key] + delta) }));
   };
 
-  const total = Object.keys(cartQty).reduce((s, k) => s + cartQty[k] * UNIT_PRICE[k], 0);
+  const priceOf = (key) => {
+    const item = missions.find((m) => m.key === key);
+    return item?.price ?? UNIT_PRICE[key] ?? 0;
+  };
+
+  const total = Object.keys(cartQty).reduce((s, k) => s + cartQty[k] * priceOf(k), 0);
 
   const proceedDonate = () => {
     if (total === 0) {
@@ -326,7 +336,7 @@ export default function QuickDonate() {
       {/* Blurred page background */}
       <div className="page-blur-wrap">
         <div style={{background: '#00a3da', color: '#fff', textAlign: 'center', padding: '10px', fontFamily: "'Montserrat', sans-serif", fontWeight: 600, fontSize: 14}}>
-          Being Sevak Charitable Trust
+          {bannerText}
         </div>
         <div style={{background: '#fff', borderBottom: '2px solid #e6f7fd', padding: '14px 8%', position: 'sticky', top: 0, zIndex: 100, boxShadow: '0 4px 15px rgba(0,0,0,0.06)'}}>
           <div style={{display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap', justifyContent: 'center'}}>
@@ -367,7 +377,7 @@ export default function QuickDonate() {
                 <div className="mission-desc">{m.desc}</div>
               </div>
               <div className="mission-right">
-                <div className="mission-price">{cartQty[m.key] > 0 ? `\u20B9${(cartQty[m.key] * UNIT_PRICE[m.key]).toLocaleString('en-IN')}` : '\u20B90'}</div>
+                <div className="mission-price">{cartQty[m.key] > 0 ? `\u20B9${(cartQty[m.key] * priceOf(m.key)).toLocaleString('en-IN')}` : '\u20B90'}</div>
                 <div className="mission-qty-row">
                   <button className="qty-btn" onClick={() => changeQty(m.key, -1)}><i className="fas fa-minus"></i></button>
                   <span className="qty-val">{cartQty[m.key]}</span>

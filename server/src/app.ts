@@ -26,11 +26,11 @@ export function createApp(): Express {
     app.use(morgan('dev'));
   }
 
-  app.use(globalLimiter);
-
   app.get('/health', (_req, res) => {
     res.json({ success: true, message: 'OK', data: { status: 'up', timestamp: new Date().toISOString() }, errors: null });
   });
+
+  app.use(globalLimiter);
 
   app.use('/api/v1', routes);
 

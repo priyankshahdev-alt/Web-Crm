@@ -1,0 +1,121 @@
+{
+  "slug": "mission-vidhya",
+  "title": "Mission Vidhya",
+  "metaTitle": "Mission Vidhya | Being Sevak Foundation",
+  "metaDescription": "Project Vidhya – Fight Against Illiteracy by Being Sevak Charitable Trust empowers disabled and underprivileged children through education, school kits, learning support and personal development.",
+  "template": "default",
+  "sortOrder": 9,
+  "isHome": false,
+  "sections": [
+    {
+      "type": "mission-vidhya-tax",
+      "name": "Page Title",
+      "sortOrder": 1,
+      "isActive": true,
+      "content": {
+        "title": "Mission Vidhya"
+      }
+    },
+    {
+      "type": "mission-vidhya-hero",
+      "name": "Hero Section",
+      "sortOrder": 2,
+      "isActive": true,
+      "content": {
+        "tag": "Education For Every Child",
+        "headingHighlight": "Vidhya",
+        "headingText": "Programme",
+        "description": "Being Sevak Charitable Trust presents Project Vidhya – Fight Against Illiteracy, an initiative dedicated to empowering disabled and underprivileged children through education and personal development.",
+        "image": "/images/v1.jpg"
+      }
+    },
+    {
+      "type": "vidhya-hero-stats",
+      "name": "Hero Stats",
+      "sortOrder": 3,
+      "isActive": true,
+      "content": {
+        "items": [
+          { "value": "12K+", "label": "Students Helped" },
+          { "value": "150+", "label": "Education Drives" }
+        ]
+      }
+    },
+    {
+      "type": "vidhya-about",
+      "name": "About Programme",
+      "sortOrder": 4,
+      "isActive": true,
+      "content": {
+        "tag": "About Programme",
+        "heading": "Building Future Through",
+        "headingHighlight": "Education",
+        "text": "Our mission is to empower children from financially weak backgrounds by providing quality education support. From notebooks and school kits to awareness programmes and mentorship — we aim to create equal opportunities for every child.",
+        "image": "/images/v2.jpg",
+        "features": [
+          { "icon": "📖", "title": "School Kits", "description": "Educational support material for children." },
+          { "icon": "🎓", "title": "Learning Support", "description": "Helping children continue quality education." }
+        ]
+      }
+    },
+    {
+      "type": "vidhya-impact",
+      "name": "Our Impact",
+      "sortOrder": 5,
+      "isActive": true,
+      "content": {
+        "tag": "Our Impact",
+        "heading": "Changing Lives Through Learning",
+        "items": [
+          { "value": "10,000+", "label": "Educational Kits Distributed" },
+          { "value": "50+", "label": "Communities Reached" },
+          { "value": "500+", "label": "Volunteers Connected" },
+          { "value": "100%", "label": "Transparent Support" }
+        ]
+      }
+    },
+    {
+      "type": "vidhya-gallery",
+      "name": "Project Gallery",
+      "sortOrder": 6,
+      "isActive": true,
+      "content": {
+        "tag": "Gallery",
+        "heading": "Moments Of Hope & Education",
+        "images": [
+          { "src": "/images/V3.jpg", "big": false },
+          { "src": "/images/v4.png", "big": true },
+          { "src": "/images/V5.jpg", "big": false },
+          { "src": "/images/v6.jpg", "big": false },
+          { "src": "/images/v7.jpeg", "big": false }
+        ]
+      }
+    },
+    {
+      "type": "vidhya-donation",
+      "name": "Donation CTA",
+      "sortOrder": 7,
+      "isActive": true,
+      "content": {
+        "tag": "Support A Child",
+        "title": "Help Us Continue This Educational Mission",
+        "description": "Your donation helps children receive books, school kits and access to learning opportunities.",
+        "donationUrl": "/donations/donation-inline-vidhya.html"
+      }
+    },
+    {
+      "type": "vidhya-testimonials",
+      "name": "Testimonials",
+      "sortOrder": 8,
+      "isActive": true,
+      "content": {
+        "heading": "What Our Donors Say",
+        "items": [
+          { "quote": "\"Being Sevak is doing incredible work for visually impaired and needy families. Proud to support this mission.\"", "name": "Riya Sharma" },
+          { "quote": "\"Transparent work, genuine impact, and a wonderful team dedicated to helping people with dignity.\"", "name": "Rahul Mehta" },
+          { "quote": "\"Every donation creates real change. Their food distribution drives truly touch lives.\"", "name": "Anjali Verma" }
+        ]
+      }
+    }
+  ]
+}

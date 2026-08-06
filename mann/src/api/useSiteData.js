@@ -1,18 +1,13 @@
 // =============================================
 // useSiteData – sab pages ka data yahan se aata hai.
-// API mode on hai (VITE_API_URL set) to /api/v1/site/mann se live
-// data fetch hota hai (sections + entities DB se), baki keys static
-// data (src/data) se merge hote hain. API fail ho to bina tode
-// static data par fallback ho jata hai.
+// Backend off hai to static data (src/data) use hota hai.
+// Backend on hai (VITE_API_URL + VITE_SITE_SLUG set) to API se fetch hota hai
+// aur live content static data ke upar overlay hota hai.
 // =============================================
 import { useEffect, useState } from "react";
-import { isApiMode, API_ENDPOINTS } from "../config";
-import { getJSON } from "./client";
-import { img } from "../utils/images";
-import {
-  slides, stats, initiatives, activities, getInvolved, causes, partners, contact,
-  navMenu, footerPrograms, footerLegal,
-} from "../data/site";
+import { isApiMode } from "../config";
+import { getSite } from "./client";
+import { slides, stats, initiatives, activities, getInvolved, causes, partners, contact } from "../data/site";
 import { projects, gallerySections, team, homeProjects } from "../data/projects";
 
 const staticData = {
@@ -21,73 +16,41 @@ const staticData = {
   projects, gallerySections, team, homeProjects,
 };
 
-function getHomeSections(site) {
-  const pages = site?.pages ?? [];
-  const home = pages.find((p) => p.isHome) ?? pages[0];
-  const byType = {};
-  for (const s of home?.sections ?? []) byType[s.type] = s;
-  return byType;
+function findSection(page, type) {
+  return (page?.sections || []).find((s) => s.type === type);
 }
 
-function mapSlides(section) {
-  return (section?.content?.slides ?? []).map((s, i) => ({
-    id: s.id ?? i,
-    desktop: img(s.imageUrl),
-    mobile: img(s.mobileImageUrl || s.imageUrl),
-    alt: s.altText || s.title || "",
-    cta: s.ctaUrl || "/",
-  }));
+function mapSlides(sliders) {
+  const raw = (sliders || []).flatMap((s) => s.slides || []);
+  if (!raw.length) return null;
+  const mapped = raw
+    .filter((sl) => sl.imageUrl)
+    .map((sl) => ({
+      desktop: sl.imageUrl,
+      mobile: sl.mobileImageUrl || sl.imageUrl,
+      alt: sl.altText || sl.title || "",
+      cta: sl.link || sl.content?.primaryCta?.url || "/get-involved/donate-online",
+    }));
+  return mapped.length ? mapped : null;
 }
 
-function mapStats(section) {
-  return (section?.content?.items ?? []).map((it) => ({ value: it.value, label: it.label }));
+function mapStats(page) {
+  const section = findSection(page, "stats");
+  const items = (section?.content?.items || []).filter((it) => it && (it.value || it.label));
+  if (!items.length) return null;
+  return items.map((it) => ({ value: it.value, label: it.label }));
 }
 
-function mapInitiatives(section) {
-  return (section?.content?.projects ?? []).map((p, i) => ({
-    num: String(i + 1).padStart(2, "0"),
-    slug: (p.url || "").replace(/^\/projects\//, "") || (p.title || "").toLowerCase().replace(/\s+/g, "-"),
-    name: (p.title || "").toUpperCase(),
-    icon: "handshake",
-    image: img(p.image),
-    text: p.description || "",
-    bg: "bg-surface-container-low",
-  }));
-}
-
-function mapActivities(section) {
-  const images = Array.isArray(section?.content?.images)
-    ? section.content.images
-    : (section?.entities?.[0]?.items ?? []).map((it) => it.imageUrl);
-  return images.map((image) => ({ image: img(image), caption: "" }));
-}
-
-function mapContact(site) {
-  const org = site?.organization ?? {};
-  const s = site?.settings ?? {};
-  const split = (v) => (v ? String(v).split(",").map((x) => x.trim()).filter(Boolean) : []);
-  const phones = split(s["contact.phone"] ?? org.phone);
-  const emails = split(s["contact.email"] ?? org.email);
+function mapContact(settings, fallback) {
+  const phone = settings["contact.phone"] || "";
+  const whatsapp = settings["whatsapp.number"] || "";
   return {
-    address: s["contact.address"] ?? org.address ?? "",
-    phones: phones.length ? phones : [org.phone].filter(Boolean),
-    emails: emails.length ? emails : [org.email].filter(Boolean),
-    gpayQr: img(s["payment.qrUrl"] || "/gpay-qr.jpeg"),
-    whatsapp: s["whatsapp.number"] || "",
-    instagram: s["social.instagram"] || "",
-    facebook: s["social.facebook"] || "",
-    youtube: s["social.youtube"] || "",
-  };
-}
-
-function mapSiteData(site) {
-  const secs = getHomeSections(site);
-  return {
-    slides: mapSlides(secs["hero-slider"]),
-    stats: mapStats(secs.stats),
-    initiatives: mapInitiatives(secs["projects-grid"]),
-    activities: mapActivities(secs.gallery),
-    contact: mapContact(site),
+    address: settings["contact.address"] || fallback.address,
+    phones: phone ? [phone] : fallback.phones,
+    emails: settings["contact.email"] ? [settings["contact.email"]] : fallback.emails,
+    whatsapp: whatsapp ? `https://wa.me/${whatsapp.replace(/[^\d]/g, "")}` : fallback.whatsapp,
+    instagram: settings["social.instagram"] || fallback.instagram,
+    gpayQr: fallback.gpayQr,
   };
 }
 
@@ -105,10 +68,21 @@ export function useSiteData() {
     let cancelled = false;
     (async () => {
       try {
-        const json = await getJSON(API_ENDPOINTS.site);
+        const site = await getSite();
         if (cancelled) return;
-        const site = json?.data ?? json;
-        setData({ ...staticData, ...mapSiteData(site) });
+        if (!site) {
+          setData(staticData);
+          return;
+        }
+        const home = (site.pages || []).find((p) => p.isHome || p.slug === "home");
+        const settings = site.settings || {};
+        setData({
+          ...staticData,
+          slides: mapSlides(site.sliders) || staticData.slides,
+          stats: mapStats(home) || staticData.stats,
+          contact: mapContact(settings, staticData.contact),
+          site,
+        });
       } catch (e) {
         if (!cancelled) setError(e);
         if (!cancelled) setData(staticData);

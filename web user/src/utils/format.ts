@@ -57,10 +57,12 @@ export function formatBytes(bytes: number): string {
   return `${parseFloat((bytes / Math.pow(k, i)).toFixed(1))} ${sizes[i]}`
 }
 
-export function initials(name: string): string {
-  const parts = name.trim().split(/\s+/).filter(Boolean)
+export function initials(name?: string | null): string {
+  const clean = (name ?? '').trim()
+  if (!clean) return 'A'
+  const parts = clean.split(/\s+/).filter(Boolean)
   if (parts.length >= 2) return `${parts[0][0]}${parts[parts.length - 1][0]}`.toUpperCase()
-  return (name.trim()[0] || 'A').toUpperCase()
+  return (clean[0] || 'A').toUpperCase()
 }
 
 export function formatNumber(value: number): string {

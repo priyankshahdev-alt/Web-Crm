@@ -1,0 +1,130 @@
+{
+  "slug": "terms",
+  "title": "Terms & Conditions",
+  "metaTitle": "Terms & Conditions | Being Sevak Foundation",
+  "metaDescription": "Terms and conditions, privacy policy, and legal information for the Being Sevak Charitable Trust website.",
+  "template": "default",
+  "sortOrder": 45,
+  "isHome": false,
+  "sections": [
+    {
+      "type": "terms-banner",
+      "name": "Terms Banner",
+      "sortOrder": 1,
+      "isActive": true,
+      "content": {
+        "title": "Terms & Conditions"
+      }
+    },
+    {
+      "type": "terms-privacy",
+      "name": "Privacy Statement",
+      "sortOrder": 2,
+      "isActive": true,
+      "content": {
+        "title": "Privacy Statement",
+        "text": "Being Sevak Charitable Trust is committed to protecting the privacy of all users and donors visiting this website. Any information received from users is kept strictly confidential and is disclosed to third parties only when necessary for processing donations or fulfilling legal obligations. We ensure responsible handling of your personal information and maintain appropriate safeguards to protect your privacy."
+      }
+    },
+    {
+      "type": "terms-conditions",
+      "name": "Terms and Conditions",
+      "sortOrder": 3,
+      "isActive": true,
+      "content": {
+        "title": "Terms and Conditions",
+        "paragraphs": [
+          "Being Sevak Charitable Trust respects and protects your privacy rights and personal information. Any details provided by you through this website will not be shared with external parties except where required to process donations, comply with legal requirements, or improve our services.",
+          "By accessing this website and/or making a donation, you agree to comply with and be bound by these Terms and Conditions. Being Sevak Charitable Trust reserves the right to modify or update these terms at any time without prior notice. Continued use of the website after changes are posted constitutes your acceptance of those changes.",
+          "These Terms and Conditions shall be governed and interpreted in accordance with the laws of India."
+        ]
+      }
+    },
+    {
+      "type": "terms-ownership",
+      "name": "Content Ownership",
+      "sortOrder": 4,
+      "isActive": true,
+      "content": {
+        "title": "Content Ownership",
+        "paragraphs": [
+          "All content published on this website, including but not limited to graphics, blogs, articles, write-ups, photographs, videos, logos, images, designs, and software, is the exclusive property of Being Sevak Charitable Trust and is protected under applicable intellectual property laws.",
+          "Unauthorised copying, reproduction, distribution, or use of any content without prior written permission from Being Sevak Charitable Trust may result in legal action."
+        ]
+      }
+    },
+    {
+      "type": "terms-privacy-policy",
+      "name": "Privacy Policy",
+      "sortOrder": 5,
+      "isActive": true,
+      "content": {
+        "title": "Privacy Policy",
+        "intro": "Being Sevak Charitable Trust is dedicated to protecting your privacy and ensuring transparency in the collection and use of personal data.",
+        "collectIntro": "We may collect information such as:",
+        "collectItems": ["Name", "Email address", "Phone number", "Donation amount", "Address and payment details"],
+        "useIntro": "This information is used solely for:",
+        "useItems": ["Processing donations", "Sending donation receipts", "Providing updates regarding our initiatives", "Sharing newsletters or important communications"],
+        "closing": "We implement secure methods and industry-standard security practices to store and protect your personal information. Users may opt out of promotional communications at any time."
+      }
+    },
+    {
+      "type": "terms-liability",
+      "name": "Disclaimer of Liability",
+      "sortOrder": 6,
+      "isActive": true,
+      "content": {
+        "title": "Disclaimer of Liability",
+        "paragraphs": [
+          "Being Sevak Charitable Trust shall not be held responsible for any direct, indirect, incidental, or consequential damages arising from the misuse, unauthorised access, or disclosure of personal information by third parties through this website or external links.",
+          "Users are advised to exercise caution while sharing personal information online."
+        ]
+      }
+    },
+    {
+      "type": "terms-refund",
+      "name": "Cancellation and Refund Policy",
+      "sortOrder": 7,
+      "isActive": true,
+      "content": {
+        "title": "Cancellation and Refund Policy",
+        "paragraphs": [
+          "Being Sevak Charitable Trust does not generally entertain cancellation or refund requests due to internal policies.",
+          "Refund requests may only be considered in the following situations:"
+        ],
+        "items": ["Duplicate donation transactions", "Incorrect donation amount entered by mistake"],
+        "after": [
+          "Any refund request must be submitted within 15 days from the date of donation along with valid transaction details.",
+          "The decision of Being Sevak Charitable Trust regarding refunds shall be final."
+        ]
+      }
+    },
+    {
+      "type": "terms-security",
+      "name": "Security Measures",
+      "sortOrder": 8,
+      "isActive": true,
+      "content": {
+        "title": "Security Measures",
+        "paragraphs": [
+          "Being Sevak Charitable Trust employs robust security measures to safeguard your personal data against unauthorised access, misuse, loss, or disclosure. This includes:"
+        ],
+        "items": ["Secure servers", "Encrypted payment gateways", "Restricted access to sensitive information", "Regular monitoring of website security practices"]
+      }
+    },
+    {
+      "type": "terms-contact",
+      "name": "Contact Details",
+      "sortOrder": 9,
+      "isActive": true,
+      "content": {
+        "title": "Contact Details",
+        "rows": [
+          { "icon": "fa-building", "text": "Being Sevak Charitable Trust" },
+          { "icon": "fa-phone", "text": "+91 8879035035 / +91 8879034034" },
+          { "icon": "fa-globe", "text": "www.beingsevak.org" }
+        ]
+      }
+    }
+  ]
+}

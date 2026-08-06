@@ -1,0 +1,66 @@
+{
+  "slug": "ngo-collaboration",
+  "title": "NGO Collaboration & Partnerships",
+  "metaTitle": "NGO Collaboration | Being Sevak Foundation",
+  "metaDescription": "Being Sevak Charitable Trust partners with NGOs, community groups, and changemakers to build stronger communities and lasting social change.",
+  "template": "default",
+  "sortOrder": 65,
+  "isHome": false,
+  "sections": [
+    {
+      "type": "ngo-heading",
+      "name": "Page Heading",
+      "sortOrder": 1,
+      "isActive": true,
+      "content": {
+        "tag": "BSCT Partnerships",
+        "heading": "NGO Collaboration & Partnerships",
+        "description": "Together, we can create stronger communities and lasting change through meaningful partnerships and collective social responsibility."
+      }
+    },
+    {
+      "type": "ngo-sustainable",
+      "name": "Creating Sustainable Impact",
+      "sortOrder": 2,
+      "isActive": true,
+      "content": {
+        "heading": "Creating Sustainable Impact",
+        "text1": "In today's rapidly evolving world, addressing social, economic, and environmental challenges requires collective efforts and meaningful partnerships.",
+        "text2": "Non-Governmental Organizations (NGOs) play a vital role in creating positive change, but the journey of building and sustaining impactful initiatives often comes with significant challenges."
+      }
+    },
+    {
+      "type": "ngo-collaboration",
+      "name": "Why Collaboration Matters",
+      "sortOrder": 3,
+      "isActive": true,
+      "content": {
+        "heading": "Why Collaboration Matters",
+        "text1": "At Being Sevak Charitable Trust, we strongly believe that collaboration is the key to creating long-term and sustainable social impact.",
+        "text2": "By partnering with like-minded organizations, institutions, social groups, and changemakers, we can combine resources, expertise, and community reach to serve society more effectively."
+      }
+    },
+    {
+      "type": "ngo-shared-mission",
+      "name": "Shared Mission",
+      "sortOrder": 4,
+      "isActive": true,
+      "content": {
+        "heading": "Shared Mission",
+        "text": "Collaboration is more than just working together — it is a shared commitment towards common goals, social responsibility, and community empowerment."
+      }
+    },
+    {
+      "type": "ngo-communities",
+      "name": "Building Stronger Communities",
+      "sortOrder": 5,
+      "isActive": true,
+      "content": {
+        "heading": "Building Stronger Communities",
+        "text1": "Whether through formal partnerships or informal associations, these relationships help strengthen initiatives, expand outreach, and create greater impact for the communities we serve.",
+        "text2": "BSCT welcomes NGOs, community groups, educational institutions, healthcare organizations, and social leaders to join hands with us in building a compassionate, inclusive, and empowered society.",
+        "quote": "Together, We Can Create Stronger Communities and Lasting Change."
+      }
+    }
+  ]
+}

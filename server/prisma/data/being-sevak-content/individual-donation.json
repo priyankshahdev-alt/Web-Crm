@@ -1,0 +1,58 @@
+{
+  "slug": "individual-donation",
+  "title": "Individual Donation",
+  "metaTitle": "Individual Donation | Being Sevak Foundation",
+  "metaDescription": "Donate to Being Sevak Charitable Trust as an individual and support food, education, healthcare, and hope for communities in need.",
+  "template": "default",
+  "sortOrder": 61,
+  "isHome": false,
+  "sections": [
+    {
+      "type": "individual-alert",
+      "name": "Alert Banner",
+      "sortOrder": 1,
+      "isActive": true,
+      "content": {
+        "text": "Being Sevak Charitable Trust"
+      }
+    },
+    {
+      "type": "individual-hero",
+      "name": "Hero",
+      "sortOrder": 2,
+      "isActive": true,
+      "content": {
+        "heading": "Individual",
+        "description": "Every individual has the power to make a difference. Join us in our mission to serve humanity with compassion, dignity, and hope."
+      }
+    },
+    {
+      "type": "individual-cards",
+      "name": "Why Donate Cards",
+      "sortOrder": 3,
+      "isActive": true,
+      "content": {
+        "items": [
+          { "icon": "fas fa-hands-helping", "title": "Make an Impact", "description": "Your support helps us provide food, education, healthcare, and hope to those who need it most." },
+          { "icon": "fas fa-users", "title": "Join Our Community", "description": "Become part of a growing movement of individuals committed to positive change and compassionate service." },
+          { "icon": "fas fa-heart", "title": "Spread Kindness", "description": "Every act of kindness creates ripples. Together we can build a better future for communities in need." }
+        ]
+      }
+    },
+    {
+      "type": "individual-missions",
+      "name": "Donation Basket Missions",
+      "sortOrder": 4,
+      "isActive": true,
+      "content": {
+        "items": [
+          { "key": "annapurna", "icon": "🌾", "name": "Mission Annapurna", "desc": "Dry Ration Kits & Mid-Day Meals for Visually Impaired & Underprivileged Individuals", "price": 500 },
+          { "key": "vidhya", "icon": "📚", "name": "Mission Vidhya", "desc": "D.E.C – Digital Education Centre, Free digital education, Writing Pad & Stationery Kit Distribution", "price": 400 },
+          { "key": "aurat", "icon": "👩", "name": "Mission Aurat", "desc": "Sanitary Pad Distribution & Hygiene Kit Distribution for underprivileged women", "price": 300 },
+          { "key": "atma", "icon": "💪", "name": "Mission Atma Nirbhar", "desc": "Rozgaar Booth, Wheelchair & Tricycle Distribution, Sewing Machine & Flour Mill Distribution", "price": 600 },
+          { "key": "bezubaan", "icon": "🐾", "name": "Mission Bezubaan", "desc": "Animal Feeding Center, Biscuit, Milk & Pedigree Distribution for stray animals", "price": 200 }
+        ]
+      }
+    }
+  ]
+}

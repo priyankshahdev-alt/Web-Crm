@@ -1,0 +1,65 @@
+{
+  "slug": "impact-dialysis-centre",
+  "title": "Dialysis Centre Support",
+  "metaTitle": "Dialysis Centre Support | Being Sevak Foundation",
+  "metaDescription": "The Dialysis Centre Support initiative provides subsidized or free dialysis sessions, medical assistance, and compassionate care to patients who cannot afford life-sustaining treatment.",
+  "template": "default",
+  "sortOrder": 49,
+  "isHome": false,
+  "sections": [
+    {
+      "type": "impact-dialysis-centre-heading",
+      "name": "Dialysis Centre Header",
+      "sortOrder": 1,
+      "isActive": true,
+      "content": {
+        "tag": "HEALTHCARE SUPPORT PROGRAM",
+        "heading": "Dialysis Centre Support",
+        "description": "Chronic kidney disease requires ongoing dialysis, often placing a heavy financial burden on low-income families. Through our Dialysis Centre Support initiative, Being Sevak Charitable Trust provides subsidized or free dialysis sessions, medical assistance, and compassionate care to patients who would otherwise be unable to afford life-sustaining treatment.",
+        "image": "/images/g61.png"
+      }
+    },
+    {
+      "type": "impact-dialysis-centre-cards",
+      "name": "Program Highlights",
+      "sortOrder": 2,
+      "isActive": true,
+      "content": {
+        "items": [
+          { "title": "Affordable Dialysis Sessions", "description": "Providing free or subsidized dialysis treatments for underprivileged patients." },
+          { "title": "Expert Medical Staff", "description": "Experienced doctors and nephrologists oversee every session for safety and quality care." },
+          { "title": "Emotional Support", "description": "Compassionate assistance and counseling to help patients through their treatment journey." },
+          { "title": "Saving Lives Every Day", "description": "Ensuring that no kidney patient is denied treatment because of financial hardship." }
+        ]
+      }
+    },
+    {
+      "type": "impact-dialysis-centre-impact",
+      "name": "Success Story & Stats",
+      "sortOrder": 3,
+      "isActive": true,
+      "content": {
+        "tag": "IMPACT STORY",
+        "heading": "A Second Chance at Life",
+        "text": "Priya, a young working woman from an underprivileged family, was diagnosed with chronic kidney disease and needed regular dialysis that her family could barely afford. Through the Dialysis Centre Support of Being Sevak Charitable Trust, she received life-saving treatment and the support she needed to continue fighting for her life and her dreams.",
+        "stats": [
+          { "value": "1000+", "label": "Patients Treated" },
+          { "value": "24/7", "label": "Care Available" },
+          { "value": "100%", "label": "Life Saving Focus" }
+        ]
+      }
+    },
+    {
+      "type": "impact-dialysis-centre-gallery",
+      "name": "Project Gallery",
+      "sortOrder": 4,
+      "isActive": true,
+      "content": {
+        "tag": "PROJECT GALLERY",
+        "heading": "Moments of Impact",
+        "description": "Explore glimpses of our initiatives, community outreach programs, and the positive impact created through collective efforts.",
+        "images": ["/images/g58.png", "/images/g59.png", "/images/g60.png"]
+      }
+    }
+  ]
+}

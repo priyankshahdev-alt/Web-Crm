@@ -1,7 +1,295 @@
 import { Link } from 'react-router-dom';
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { useSite } from '../context/SiteContext';
+import { usePageContent } from '../hooks/usePageContent';
 
 export default function Home() {
+  const { getSetting, getSection, getSlides, getStats } = useSite();
+  const content = usePageContent('home');
+
+  // Live WebCrm content (falls back to the static sections when unavailable)
+  const cmsSlides = getSlides();
+  const liveHero = cmsSlides.length > 0;
+  const siteName = getSetting('site.siteName', 'Being Sevak Charitable Trust');
+  const waNumber = (getSetting('whatsapp.number', '') || getSetting('contact.phone', '')).replace(/\D+/g, '') || '918879035035';
+  const waLink = `https://wa.me/${waNumber}?text=${encodeURIComponent(`Hello ${siteName}, I would like to know more.`)}`;
+  const storySection = getSection('about', 'story');
+  const storyParagraphs = (storySection?.content?.paragraphs || []).filter(
+    (p) => p && p.trim(),
+  );
+  const aboutDesc =
+    storyParagraphs.join(' ') || getSetting('site.description', '');
+  const cmsStats = getStats();
+  const staticStats = [
+    { value: '20000', label: 'Women Supported' },
+    { value: '12', label: 'States Connected' },
+    { value: '4500', label: 'Support Programs' },
+    { value: '300000', label: 'Supported Children' },
+    { value: '1000000', label: 'Beneficiaries Reached' },
+  ];
+  const statsItems = cmsStats || staticStats;
+
+  // WebCrm page content (falls back to the existing hardcoded values when unavailable)
+  const aboutHeading = content('home-about', 'heading') ?? 'ABOUT BEING SEVAK CHARITABLE TRUST';
+  const aboutVisionTitle = content('home-about', 'visionTitle') ?? 'Our Vision';
+  const aboutVisionText =
+    content('home-about', 'visionText') ??
+    'To create a world where visually impaired, underprivileged children and education';
+  const aboutMissionTitle = content('home-about', 'missionTitle') ?? 'Our Mission';
+  const aboutMissionText =
+    content('home-about', 'missionText') ??
+    'To empower and uplift the lives of visually impaired individuals livelihood';
+  const aboutReadMoreLabel = content('home-about', 'readMoreLabel') ?? 'Read More';
+  const aboutImage = content('home-about', 'image') ?? 'images/about1.png';
+  const aboutImageAlt = content('home-about', 'imageAlt') ?? 'Being Sevak';
+
+  const marqueeItems =
+    content('home-marquee', 'items') ?? [
+      { value: '180000+', label: 'Mid-Day Meal', image: 'images/09.png' },
+      { value: '2500+', label: 'Medical Relief', image: 'images/03.png' },
+      { value: '40000+', label: 'Eye Care', image: 'images/02.png' },
+      { value: '375000+', label: 'Sevak Meal', image: 'images/09.png' },
+      { value: '2500+', label: 'Medical Relief', image: 'images/03.png' },
+      { value: '650000+', label: 'Annapurna Kit', image: 'images/04.png' },
+      { value: '195000+', label: 'Vidhya Kit', image: 'images/05.png' },
+      { value: '125000+', label: 'Mission Aurat', image: 'images/06.png' },
+      { value: '3500+', label: 'Mission Bezubaan', image: 'images/07.png' },
+      { value: '1200+', label: 'Digital Education Centre', image: 'images/08.png' },
+    ];
+
+  const impactStoriesHeading = content('home-impact-stories', 'heading') ?? 'Impact Stories';
+  const impactStoriesDescription =
+    content('home-impact-stories', 'description') ?? 'Real Change Through Our Work';
+  const impactStories =
+    content('home-impact-stories', 'items') ?? [
+      { title: 'Rozgaar Booth', image: 'images/i8.jpg', alt: 'Rozgaar Booth', link: '/impact/rozgaar-booth' },
+      { title: 'Baby Feeding Centre', image: 'images/i6.jpg', alt: 'Baby Feeding Centre', link: '/impact/baby-feeding' },
+      { title: 'Tricycle To Lifecycle', image: 'images/i7.jpg', alt: 'Tricycle To Lifecycle', link: '/impact/tricycle' },
+      { title: 'Sewing Machine', image: 'images/i9.png', alt: 'Sewing Machine', link: '/impact/sewing-machine' },
+      { title: 'Flour Mill distribution', image: 'images/floormill.png', alt: 'Flour Mill distribution', link: '/impact/flour-mill' },
+      { title: 'Medical Support', image: 'images/i5.jpg', alt: 'Medical Support', link: '/impact/emergency-medical' },
+      { title: 'Health To Hygiene(H2)', image: 'images/i4.jpg', alt: 'Health To Hygiene(H2)', link: '/impact/health-to-hygiene' },
+      { title: 'Sanitary Pad Vending Machine', image: 'images/i1.jpg', alt: 'Sanitary Pad Vending Machine', link: '/impact/sanitary-pad' },
+      { title: 'Dialysis Center', image: 'images/dialysis.png', alt: 'Dialysis Center', link: '/impact/dialysis-center' },
+      { title: 'Bottle crusher Machine', image: 'images/i2.jpg', alt: 'Bottle crusher Machine', link: '/impact/bottle-crusher' },
+    ];
+
+  const mostNeededHeading = content('home-most-needed', 'heading') ?? 'Most Needed';
+  const mostNeededDescription =
+    content('home-most-needed', 'description') ??
+    'Every moment matters—people are struggling without basic needs';
+  const mostNeededCauses =
+    content('home-most-needed', 'items') ?? [
+      { title: 'Mission Bezubaan', description: 'Animal feeding support, paw care services, and Pedigree distribution.', imageClass: 'cause-img-5', progress: '78%', funded: '78% Funded', raised: '₹2,34,000 raised', link: '/mission-bezubaan' },
+      { title: 'Project H2', description: 'Clean water and washroom facilities for schools.', imageClass: 'cause-img-6', progress: '55%', funded: '55% Funded', raised: '₹1,12,000 raised', link: '/mission-wellness' },
+      { title: 'Baby Feeding Booth', description: 'Safe and hygienic baby feeding booths for mothers and child care in government hospitals.', imageClass: 'cause-img-7', progress: '91%', funded: '91% Funded', raised: '₹3,08,000 raised', link: '/mission-aurat' },
+      { title: 'Sevak Niwas', description: 'provides housing, care and dignity to visually impaired individuals and families in need.', imageClass: 'cause-img-8', progress: '63%', funded: '63% Funded', raised: '₹1,74,000 raised', link: '/sevak-nivash' },
+    ];
+
+  const urgentHeading =
+    content('home-urgent-appeals', 'heading') ?? 'Urgent Appeals';
+  const urgentDescription =
+    content('home-urgent-appeals', 'description') ??
+    'Every moment matters—people are struggling without basic needs';
+  const urgentAppeals =
+    content('home-urgent-appeals', 'items') ?? [
+      { title: 'Mission Annapurna', description: 'Dry Ration Kit , Mid-Day Meal , Snacks kit. Meals With Care.', imageClass: 'cause-img-1', progress: '78%', funded: '78% Funded', raised: '₹2,34,000 raised', link: '/mission-annapurna' },
+      { title: 'Mission Vidhya', description: 'Digital Education Center, Writing Pad Distribution, and Stationery Kit Distribution.', imageClass: 'cause-img-2', progress: '55%', funded: '55% Funded', raised: '₹1,12,000 raised', link: '/mission-vidhya' },
+      { title: 'Medical Emergency', description: 'Financial aid for critical treatments, surgeries, and emergency care.', imageClass: 'cause-img-3', progress: '91%', funded: '91% Funded', raised: '₹3,08,000 raised', link: '/mission-wellness' },
+      { title: 'Mission Atmanirbhar', description: 'Empowering lives through livelihood support and essential assistive tools.', imageClass: 'cause-img-4', progress: '63%', funded: '63% Funded', raised: '₹1,74,000 raised', link: '/mission-atmanirbhar' },
+    ];
+
+  const eduTitle = content('home-support-education', 'title') ?? 'Support Education';
+  const eduSubtitle =
+    content('home-support-education', 'subtitle') ?? "Help Us Transform A Child's Life";
+  const eduDescription =
+    content('home-support-education', 'description') ??
+    'Your support can give education, hope and a brighter future to a needy child.';
+  const eduPrice =
+    content('home-support-education', 'price') ??
+    'For only Rs.1250/- per month, you can keep a child in school.';
+  const eduButtonLabel = content('home-support-education', 'buttonLabel') ?? 'Give Now';
+  const eduButtonUrl = content('home-support-education', 'buttonUrl') ?? '#';
+  const eduImage = content('home-support-education', 'image') ?? 'images/supportedu.png';
+
+  const eyeTag = content('home-eye-health', 'tag') ?? 'Sevak Eye Health Programme';
+  const eyeHeading =
+    content('home-eye-health', 'heading') ?? 'Protecting Vision With Compassion';
+  const eyeDescription =
+    content('home-eye-health', 'description') ??
+    'Being Sevak Charitable Trust believes prevention is better than cure. Through eye screenings, spectacles and cataract surgeries, we help thousands restore better eyesight.';
+  const eyeImage = content('home-eye-health', 'image') ?? 'images/eye.jpeg';
+  const eyeStats =
+    content('home-eye-health', 'items') ?? [
+      { value: '9225+', label: 'Eye Screenings' },
+      { value: '5156+', label: 'People Refracted' },
+      { value: '4389+', label: 'Spectacles Dispensed' },
+      { value: '767+', label: 'Cataract Surgeries' },
+    ];
+  const eyeButtonLabel = content('home-eye-health', 'buttonLabel') ?? 'Donate Now';
+  const eyeButtonUrl = content('home-eye-health', 'buttonUrl') ?? '/donate';
+
+  const celebrityHeading = content('home-celebrity', 'heading') ?? 'Celebrity Notes';
+  const celebrityDescription =
+    content('home-celebrity', 'description') ??
+    'Recognitions and appreciation from notable personalities';
+  const celebrityImages =
+    content('home-celebrity', 'images') ?? [
+      'images/celebritynote/1.jpg',
+      'images/celebritynote/2.jpg',
+      'images/celebritynote/3.jpg',
+      'images/celebritynote/4.jpg',
+    ];
+  const celebritySlides = Array.from(
+    { length: Math.ceil(celebrityImages.length / 2) },
+    (_, i) => celebrityImages.slice(i * 2, i * 2 + 2),
+  );
+
+  const metroHeading =
+    content('home-metro', 'heading') ??
+    'Transforming Metro Stations with Care & Community';
+  const metroParagraphs =
+    content('home-metro', 'paragraphs') ?? [
+      'In partnership with metro authorities, Being Sevak Charitable Trust is dedicated Is to transformed metro stations into cleaner, safer, and more compassionate public spaces for every commuter. With a vision rooted in social responsibility and community well-being, we strive to make everyday travel more dignified, sustainable, and accessible for all.',
+      'Through impactful urban welfare initiatives, we have installed Bottle Crusher Machines at metro stations to encourage responsible plastic disposal and promote environmental awareness among thousands of daily passengers. By turning waste management into a community movement, we aim to inspire cleaner habits and contribute towards a greener future.',
+      'Understanding the importance of women\'s health, dignity, and hygiene, we have also introduced Digital Sanitary Pad Vending Machines to provide easy and reliable access to essential hygiene products within metro premises. This initiative supports women commuters with convenience, care, and confidence during their daily journeys.',
+      'Every initiative we undertake is a step towards creating people-centric infrastructure that not only serves commuters but also nurtures social awareness, environmental responsibility, and inclusive urban development. Through compassion-driven action, we continue working towards a future where public spaces reflect care, humanity, and sustainability for every citizen.',
+    ];
+  const metroItems =
+    content('home-metro', 'items') ?? [
+      { image: 'images/bottle.JPG', label: 'Bottle Crusher Machine', price: '₹1,80,000', buttonLabel: 'DONATE NOW', link: '/donate' },
+      { image: 'images/sanitary.JPG', label: 'Sanitary Pad Vending Machine', price: '₹7,000', buttonLabel: 'DONATE NOW', link: '/donate' },
+    ];
+  const metroImage = content('home-metro', 'image') ?? 'images/bottelmetro.jpeg';
+
+  const promiseHeading = content('home-promise', 'heading') ?? 'OUR PROMISE TO YOU :';
+  const promiseParagraphs =
+    content('home-promise', 'paragraphs') ?? [
+      'Every donation you make helps us serve people with dignity, compassion, and transparency. Our mission is to bring hope, support, and positive change to communities in need through food distribution, healthcare, education, and humanitarian aid.',
+      'We believe in creating impact with honesty and care. Together, we can build a better future and spread kindness to every life we touch.',
+    ];
+  const promiseImage = content('home-promise', 'image') ?? 'logo11.png';
+
+  const activitiesHeading = content('home-activities', 'heading') ?? 'Our Activities';
+  const activitiesDescription =
+    content('home-activities', 'description') ??
+    'Your donation reaches those who need it most';
+  const activitiesItems =
+    content('home-activities', 'items') ?? [
+      { image: 'images/Hospitalization&HealthCareIMG.jpg', title: 'Hospitalization & Health Care', description: 'Due to the low financial condition, no proper health care' },
+      { image: 'images/NewClothingDistribution.jpg', title: 'New Clothing Distribution', description: 'For someone who cannot even afford daily meals, even a' },
+      { image: 'images/CelebrationofNationalPrograms.jpg', title: 'Celebration of National Program', description: 'To keep the fire of patriotism burning in the hearts' },
+      { image: 'images/ReliefforDialysisPatients.jpg', title: 'Relief for Dialysis Patients', description: 'To add happiness to the lives of dialysis patients, we' },
+      { image: 'images/SwachhBharatAwarenessCampaign.jpg', title: 'Awareness for Swatch Bharat', description: 'In this program we try to motivate people by organizing' },
+      { image: 'images/BLIND.jpg', title: 'Blind Widow Care', description: 'Our organization takes special care for the widow as they' },
+      { image: 'images/AwarenessCampaign.jpg', title: 'Public Awareness', description: 'Road Safety Awareness Campaign - Our main motto of this' },
+      { image: 'images/EducationFacilitiesforBlind&UnderprivilegedChildren.jpg', title: 'Education Facilities for Blind & Underprivileged Children', description: 'Education at grass-root level is the need of the hour!' },
+      { image: 'images/SevakGameswithMembers.jpg', title: 'Sevak Games with Members', description: 'Our organization celebrates "SEVAK GAMES" every year for specially abled' },
+      { image: 'images/sevakMemCard.jpg', title: 'Sevak Membership Card', description: 'At present our organization has many registered members. To provide' },
+      { image: 'images/Matrimonial.jpeg', title: 'Matrimonial Program', description: 'As we all know couples are made in heaven and' },
+      { image: 'images/houserepair.jpg', title: 'House Repairing Activity', description: 'Sevak team arranged house repairing activities for our Blind and' },
+      { image: 'images/EyeCamp.jpg', title: 'Eye Camp', description: 'The reality is that most of the blind people in' },
+      { image: 'images/Pandemic-1.jpg', title: 'Pandemic relief support for Covid-19', description: 'Starting April 2020, Being Sevak Charitable Trust has organized programs' },
+      { image: 'images/DryRationKitDistribution.jpg', title: 'Dry Ration Kit', description: 'Providing essential food supplies to needy families.' },
+      { image: 'images/Mid-DayMealProgram.jpg', title: 'Mid-Day Meal', description: 'Nutritious meals for underprivileged and visually impaired individuals.' },
+      { image: 'images/SNACKSKit.jpg', title: 'Snacks Kit', description: 'Distributing healthy snack kits to underserved communities.' },
+      { image: 'images/D.E.C2.jpg', title: 'Digital Education Centre', description: 'Empowering children through free digital learning access.' },
+      { image: 'images/stationarykit.jpg', title: 'Stationery Kit Distribution', description: 'Providing school stationery kits to needy students.' },
+      { image: 'images/Rozgharnew.jpeg', title: 'Rozgaar Booth', description: 'Creating employment opportunities for financially struggling families.' },
+      { image: 'images/activity1.jpg', title: 'Wheelchair & Tricycle Distribution', description: 'Restoring mobility and independence for specially-abled individuals.' },
+      { image: 'images/SewingMachineDistribution.jpg', title: 'Sewing Machine Distribution', description: 'Empowering women through self-employment and skill support.' },
+      { image: 'images/FlourMillDistribution.jpg', title: 'Floor Mill Distribution', description: 'Supporting sustainable income generation for needy families.' },
+      { image: 'images/SchoolRenovationProject.jpg', title: 'School Renovation', description: 'Improving school infrastructure for better student learning.' },
+      { image: 'images/FinancialAssistanceProgram.jpg', title: 'Financial assistance Program', description: 'Supporting sustainable income generation for needy families.' },
+      { image: 'images/HandwashingStationInstallation.jpg', title: 'Handwashing Station', description: 'Promoting hygiene and cleanliness among school children.' },
+      { image: 'images/TreePlantationDrive.jpg', title: 'Tree Plantation', description: 'Creating a greener and healthier environment for future generations.' },
+      { image: 'images/bloodDonation.jpg', title: 'Blood Donation camp', description: 'Saving lives through voluntary blood donation and promoting community health awareness.' },
+      { image: 'images/BottleCrusherMachineInitiative.jpg', title: 'Bottle Crusher Machine', description: 'Encouraging plastic recycling and environmental sustainability.' },
+      { image: 'images/AnimalFeedingCenter.jpg', title: 'Animal Feeding Center', description: 'Providing food and care for stray and abandoned animals.' },
+      { image: 'images/sanitarypadkit.jpg', title: 'Sanitary Pad Distribution', description: 'Promoting menstrual hygiene awareness among women and girls.' },
+      { image: 'images/HygieneKitDistribution.jpg', title: 'Hygiene Kit Distribution', description: 'Providing essential hygiene kits to underprivileged communities.' },
+      { image: 'images/BabyCare.jpg', title: 'Baby Care Center', description: 'Supporting mothers and newborns with safe care facilities.' },
+      { image: 'images/Dialysis Centre.png', title: 'Dialysis Centre', description: 'Providing affordable dialysis treatment for needy patients.' },
+      { image: 'images/BEACHcleaning.png', title: 'Beach Cleaning Drives', description: 'Organizing cleanliness drives to protect marine environments.' },
+    ];
+
+  const featuredProjectsHeading =
+    content('home-featured-projects', 'heading') ?? 'Featured Projects';
+  const featuredProjects =
+    content('home-featured-projects', 'items') ?? [
+      {
+        cards: [
+          { image: 'images/Matrimonial.jpeg', tag: 'EMPOWERMENT', title: 'Blind Vivah', description: 'Empowering visually impaired individuals through skill development and independent living.', link: '/donate', button: 'Give Now' },
+          { image: 'images/rasaoighar.jpeg', tag: 'FOOD', title: 'Rasoi Ghar', description: 'Providing nutritious meals to underprivileged communities with dignity and care.', link: '/donate', button: 'Give Now' },
+        ],
+      },
+      {
+        cards: [
+          { image: 'images/D.E.C.jpg', tag: 'EDUCATION', title: 'Digital Education Centre', description: 'Bridging the digital divide with free computer literacy and online learning access.', link: '/donate', button: 'Give Now' },
+          { image: 'images/physiotherepy.jpeg', tag: 'HEALTH', title: 'Physiotherapy Centre', description: 'Providing free physiotherapy and rehabilitation services for those in need.', link: '/donate', button: 'Give Now' },
+        ],
+      },
+      {
+        cards: [
+          { image: 'images/library.jpeg', tag: 'EDUCATION', title: 'Library Centre', description: 'Establishing community libraries to promote reading and self-learning among underprivileged students.', link: '/donate', button: 'Give Now' },
+          { image: 'images/womenempoerment.jpeg', tag: 'EMPOWERMENT', title: 'Women Empowerment & Self Employment Unit', description: 'Providing skill training and livelihood opportunities for women to achieve financial independence.', link: '/donate', button: 'Give Now' },
+        ],
+      },
+    ];
+  const featuredProjectsDescription =
+    content('home-featured-projects', 'description') ??
+    'Make a direct impact with these urgent campaigns';
+
+  const partnersHeading =
+    content('home-partners', 'heading') ?? 'OUR PARTNERS';
+  const partnersDescription =
+    content('home-partners', 'description') ??
+    'Together with our partners, we work to bring hope, care, and support to those in need';
+  const partnersImages =
+    content('home-partners', 'images') ?? [
+      '1.jpg','2.jpg','3.jpg','4.jpg','5.jpg','6.jpg','7.jpg','8.jpg','9.jpg','10.jpg','11.png','12.png','13.png','14.png','15.png','16.png','17.png','18.png','19.png','20.png','21.png','22.png','23.png','24.png','25.png',
+    ];
+
+  const statsHeading = content('stats', 'heading') ?? '11 Years of Impact';
+  const statsDescription =
+    content('stats', 'description') ??
+    'Since 2015, Being Sevak has been serving communities across India';
+
+  const testimonialsHeading =
+    content('home-testimonials', 'heading') ?? 'What Our Donors Says';
+  const testimonialsDescription =
+    content('home-testimonials', 'description') ??
+    'Voices of kindness that inspire our mission';
+  const testimonials =
+    content('home-testimonials', 'items') ?? [
+      { quote: 'Supporting this NGO has been one of the most meaningful decisions of my life. Seeing smiles on children\'s faces and families getting support gives real happiness.', name: 'Riya Sharma', role: 'Supportive Donor' },
+      { quote: 'This organization is truly changing lives with honesty and dedication. Every donation reaches people who genuinely need help and care.', name: 'Rahul Mehta', role: 'Monthly Contributor' },
+      { quote: 'I feel proud to be connected with such a beautiful cause. The impact they create in education, food distribution, and healthcare is inspiring.', name: 'Neha Patel', role: 'Kind Heart Donor' },
+      { quote: 'Being part of this mission has been a blessing. The transparency and dedication of Being Sevak is remarkable.', name: 'Amit Verma', role: 'Proud Donor' },
+      { quote: 'I have seen the ground work they do. Every rupee is used wisely for those who truly need it.', name: 'Priya Singh', role: 'Regular Contributor' },
+    ];
+
+  const latestUpdatesHeading =
+    content('home-latest-updates', 'heading') ?? 'Latest Updates';
+  const latestUpdatesDescription =
+    content('home-latest-updates', 'description') ??
+    'Stay informed with our recent activities and announcements';
+
+  // Helper to render "Word <span class=accent>Word</span>" headings from a single string
+  const accentSplit = (text) => {
+    const i = text.lastIndexOf(' ');
+    return i === -1 ? { head: text, tail: '' } : { head: text.slice(0, i), tail: text.slice(i + 1) };
+  };
+  const impactStoriesH = accentSplit(impactStoriesHeading);
+  const mostNeededH = accentSplit(mostNeededHeading);
+  const celebrityH = accentSplit(celebrityHeading);
+  const activitiesH = accentSplit(activitiesHeading);
+  const featuredProjectsH = accentSplit(featuredProjectsHeading);
+  const urgentH = accentSplit(urgentHeading);
+  const partnersH = accentSplit(partnersHeading);
+  const statsH = accentSplit(statsHeading);
+  const updatesH = accentSplit(latestUpdatesHeading);
+
   // Mobile menu
 
 
@@ -23,7 +311,7 @@ export default function Home() {
 
   // Hero Slider
   const [currentSlide, setCurrentSlide] = useState(0);
-  const totalSlides = 8;
+  const totalSlides = liveHero ? cmsSlides.length : 8;
 
   // Impact Stories
   const [currentImpact, setCurrentImpact] = useState(0);
@@ -72,13 +360,14 @@ export default function Home() {
   const [impactAnimated, setImpactAnimated] = useState(false);
 
   // Month data for modal
-  const monthData = [
-    { id: 'month-jan', label: 'Jan 2026', img: 'latesUpdates/JAN 2026.jpg' },
-    { id: 'month-feb', label: 'Feb 2026', img: 'latesUpdates/FEB 2026.jpg' },
-    { id: 'month-mar', label: 'Mar 2026', img: 'latesUpdates/MARCH 2026.jpg' },
-    { id: 'month-apr', label: 'Apr 2026', img: 'latesUpdates/APRIL 2026.jpg' },
-    { id: 'month-may', label: 'May 2026', img: '' }
-  ];
+  const monthData =
+    content('home-latest-updates', 'items') ?? [
+      { id: 'month-jan', label: 'Jan 2026', img: 'latesUpdates/JAN 2026.jpg' },
+      { id: 'month-feb', label: 'Feb 2026', img: 'latesUpdates/FEB 2026.jpg' },
+      { id: 'month-mar', label: 'Mar 2026', img: 'latesUpdates/MARCH 2026.jpg' },
+      { id: 'month-apr', label: 'Apr 2026', img: 'latesUpdates/APRIL 2026.jpg' },
+      { id: 'month-may', label: 'May 2026', img: '' }
+    ];
 
   // Hero Slider Autoplay
   useEffect(() => {
@@ -86,7 +375,7 @@ export default function Home() {
       setCurrentSlide((prev) => (prev + 1) % totalSlides);
     }, 5000);
     return () => clearInterval(timer);
-  }, []);
+  }, [totalSlides]);
 
   // Impact Stats Animation with IntersectionObserver
   useEffect(() => {
@@ -115,7 +404,8 @@ export default function Home() {
 
   // Donation Basket logic
   const UNIT_PRICE = { annapurna: 500, vidhya: 400, aurat: 300, atma: 600, bezubaan: 200 };
-  const basketMissions = [
+  const basketMissions =
+    content('home-basket-missions', 'items') ?? [
     { key: 'annapurna', icon: '\u{1F33E}', name: 'Mission Annapurna', desc: 'Dry Ration Kits & Mid-Day Meals for Visually Impaired & Underprivileged Individuals' },
     { key: 'vidhya', icon: '\u{1F4DA}', name: 'Mission Vidhya', desc: 'D.E.C \u2013 Digital Education Centre, Free digital education, Writing Pad & Stationery Kit Distribution' },
     { key: 'aurat', icon: '\u{1F469}', name: 'Mission Aurat', desc: 'Sanitary Pad Distribution & Hygiene Kit Distribution for underprivileged women' },
@@ -125,7 +415,11 @@ export default function Home() {
   const addMission = (key) => setCartQty(prev => ({ ...prev, [key]: 1 }));
   const removeMission = (key) => setCartQty(prev => ({ ...prev, [key]: 0 }));
   const changeQty = (key, delta) => setCartQty(prev => ({ ...prev, [key]: Math.max(1, prev[key] + delta) }));
-  const basketTotal = Object.keys(cartQty).reduce((s, k) => s + cartQty[k] * UNIT_PRICE[k], 0);
+  const priceOf = (key) => {
+    const item = basketMissions.find((m) => m.key === key);
+    return item?.price ?? UNIT_PRICE[key] ?? 0;
+  };
+  const basketTotal = Object.keys(cartQty).reduce((s, k) => s + cartQty[k] * priceOf(k), 0);
   const proceedDonate = () => {
     if (basketTotal === 0) { setShowEmptyMsg(true); setTimeout(() => setShowEmptyMsg(false), 3000); return; }
     if (!basketName) { alert('Please enter your name.'); return; }
@@ -324,12 +618,19 @@ export default function Home() {
         .basket-empty-msg{display:none;text-align:center;color:#e53935;font-size:12px;margin-top:8px;font-family:'Montserrat',sans-serif}
         .basket-empty-msg.show{display:block}
         .basket-field-err{display:block;color:#e53935;font-size:11px;margin-top:4px;font-family:'Open Sans',sans-serif;padding-left:80px}
+        .slide-content{position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:0 8%;text-align:left;background:linear-gradient(to right,rgba(3,22,62,0.66),rgba(3,22,62,0.18) 60%,transparent)}
+        .slide-title{font-family:'Montserrat',sans-serif;font-size:2.6rem;font-weight:900;color:#fff;text-transform:uppercase;line-height:1.15;margin-bottom:10px;max-width:760px}
+        .slide-subtitle{font-family:'Open Sans',sans-serif;font-size:1.1rem;color:#eaf4fb;max-width:640px;margin-bottom:18px;line-height:1.6}
+        .slide-cta{display:inline-block;background:#00A3DA;color:#fff;font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.9rem;padding:12px 28px;border-radius:4px;text-transform:uppercase;letter-spacing:1px;text-decoration:none;transition:background 0.2s}
+        .slide-cta:hover{background:#315371}
+        .slide-bg-mobile{display:none}
+        @media(max-width:768px){.slide-title{font-size:1.5rem}.slide-subtitle{font-size:0.95rem}.slide-content{padding:0 6%}.slide-bg-mobile{display:block}}
         @media(max-width:500px){.basket-panel{width:100vw}}
       `}</style>
 
       {/* BEING SEVAK CHARITABLE TRUST ALERT BANNER */}
       <div className="alert-banner">
-        <span className="alert-text">Being Sevak Charitable Trust</span>
+        <span className="alert-text">{siteName}</span>
         <Link to="/about" className="alert-link">Learn More</Link>
       </div>
 
@@ -374,6 +675,32 @@ export default function Home() {
 
       {/* HERO BANNER / SLIDESHOW */}
       <section className="hero-slider">
+        {liveHero
+          ? cmsSlides.map((s, i) => (
+              <div className={`slide ${currentSlide === i ? 'active' : ''}`} key={s.id || i}>
+                <div
+                  className="slide-bg"
+                  style={{ backgroundImage: `url(${s.imageUrl})` }}
+                ></div>
+                {s.mobileImageUrl && (
+                  <div
+                    className="slide-bg slide-bg-mobile"
+                    style={{ backgroundImage: `url(${s.mobileImageUrl})` }}
+                  ></div>
+                )}
+                {(s.title || s.subtitle || s.ctaLabel) && (
+                  <div className="slide-content">
+                    {s.title && <h2 className="slide-title">{s.title}</h2>}
+                    {s.subtitle && <p className="slide-subtitle">{s.subtitle}</p>}
+                    {s.ctaLabel && s.ctaUrl && (
+                      <a href={s.ctaUrl} className="slide-cta">{s.ctaLabel}</a>
+                    )}
+                  </div>
+                )}
+              </div>
+            ))
+          : (
+            <>
         <div className={`slide ${currentSlide === 0 ? 'active' : ''}`} id="slide1">
           <div className="slide-bg slide-bg-1"></div>
         </div>
@@ -398,6 +725,8 @@ export default function Home() {
         <div className={`slide ${currentSlide === 7 ? 'active' : ''}`} id="slide8">
           <div className="slide-bg slide-bg-8"></div>
         </div>
+            </>
+          )}
         <div className="slider-controls">
           <button className="slider-arrow prev" onClick={() => setCurrentSlide((prev) => (prev - 1 + totalSlides) % totalSlides)}>
             <i className="fas fa-chevron-left"></i>
@@ -421,27 +750,26 @@ export default function Home() {
       <section className="about-section">
         <div className="about-left">
           <div className="single-image-box">
-            <img src="images/about1.png" alt="Being Sevak" className="about-img" />
+            <img src={aboutImage} alt={aboutImageAlt} className="about-img" />
           </div>
         </div>
         <div className="about-right">
-          <h2>ABOUT BEING SEVAK CHARITABLE TRUST</h2>
+          <h2>{aboutHeading}</h2>
           <p>
-            Being Sevak Charitable Trust is a national non-profit organization serving society since 2015 through
-            healthcare, education, women empowerment, vocational training, and child development, inspired by the vision of
-            "Sevak Bano" and selfless service.
+            {aboutDesc ||
+              'Being Sevak Charitable Trust is a national non-profit organization serving society since 2015 through healthcare, education, women empowerment, vocational training, and child development, inspired by the vision of "Sevak Bano" and selfless service.'}
           </p>
           <div className="about-boxes">
             <div className="about-box">
-              <h3>Our Vision</h3>
-              <p>To create a world where visually impaired, underprivileged children and education</p>
+              <h3>{aboutVisionTitle}</h3>
+              <p>{aboutVisionText}</p>
             </div>
             <div className="about-box">
-              <h3>Our Mission</h3>
-              <p>To empower and uplift the lives of visually impaired individuals livelihood</p>
+              <h3>{aboutMissionTitle}</h3>
+              <p>{aboutMissionText}</p>
             </div>
           </div>
-          <Link to="/about" className="read-btn">Read More</Link>
+          <Link to="/about" className="read-btn">{aboutReadMoreLabel}</Link>
         </div>
       </section>
 
@@ -449,77 +777,15 @@ export default function Home() {
       <section className="logo-marquee-section">
         <div className="marquee">
           <div className="marquee-content">
-            <div className="circle-box">
-              <div className="circle">
-                <img src="images/09.png" alt="" />
+            {marqueeItems.map((item, i) => (
+              <div className="circle-box" key={i}>
+                <div className="circle">
+                  <img src={item.image} alt="" />
+                </div>
+                <h2>{item.value}</h2>
+                <p>{item.label}</p>
               </div>
-              <h2>180000+</h2>
-              <p>Mid-Day Meal</p>
-            </div>
-            <div className="circle-box">
-              <div className="circle">
-                <img src="images/03.png" alt="" />
-              </div>
-              <h2>2500+</h2>
-              <p>Medical Relief</p>
-            </div>
-            <div className="circle-box">
-              <div className="circle">
-                <img src="images/02.png" alt="" />
-              </div>
-              <h2>40000+</h2>
-              <p>Eye Care</p>
-            </div>
-            {/* DUPLICATE FOR SEAMLESS LOOP */}
-            <div className="circle-box">
-              <div className="circle">
-                <img src="images/09.png" alt="" />
-              </div>
-              <h2>375000+</h2>
-              <p>Sevak Meal</p>
-            </div>
-            <div className="circle-box">
-              <div className="circle">
-                <img src="images/03.png" alt="" />
-              </div>
-              <h2>2500+</h2>
-              <p>Medical Relief</p>
-            </div>
-            <div className="circle-box">
-              <div className="circle">
-                <img src="images/04.png" alt="" />
-              </div>
-              <h2>650000+</h2>
-              <p>Annapurna Kit</p>
-            </div>
-            <div className="circle-box">
-              <div className="circle">
-                <img src="images/05.png" alt="" />
-              </div>
-              <h2>195000+</h2>
-              <p>Vidhya Kit</p>
-            </div>
-            <div className="circle-box">
-              <div className="circle">
-                <img src="images/06.png" alt="" />
-              </div>
-              <h2>125000+</h2>
-              <p>Mission Aurat</p>
-            </div>
-            <div className="circle-box">
-              <div className="circle">
-                <img src="images/07.png" alt="" />
-              </div>
-              <h2>3500+</h2>
-              <p>Mission Bezubaan</p>
-            </div>
-            <div className="circle-box">
-              <div className="circle">
-                <img src="images/08.png" alt="" />
-              </div>
-              <h2>1200+</h2>
-              <p>Digital Education Centre</p>
-            </div>
+            ))}
           </div>
         </div>
       </section>
@@ -527,108 +793,25 @@ export default function Home() {
       {/* URGENT APPEALS */}
       <section className="causes-section">
         <div className="section-header">
-          <h2>Urgent <span className="accent">Appeals</span></h2>
-          <p>Every moment matters—people are struggling without basic needs</p>
+          <h2>{urgentH.head} <span className="accent">{urgentH.tail}</span></h2>
+          <p>{urgentDescription}</p>
         </div>
         <div className="causes-marquee">
           <div className="causes-track">
-            <div className="cause-card">
-              <div className="cause-img cause-img-1"></div>
-              <div className="cause-body">
-                <h3>Mission Annapurna</h3>
-                <p>Dry Ration Kit , Mid-Day Meal , Snacks kit. Meals With Care.</p>
-                <div className="progress-bar">
-                  <div className="progress-fill" style={{ width: '78%' }}></div>
+            {[...urgentAppeals, ...urgentAppeals].map((item, i) => (
+              <div className="cause-card" key={i}>
+                <div className={`cause-img ${item.imageClass}`}></div>
+                <div className="cause-body">
+                  <h3>{item.title}</h3>
+                  <p>{item.description}</p>
+                  <div className="progress-bar">
+                    <div className="progress-fill" style={{ width: item.progress }}></div>
+                  </div>
+                  <div className="cause-meta"><span>{item.funded}</span><span>{item.raised}</span></div>
+                  <Link to={item.link} className="cause-btn">Donate Now</Link>
                 </div>
-                <div className="cause-meta"><span>78% Funded</span><span>₹2,34,000 raised</span></div>
-                <Link to="/mission-annapurna" className="cause-btn">Donate Now</Link>
               </div>
-            </div>
-            <div className="cause-card">
-              <div className="cause-img cause-img-2"></div>
-              <div className="cause-body">
-                <h3>Mission Vidhya</h3>
-                <p>Digital Education Center, Writing Pad Distribution, and Stationery Kit Distribution.</p>
-                <div className="progress-bar">
-                  <div className="progress-fill" style={{ width: '55%' }}></div>
-                </div>
-                <div className="cause-meta"><span>55% Funded</span><span>₹1,12,000 raised</span></div>
-                <Link to="/mission-vidhya" className="cause-btn">Donate Now</Link>
-              </div>
-            </div>
-            <div className="cause-card">
-              <div className="cause-img cause-img-3"></div>
-              <div className="cause-body">
-                <h3>Medical Emergency</h3>
-                <p>Financial aid for critical treatments, surgeries, and emergency care.</p>
-                <div className="progress-bar">
-                  <div className="progress-fill" style={{ width: '91%' }}></div>
-                </div>
-                <div className="cause-meta"><span>91% Funded</span><span>₹3,08,000 raised</span></div>
-                <Link to="/mission-wellness" className="cause-btn">Donate Now</Link>
-              </div>
-            </div>
-            <div className="cause-card">
-              <div className="cause-img cause-img-4"></div>
-              <div className="cause-body">
-                <h3>Mission Atmanirbhar</h3>
-                <p>Empowering lives through livelihood support and essential assistive tools.</p>
-                <div className="progress-bar">
-                  <div className="progress-fill" style={{ width: '63%' }}></div>
-                </div>
-                <div className="cause-meta"><span>63% Funded</span><span>₹1,74,000 raised</span></div>
-                <Link to="/mission-atmanirbhar" className="cause-btn">Donate Now</Link>
-              </div>
-            </div>
-            {/* Duplicate for seamless loop */}
-            <div className="cause-card">
-              <div className="cause-img cause-img-1"></div>
-              <div className="cause-body">
-                <h3>Mission Annapurna</h3>
-                <p>Dry Ration Kit , Mid-Day Meal , Snacks kit. Meals With Care.</p>
-                <div className="progress-bar">
-                  <div className="progress-fill" style={{ width: '78%' }}></div>
-                </div>
-                <div className="cause-meta"><span>78% Funded</span><span>₹2,34,000 raised</span></div>
-                <Link to="/mission-annapurna" className="cause-btn">Donate Now</Link>
-              </div>
-            </div>
-            <div className="cause-card">
-              <div className="cause-img cause-img-2"></div>
-              <div className="cause-body">
-                <h3>Mission Vidhya</h3>
-                <p>Digital Education Center, Writing Pad Distribution, and Stationery Kit Distribution.</p>
-                <div className="progress-bar">
-                  <div className="progress-fill" style={{ width: '55%' }}></div>
-                </div>
-                <div className="cause-meta"><span>55% Funded</span><span>₹1,12,000 raised</span></div>
-                <Link to="/mission-vidhya" className="cause-btn">Donate Now</Link>
-              </div>
-            </div>
-            <div className="cause-card">
-              <div className="cause-img cause-img-3"></div>
-              <div className="cause-body">
-                <h3>Medical Emergency</h3>
-                <p>Financial aid for critical treatments, surgeries, and emergency care.</p>
-                <div className="progress-bar">
-                  <div className="progress-fill" style={{ width: '91%' }}></div>
-                </div>
-                <div className="cause-meta"><span>91% Funded</span><span>₹3,08,000 raised</span></div>
-                <Link to="/mission-wellness" className="cause-btn">Donate Now</Link>
-              </div>
-            </div>
-            <div className="cause-card">
-              <div className="cause-img cause-img-4"></div>
-              <div className="cause-body">
-                <h3>Mission Atmanirbhar</h3>
-                <p>Empowering lives through livelihood support and essential assistive tools.</p>
-                <div className="progress-bar">
-                  <div className="progress-fill" style={{ width: '63%' }}></div>
-                </div>
-                <div className="cause-meta"><span>63% Funded</span><span>₹1,74,000 raised</span></div>
-                <Link to="/mission-atmanirbhar" className="cause-btn">Donate Now</Link>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
@@ -636,80 +819,19 @@ export default function Home() {
       {/* IMPACT STORIES */}
       <section className="being-impact-slider">
         <div className="section-header">
-          <h2>Impact <span className="accent">Stories</span></h2>
-          <p>Real Change Through Our Work</p>
+          <h2>{impactStoriesH.head} <span className="accent">{impactStoriesH.tail}</span></h2>
+          <p>{impactStoriesDescription}</p>
         </div>
         <div className="being-slider-box">
-          <Link to="/impact/rozgaar-booth" className={`being-slide ${currentImpact === 0 ? 'active' : ''}`}>
-            <img src="images/i8.jpg" alt="Rozgaar Booth" />
-            <div className="being-text">
-              <h3>Rozgaar Booth</h3>
-              <p>Read More</p>
-            </div>
-          </Link>
-          <Link to="/impact/baby-feeding" className={`being-slide ${currentImpact === 1 ? 'active' : ''}`}>
-            <img src="images/i6.jpg" alt="Baby Feeding Centre" />
-            <div className="being-text">
-              <h3>Baby Feeding Centre</h3>
-              <p>Read More</p>
-            </div>
-          </Link>
-          <Link to="/impact/tricycle" className={`being-slide ${currentImpact === 2 ? 'active' : ''}`}>
-            <img src="images/i7.jpg" alt="Tricycle To Lifecycle" />
-            <div className="being-text">
-              <h3>Tricycle To Lifecycle</h3>
-              <p>Read More</p>
-            </div>
-          </Link>
-          <Link to="/impact/sewing-machine" className={`being-slide ${currentImpact === 3 ? 'active' : ''}`}>
-            <img src="images/i9.png" alt="Sewing Machine" />
-            <div className="being-text">
-              <h3>Sewing Machine</h3>
-              <p>Read More</p>
-            </div>
-          </Link>
-          <Link to="/impact/flour-mill" className={`being-slide ${currentImpact === 4 ? 'active' : ''}`}>
-            <img src="images/floormill.png" alt="Flour Mill distribution" />
-            <div className="being-text">
-              <h3>Flour Mill distribution</h3>
-              <p>Read More</p>
-            </div>
-          </Link>
-          <Link to="/impact/emergency-medical" className={`being-slide ${currentImpact === 5 ? 'active' : ''}`}>
-            <img src="images/i5.jpg" alt="Medical Support" />
-            <div className="being-text">
-              <h3>Medical Support</h3>
-              <p>Read More</p>
-            </div>
-          </Link>
-          <Link to="/impact/health-to-hygiene" className={`being-slide ${currentImpact === 6 ? 'active' : ''}`}>
-            <img src="images/i4.jpg" alt="Health To Hygiene(H2)" />
-            <div className="being-text">
-              <h3>Health To Hygiene(H2)</h3>
-              <p>Read More</p>
-            </div>
-          </Link>
-          <Link to="/impact/sanitary-pad" className={`being-slide ${currentImpact === 7 ? 'active' : ''}`}>
-            <img src="images/i1.jpg" alt="Sanitary Pad Vending Machine" />
-            <div className="being-text">
-              <h3>Sanitary Pad Vending Machine</h3>
-              <p>Read More</p>
-            </div>
-          </Link>
-          <Link to="/impact/dialysis-center" className={`being-slide ${currentImpact === 8 ? 'active' : ''}`}>
-            <img src="images/dialysis.png" alt="Dialysis Center" />
-            <div className="being-text">
-              <h3>Dialysis Center</h3>
-              <p>Read More</p>
-            </div>
-          </Link>
-          <Link to="/impact/bottle-crusher" className={`being-slide ${currentImpact === 9 ? 'active' : ''}`}>
-            <img src="images/i2.jpg" alt="Bottle crusher Machine" />
-            <div className="being-text">
-              <h3>Bottle crusher Machine</h3>
-              <p>Read More</p>
-            </div>
-          </Link>
+          {impactStories.map((item, i) => (
+            <Link to={item.link} className={`being-slide ${currentImpact === i ? 'active' : ''}`} key={i}>
+              <img src={item.image} alt={item.alt} />
+              <div className="being-text">
+                <h3>{item.title}</h3>
+                <p>Read More</p>
+              </div>
+            </Link>
+          ))}
         </div>
         <div className="being-dots">
           {[...Array(totalImpactSlides)].map((_, i) => (
@@ -725,58 +847,24 @@ export default function Home() {
       {/* MOST NEEDED CAUSES */}
       <section className="causes-section">
         <div className="section-header">
-          <h2>Most <span className="accent">Needed</span></h2>
-          <p>Every moment matters—people are struggling without basic needs</p>
+          <h2>{mostNeededH.head} <span className="accent">{mostNeededH.tail}</span></h2>
+          <p>{mostNeededDescription}</p>
         </div>
         <div className="causes-grid">
-          <div className="cause-card">
-            <div className="cause-img cause-img-5"></div>
-            <div className="cause-body">
-              <h3>Mission Bezubaan</h3>
-              <p>Animal feeding support, paw care services, and Pedigree distribution.</p>
-              <div className="progress-bar">
-                <div className="progress-fill" style={{ width: '78%' }}></div>
+          {mostNeededCauses.map((item, i) => (
+            <div className="cause-card" key={i}>
+              <div className={`cause-img ${item.imageClass}`}></div>
+              <div className="cause-body">
+                <h3>{item.title}</h3>
+                <p>{item.description}</p>
+                <div className="progress-bar">
+                  <div className="progress-fill" style={{ width: item.progress }}></div>
+                </div>
+                <div className="cause-meta"><span>{item.funded}</span><span>{item.raised}</span></div>
+                <Link to={item.link} className="cause-btn">Donate Now</Link>
               </div>
-              <div className="cause-meta"><span>78% Funded</span><span>₹2,34,000 raised</span></div>
-              <Link to="/mission-bezubaan" className="cause-btn">Donate Now</Link>
             </div>
-          </div>
-          <div className="cause-card">
-            <div className="cause-img cause-img-6"></div>
-            <div className="cause-body">
-              <h3>Project H2</h3>
-              <p>Clean water and washroom facilities for schools.</p>
-              <div className="progress-bar">
-                <div className="progress-fill" style={{ width: '55%' }}></div>
-              </div>
-              <div className="cause-meta"><span>55% Funded</span><span>₹1,12,000 raised</span></div>
-              <Link to="/mission-wellness" className="cause-btn">Donate Now</Link>
-            </div>
-          </div>
-          <div className="cause-card">
-            <div className="cause-img cause-img-7"></div>
-            <div className="cause-body">
-              <h3>Baby Feeding Booth</h3>
-              <p>Safe and hygienic baby feeding booths for mothers and child care in government hospitals.</p>
-              <div className="progress-bar">
-                <div className="progress-fill" style={{ width: '91%' }}></div>
-              </div>
-              <div className="cause-meta"><span>91% Funded</span><span>₹3,08,000 raised</span></div>
-              <Link to="/mission-aurat" className="cause-btn">Donate Now</Link>
-            </div>
-          </div>
-          <div className="cause-card">
-            <div className="cause-img cause-img-8"></div>
-            <div className="cause-body">
-              <h3>Sevak Niwas</h3>
-              <p>provides housing, care and dignity to visually impaired individuals and families in need.</p>
-              <div className="progress-bar">
-                <div className="progress-fill" style={{ width: '63%' }}></div>
-              </div>
-              <div className="cause-meta"><span>63% Funded</span><span>₹1,74,000 raised</span></div>
-              <Link to="/sevak-nivash" className="cause-btn">Donate Now</Link>
-            </div>
-          </div>
+          ))}
         </div>
       </section>
 
@@ -784,64 +872,49 @@ export default function Home() {
       <section className="donation-section">
         <div className="donation-images">
           <div className="img-box img1">
-            <img src="images/supportedu.png" alt="" />
+            <img src={eduImage} alt="" />
           </div>
         </div>
         <div className="donation-content">
           <span className="small-title">
-            <h3>Support Education</h3>
+            <h3>{eduTitle}</h3>
           </span>
           <h1>
-            Help Us Transform <br />
-            A Child's Life
+            {eduSubtitle}
           </h1>
           <div className="info-card">
-            <h3>For only Rs.1250/- per month,</h3>
-            <p>you can keep a child in school.</p>
+            <h3>{eduPrice}</h3>
           </div>
           <div className="info-card second-card">
-            <p>Your support can give education, hope and a brighter future to a needy child.</p>
+            <p>{eduDescription}</p>
           </div>
-          <a href="#" className="give-btn-btn">Give Now</a>
+          <a href={eduButtonUrl} className="give-btn-btn">{eduButtonLabel}</a>
         </div>
       </section>
 
       {/* EYE HEALTH PROGRAMME */}
       <section className="eye-health-slide">
         <div className="eye-img">
-          <img src="images/eye.jpeg" alt="Eye Health" />
+          <img src={eyeImage} alt="Eye Health" />
         </div>
         <div className="eye-content">
-          <span className="tag">Sevak Eye Health Programme</span>
+          <span className="tag">{eyeTag}</span>
           <h2>
-            Protecting Vision <br />
-            With Compassion
+            {eyeHeading}
           </h2>
           <p>
-            Being Sevak Charitable Trust believes prevention is better than cure.
-            Through eye screenings, spectacles and cataract surgeries,
-            we help thousands restore better eyesight.
+            {eyeDescription}
           </p>
           <div className="stats">
-            <div className="stat-box">
-              <h3>9225+</h3>
-              <span>Eye Screenings</span>
-            </div>
-            <div className="stat-box">
-              <h3>5156+</h3>
-              <span>People Refracted</span>
-            </div>
-            <div className="stat-box">
-              <h3>4389+</h3>
-              <span>Spectacles Dispensed</span>
-            </div>
-            <div className="stat-box">
-              <h3>767+</h3>
-              <span>Cataract Surgeries</span>
-            </div>
+            {eyeStats.map((s, i) => (
+              <div className="stat-box" key={i}>
+                <h3>{s.value}</h3>
+                <span>{s.label}</span>
+              </div>
+            ))}
           </div>
-          <Link to="/donate" className="donate-btn">
-            Donate Now
+          <Link to={eyeButtonUrl} className="donate-btn">
+            {eyeButtonLabel}
           </Link>
         </div>
       </section>
@@ -849,26 +922,19 @@ export default function Home() {
       {/* CELEBRITY NOTES */}
       <section className="celebrity-section">
         <div className="section-header">
-          <h2>Celebrity <span className="accent">Notes</span></h2>
-          <p>Recognitions and appreciation from notable personalities</p>
+          <h2>{celebrityH.head} <span className="accent">{celebrityH.tail}</span></h2>
+          <p>{celebrityDescription}</p>
         </div>
         <div className="celebrity-slider-box">
-          <div className={`celebrity-slide ${currentSlide % 2 === 0 ? 'active' : ''}`}>
-            <div className="celebrity-card">
-              <img src="images/celebritynote/1.jpg" alt="Celebrity Note 1" />
+          {celebritySlides.map((slide, si) => (
+            <div className={`celebrity-slide ${currentSlide % 2 === si ? 'active' : ''}`} key={si}>
+              {slide.map((src, ci) => (
+                <div className="celebrity-card" key={ci}>
+                  <img src={src} alt={`Celebrity Note ${si * 2 + ci + 1}`} />
+                </div>
+              ))}
             </div>
-            <div className="celebrity-card">
-              <img src="images/celebritynote/2.jpg" alt="Celebrity Note 2" />
-            </div>
-          </div>
-          <div className={`celebrity-slide ${currentSlide % 2 === 1 ? 'active' : ''}`}>
-            <div className="celebrity-card">
-              <img src="images/celebritynote/3.jpg" alt="Celebrity Note 3" />
-            </div>
-            <div className="celebrity-card">
-              <img src="images/celebritynote/4.jpg" alt="Celebrity Note 4" />
-            </div>
-          </div>
+          ))}
         </div>
         <div className="celebrity-dots">
           <span className={`celebrity-dot ${currentSlide % 2 === 0 ? 'active' : ''}`}></span>
@@ -881,64 +947,30 @@ export default function Home() {
         <div className="metro-box">
           <div className="metro-images">
             <div className="metro-hero-img">
-              <img src="images/bottelmetro.jpeg" alt="Metro Station Initiative" />
+              <img src={metroImage} alt="Metro Station Initiative" />
               <div className="metro-hero-overlay"></div>
             </div>
             <div className="metro-image-grid">
-              <div className="metro-img-box">
-                <div className="metro-img-wrapper">
-                  <img src="images/bottle.JPG" alt="Bottle Crusher Machine" />
-                  <span className="metro-img-label">Bottle Crusher Machine</span>
+              {metroItems.map((item, i) => (
+                <div className="metro-img-box" key={i}>
+                  <div className="metro-img-wrapper">
+                    <img src={item.image} alt={item.label} />
+                    <span className="metro-img-label">{item.label}</span>
+                  </div>
+                  <div className="metro-img-footer">
+                    <h3 className="metro-price">{item.price}</h3>
+                    <Link to={item.link} className="metro-donate-btn">{item.buttonLabel}</Link>
+                  </div>
                 </div>
-                <div className="metro-img-footer">
-                  <h3 className="metro-price">₹1,80,000</h3>
-                  <Link to="/donate" className="metro-donate-btn">DONATE NOW</Link>
-                </div>
-              </div>
-              <div className="metro-img-box">
-                <div className="metro-img-wrapper">
-                  <img src="images/sanitary.JPG" alt="Sanitary Pad Vending Machine" />
-                  <span className="metro-img-label">Sanitary Pad Vending Machine</span>
-                </div>
-                <div className="metro-img-footer">
-                  <h3 className="metro-price">₹7,000</h3>
-                  <Link to="/donate" className="metro-donate-btn">DONATE NOW</Link>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
           <div className="metro-content">
-            <h2>Transforming Metro Stations with Care & Community</h2>
+            <h2>{metroHeading}</h2>
             <div className="metro-line"></div>
-            <p>
-              In partnership with metro authorities, Being Sevak Charitable Trust is dedicated Is to transformed metro
-              stations into cleaner, safer, and more compassionate public spaces for every commuter. With a vision rooted in
-              social responsibility and community well-being, we strive to make everyday travel more dignified, sustainable,
-              and accessible for all.
-            </p>
-            <p>
-              Through impactful urban welfare initiatives, we have installed
-              <strong>Bottle Crusher Machines</strong>
-              at metro stations to encourage responsible plastic disposal and promote environmental awareness among
-              thousands of daily passengers. By turning waste management into a community movement, we aim to inspire
-              cleaner habits and contribute towards a greener future.
-            </p>
-            <p>
-              Understanding the importance of
-              <strong>women's health, dignity, and hygiene</strong>,
-              we have also introduced
-              <strong>Digital Sanitary Pad Vending Machines</strong>
-              to provide easy and reliable access to essential hygiene products within metro premises. This initiative
-              supports women commuters with convenience, care, and confidence during their daily journeys.
-            </p>
-            <p>
-              Every initiative we undertake is a step towards creating
-              <strong>people-centric infrastructure</strong>
-              that not only serves commuters but also nurtures
-              <strong>social awareness, environmental responsibility, and inclusive urban development</strong>.
-              Through compassion-driven action, we continue working towards a future where public spaces reflect care,
-              humanity, and sustainability for every citizen.
-            </p>
+            {metroParagraphs.map((p, i) => (
+              <p key={i}>{p}</p>
+            ))}
           </div>
         </div>
       </section>
@@ -947,22 +979,14 @@ export default function Home() {
       <section className="promise-xection">
         <div className="promise-box">
           <div className="promise-logo">
-            <img src="logo11.png" alt="NGO Logo" />
+            <img src={promiseImage} alt="NGO Logo" />
           </div>
           <div className="promise-content">
-            <h2>OUR PROMISE TO YOU :</h2>
+            <h2>{promiseHeading}</h2>
             <div className="promise-line"></div>
-            <p>
-              Every donation you make helps us serve people with dignity,
-              compassion, and transparency. Our mission is to bring hope,
-              support, and positive change to communities in need through
-              food distribution, healthcare, education, and humanitarian aid.
-            </p>
-            <p>
-              We believe in creating impact with honesty and care. Together,
-              we can build a better future and spread kindness to every life
-              we touch.
-            </p>
+            {promiseParagraphs.map((p, i) => (
+              <p key={i}>{p}</p>
+            ))}
           </div>
         </div>
       </section>
@@ -970,221 +994,19 @@ export default function Home() {
       {/* OUR ACTIVITIES */}
       <section className="how-we-work">
         <div className="section-header">
-          <h2>Our <span className="accent">Activities</span></h2>
-          <p>Your donation reaches those who need it most</p>
+          <h2>{activitiesH.head} <span className="accent">{activitiesH.tail}</span></h2>
+          <p>{activitiesDescription}</p>
         </div>
         <div className="slider-wrapper">
           <div className="slider-track">
-            <div className="circle-card">
-              <img src="images/Hospitalization&HealthCareIMG.jpg" alt="" />
-              <h3>Hospitalization & Health Care</h3>
-              <p className="circle-desc">Due to the low financial condition, no proper health care</p>
-              <a href="#" className="circle-read-more">Read More →</a>
-            </div>
-            <div className="circle-card">
-              <img src="images/NewClothingDistribution.jpg" alt="" />
-              <h3>New Clothing Distribution</h3>
-              <p className="circle-desc">For someone who cannot even afford daily meals, even a</p>
-              <a href="#" className="circle-read-more">Read More →</a>
-            </div>
-            <div className="circle-card">
-              <img src="images/CelebrationofNationalPrograms.jpg" alt="" />
-              <h3>Celebration of National Program</h3>
-              <p className="circle-desc">To keep the fire of patriotism burning in the hearts</p>
-              <a href="#" className="circle-read-more">Read More →</a>
-            </div>
-            <div className="circle-card">
-              <img src="images/ReliefforDialysisPatients.jpg" alt="" />
-              <h3>Relief for Dialysis Patients</h3>
-              <p className="circle-desc">To add happiness to the lives of dialysis patients, we</p>
-              <a href="#" className="circle-read-more">Read More →</a>
-            </div>
-            <div className="circle-card">
-              <img src="images/SwachhBharatAwarenessCampaign.jpg" alt="" />
-              <h3>Awareness for Swatch Bharat</h3>
-              <p className="circle-desc">In this program we try to motivate people by organizing</p>
-              <a href="#" className="circle-read-more">Read More →</a>
-            </div>
-            <div className="circle-card">
-              <img src="images/BLIND.jpg" alt="" />
-              <h3>Blind Widow Care</h3>
-              <p className="circle-desc">Our organization takes special care for the widow as they</p>
-              <a href="#" className="circle-read-more">Read More →</a>
-            </div>
-            <div className="circle-card">
-              <img src="images/AwarenessCampaign.jpg" alt="" />
-              <h3>Public Awareness</h3>
-              <p className="circle-desc">Road Safety Awareness Campaign - Our main motto of this</p>
-              <a href="#" className="circle-read-more">Read More →</a>
-            </div>
-            <div className="circle-card">
-              <img src="images/EducationFacilitiesforBlind&UnderprivilegedChildren.jpg" alt="" />
-              <h3>Education Facilities for Blind & Underprivileged Children</h3>
-              <p className="circle-desc">Education at grass-root level is the need of the hour!</p>
-              <a href="#" className="circle-read-more">Read More →</a>
-            </div>
-            <div className="circle-card">
-              <img src="images/SevakGameswithMembers.jpg" alt="" />
-              <h3>Sevak Games with Members</h3>
-              <p className="circle-desc">Our organization celebrates "SEVAK GAMES" every year for specially abled</p>
-              <a href="#" className="circle-read-more">Read More →</a>
-            </div>
-            <div className="circle-card">
-              <img src="images/sevakMemCard.jpg" alt="" />
-              <h3>Sevak Membership Card</h3>
-              <p className="circle-desc">At present our organization has many registered members. To provide</p>
-              <a href="#" className="circle-read-more">Read More →</a>
-            </div>
-            <div className="circle-card">
-              <img src="images/Matrimonial.jpeg" alt="" />
-              <h3>Matrimonial Program</h3>
-              <p className="circle-desc">As we all know couples are made in heaven and</p>
-              <a href="#" className="circle-read-more">Read More →</a>
-            </div>
-            <div className="circle-card">
-              <img src="images/houserepair.jpg" alt="" />
-              <h3>House Repairing Activity</h3>
-              <p className="circle-desc">Sevak team arranged house repairing activities for our Blind and</p>
-              <a href="#" className="circle-read-more">Read More →</a>
-            </div>
-            <div className="circle-card">
-              <img src="images/EyeCamp.jpg" alt="" />
-              <h3>Eye Camp</h3>
-              <p className="circle-desc">The reality is that most of the blind people in</p>
-              <a href="#" className="circle-read-more">Read More →</a>
-            </div>
-            <div className="circle-card">
-              <img src="images/Pandemic-1.jpg" alt="" />
-              <h3>Pandemic relief support for Covid-19</h3>
-              <p className="circle-desc">Starting April 2020, Being Sevak Charitable Trust has organized programs</p>
-              <a href="#" className="circle-read-more">Read More →</a>
-            </div>
-            <div className="circle-card">
-              <img src="images/DryRationKitDistribution.jpg" alt="" />
-              <h3>Dry Ration Kit</h3>
-              <p className="circle-desc">Providing essential food supplies to needy families.</p>
-              <a href="#" className="circle-read-more">Read More →</a>
-            </div>
-            <div className="circle-card">
-              <img src="images/Mid-DayMealProgram.jpg" alt="" />
-              <h3>Mid-Day Meal</h3>
-              <p className="circle-desc">Nutritious meals for underprivileged and visually impaired individuals.</p>
-              <a href="#" className="circle-read-more">Read More →</a>
-            </div>
-            <div className="circle-card">
-              <img src="images/SNACKSKit.jpg" alt="" />
-              <h3>Snacks Kit</h3>
-              <p className="circle-desc">Distributing healthy snack kits to underserved communities.</p>
-              <a href="#" className="circle-read-more">Read More →</a>
-            </div>
-            <div className="circle-card">
-              <img src="images/D.E.C2.jpg" alt="" />
-              <h3>Digital Education Centre</h3>
-              <p className="circle-desc">Empowering children through free digital learning access.</p>
-              <a href="#" className="circle-read-more">Read More →</a>
-            </div>
-            <div className="circle-card">
-              <img src="images/stationarykit.jpg" alt="" />
-              <h3>Stationery Kit Distribution</h3>
-              <p className="circle-desc">Providing school stationery kits to needy students.</p>
-              <a href="#" className="circle-read-more">Read More →</a>
-            </div>
-            <div className="circle-card">
-              <img src="images/Rozgharnew.jpeg" alt="" />
-              <h3>Rozgaar Booth</h3>
-              <p className="circle-desc">Creating employment opportunities for financially struggling families.</p>
-              <a href="#" className="circle-read-more">Read More →</a>
-            </div>
-            <div className="circle-card">
-              <img src="images/activity1.jpg" alt="" />
-              <h3>Wheelchair & Tricycle Distribution</h3>
-              <p className="circle-desc">Restoring mobility and independence for specially-abled individuals.</p>
-              <a href="#" className="circle-read-more">Read More →</a>
-            </div>
-            <div className="circle-card">
-              <img src="images/SewingMachineDistribution.jpg" alt="" />
-              <h3>Sewing Machine Distribution</h3>
-              <p className="circle-desc">Empowering women through self-employment and skill support.</p>
-              <a href="#" className="circle-read-more">Read More →</a>
-            </div>
-            <div className="circle-card">
-              <img src="images/FlourMillDistribution.jpg" alt="" />
-              <h3>Floor Mill Distribution</h3>
-              <p className="circle-desc">Supporting sustainable income generation for needy families.</p>
-              <a href="#" className="circle-read-more">Read More →</a>
-            </div>
-            <div className="circle-card">
-              <img src="images/SchoolRenovationProject.jpg" alt="" />
-              <h3>School Renovation</h3>
-              <p className="circle-desc">Improving school infrastructure for better student learning.</p>
-              <a href="#" className="circle-read-more">Read More →</a>
-            </div>
-            <div className="circle-card">
-              <img src="images/FinancialAssistanceProgram.jpg" alt="" />
-              <h3>Financial assistance Program</h3>
-              <p className="circle-desc">Supporting sustainable income generation for needy families.</p>
-              <a href="#" className="circle-read-more">Read More →</a>
-            </div>
-            <div className="circle-card">
-              <img src="images/HandwashingStationInstallation.jpg" alt="" />
-              <h3>Handwashing Station</h3>
-              <p className="circle-desc">Promoting hygiene and cleanliness among school children.</p>
-              <a href="#" className="circle-read-more">Read More →</a>
-            </div>
-            <div className="circle-card">
-              <img src="images/TreePlantationDrive.jpg" alt="" />
-              <h3>Tree Plantation</h3>
-              <p className="circle-desc">Creating a greener and healthier environment for future generations.</p>
-              <a href="#" className="circle-read-more">Read More →</a>
-            </div>
-            <div className="circle-card">
-              <img src="images/bloodDonation.jpg" alt="" />
-              <h3>Blood Donation camp</h3>
-              <p className="circle-desc">Saving lives through voluntary blood donation and promoting community health awareness.</p>
-              <a href="#" className="circle-read-more">Read More →</a>
-            </div>
-            <div className="circle-card">
-              <img src="images/BottleCrusherMachineInitiative.jpg" alt="" />
-              <h3>Bottle Crusher Machine</h3>
-              <p className="circle-desc">Encouraging plastic recycling and environmental sustainability.</p>
-              <a href="#" className="circle-read-more">Read More →</a>
-            </div>
-            <div className="circle-card">
-              <img src="images/AnimalFeedingCenter.jpg" alt="" />
-              <h3>Animal Feeding Center</h3>
-              <p className="circle-desc">Providing food and care for stray and abandoned animals.</p>
-              <a href="#" className="circle-read-more">Read More →</a>
-            </div>
-            <div className="circle-card">
-              <img src="images/sanitarypadkit.jpg" alt="" />
-              <h3>Sanitary Pad Distribution</h3>
-              <p className="circle-desc">Promoting menstrual hygiene awareness among women and girls.</p>
-              <a href="#" className="circle-read-more">Read More →</a>
-            </div>
-            <div className="circle-card">
-              <img src="images/HygieneKitDistribution.jpg" alt="" />
-              <h3>Hygiene Kit Distribution</h3>
-              <p className="circle-desc">Providing essential hygiene kits to underprivileged communities.</p>
-              <a href="#" className="circle-read-more">Read More →</a>
-            </div>
-            <div className="circle-card">
-              <img src="images/BabyCare.jpg" alt="" />
-              <h3>Baby Care Center</h3>
-              <p className="circle-desc">Supporting mothers and newborns with safe care facilities.</p>
-              <a href="#" className="circle-read-more">Read More →</a>
-            </div>
-            <div className="circle-card">
-              <img src="images/Dialysis Centre.png" alt="" />
-              <h3>Dialysis Centre</h3>
-              <p className="circle-desc">Providing affordable dialysis treatment for needy patients.</p>
-              <a href="#" className="circle-read-more">Read More →</a>
-            </div>
-            <div className="circle-card">
-              <img src="images/BEACHcleaning.png" alt="" />
-              <h3>Beach Cleaning Drives</h3>
-              <p className="circle-desc">Organizing cleanliness drives to protect marine environments.</p>
-              <a href="#" className="circle-read-more">Read More →</a>
-            </div>
+            {activitiesItems.map((item, i) => (
+              <div className="circle-card" key={i}>
+                <img src={item.image} alt="" />
+                <h3>{item.title}</h3>
+                <p className="circle-desc">{item.description}</p>
+                <a href="#" className="circle-read-more">Read More →</a>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -1194,19 +1016,19 @@ export default function Home() {
         <div className="projects-hero">
           <img src="banner.jpg" alt="Our Partners" />
           <div className="overlay">
-            <h1>OUR <span>PARTNERS</span></h1>
-            <p>Together with our partners, we work to bring hope, care, and support to those in need</p>
+            <h1>{partnersH.head} <span>{partnersH.tail}</span></h1>
+            <p>{partnersDescription}</p>
           </div>
         </div>
         <div className="partners-marquee">
           <div className="partners-track">
             <div className="projects-grid">
-              {['1.jpg','2.jpg','3.jpg','4.jpg','5.jpg','6.jpg','7.jpg','8.jpg','9.jpg','10.jpg','11.png','12.png','13.png','14.png','15.png','16.png','17.png','18.png','19.png','20.png','21.png','22.png','23.png','24.png','25.png'].map((src,i)=>(
+              {partnersImages.map((src, i) => (
                 <div className="project-card" key={i}><img src={'images/'+src} alt="" /></div>
               ))}
             </div>
             <div className="projects-grid duplicate">
-              {['1.jpg','2.jpg','3.jpg','4.jpg','5.jpg','6.jpg','7.jpg','8.jpg','9.jpg','10.jpg','11.png','12.png','13.png','14.png','15.png','16.png','17.png','18.png','19.png','20.png','21.png','22.png','23.png','24.png','25.png'].map((src,i)=>(
+              {partnersImages.map((src, i) => (
                 <div className="project-card" key={'d'+i}><img src={'images/'+src} alt="" /></div>
               ))}
             </div>
@@ -1218,30 +1040,16 @@ export default function Home() {
       <section className="impact-section" ref={impactRef}>
         <div className="impact-inner">
           <div className="impact-title">
-            <h2>11 Years of <span className="accent-light">Impact</span></h2>
-            <p>Since 2015, Being Sevak has been serving communities across India</p>
+            <h2>{statsH.head} <span className="accent-light">{statsH.tail}</span></h2>
+            <p>{statsDescription}</p>
           </div>
           <div className="stats-grid">
-            <div className="stat-item">
-              <span className="stat-num" data-target="20000">{impactAnimated ? '20000' : '0'}</span>
-              <span className="stat-label">Women Supported</span>
-            </div>
-            <div className="stat-item">
-              <span className="stat-num" data-target="12">{impactAnimated ? '12' : '0'}</span>
-              <span className="stat-label">States Connected</span>
-            </div>
-            <div className="stat-item">
-              <span className="stat-num" data-target="4500">{impactAnimated ? '4500' : '0'}</span>
-              <span className="stat-label">Support Programs</span>
-            </div>
-            <div className="stat-item">
-              <span className="stat-num" data-target="300000">{impactAnimated ? '300000' : '0'}</span>
-              <span className="stat-label">Supported Children</span>
-            </div>
-            <div className="stat-item">
-              <span className="stat-num" data-target="1000000">{impactAnimated ? '1000000' : '0'}</span>
-              <span className="stat-label">Beneficiaries Reached</span>
-            </div>
+            {statsItems.map((it, i) => (
+              <div className="stat-item" key={i}>
+                <span className="stat-num" data-target={it.value}>{impactAnimated ? it.value : '0'}</span>
+                <span className="stat-label">{it.label}</span>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -1251,99 +1059,28 @@ export default function Home() {
       {/* DONOR TESTIMONIALS */}
       <section className="donor-testimonial-section">
         <div className="section-title">
-          <h2>What Our Donors Says</h2>
-          <p>Voices of kindness that inspire our mission</p>
+          <h2>{testimonialsHeading}</h2>
+          <p>{testimonialsDescription}</p>
         </div>
         <div className="testimonial-track">
-          <div className="testimonial-card">
-            <div className="quote">❝</div>
-            <p>Supporting this NGO has been one of the most meaningful decisions of my life. Seeing smiles on children's faces and families getting support gives real happiness.</p>
-            <div className="donor-info">
-              <h4>Riya Sharma</h4>
-              <span>Supportive Donor</span>
+          {[...testimonials, ...testimonials].map((t, i) => (
+            <div className="testimonial-card" key={i}>
+              <div className="quote">❝</div>
+              <p>{t.quote}</p>
+              <div className="donor-info">
+                <h4>{t.name}</h4>
+                <span>{t.role}</span>
+              </div>
             </div>
-          </div>
-          <div className="testimonial-card">
-            <div className="quote">❝</div>
-            <p>This organization is truly changing lives with honesty and dedication. Every donation reaches people who genuinely need help and care.</p>
-            <div className="donor-info">
-              <h4>Rahul Mehta</h4>
-              <span>Monthly Contributor</span>
-            </div>
-          </div>
-          <div className="testimonial-card">
-            <div className="quote">❝</div>
-            <p>I feel proud to be connected with such a beautiful cause. The impact they create in education, food distribution, and healthcare is inspiring.</p>
-            <div className="donor-info">
-              <h4>Neha Patel</h4>
-              <span>Kind Heart Donor</span>
-            </div>
-          </div>
-          <div className="testimonial-card">
-            <div className="quote">❝</div>
-            <p>Being part of this mission has been a blessing. The transparency and dedication of Being Sevak is remarkable.</p>
-            <div className="donor-info">
-              <h4>Amit Verma</h4>
-              <span>Proud Donor</span>
-            </div>
-          </div>
-          <div className="testimonial-card">
-            <div className="quote">❝</div>
-            <p>I have seen the ground work they do. Every rupee is used wisely for those who truly need it.</p>
-            <div className="donor-info">
-              <h4>Priya Singh</h4>
-              <span>Regular Contributor</span>
-            </div>
-          </div>
-          {/* Duplicates for seamless loop */}
-          <div className="testimonial-card">
-            <div className="quote">❝</div>
-            <p>Supporting this NGO has been one of the most meaningful decisions of my life. Seeing smiles on children's faces and families getting support gives real happiness.</p>
-            <div className="donor-info">
-              <h4>Riya Sharma</h4>
-              <span>Supportive Donor</span>
-            </div>
-          </div>
-          <div className="testimonial-card">
-            <div className="quote">❝</div>
-            <p>This organization is truly changing lives with honesty and dedication. Every donation reaches people who genuinely need help and care.</p>
-            <div className="donor-info">
-              <h4>Rahul Mehta</h4>
-              <span>Monthly Contributor</span>
-            </div>
-          </div>
-          <div className="testimonial-card">
-            <div className="quote">❝</div>
-            <p>I feel proud to be connected with such a beautiful cause. The impact they create in education, food distribution, and healthcare is inspiring.</p>
-            <div className="donor-info">
-              <h4>Neha Patel</h4>
-              <span>Kind Heart Donor</span>
-            </div>
-          </div>
-          <div className="testimonial-card">
-            <div className="quote">❝</div>
-            <p>Being part of this mission has been a blessing. The transparency and dedication of Being Sevak is remarkable.</p>
-            <div className="donor-info">
-              <h4>Amit Verma</h4>
-              <span>Proud Donor</span>
-            </div>
-          </div>
-          <div className="testimonial-card">
-            <div className="quote">❝</div>
-            <p>I have seen the ground work they do. Every rupee is used wisely for those who truly need it.</p>
-            <div className="donor-info">
-              <h4>Priya Singh</h4>
-              <span>Regular Contributor</span>
-            </div>
-          </div>
+          ))}
         </div>
       </section>
 
       {/* LATEST UPDATES */}
       <section className="how-we-work">
         <div className="section-header">
-          <h2>Latest <span className="accent">Updates</span></h2>
-          <p>Stay informed with our recent activities and announcements</p>
+          <h2>{updatesH.head} <span className="accent">{updatesH.tail}</span></h2>
+          <p>{latestUpdatesDescription}</p>
         </div>
         <div className="month-updates">
           <div className="month-tabs">
@@ -1376,70 +1113,25 @@ export default function Home() {
       {/* FEATURED PROJECTS */}
       <section className="featured-section">
         <div className="section-header">
-          <h2>Featured <span className="accent">Projects</span></h2>
-          <p>Make a direct impact with these urgent campaigns</p>
+          <h2>{featuredProjectsH.head} <span className="accent">{featuredProjectsH.tail}</span></h2>
+          <p>{featuredProjectsDescription}</p>
         </div>
         <div className="featured-slider-box" ref={featuredSliderRef}>
-          <div className={`featured-slide ${currentFeatured === 0 ? 'active' : ''}`}>
-            <div className="featured-card">
-              <div className="feat-img" style={{ backgroundImage: "url('images/Matrimonial.jpeg')" }}></div>
-              <div className="feat-overlay">
-                <span className="feat-tag">EMPOWERMENT</span>
-                <h3>Blind Vivah</h3>
-                <p>Empowering visually impaired individuals through skill development and independent living.</p>
-                <Link to="/donate" className="feat-btn">Give Now</Link>
-              </div>
+          {featuredProjects.map((slide, si) => (
+            <div className={`featured-slide ${currentFeatured === si ? 'active' : ''}`} key={si}>
+              {slide.cards.map((card, ci) => (
+                <div className="featured-card" key={ci}>
+                  <div className="feat-img" style={{ backgroundImage: `url('${card.image}')` }}></div>
+                  <div className="feat-overlay">
+                    <span className="feat-tag">{card.tag}</span>
+                    <h3>{card.title}</h3>
+                    <p>{card.description}</p>
+                    <Link to={card.link} className="feat-btn">{card.button}</Link>
+                  </div>
+                </div>
+              ))}
             </div>
-            <div className="featured-card">
-              <div className="feat-img" style={{ backgroundImage: "url('images/rasaoighar.jpeg')" }}></div>
-              <div className="feat-overlay">
-                <span className="feat-tag">FOOD</span>
-                <h3>Rasoi Ghar</h3>
-                <p>Providing nutritious meals to underprivileged communities with dignity and care.</p>
-                <Link to="/donate" className="feat-btn">Give Now</Link>
-              </div>
-            </div>
-          </div>
-          <div className={`featured-slide ${currentFeatured === 1 ? 'active' : ''}`}>
-            <div className="featured-card">
-              <div className="feat-img" style={{ backgroundImage: "url('images/D.E.C.jpg')" }}></div>
-              <div className="feat-overlay">
-                <span className="feat-tag">EDUCATION</span>
-                <h3>Digital Education Centre</h3>
-                <p>Bridging the digital divide with free computer literacy and online learning access.</p>
-                <Link to="/donate" className="feat-btn">Give Now</Link>
-              </div>
-            </div>
-            <div className="featured-card">
-              <div className="feat-img" style={{ backgroundImage: "url('images/physiotherepy.jpeg')" }}></div>
-              <div className="feat-overlay">
-                <span className="feat-tag">HEALTH</span>
-                <h3>Physiotherapy Centre</h3>
-                <p>Providing free physiotherapy and rehabilitation services for those in need.</p>
-                <Link to="/donate" className="feat-btn">Give Now</Link>
-              </div>
-            </div>
-          </div>
-          <div className={`featured-slide ${currentFeatured === 2 ? 'active' : ''}`}>
-            <div className="featured-card">
-              <div className="feat-img" style={{ backgroundImage: "url('images/library.jpeg')" }}></div>
-              <div className="feat-overlay">
-                <span className="feat-tag">EDUCATION</span>
-                <h3>Library Centre</h3>
-                <p>Establishing community libraries to promote reading and self-learning among underprivileged students.</p>
-                <Link to="/donate" className="feat-btn">Give Now</Link>
-              </div>
-            </div>
-            <div className="featured-card">
-              <div className="feat-img" style={{ backgroundImage: "url('images/womenempoerment.jpeg')" }}></div>
-              <div className="feat-overlay">
-                <span className="feat-tag">EMPOWERMENT</span>
-                <h3>Women Empowerment & Self Employment Unit</h3>
-                <p>Providing skill training and livelihood opportunities for women to achieve financial independence.</p>
-                <Link to="/donate" className="feat-btn">Give Now</Link>
-              </div>
-            </div>
-          </div>
+          ))}
         </div>
         <div className="featured-dots">
           {[...Array(totalFeaturedSlides)].map((_, i) => (
@@ -1484,7 +1176,7 @@ export default function Home() {
                 <div className="b-mission-desc">{m.desc}</div>
               </div>
               <div className="b-mission-right">
-                <div className="b-mission-price">{cartQty[m.key] > 0 ? `\u20B9${(cartQty[m.key] * UNIT_PRICE[m.key]).toLocaleString('en-IN')}` : '\u20B90'}</div>
+                <div className="b-mission-price">{cartQty[m.key] > 0 ? `\u20B9${(cartQty[m.key] * priceOf(m.key)).toLocaleString('en-IN')}` : '\u20B90'}</div>
                 <div className="b-mission-qty-row">
                   <button className="b-qty-btn" onClick={() => changeQty(m.key, -1)}><i className="fas fa-minus"></i></button>
                   <span className="b-qty-val">{cartQty[m.key]}</span>
@@ -1528,7 +1220,7 @@ export default function Home() {
 
       {/* WhatsApp Floating Button */}
       <a
-        href="https://wa.me/918879035035?text=Hello%20Being%20Sevak%20Charitable%20Trust%2C%20I%20would%20like%20to%20know%20more."
+        href={waLink}
         target="_blank"
         rel="noopener noreferrer"
         className="whatsapp-float"

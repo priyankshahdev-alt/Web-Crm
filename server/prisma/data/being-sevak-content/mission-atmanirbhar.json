@@ -1,0 +1,107 @@
+{
+  "slug": "mission-atmanirbhar",
+  "title": "Mission Atmanirbhar",
+  "metaTitle": "Mission Atmanirbhar | Being Sevak Foundation",
+  "metaDescription": "Mission Atmanirbhar by Being Sevak focuses on empowering individuals through skills, education, and sustainable livelihood opportunities for self-reliant and empowered communities.",
+  "template": "default",
+  "sortOrder": 12,
+  "isHome": false,
+  "sections": [
+    {
+      "type": "mission-atmanirbhar-tax",
+      "name": "Page Title",
+      "sortOrder": 1,
+      "isActive": true,
+      "content": {
+        "title": "Mission AtmaNirbhar"
+      }
+    },
+    {
+      "type": "mission-atmanirbhar-hero",
+      "name": "Hero Section",
+      "sortOrder": 2,
+      "isActive": true,
+      "content": {
+        "tag": "Mission Atma Nirbhar",
+        "heading": "Building Self Reliant & Empowered Communities",
+        "description": "Atma Nirbhar initiative by Being Sevak focuses on empowering individuals through skills, education, and sustainable livelihood opportunities.",
+        "image": "/images/at7.jpeg"
+      }
+    },
+    {
+      "type": "atmanirbhar-about",
+      "name": "About Initiative",
+      "sortOrder": 3,
+      "isActive": true,
+      "content": {
+        "tag": "About Initiative",
+        "heading": "Empowering People For A Better Future",
+        "text": "We support skill development, self employment training and awareness programs that help individuals become financially independent.",
+        "items": [
+          { "title": "Skill Development", "description": "Training programs for practical skills." },
+          { "title": "Employment Support", "description": "Helping people find sustainable jobs." },
+          { "title": "Entrepreneurship", "description": "Encouraging small business creation." },
+          { "title": "Awareness", "description": "Spreading financial literacy." }
+        ],
+        "image": "/images/at6.jpg"
+      }
+    },
+    {
+      "type": "atmanirbhar-impact",
+      "name": "Our Impact",
+      "sortOrder": 4,
+      "isActive": true,
+      "content": {
+        "stats": [
+          { "value": "200+", "label": "Training Programs" },
+          { "value": "50+", "label": "Communities" },
+          { "value": "5K+", "label": "Lives Improved" }
+        ]
+      }
+    },
+    {
+      "type": "atmanirbhar-gallery",
+      "name": "Program Highlights",
+      "sortOrder": 5,
+      "isActive": true,
+      "content": {
+        "tag": "Program Highlights",
+        "heading": "Moments Of Empowerment",
+        "text": "Empowering women with opportunity, confidence, and hope - Mission Atmanirbhar",
+        "items": [
+          { "src": "/images/at1.jpg", "title": "Awareness Drive", "className": "gallery-item large" },
+          { "src": "/images/wheelchairman.jpg", "title": "Wheelchair Support", "className": "gallery-item" },
+          { "src": "/images/at3.jpeg", "title": "Skill Training", "className": "gallery-item" },
+          { "src": "/images/at8.jpeg", "title": "Community Care", "className": "gallery-item" },
+          { "src": "/images/at5.jpg", "title": "Empowering Together", "className": "gallery-item" }
+        ]
+      }
+    },
+    {
+      "type": "atmanirbhar-donation",
+      "name": "Donation CTA",
+      "sortOrder": 6,
+      "isActive": true,
+      "content": {
+        "tag": "Mission Atmanirbhar",
+        "title": "Empowering Lives Through Self-Reliance",
+        "description": "Help individuals and families become self-reliant through skill development, livelihood support, education, and sustainable opportunities for a brighter future.",
+        "donationUrl": "/donations/donation-inline-atmanirbhar.html"
+      }
+    },
+    {
+      "type": "atmanirbhar-testimonials",
+      "name": "Testimonials",
+      "sortOrder": 7,
+      "isActive": true,
+      "content": {
+        "heading": "What Our Donors Say",
+        "items": [
+          { "quote": "Being Sevak is doing incredible work for visually impaired and needy families. Proud to support this mission.", "name": "Riya Sharma" },
+          { "quote": "Transparent work, genuine impact, and a wonderful team dedicated to helping people with dignity.", "name": "Rahul Mehta" },
+          { "quote": "Every donation creates real change. Their food distribution drives truly touch lives.", "name": "Anjali Verma" }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,84 @@
+{
+  "slug": "mission-beach",
+  "title": "Mission Beach Sevak",
+  "metaTitle": "Mission Beach Sevak | Being Sevak Foundation",
+  "metaDescription": "Mission Beach Sevak by Being Sevak focuses on cleaning coastal areas, protecting marine life and spreading awareness about ocean waste through beach clean-up drives.",
+  "template": "default",
+  "sortOrder": 15,
+  "isHome": false,
+  "sections": [
+    {
+      "type": "mission-beach-tax",
+      "name": "Page Title",
+      "sortOrder": 1,
+      "isActive": true,
+      "content": {
+        "title": "Mission Beach Sevak"
+      }
+    },
+    {
+      "type": "mission-beach-hero",
+      "name": "Hero Section",
+      "sortOrder": 2,
+      "isActive": true,
+      "content": {
+        "tag": "Beach Sevak Initiative",
+        "heading": "Clean Beaches, Safe Oceans, Better Future",
+        "description": "Beach Sevak by Being Sevak focuses on cleaning coastal areas, protecting marine life and spreading awareness about ocean waste.",
+        "image": "/images/beach1.png"
+      }
+    },
+    {
+      "type": "beach-impact",
+      "name": "Our Impact",
+      "sortOrder": 3,
+      "isActive": true,
+      "content": {
+        "stats": [
+          { "value": "120+", "label": "Clean Drives" },
+          { "value": "5T+", "label": "Waste Removed" },
+          { "value": "500+", "label": "Volunteers" }
+        ]
+      }
+    },
+    {
+      "type": "beach-activities",
+      "name": "Our Activities",
+      "sortOrder": 4,
+      "isActive": true,
+      "content": {
+        "heading": "Our Activities",
+        "images": [
+          { "src": "/images/beach2.jpg", "alt": "" },
+          { "src": "/images/beach3.jpeg", "alt": "" },
+          { "src": "/images/beach4.jpeg", "alt": "" }
+        ]
+      }
+    },
+    {
+      "type": "beach-donation",
+      "name": "Donation CTA",
+      "sortOrder": 5,
+      "isActive": true,
+      "content": {
+        "tag": "Beach Sevak",
+        "title": "Protect Our Beaches, Protect Our Future",
+        "description": "Join our mission to keep beaches clean by removing plastic waste, protecting marine life, and spreading awareness for a cleaner and healthier coastal environment."
+      }
+    },
+    {
+      "type": "beach-testimonials",
+      "name": "Testimonials",
+      "sortOrder": 6,
+      "isActive": true,
+      "content": {
+        "heading": "What Our Donors Say",
+        "items": [
+          { "quote": "\"Being Sevak is doing incredible work for visually impaired and needy families. Proud to support this mission.\"", "name": "Riya Sharma" },
+          { "quote": "\"Transparent work, genuine impact, and a wonderful team dedicated to helping people with dignity.\"", "name": "Rahul Mehta" },
+          { "quote": "\"Every donation creates real change. Their food distribution drives truly touch lives.\"", "name": "Anjali Verma" }
+        ]
+      }
+    }
+  ]
+}

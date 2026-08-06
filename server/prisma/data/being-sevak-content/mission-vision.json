@@ -1,0 +1,59 @@
+{
+  "slug": "mission-vision",
+  "title": "Mission / Vision",
+  "metaTitle": "Mission / Vision | Being Sevak Foundation",
+  "metaDescription": "The mission and vision of Being Sevak Charitable Trust to empower visually impaired individuals and underprivileged children through education, healthcare, and livelihood support.",
+  "template": "default",
+  "sortOrder": 3,
+  "isHome": false,
+  "sections": [
+    {
+      "type": "mv-hero",
+      "name": "Hero Banner",
+      "sortOrder": 1,
+      "isActive": true,
+      "content": {
+        "heading": "MISSION / VISION",
+        "breadcrumb": "Mission / Vision"
+      }
+    },
+    {
+      "type": "mv-mission",
+      "name": "Mission Card",
+      "sortOrder": 2,
+      "isActive": true,
+      "content": {
+        "image": "https://beingsevak.org/wp-content/uploads/2023/11/Untitled-design-2.png",
+        "heading": "Mission",
+        "text": "Empower and uplift the lives of visually impaired individuals and underprivileged children, ensuring their basic rights to education and livelihood. Through our different Mission & activities in the field of education, healthcare, and support programs, we aim to eliminate avoidable blindness, promote inclusivity, and enable all those we serve to lead lives of independence and dignity."
+      }
+    },
+    {
+      "type": "mv-values",
+      "name": "Core Values",
+      "sortOrder": 3,
+      "isActive": true,
+      "content": {
+        "heading": "VALUES",
+        "items": [
+          { "icon": "fa-scale-balanced", "label": "ACCOUNTABILITY" },
+          { "icon": "fa-chalkboard-user", "label": "LEADERSHIP" },
+          { "icon": "fa-eye", "label": "TRANSPARENCY" },
+          { "icon": "fa-people-group", "label": "TEAM WORK" },
+          { "icon": "fa-shapes", "label": "INNOVATION" }
+        ]
+      }
+    },
+    {
+      "type": "mv-vision",
+      "name": "Vision Card",
+      "sortOrder": 4,
+      "isActive": true,
+      "content": {
+        "image": "https://beingsevak.org/wp-content/uploads/2023/11/Untitled-design-1-2.png",
+        "heading": "Vision",
+        "text": "The NGO's vision is to create a world where visually impaired, underprivileged children, and needy individuals have access to their basic rights of livelihood and education. This vision is rooted in the belief that every individual, regardless of their circumstances or disabilities, deserves the opportunity to live a life of independence and dignity."
+      }
+    }
+  ]
+}

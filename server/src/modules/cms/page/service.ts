@@ -79,6 +79,14 @@ export const pageService = {
       isHome: input.isHome ?? false,
     });
 
+    if (input.sections && input.sections.length > 0) {
+      await pageRepository.replaceSections(
+        page.id,
+        organizationId,
+        input.sections,
+      );
+    }
+
     await recordAudit({
       userId: req.user?.id,
       organizationId,
@@ -93,8 +101,10 @@ export const pageService = {
   },
 
   async update(organizationId: string, id: string, input: UpdatePageInput, req: Request) {
-    const existing = await pageRepository.findByIdInOrg(id, organizationId);
-    ensureOwnedPage(existing, organizationId);
+    const existing = ensureOwnedPage(
+      await pageRepository.findByIdInOrg(id, organizationId),
+      organizationId,
+    );
 
     if (input.slug) {
       const conflict = await pageRepository.findBySlugInOrg(input.slug, organizationId);
@@ -103,17 +113,38 @@ export const pageService = {
       }
     }
 
-    const page = await pageRepository.update(id, { ...input });
+    const { sections, ...pagePatch } = input;
 
-    await recordAudit({
-      userId: req.user?.id,
-      organizationId,
-      action: 'UPDATE',
-      resource: 'page',
-      resourceId: id,
-      message: `Page updated: ${page.title}`,
-      req,
-    });
+    if (sections) {
+      await pageRepository.replaceSections(id, organizationId, sections);
+
+      await recordAudit({
+        userId: req.user?.id,
+        organizationId,
+        action: 'UPDATE',
+        resource: 'page',
+        resourceId: id,
+        message: `Page sections updated: ${existing.title}`,
+        req,
+      });
+    }
+
+    if (Object.keys(pagePatch).length > 0) {
+      await pageRepository.update(id, { ...pagePatch });
+
+      await recordAudit({
+        userId: req.user?.id,
+        organizationId,
+        action: 'UPDATE',
+        resource: 'page',
+        resourceId: id,
+        message: `Page updated: ${existing.title}`,
+        req,
+      });
+    }
+
+    const page = await pageRepository.findByIdInOrg(id, organizationId);
+    if (!page) throw ApiError.notFound('Page not found');
 
     return page;
   },

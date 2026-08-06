@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useEffect, useState, useCallback } from 'react';
+import { usePageContent } from '../hooks/usePageContent';
 
 const galleryItems = [
   { category: 'campaigns', img: '/images/annapurna 2.png', title: 'Mission Annapurna', desc: 'Food distribution drive reaching thousands of families', wide: true },
@@ -31,8 +32,22 @@ const moreItems = [
 const filters = ['all', 'campaigns', 'education', 'health', 'community', 'events'];
 
 const Photos = () => {
+  const content = usePageContent('photos');
+
+  const heroTitlePrefix = content('photos-hero', 'titlePrefix') ?? 'Our';
+  const heroTitleHighlight = content('photos-hero', 'titleHighlight') ?? 'Gallery';
+
+  const headingTitlePrefix = content('photos-heading', 'titlePrefix') ?? 'Moments of';
+  const headingTitleHighlight = content('photos-heading', 'titleHighlight') ?? 'Impact';
+  const headingSubtitle =
+    content('photos-heading', 'subtitle') ??
+    'Capturing the spirit of service through our journey of compassion and change';
+
+  const initialItems = content('photos-gallery', 'items') ?? galleryItems;
+  const extraItems = content('photos-more', 'items') ?? moreItems;
+
   const [activeFilter, setActiveFilter] = useState('all');
-  const [items, setItems] = useState(galleryItems);
+  const [items, setItems] = useState(initialItems);
   const [loadMoreVisible, setLoadMoreVisible] = useState(true);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
@@ -66,7 +81,7 @@ const Photos = () => {
   }, [lightboxOpen, navigateLightbox]);
 
   const handleLoadMore = () => {
-    setItems(prev => [...prev, ...moreItems]);
+    setItems(prev => [...prev, ...extraItems]);
     setLoadMoreVisible(false);
   };
 
@@ -123,7 +138,7 @@ const Photos = () => {
       `}</style>
 
       <section className="page-hero">
-        <h1>Our <span>Gallery</span></h1>
+        <h1>{heroTitlePrefix} <span>{heroTitleHighlight}</span></h1>
         <div className="breadcrumb">
           <Link to="/">Home</Link>
           <span>&raquo;</span>
@@ -134,8 +149,8 @@ const Photos = () => {
       </section>
 
       <section className="gallery-wrap">
-        <h2 className="section-title">Moments of <span>Impact</span></h2>
-        <p className="section-subtitle">Capturing the spirit of service through our journey of compassion and change</p>
+        <h2 className="section-title">{headingTitlePrefix} <span>{headingTitleHighlight}</span></h2>
+        <p className="section-subtitle">{headingSubtitle}</p>
 
         <div className="filter-bar">
           {filters.map(f => (

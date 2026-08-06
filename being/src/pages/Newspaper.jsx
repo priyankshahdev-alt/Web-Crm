@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useEffect, useState, useCallback } from 'react';
+import { usePageContent } from '../hooks/usePageContent';
 
 const newspaperDataInit = [
   { url: "/images/newspaperpress/1.jpg", label: "Mumbai Edition", year: 2023 },
@@ -17,8 +18,43 @@ const newspaperDataInit = [
 ];
 
 const Newspaper = () => {
+  const content = usePageContent('newspaper');
+
+  const bannerTitle = content('newspaper-banner', 'title') ?? 'In News Paper';
+
+  const heroTag = content('newspaper-hero', 'tag') ?? 'BEING SEVAK CHARITABLE TRUST';
+  const heroTitlePrefix = content('newspaper-hero', 'titlePrefix') ?? 'As Featured In';
+  const heroTitleHighlight = content('newspaper-hero', 'titleHighlight') ?? 'Newspapers';
+  const heroDescription =
+    content('newspaper-hero', 'description') ??
+    'Browse through scanned clippings of newspaper articles featuring Being Sevak Charitable Trust\'s initiatives, achievements, and community impact across India.';
+  const heroImage = content('newspaper-hero', 'image') ?? '/images/newapperhero.jpeg';
+
+  const tickerLabel = content('newspaper-ticker', 'label') ?? 'Breaking';
+  const tickerItems =
+    content('newspaper-ticker', 'items') ?? [
+      'Being Sevak featured across 12 major newspaper publications',
+      'Mission Annapurna receives widespread media acclaim',
+      'National Award coverage reaches millions of readers',
+      'Save the Flag campaign highlighted in leading dailies',
+      'World Record achievement celebrated in the press',
+      'Paryavaran Mitra recognition covered by Raj Bhavan',
+      'Diwali Anna Potli distribution featured across 7 states',
+    ];
+
+  const featuredTag = content('newspaper-featured', 'tag') ?? 'Featured Clip';
+  const featuredTitlePrefix = content('newspaper-featured', 'titlePrefix') ?? 'Press Coverage That';
+  const featuredTitleHighlight = content('newspaper-featured', 'titleHighlight') ?? 'Inspires Change';
+  const featuredText =
+    content('newspaper-featured', 'text') ??
+    'Each newspaper clipping tells a story of compassion, dedication, and the collective effort to build a better tomorrow. Click on any image to explore the full article.';
+
+  const coverageHeading = content('newspaper-coverage', 'heading') ?? 'Newspaper Coverage';
+
+  const newspaperImages = content('newspaper-gallery', 'items') ?? newspaperDataInit;
+
   const [newspaperData] = useState(() => {
-    const arr = [...newspaperDataInit];
+    const arr = [...newspaperImages];
     for (let i = arr.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [arr[i], arr[j]] = [arr[j], arr[i]];
@@ -150,20 +186,20 @@ const Newspaper = () => {
       `}</style>
 
       <section className="tax-box">
-        <h1>In News Paper</h1>
+        <h1>{bannerTitle}</h1>
       </section>
 
       <section className="hero" id="home">
         <div className="hero-content">
-          <span className="tag">BEING SEVAK CHARITABLE TRUST</span>
-          <h1>As Featured In <span>Newspapers</span></h1>
-          <p>Browse through scanned clippings of newspaper articles featuring Being Sevak Charitable Trust's initiatives, achievements, and community impact across India.</p>
+          <span className="tag">{heroTag}</span>
+          <h1>{heroTitlePrefix} <span>{heroTitleHighlight}</span></h1>
+          <p>{heroDescription}</p>
           <div className="hero-buttons">
             <a href="#newspaper-grid" className="donate-btn">Browse Clippings</a>
           </div>
         </div>
         <div className="hero-image">
-          <img src="/images/newapperhero.jpeg" alt="Newspaper" />
+          <img src={heroImage} alt="Newspaper" />
         </div>
         <div className="blur blur1"></div>
         <div className="blur blur2"></div>
@@ -171,26 +207,18 @@ const Newspaper = () => {
 
       <section id="newspaper-grid" className="news-section">
         <div className="news-ticker">
-          <div className="news-ticker-label"><i className="fas fa-bolt"></i> Breaking</div>
+          <div className="news-ticker-label"><i className="fas fa-bolt"></i> {tickerLabel}</div>
           <div className="news-ticker-track">
             <div className="news-ticker-text">
               <span>
-                <span>Being Sevak featured across 12 major newspaper publications</span>
-                <span>Mission Annapurna receives widespread media acclaim</span>
-                <span>National Award coverage reaches millions of readers</span>
-                <span>Save the Flag campaign highlighted in leading dailies</span>
-                <span>World Record achievement celebrated in the press</span>
-                <span>Paryavaran Mitra recognition covered by Raj Bhavan</span>
-                <span>Diwali Anna Potli distribution featured across 7 states</span>
+                {tickerItems.map((s, j) => (
+                  <span key={j}>{s}</span>
+                ))}
               </span>
               <span>
-                <span>Being Sevak featured across 12 major newspaper publications</span>
-                <span>Mission Annapurna receives widespread media acclaim</span>
-                <span>National Award coverage reaches millions of readers</span>
-                <span>Save the Flag campaign highlighted in leading dailies</span>
-                <span>World Record achievement celebrated in the press</span>
-                <span>Paryavaran Mitra recognition covered by Raj Bhavan</span>
-                <span>Diwali Anna Potli distribution featured across 7 states</span>
+                {tickerItems.map((s, j) => (
+                  <span key={j}>{s}</span>
+                ))}
               </span>
             </div>
           </div>
@@ -198,9 +226,9 @@ const Newspaper = () => {
 
         <div className="news-featured">
           <div className="news-featured-content">
-            <h3><i className="fas fa-crown"></i> Featured Clip</h3>
-            <h2>Press Coverage That <span>Inspires Change</span></h2>
-            <p>Each newspaper clipping tells a story of compassion, dedication, and the collective effort to build a better tomorrow. Click on any image to explore the full article.</p>
+            <h3><i className="fas fa-crown"></i> {featuredTag}</h3>
+            <h2>{featuredTitlePrefix} <span>{featuredTitleHighlight}</span></h2>
+            <p>{featuredText}</p>
           </div>
           <div className="news-featured-image" onClick={() => openLightbox(0)}>
             <img src={newspaperData[featuredIndex]?.url} alt="Featured newspaper" />
@@ -212,7 +240,7 @@ const Newspaper = () => {
         </div>
 
         <div className="news-header">
-          <h2 className="section-title">Newspaper Coverage</h2>
+          <h2 className="section-title">{coverageHeading}</h2>
         </div>
         <div className="news-grid">
           {newspaperData.map((item, i) => (

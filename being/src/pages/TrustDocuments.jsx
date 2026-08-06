@@ -1,44 +1,93 @@
 import { useEffect, useState, useRef } from 'react';
-
-const bookletData = [
-  { year: '2016', img: '/BSCT Trust Document/booklet/2016.png', pdf: '/BSCT Trust Document/activity report/BSCT Activity Report 2016.pdf' },
-  { year: '2017', img: '/BSCT Trust Document/booklet/2017.png', pdf: '/BSCT Trust Document/activity report/Activity-Report-2017 UPDATED.pdf' },
-  { year: '2018', img: '/BSCT Trust Document/booklet/2018.png', pdf: '/BSCT Trust Document/activity report/Activity-Report-2018 UPDATED.pdf' },
-  { year: '2019', img: '/BSCT Trust Document/booklet/2019.png', pdf: '' },
-  { year: '2020', img: '/BSCT Trust Document/booklet/2020.png', pdf: '' },
-  { year: '2021', img: '/BSCT Trust Document/booklet/2021.png', pdf: '/BSCT Trust Document/activity report/Activity Report 2021.pdf' },
-  { year: '2022', img: '/BSCT Trust Document/booklet/2022.png', pdf: '/BSCT Trust Document/activity report/Activity Report 2022.pdf' },
-  { year: '2023', img: '/BSCT Trust Document/booklet/2023.png', pdf: '/BSCT Trust Document/activity report/Activity Report 2023.pdf' },
-  { year: '2024', img: '/BSCT Trust Document/booklet/2024.png', pdf: '/BSCT Trust Document/activity report/Activity Report Jan 2024 To Dec 2024).pdf' },
-  { year: '2025', img: '/BSCT Trust Document/booklet/2025.png', pdf: '' },
-];
-
-const legalDocs = [
-  { title: 'Registration Certificate', desc: 'Legal Compliance Document', icon: 'fas fa-file-contract', pdf: '/BSCT Trust Document/documents/regeistrationCertificate.pdf' },
-  { title: 'PAN Card', desc: 'Tax Identification Document', icon: 'fas fa-id-card', pdf: '/BSCT Trust Document/documents/PanCard.pdf' },
-  { title: '80G Certificate (New)', desc: 'Tax Exemption Certificate', icon: 'fas fa-certificate', pdf: '/BSCT Trust Document/documents/Being Sevak 80G Form New Certificate.pdf' },
-  { title: '80G Certificate (Old)', desc: 'Tax Exemption Certificate', icon: 'fas fa-certificate', pdf: '/BSCT Trust Document/documents/80G Certificate (Old).pdf' },
-  { title: '12A Certificate (New)', desc: 'Trust Registration Exemption', icon: 'fas fa-file-invoice', pdf: '/BSCT Trust Document/documents/12A Certificate (New).pdf' },
-  { title: 'CSR Certificate', desc: 'Corporate Social Responsibility Compliance', icon: 'fas fa-hand-holding-heart', pdf: '/BSCT Trust Document/documents/CSR Funds Certificate.PDF' },
-  { title: 'NITI Aayog Registration', desc: 'Government Registry', icon: 'fas fa-building', pdf: '/BSCT Trust Document/documents/NITI Aayog Registration.pdf' },
-];
-
-const auditDocs = [
-  { title: 'BSCT Audit Report 2016-2017', desc: 'Annual Audit Report', icon: 'fas fa-calendar-alt', pdf: '/BSCT Trust Document/BSCT Audit Report/BSCT Audit Report 2016-2017.pdf' },
-  { title: 'BSCT Audit Report 2017-2018', desc: 'Annual Audit Report', icon: 'fas fa-calendar-alt', pdf: '/BSCT Trust Document/BSCT Audit Report/BSCT Audit Report 2017-2018.pdf' },
-  { title: 'BSCT Audit Report 2018-2019', desc: 'Annual Audit Report', icon: 'fas fa-calendar-alt', pdf: '/BSCT Trust Document/BSCT Audit Report/BSCT Audit Report 2018-2019.pdf' },
-  { title: 'BSCT Audit Report 2019-2020', desc: 'Annual Audit Report', icon: 'fas fa-calendar-alt', pdf: '/BSCT Trust Document/BSCT Audit Report/BSCT Audit Report 2019-2020.pdf' },
-  { title: 'BSCT Audit Report 2020-2021', desc: 'Annual Audit Report', icon: 'fas fa-calendar-alt', pdf: '/BSCT Trust Document/BSCT Audit Report/BSCT Audit Report 2020-2021 .pdf' },
-  { title: 'BSCT Audit Report 2021-2022', desc: 'Annual Audit Report', icon: 'fas fa-calendar-alt', pdf: '/BSCT Trust Document/BSCT Audit Report/BSCT Audit Report 2021 2022.pdf' },
-  { title: 'BSCT Audit Report 2022-2023', desc: 'Annual Audit Report', icon: 'fas fa-calendar-alt', pdf: '/BSCT Trust Document/BSCT Audit Report/BSCT Audit Report 2022- 2023.pdf' },
-  { title: 'BSCT Audit Report 2024', desc: 'Annual Audit Report', icon: 'fas fa-calendar-alt', pdf: '/BSCT Trust Document/BSCT Audit Report/Being Sevak Audit Report BSCT 2024.pdf' },
-];
+import { usePageContent } from '../hooks/usePageContent';
 
 const TrustDocuments = () => {
   const [pdfOpen, setPdfOpen] = useState(false);
   const [pdfDocs, setPdfDocs] = useState([]);
   const [pdfIdx, setPdfIdx] = useState(0);
   const modalRef = useRef(null);
+
+  const content = usePageContent('trust-documents');
+
+  const pageTitle = content('td-title', 'heading') ?? 'Trust Documents';
+
+  const heroTag = content('td-hero', 'tag') ?? 'BEING SEVAK CHARITABLE TRUST';
+  const heroHeading = content('td-hero', 'heading') ?? 'Trust';
+  const heroHighlight = content('td-hero', 'highlight') ?? 'Documents';
+  const heroDescription =
+    content('td-hero', 'description') ??
+    'View important legal certificates, registrations, compliance documents, and annual activity reports of Being Sevak Charitable Trust.';
+  const heroCard1Value = content('td-hero', 'card1Value') ?? '18+';
+  const heroCard1Label = content('td-hero', 'card1Label') ?? 'Registered Documents';
+  const heroCard2Value = content('td-hero', 'card2Value') ?? '80G';
+  const heroCard2Label = content('td-hero', 'card2Label') ?? 'Tax Exemption';
+  const heroImage = content('td-hero', 'image') ?? '/images/trustdocumentspng.png';
+
+  const bookletTitle = content('td-booklets', 'title') ?? 'Activity Report Year Wise';
+  const bookletData =
+    content('td-booklets', 'items') ?? [
+      { year: '2016', img: '/BSCT Trust Document/booklet/2016.png', pdf: '/BSCT Trust Document/activity report/BSCT Activity Report 2016.pdf' },
+      { year: '2017', img: '/BSCT Trust Document/booklet/2017.png', pdf: '/BSCT Trust Document/activity report/Activity-Report-2017 UPDATED.pdf' },
+      { year: '2018', img: '/BSCT Trust Document/booklet/2018.png', pdf: '/BSCT Trust Document/activity report/Activity-Report-2018 UPDATED.pdf' },
+      { year: '2019', img: '/BSCT Trust Document/booklet/2019.png', pdf: '' },
+      { year: '2020', img: '/BSCT Trust Document/booklet/2020.png', pdf: '' },
+      { year: '2021', img: '/BSCT Trust Document/booklet/2021.png', pdf: '/BSCT Trust Document/activity report/Activity Report 2021.pdf' },
+      { year: '2022', img: '/BSCT Trust Document/booklet/2022.png', pdf: '/BSCT Trust Document/activity report/Activity Report 2022.pdf' },
+      { year: '2023', img: '/BSCT Trust Document/booklet/2023.png', pdf: '/BSCT Trust Document/activity report/Activity Report 2023.pdf' },
+      { year: '2024', img: '/BSCT Trust Document/booklet/2024.png', pdf: '/BSCT Trust Document/activity report/Activity Report Jan 2024 To Dec 2024).pdf' },
+      { year: '2025', img: '/BSCT Trust Document/booklet/2025.png', pdf: '' },
+    ];
+
+  const portalTitle = content('td-portal', 'title') ?? 'Trust Documents & Reports';
+  const portalSubtitle = content('td-portal', 'subtitle') ?? 'Transparency, Accountability & Impact — Building Trust Through Every Action.';
+  const tab1Label = content('td-portal', 'tab1Label') ?? 'Trust Documents';
+  const tab2Label = content('td-portal', 'tab2Label') ?? 'BSCT Audit Reports';
+  const legalDocs =
+    content('td-legal', 'items') ?? [
+      { title: 'Registration Certificate', desc: 'Legal Compliance Document', icon: 'fas fa-file-contract', pdf: '/BSCT Trust Document/documents/regeistrationCertificate.pdf' },
+      { title: 'PAN Card', desc: 'Tax Identification Document', icon: 'fas fa-id-card', pdf: '/BSCT Trust Document/documents/PanCard.pdf' },
+      { title: '80G Certificate (New)', desc: 'Tax Exemption Certificate', icon: 'fas fa-certificate', pdf: '/BSCT Trust Document/documents/Being Sevak 80G Form New Certificate.pdf' },
+      { title: '80G Certificate (Old)', desc: 'Tax Exemption Certificate', icon: 'fas fa-certificate', pdf: '/BSCT Trust Document/documents/80G Certificate (Old).pdf' },
+      { title: '12A Certificate (New)', desc: 'Trust Registration Exemption', icon: 'fas fa-file-invoice', pdf: '/BSCT Trust Document/documents/12A Certificate (New).pdf' },
+      { title: 'CSR Certificate', desc: 'Corporate Social Responsibility Compliance', icon: 'fas fa-hand-holding-heart', pdf: '/BSCT Trust Document/documents/CSR Funds Certificate.PDF' },
+      { title: 'NITI Aayog Registration', desc: 'Government Registry', icon: 'fas fa-building', pdf: '/BSCT Trust Document/documents/NITI Aayog Registration.pdf' },
+    ];
+  const auditDocs =
+    content('td-audit', 'items') ?? [
+      { title: 'BSCT Audit Report 2016-2017', desc: 'Annual Audit Report', icon: 'fas fa-calendar-alt', pdf: '/BSCT Trust Document/BSCT Audit Report/BSCT Audit Report 2016-2017.pdf' },
+      { title: 'BSCT Audit Report 2017-2018', desc: 'Annual Audit Report', icon: 'fas fa-calendar-alt', pdf: '/BSCT Trust Document/BSCT Audit Report/BSCT Audit Report 2017-2018.pdf' },
+      { title: 'BSCT Audit Report 2018-2019', desc: 'Annual Audit Report', icon: 'fas fa-calendar-alt', pdf: '/BSCT Trust Document/BSCT Audit Report/BSCT Audit Report 2018-2019.pdf' },
+      { title: 'BSCT Audit Report 2019-2020', desc: 'Annual Audit Report', icon: 'fas fa-calendar-alt', pdf: '/BSCT Trust Document/BSCT Audit Report/BSCT Audit Report 2019-2020.pdf' },
+      { title: 'BSCT Audit Report 2020-2021', desc: 'Annual Audit Report', icon: 'fas fa-calendar-alt', pdf: '/BSCT Trust Document/BSCT Audit Report/BSCT Audit Report 2020-2021 .pdf' },
+      { title: 'BSCT Audit Report 2021-2022', desc: 'Annual Audit Report', icon: 'fas fa-calendar-alt', pdf: '/BSCT Trust Document/BSCT Audit Report/BSCT Audit Report 2021 2022.pdf' },
+      { title: 'BSCT Audit Report 2022-2023', desc: 'Annual Audit Report', icon: 'fas fa-calendar-alt', pdf: '/BSCT Trust Document/BSCT Audit Report/BSCT Audit Report 2022- 2023.pdf' },
+      { title: 'BSCT Audit Report 2024', desc: 'Annual Audit Report', icon: 'fas fa-calendar-alt', pdf: '/BSCT Trust Document/BSCT Audit Report/Being Sevak Audit Report BSCT 2024.pdf' },
+    ];
+
+  const complianceTag = content('td-compliance', 'tag') ?? 'OUR COMPLIANCE';
+  const complianceHeading = content('td-compliance', 'heading') ?? 'Certified & Transparent';
+  const complianceDescription =
+    content('td-compliance', 'description') ??
+    'Ensuring full regulatory compliance and transparent operations across all our activities.';
+  const complianceValues =
+    content('td-compliance', 'items') ?? [
+      { icon: 'fa-file-shield', title: 'Registered Trust', desc: 'Registered under Bombay Trust Act 2015 with Registration No. E-31948.' },
+      { icon: 'fa-certificate', title: '80G Certified', desc: 'Donors get 50% tax exemption under Section 80G of Income Tax Act.' },
+      { icon: 'fa-scale-balanced', title: 'Full Compliance', desc: 'All statutory compliances including 12A, PAN, and CSR certifications.' },
+      { icon: 'fa-calendar-check', title: 'Annual Reports', desc: 'Transparent activity reports published yearly since inception.' },
+    ];
+
+  const testimonialsTag = content('td-testimonials', 'tag') ?? 'TESTIMONIALS';
+  const testimonialsHeading = content('td-testimonials', 'heading') ?? 'Verified by Experts';
+  const testimonialsDescription =
+    content('td-testimonials', 'description') ??
+    "What professionals and auditors say about BSCT's compliance and documentation standards.";
+  const testimonials =
+    content('td-testimonials', 'items') ?? [
+      { quote: 'Their documentation and compliance standards are impeccable. A model NGO in terms of transparency.', name: 'CA Sunil Mehta', role: 'Tax Consultant' },
+      { quote: 'Having audited their books for 5 years, I can vouch for their financial discipline and proper record-keeping.', name: 'Ravi Agarwal', role: 'Chartered Accountant' },
+      { quote: "BSCT's compliance with all regulatory requirements makes them a trusted partner for donors and corporations alike.", name: 'Neha Singh', role: 'CSR Auditor' },
+    ];
 
   const openPdfModal = (idx, docs) => {
     if (!docs[idx]) return;
@@ -212,26 +261,26 @@ const TrustDocuments = () => {
         @media(max-width:768px){.values-grid{grid-template-columns:1fr}.testimonial-grid{grid-template-columns:1fr}}
       `}</style>
 
-      <section className="tax-box"><h1>Trust Documents</h1></section>
+      <section className="tax-box"><h1>{pageTitle}</h1></section>
 
       <section className="hero" id="home">
         <div className="hero-content">
-          <span className="tag">BEING SEVAK CHARITABLE TRUST</span>
-          <h1>Trust <span>Documents</span></h1>
-          <p>View important legal certificates, registrations, compliance documents, and annual activity reports of Being Sevak Charitable Trust.</p>
+          <span className="tag">{heroTag}</span>
+          <h1>{heroHeading} <span>{heroHighlight}</span></h1>
+          <p>{heroDescription}</p>
           <div className="hero-buttons"><a href="#documents" className="donate-btn">View Documents</a></div>
           <div className="blur blur1"></div><div className="blur blur2"></div>
         </div>
         <div className="hero-image">
-          <div className="floating-card card1"><h3>18+</h3><p>Registered Documents</p></div>
-          <div className="floating-card card2"><h3>80G</h3><p>Tax Exemption</p></div>
-          <img src="/images/trustdocumentspng.png" alt="Trust Documents" />
+          <div className="floating-card card1"><h3>{heroCard1Value}</h3><p>{heroCard1Label}</p></div>
+          <div className="floating-card card2"><h3>{heroCard2Value}</h3><p>{heroCard2Label}</p></div>
+          <img src={heroImage} alt="Trust Documents" />
         </div>
       </section>
 
       <section className="doc-portal" id="documents">
         <div className="doc-portal-inner">
-          <div className="doc-portal-title"><h2>Activity Report Year Wise</h2></div>
+          <div className="doc-portal-title"><h2>{bookletTitle}</h2></div>
           <div className="doc-cards" id="booklet">
             <div className="booklet-grid">
               {bookletData.map((item) => (
@@ -255,10 +304,10 @@ const TrustDocuments = () => {
             </div>
           </div>
 
-          <div className="doc-portal-title"><h2>Trust Documents &amp; Reports</h2><p>Transparency, Accountability &amp; Impact — Building Trust Through Every Action.</p></div>
+          <div className="doc-portal-title"><h2>{portalTitle}</h2><p>{portalSubtitle}</p></div>
           <div className="doc-tabs">
-            <button className="doc-tab active" data-tab="legal-docs"><i className="fas fa-file-shield"></i> Trust Documents</button>
-            <button className="doc-tab" data-tab="audit-reports"><i className="fas fa-clipboard-check"></i> BSCT Audit Reports</button>
+            <button className="doc-tab active" data-tab="legal-docs"><i className="fas fa-file-shield"></i> {tab1Label}</button>
+            <button className="doc-tab" data-tab="audit-reports"><i className="fas fa-clipboard-check"></i> {tab2Label}</button>
           </div>
           <div className="doc-cards active" id="legal-docs">
             {legalDocs.map((doc) => (
@@ -309,23 +358,22 @@ const TrustDocuments = () => {
 
       <section className="values-section">
         <div className="values-inner">
-          <div className="section-title"><span className="section-label">OUR COMPLIANCE</span><h2>Certified &amp; Transparent</h2><p>Ensuring full regulatory compliance and transparent operations across all our activities.</p></div>
+          <div className="section-title"><span className="section-label">{complianceTag}</span><h2>{complianceHeading}</h2><p>{complianceDescription}</p></div>
           <div className="values-grid">
-            <div className="value-card reveal"><div className="val-icon"><i className="fas fa-file-shield"></i></div><h3>Registered Trust</h3><p>Registered under Bombay Trust Act 2015 with Registration No. E-31948.</p></div>
-            <div className="value-card reveal"><div className="val-icon"><i className="fas fa-certificate"></i></div><h3>80G Certified</h3><p>Donors get 50% tax exemption under Section 80G of Income Tax Act.</p></div>
-            <div className="value-card reveal"><div className="val-icon"><i className="fas fa-scale-balanced"></i></div><h3>Full Compliance</h3><p>All statutory compliances including 12A, PAN, and CSR certifications.</p></div>
-            <div className="value-card reveal"><div className="val-icon"><i className="fas fa-calendar-check"></i></div><h3>Annual Reports</h3><p>Transparent activity reports published yearly since inception.</p></div>
+            {complianceValues.map((v, i) => (
+              <div className="value-card reveal" key={i}><div className="val-icon"><i className={`fas ${v.icon}`}></i></div><h3>{v.title}</h3><p>{v.desc}</p></div>
+            ))}
           </div>
         </div>
       </section>
 
       <section className="testimonials-section">
         <div className="testimonials-inner">
-          <div className="section-title"><span className="section-label">TESTIMONIALS</span><h2>Verified by Experts</h2><p>What professionals and auditors say about BSCT's compliance and documentation standards.</p></div>
+          <div className="section-title"><span className="section-label">{testimonialsTag}</span><h2>{testimonialsHeading}</h2><p>{testimonialsDescription}</p></div>
           <div className="testimonial-grid">
-            <div className="testimonial-card reveal"><div className="quote-icon"><i className="fas fa-quote-left"></i></div><p>Their documentation and compliance standards are impeccable. A model NGO in terms of transparency.</p><div><h4>CA Sunil Mehta</h4><span>Tax Consultant</span></div></div>
-            <div className="testimonial-card reveal"><div className="quote-icon"><i className="fas fa-quote-left"></i></div><p>Having audited their books for 5 years, I can vouch for their financial discipline and proper record-keeping.</p><div><h4>Ravi Agarwal</h4><span>Chartered Accountant</span></div></div>
-            <div className="testimonial-card reveal"><div className="quote-icon"><i className="fas fa-quote-left"></i></div><p>BSCT's compliance with all regulatory requirements makes them a trusted partner for donors and corporations alike.</p><div><h4>Neha Singh</h4><span>CSR Auditor</span></div></div>
+            {testimonials.map((t, i) => (
+              <div className="testimonial-card reveal" key={i}><div className="quote-icon"><i className="fas fa-quote-left"></i></div><p>{t.quote}</p><div><h4>{t.name}</h4><span>{t.role}</span></div></div>
+            ))}
           </div>
         </div>
       </section>
