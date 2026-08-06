@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { useSite } from '../../context/SiteContext';
 import './Footer.css';
 
 const footerSections = [
@@ -45,6 +46,9 @@ const socialLinks = [
 ];
 
 function Footer() {
+  const { getSetting } = useSite();
+  const regNumber = getSetting('contact.regNumber', 'Reg. No. E-37237, Mumbai, Maharashtra');
+  const copyright = getSetting('footer.copyright', '© 2022 Ashray for Life Foundation');
   return (
     <footer className="footer">
       <div className="footer-inner">
@@ -74,8 +78,8 @@ function Footer() {
       </div>
 
       <div className="footer-bottom">
-        <p>Reg. No. E-37237, Mumbai, Maharashtra</p>
-        <p>&copy; 2022 Ashray for Life Foundation </p>
+        <p>{regNumber}</p>
+        <p>{copyright}</p>
         <div className="footer-links">
           <Link to="#">Privacy Policy</Link>
           <Link to="#">Terms &amp; Conditions</Link>

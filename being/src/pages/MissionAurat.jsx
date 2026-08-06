@@ -1,8 +1,91 @@
 import { Link } from 'react-router-dom';
 import { useRef, useEffect } from 'react';
+import { usePageContent } from '../hooks/usePageContent';
 
 const MissionAurat = () => {
   const iframeRef = useRef(null);
+
+  const content = usePageContent('mission-aurat');
+
+  const taxTitle = content('mission-aurat-tax', 'title') ?? 'Mission Aurat';
+
+  const heroTag = content('mission-aurat-hero', 'tag') ?? 'Women Empowerment Initiative';
+  const heroLine1 = content('mission-aurat-hero', 'headingLine1') ?? 'Empowering';
+  const heroHighlight = content('mission-aurat-hero', 'headingHighlight') ?? 'Women';
+  const heroLine2 = content('mission-aurat-hero', 'headingLine2') ?? 'Creating Brighter Futures';
+  const heroText =
+    content('mission-aurat-hero', 'description') ??
+    'Aurat is dedicated to uplifting women through education, skill development, healthcare awareness and self-reliance. Together we can build stronger families and empowered communities.';
+  const heroImage = content('mission-aurat-hero', 'image') ?? '/images/aurat7.jpg';
+  const heroStats =
+    content('aurat-hero-stats', 'items') ?? [
+      { value: '15K+', label: 'Women Supported' },
+      { value: '120+', label: 'Awareness Drives' },
+    ];
+
+  const aboutTag = content('aurat-about', 'tag') ?? 'About Aurat';
+  const aboutHeading = content('aurat-about', 'heading') ?? 'Supporting Women With Dignity & Opportunity';
+  const aboutText =
+    content('aurat-about', 'text') ??
+    'Aurat focuses on helping women become independent and confident through education, awareness campaigns, vocational training and community support.';
+  const aboutImage = content('aurat-about', 'image') ?? '/images/aurat6.jpg';
+  const aboutItems =
+    content('aurat-about', 'items') ?? [
+      { title: 'Education', description: 'Encouraging girls and women towards learning opportunities.' },
+      { title: 'Skill Training', description: 'Providing practical training to create sustainable livelihoods.' },
+      { title: 'Health Support', description: 'Promoting healthcare awareness and hygiene initiatives.' },
+      { title: 'Self Reliance', description: 'Helping women build confidence and financial independence.' },
+    ];
+
+  const missionTag = content('aurat-mission', 'tag') ?? 'Our Mission';
+  const missionHeading = content('aurat-mission', 'heading') ?? 'Building Hope Through Empowerment';
+  const missionCards =
+    content('aurat-mission', 'items') ?? [
+      { number: '01', title: 'Awareness Programs', description: 'Conducting campaigns to spread awareness about women\'s rights, health and education.' },
+      { number: '02', title: 'Skill Development', description: 'Creating opportunities for women through practical training and workshops.' },
+      { number: '03', title: 'Community Support', description: 'Building safe and supportive communities where women can grow confidently.' },
+    ];
+
+  const impactTag = content('aurat-impact', 'tag') ?? 'Our Impact';
+  const impactHeading = content('aurat-impact', 'heading') ?? 'Creating Positive Change Every Day';
+  const impactText =
+    content('aurat-impact', 'text') ??
+    'Through continuous outreach and empowerment initiatives, Aurat is helping women discover confidence, independence and hope.';
+  const impactStats =
+    content('aurat-impact', 'stats') ?? [
+      { value: '500+', label: 'Training Sessions' },
+      { value: '20+', label: 'Communities Reached' },
+      { value: '10K+', label: 'Lives Impacted' },
+    ];
+  const impactImage = content('aurat-impact', 'image') ?? '/images/auratImpact.jpeg';
+
+  const galleryTag = content('aurat-gallery', 'tag') ?? 'Program Highlights';
+  const galleryHeading = content('aurat-gallery', 'heading') ?? 'Moments Of Empowerment';
+  const galleryText =
+    content('aurat-gallery', 'description') ??
+    'Together we create opportunities, confidence and hope for women through impactful community initiatives.';
+  const galleryImages =
+    content('aurat-gallery', 'images') ?? [
+      { src: '/images/aurat1.jpg', alt: 'Awareness Drive' },
+      { src: '/images/aurat2.jpg', alt: 'Women Support' },
+      { src: '/images/aurat3.jpg', alt: 'Skill Training' },
+      { src: '/images/aurat4.jpg', alt: 'Community Care' },
+    ];
+
+  const donationTag = content('aurat-donation', 'tag') ?? 'Mission Aurat';
+  const donationUrl = content('aurat-donation', 'donationUrl') ?? '/donations/donation-inline-aurat.html';
+  const donationTitle = content('aurat-donation', 'title') ?? 'Empower Her, Empower Society';
+  const donationText =
+    content('aurat-donation', 'description') ??
+    'Help women gain education, skills, healthcare, and opportunities to lead independent and dignified lives.';
+
+  const testimonialHeading = content('aurat-testimonials', 'heading') ?? 'What Our Donors Say';
+  const testimonials =
+    content('aurat-testimonials', 'items') ?? [
+      { quote: 'Being Sevak is doing incredible work for visually impaired and needy families. Proud to support this mission.', name: 'Riya Sharma' },
+      { quote: 'Transparent work, genuine impact, and a wonderful team dedicated to helping people with dignity.', name: 'Rahul Mehta' },
+      { quote: 'Every donation creates real change. Their food distribution drives truly touch lives.', name: 'Anjali Verma' },
+    ];
 
   useEffect(() => {
     function handleMessage(e) {
@@ -243,30 +326,28 @@ const MissionAurat = () => {
 
       <div className="mission-aurat">
         <section className="tax-box">
-          <p><h1>Mission Aurat</h1></p>
+          <p><h1>{taxTitle}</h1></p>
         </section>
 
         <section className="hero">
           <div className="hero-content">
             <div className="hero-left">
-              <span className="mini-title">Women Empowerment Initiative</span>
-              <h1>Empowering <span>Women</span><br />Creating Brighter Futures</h1>
-              <p>Aurat is dedicated to uplifting women through education, skill development, healthcare awareness and self-reliance. Together we can build stronger families and empowered communities.</p>
+              <span className="mini-title">{heroTag}</span>
+              <h1>{heroLine1} <span>{heroHighlight}</span><br />{heroLine2}</h1>
+              <p>{heroText}</p>
               <div className="hero-buttons">
                 <a href="#donate" className="primary-btn">Support Mission</a>
               </div>
             </div>
             <div className="hero-right">
               <div className="image-box">
-                <img src="/images/aurat7.jpg" alt="Women Empowerment" />
-                <div className="floating-card card1">
-                  <h3>15K+</h3>
-                  <p>Women Supported</p>
-                </div>
-                <div className="floating-card card2">
-                  <h3>120+</h3>
-                  <p>Awareness Drives</p>
-                </div>
+                <img src={heroImage} alt="Women Empowerment" />
+                {heroStats.map((stat, i) => (
+                  <div className={`floating-card card${i + 1}`} key={i}>
+                    <h3>{stat.value}</h3>
+                    <p>{stat.label}</p>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
@@ -275,7 +356,7 @@ const MissionAurat = () => {
         <div id="donate" style={{ width: '100%', background: '#f4f7fb', padding: '0', overflow: 'hidden', position: 'relative', zIndex: 10, isolation: 'isolate', marginBottom: '0' }}>
           <iframe
             ref={iframeRef}
-            src="/donations/donation-inline-aurat.html"
+            src={donationUrl}
             style={{ width: '100%', height: '650px', border: 'none', display: 'block' }}
             title="Donate to Mission Aurat"
           />
@@ -283,104 +364,79 @@ const MissionAurat = () => {
 
         <section className="about-section" id="about">
           <div className="about-image">
-            <img src="/images/aurat6.jpg" alt="Women" />
+            <img src={aboutImage} alt="Women" />
           </div>
           <div className="about-content">
-            <span>About Aurat</span>
-            <h2>Supporting Women With Dignity & Opportunity</h2>
-            <p>Aurat focuses on helping women become independent and confident through education, awareness campaigns, vocational training and community support.</p>
+            <span>{aboutTag}</span>
+            <h2>{aboutHeading}</h2>
+            <p>{aboutText}</p>
             <div className="about-grid">
-              <div className="about-box">
-                <h3>Education</h3>
-                <p>Encouraging girls and women towards learning opportunities.</p>
-              </div>
-              <div className="about-box">
-                <h3>Skill Training</h3>
-                <p>Providing practical training to create sustainable livelihoods.</p>
-              </div>
-              <div className="about-box">
-                <h3>Health Support</h3>
-                <p>Promoting healthcare awareness and hygiene initiatives.</p>
-              </div>
-              <div className="about-box">
-                <h3>Self Reliance</h3>
-                <p>Helping women build confidence and financial independence.</p>
-              </div>
+              {aboutItems.map((item, i) => (
+                <div className="about-box" key={i}>
+                  <h3>{item.title}</h3>
+                  <p>{item.description}</p>
+                </div>
+              ))}
             </div>
           </div>
         </section>
 
         <section className="mission-section" id="mission">
           <div className="impact-content">
-            <span>Our Mission</span>
-            <h2>Building Hope Through Empowerment</h2>
+            <span>{missionTag}</span>
+            <h2>{missionHeading}</h2>
           </div>
           <div className="mission-cards">
-            <div className="mission-card">
-              <div className="icon">01</div>
-              <h3>Awareness Programs</h3>
-              <p>Conducting campaigns to spread awareness about women's rights, health and education.</p>
-            </div>
-            <div className="mission-card">
-              <div className="icon">02</div>
-              <h3>Skill Development</h3>
-              <p>Creating opportunities for women through practical training and workshops.</p>
-            </div>
-            <div className="mission-card">
-              <div className="icon">03</div>
-              <h3>Community Support</h3>
-              <p>Building safe and supportive communities where women can grow confidently.</p>
-            </div>
+            {missionCards.map((card, i) => (
+              <div className="mission-card" key={i}>
+                <div className="icon">{card.number}</div>
+                <h3>{card.title}</h3>
+                <p>{card.description}</p>
+              </div>
+            ))}
           </div>
         </section>
 
         <section className="impact-section" id="impact">
           <div className="impact-wrapper">
             <div className="impact-content">
-              <span>Our Impact</span>
-              <h2>Creating Positive Change Every Day</h2>
-              <p>Through continuous outreach and empowerment initiatives, Aurat is helping women discover confidence, independence and hope.</p>
+              <span>{impactTag}</span>
+              <h2>{impactHeading}</h2>
+              <p>{impactText}</p>
               <div className="impact-stats">
-                <div>
-                  <h3>500+</h3>
-                  <p>Training Sessions</p>
-                </div>
-                <div>
-                  <h3>20+</h3>
-                  <p>Communities Reached</p>
-                </div>
-                <div>
-                  <h3>10K+</h3>
-                  <p>Lives Impacted</p>
-                </div>
+                {impactStats.map((s, i) => (
+                  <div key={i}>
+                    <h3>{s.value}</h3>
+                    <p>{s.label}</p>
+                  </div>
+                ))}
               </div>
             </div>
             <div className="impact-image">
-              <img src="/images/auratImpact.jpeg" alt="" />
+              <img src={impactImage} alt="" />
             </div>
           </div>
         </section>
 
         <section className="gallery-section" id="gallery">
           <div className="gallery-title">
-            <span>Program Highlights</span>
-            <h2>Moments Of Empowerment</h2>
-            <p>Together we create opportunities, confidence and hope for women through impactful community initiatives.</p>
+            <span>{galleryTag}</span>
+            <h2>{galleryHeading}</h2>
+            <p>{galleryText}</p>
           </div>
           <div className="gallery-grid">
-            <div className="gallery-card"><img src="/images/aurat1.jpg" alt="Awareness Drive" /></div>
-            <div className="gallery-card"><img src="/images/aurat2.jpg" alt="Women Support" /></div>
-            <div className="gallery-card"><img src="/images/aurat3.jpg" alt="Skill Training" /></div>
-            <div className="gallery-card"><img src="/images/aurat4.jpg" alt="Community Care" /></div>
+            {galleryImages.map((g, i) => (
+              <div className="gallery-card" key={i}><img src={g.src} alt={g.alt} /></div>
+            ))}
           </div>
         </section>
 
         <section className="sevak-donation" id="donation-section">
           <div className="sevak-donation-content">
             <div className="sevak-left">
-              <span className="sevak-tag">Mission Aurat</span>
-              <h2 className="sevak-title">Empower Her, Empower Society</h2>
-              <p className="sevak-desc">Help women gain education, skills, healthcare, and opportunities to lead independent and dignified lives.</p>
+              <span className="sevak-tag">{donationTag}</span>
+              <h2 className="sevak-title">{donationTitle}</h2>
+              <p className="sevak-desc">{donationText}</p>
             </div>
             <div className="sevak-right">
               <a href="#" className="sevak-btn">Donate Now</a>
@@ -390,21 +446,15 @@ const MissionAurat = () => {
 
         <section className="testimonial-section">
           <div className="section-header">
-            <h2>What Our Donors Say</h2>
+            <h2>{testimonialHeading}</h2>
           </div>
           <div className="testimonial-grid">
-            <div className="testimonial-card">
-              <p>Being Sevak is doing incredible work for visually impaired and needy families. Proud to support this mission.</p>
-              <h4>Riya Sharma</h4>
-            </div>
-            <div className="testimonial-card">
-              <p>Transparent work, genuine impact, and a wonderful team dedicated to helping people with dignity.</p>
-              <h4>Rahul Mehta</h4>
-            </div>
-            <div className="testimonial-card">
-              <p>Every donation creates real change. Their food distribution drives truly touch lives.</p>
-              <h4>Anjali Verma</h4>
-            </div>
+            {testimonials.map((t, i) => (
+              <div className="testimonial-card" key={i}>
+                <p>{t.quote}</p>
+                <h4>{t.name}</h4>
+              </div>
+            ))}
           </div>
         </section>
 

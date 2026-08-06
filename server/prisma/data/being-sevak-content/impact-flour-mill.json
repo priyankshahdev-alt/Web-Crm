@@ -1,0 +1,65 @@
+{
+  "slug": "impact-flour-mill",
+  "title": "Flour Mill Support Program",
+  "metaTitle": "Flour Mill Support Program | Being Sevak Foundation",
+  "metaDescription": "The Flour Mill Support Program empowers visually impaired and economically weaker families by providing flour milling machines as a sustainable source of livelihood.",
+  "template": "default",
+  "sortOrder": 47,
+  "isHome": false,
+  "sections": [
+    {
+      "type": "impact-flour-mill-heading",
+      "name": "Flour Mill Header",
+      "sortOrder": 1,
+      "isActive": true,
+      "content": {
+        "tag": "MISSION ATMANIRBHAR",
+        "heading": "Flour Mill Support Program",
+        "description": "Through the Flour Mill Support Program, Being Sevak Charitable Trust empowers visually impaired and economically weaker families by providing flour milling machines as a source of sustainable livelihood. This initiative helps beneficiaries generate income, become self-reliant, and support their families with dignity.",
+        "image": "/images/g41.webp"
+      }
+    },
+    {
+      "type": "impact-flour-mill-cards",
+      "name": "Program Highlights",
+      "sortOrder": 2,
+      "isActive": true,
+      "content": {
+        "items": [
+          { "title": "Income Generation", "description": "Flour mills create a reliable source of income for beneficiaries and their families." },
+          { "title": "Self-Reliance", "description": "Supporting individuals to become financially independent through small-scale business opportunities." },
+          { "title": "Community Service", "description": "Local residents benefit from easy access to grain grinding facilities within their communities." },
+          { "title": "Sustainable Livelihood", "description": "A one-time support that creates long-term earning opportunities and financial stability." }
+        ]
+      }
+    },
+    {
+      "type": "impact-flour-mill-impact",
+      "name": "Success Story & Stats",
+      "sortOrder": 3,
+      "isActive": true,
+      "content": {
+        "tag": "SUCCESS STORY",
+        "heading": "From Support to Self-Sufficiency",
+        "text": "For many families, a flour mill is more than a machine — it is a pathway to financial independence. Through this initiative, beneficiaries can operate their own small business, earn a steady income, and build a brighter future for their families while contributing to their local communities.",
+        "stats": [
+          { "value": "500+", "label": "Families Empowered" },
+          { "value": "100%", "label": "Livelihood Focused" },
+          { "value": "24/7", "label": "Income Opportunity" }
+        ]
+      }
+    },
+    {
+      "type": "impact-flour-mill-gallery",
+      "name": "Project Gallery",
+      "sortOrder": 4,
+      "isActive": true,
+      "content": {
+        "tag": "PROJECT GALLERY",
+        "heading": "Moments of Impact",
+        "description": "Explore glimpses of our initiatives, community outreach programs, and the positive impact created through collective efforts.",
+        "images": ["/images/g42.webp", "/images/g43.webp", "/images/g44.webp"]
+      }
+    }
+  ]
+}

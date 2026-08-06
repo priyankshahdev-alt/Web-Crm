@@ -1,8 +1,75 @@
 import { Link } from 'react-router-dom';
 import { useRef, useEffect } from 'react';
+import { usePageContent } from '../hooks/usePageContent';
 
 const MissionVidhya = () => {
   const iframeRef = useRef(null);
+
+  const content = usePageContent('mission-vidhya');
+
+  const taxTitle = content('mission-vidhya-tax', 'title') ?? 'Mission Vidhya';
+
+  const heroTag = content('mission-vidhya-hero', 'tag') ?? 'Education For Every Child';
+  const heroHighlight = content('mission-vidhya-hero', 'headingHighlight') ?? 'Vidhya';
+  const heroHeadingText = content('mission-vidhya-hero', 'headingText') ?? 'Programme';
+  const heroText =
+    content('mission-vidhya-hero', 'description') ??
+    'Being Sevak Charitable Trust presents Project Vidhya – Fight Against Illiteracy, an initiative dedicated to empowering disabled and underprivileged children through education and personal development.';
+  const heroImage = content('mission-vidhya-hero', 'image') ?? '/images/v1.jpg';
+  const heroStats =
+    content('vidhya-hero-stats', 'items') ?? [
+      { value: '12K+', label: 'Students Helped' },
+      { value: '150+', label: 'Education Drives' },
+    ];
+
+  const aboutTag = content('vidhya-about', 'tag') ?? 'About Programme';
+  const aboutHeading = content('vidhya-about', 'heading') ?? 'Building Future Through';
+  const aboutHighlight = content('vidhya-about', 'headingHighlight') ?? 'Education';
+  const aboutText =
+    content('vidhya-about', 'text') ??
+    'Our mission is to empower children from financially weak backgrounds by providing quality education support. From notebooks and school kits to awareness programmes and mentorship — we aim to create equal opportunities for every child.';
+  const aboutImage = content('vidhya-about', 'image') ?? '/images/v2.jpg';
+  const aboutFeatures =
+    content('vidhya-about', 'features') ?? [
+      { icon: '📖', title: 'School Kits', description: 'Educational support material for children.' },
+      { icon: '🎓', title: 'Learning Support', description: 'Helping children continue quality education.' },
+    ];
+
+  const impactTag = content('vidhya-impact', 'tag') ?? 'Our Impact';
+  const impactHeading = content('vidhya-impact', 'heading') ?? 'Changing Lives Through Learning';
+  const impactItems =
+    content('vidhya-impact', 'items') ?? [
+      { value: '10,000+', label: 'Educational Kits Distributed' },
+      { value: '50+', label: 'Communities Reached' },
+      { value: '500+', label: 'Volunteers Connected' },
+      { value: '100%', label: 'Transparent Support' },
+    ];
+
+  const galleryTag = content('vidhya-gallery', 'tag') ?? 'Gallery';
+  const galleryHeading = content('vidhya-gallery', 'heading') ?? 'Moments Of Hope & Education';
+  const galleryImages =
+    content('vidhya-gallery', 'images') ?? [
+      { src: '/images/V3.jpg', big: false },
+      { src: '/images/v4.png', big: true },
+      { src: '/images/V5.jpg', big: false },
+      { src: '/images/v6.jpg', big: false },
+      { src: '/images/v7.jpeg', big: false },
+    ];
+
+  const donationTag = content('vidhya-donation', 'tag') ?? 'Support A Child';
+  const donationUrl = content('vidhya-donation', 'donationUrl') ?? '/donations/donation-inline-vidhya.html';
+  const donationTitle = content('vidhya-donation', 'title') ?? 'Help Us Continue This Educational Mission';
+  const donationText =
+    content('vidhya-donation', 'description') ??
+    'Your donation helps children receive books, school kits and access to learning opportunities.';
+
+  const testimonialHeading = content('vidhya-testimonials', 'heading') ?? 'What Our Donors Say';
+  const testimonials =
+    content('vidhya-testimonials', 'items') ?? [
+      { quote: '"Being Sevak is doing incredible work for visually impaired and needy families. Proud to support this mission."', name: 'Riya Sharma' },
+      { quote: '"Transparent work, genuine impact, and a wonderful team dedicated to helping people with dignity."', name: 'Rahul Mehta' },
+      { quote: '"Every donation creates real change. Their food distribution drives truly touch lives."', name: 'Anjali Verma' },
+    ];
 
   useEffect(() => {
     function handleMessage(e) {
@@ -230,29 +297,27 @@ const MissionVidhya = () => {
 
       <div className="mission-vidhya">
         <section className="tax-box">
-          <h1>Mission Vidhya</h1>
+          <h1>{taxTitle}</h1>
         </section>
 
         <section className="hero-section">
           <div className="hero-left">
-            <span className="tag">Education For Every Child</span>
-            <h1><span>Vidhya</span><br />Programme</h1>
-            <p>Being Sevak Charitable Trust presents Project Vidhya – Fight Against Illiteracy, an initiative dedicated to empowering disabled and underprivileged children through education and personal development.</p>
+            <span className="tag">{heroTag}</span>
+            <h1><span>{heroHighlight}</span><br />{heroHeadingText}</h1>
+            <p>{heroText}</p>
             <div className="hero-buttons">
               <a href="#donate" className="primary-btn">Support Education</a>
             </div>
           </div>
           <div className="hero-right">
             <div className="main-image-card">
-              <img src="/images/v1.jpg" alt="Children Education" />
-              <div className="floating-card card1">
-                <h3>12K+</h3>
-                <p>Students Helped</p>
-              </div>
-              <div className="floating-card card2">
-                <h3>150+</h3>
-                <p>Education Drives</p>
-              </div>
+              <img src={heroImage} alt="Children Education" />
+              {heroStats.map((stat, i) => (
+                <div className={`floating-card card${i + 1}`} key={i}>
+                  <h3>{stat.value}</h3>
+                  <p>{stat.label}</p>
+                </div>
+              ))}
             </div>
           </div>
         </section>
@@ -260,7 +325,7 @@ const MissionVidhya = () => {
         <div id="donate" style={{ width: '100%', background: '#fff', padding: '0', overflow: 'hidden', position: 'relative', zIndex: 10, isolation: 'isolate' }}>
           <iframe
             ref={iframeRef}
-            src="/donations/donation-inline-vidhya.html"
+            src={donationUrl}
             style={{ width: '100%', height: '650px', border: 'none', display: 'block' }}
             title="Donate to Mission Vidhya"
           />
@@ -268,72 +333,54 @@ const MissionVidhya = () => {
 
         <section className="about-section" id="about" style={{ marginTop: '1px' }}>
           <div className="about-image">
-            <img src="/images/v2.jpg" alt="Education" />
+            <img src={aboutImage} alt="Education" />
           </div>
           <div className="about-content">
-            <span className="mini-title">About Programme</span>
-            <h2>Building Future Through <span>Education</span></h2>
-            <p>Our mission is to empower children from financially weak backgrounds by providing quality education support. From notebooks and school kits to awareness programmes and mentorship — we aim to create equal opportunities for every child.</p>
+            <span className="mini-title">{aboutTag}</span>
+            <h2>{aboutHeading} <span>{aboutHighlight}</span></h2>
+            <p>{aboutText}</p>
             <div className="feature-boxes">
-              <div className="feature-card">
-                <div className="icon">&#128218;</div>
-                <h4>School Kits</h4>
-                <p>Educational support material for children.</p>
-              </div>
-              <div className="feature-card">
-                <div className="icon">&#127891;</div>
-                <h4>Learning Support</h4>
-                <p>Helping children continue quality education.</p>
-              </div>
+              {aboutFeatures.map((f, i) => (
+                <div className="feature-card" key={i}>
+                  <div className="icon">{f.icon}</div>
+                  <h4>{f.title}</h4>
+                  <p>{f.description}</p>
+                </div>
+              ))}
             </div>
           </div>
         </section>
 
         <section className="impact-section" id="impact">
           <div className="section-heading">
-            <span>Our Impact</span>
-            <h2>Changing Lives Through Learning</h2>
+            <span>{impactTag}</span>
+            <h2>{impactHeading}</h2>
           </div>
           <div className="impact-grid">
-            <div className="impact-card">
-              <h3>10,000+</h3>
-              <p>Educational Kits Distributed</p>
-            </div>
-            <div className="impact-card">
-              <h3>50+</h3>
-              <p>Communities Reached</p>
-            </div>
-            <div className="impact-card">
-              <h3>500+</h3>
-              <p>Volunteers Connected</p>
-            </div>
-            <div className="impact-card">
-              <h3>100%</h3>
-              <p>Transparent Support</p>
-            </div>
+            {impactItems.map((s, i) => (
+              <div className="impact-card" key={i}><h3>{s.value}</h3><p>{s.label}</p></div>
+            ))}
           </div>
         </section>
 
         <section className="gallery-section" id="gallery">
           <div className="section-heading">
-            <span>Gallery</span>
-            <h2>Moments Of Hope & Education</h2>
+            <span>{galleryTag}</span>
+            <h2>{galleryHeading}</h2>
           </div>
           <div className="gallery-grid">
-            <div className="gallery-item"><img src="/images/V3.jpg" alt="" /></div>
-            <div className="gallery-item big"><img src="/images/v4.png" alt="" /></div>
-            <div className="gallery-item"><img src="/images/V5.jpg" alt="" /></div>
-            <div className="gallery-item"><img src="/images/v6.jpg" alt="" /></div>
-            <div className="gallery-item"><img src="/images/v7.jpeg" alt="" /></div>
+            {galleryImages.map((g, i) => (
+              <div className={`gallery-item${g.big ? ' big' : ''}`} key={i}><img src={g.src} alt="" /></div>
+            ))}
           </div>
         </section>
 
         <section className="sevak-donation">
           <div className="sevak-donation-content">
             <div className="sevak-left">
-              <span className="sevak-tag">Support A Child</span>
-              <h2 className="sevak-title">Help Us Continue This Educational Mission</h2>
-              <p className="sevak-desc">Your donation helps children receive books, school kits and access to learning opportunities.</p>
+              <span className="sevak-tag">{donationTag}</span>
+              <h2 className="sevak-title">{donationTitle}</h2>
+              <p className="sevak-desc">{donationText}</p>
             </div>
             <div className="sevak-right">
               <a href="#" className="sevak-btn">Donate Now</a>
@@ -343,21 +390,15 @@ const MissionVidhya = () => {
 
         <section className="testimonial-section">
           <div className="section-header">
-            <h2>What Our Donors Say</h2>
+            <h2>{testimonialHeading}</h2>
           </div>
           <div className="testimonial-grid">
-            <div className="testimonial-card">
-              <p>"Being Sevak is doing incredible work for visually impaired and needy families. Proud to support this mission."</p>
-              <h4>Riya Sharma</h4>
-            </div>
-            <div className="testimonial-card">
-              <p>"Transparent work, genuine impact, and a wonderful team dedicated to helping people with dignity."</p>
-              <h4>Rahul Mehta</h4>
-            </div>
-            <div className="testimonial-card">
-              <p>"Every donation creates real change. Their food distribution drives truly touch lives."</p>
-              <h4>Anjali Verma</h4>
-            </div>
+            {testimonials.map((t, i) => (
+              <div className="testimonial-card" key={i}>
+                <p>{t.quote}</p>
+                <h4>{t.name}</h4>
+              </div>
+            ))}
           </div>
         </section>
 

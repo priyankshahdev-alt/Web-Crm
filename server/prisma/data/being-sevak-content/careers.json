@@ -1,0 +1,92 @@
+{
+  "slug": "careers",
+  "title": "Careers",
+  "metaTitle": "Careers | Being Sevak Foundation",
+  "metaDescription": "Join Being Sevak Charitable Trust as a team member or volunteer and be part of a team dedicated to selfless service and social change.",
+  "template": "default",
+  "sortOrder": 64,
+  "isHome": false,
+  "sections": [
+    {
+      "type": "careers-banner",
+      "name": "Page Banner",
+      "sortOrder": 1,
+      "isActive": true,
+      "content": {
+        "heading": "Careers"
+      }
+    },
+    {
+      "type": "careers-heading",
+      "name": "Section Heading",
+      "sortOrder": 2,
+      "isActive": true,
+      "content": {
+        "heading": "Join Our",
+        "headingSpan": "Mission",
+        "description": "Be part of a team dedicated to selfless service and social change. Explore career opportunities or volunteer with us."
+      }
+    },
+    {
+      "type": "careers-why",
+      "name": "Why Join Us",
+      "sortOrder": 3,
+      "isActive": true,
+      "content": {
+        "title": "Why Join Us?",
+        "description": "Being Sevak Charitable Trust offers a meaningful work environment where you can make a real difference. We value passion, integrity, and a commitment to serving communities."
+      }
+    },
+    {
+      "type": "careers-openings",
+      "name": "Current Openings",
+      "sortOrder": 4,
+      "isActive": true,
+      "content": {
+        "title": "Current Openings",
+        "items": [
+          "Program Manager",
+          "Social Media Coordinator",
+          "Field Volunteer",
+          "Fundraising Associate",
+          "Content Writer"
+        ]
+      }
+    },
+    {
+      "type": "careers-benefits",
+      "name": "Volunteer Benefits",
+      "sortOrder": 5,
+      "isActive": true,
+      "content": {
+        "title": "Volunteer Benefits",
+        "items": [
+          { "icon": "fas fa-award", "title": "Certificate", "description": "Official recognition for your service" },
+          { "icon": "fas fa-graduation-cap", "title": "Skill Dev", "description": "Learn & grow through real work" },
+          { "icon": "fas fa-users", "title": "Network", "description": "Connect with like-minded people" },
+          { "icon": "fas fa-hand-holding-heart", "title": "Impact", "description": "Directly contribute to social change" }
+        ]
+      }
+    },
+    {
+      "type": "careers-form",
+      "name": "Application Form Heading",
+      "sortOrder": 6,
+      "isActive": true,
+      "content": {
+        "title": "Volunteer Application",
+        "description": "Fill out the form below and our team will get back to you."
+      }
+    },
+    {
+      "type": "careers-popup",
+      "name": "Submission Popup",
+      "sortOrder": 7,
+      "isActive": true,
+      "content": {
+        "title": "Form Submitted!",
+        "description": "Thank you for your interest. Our team will get back to you soon."
+      }
+    }
+  ]
+}

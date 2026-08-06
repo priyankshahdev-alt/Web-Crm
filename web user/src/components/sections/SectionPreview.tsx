@@ -309,6 +309,80 @@ function HtmlPreview({ section }: { section: PageSection }) {
   )
 }
 
+const IMAGE_EXT = /\.(jpe?g|png|webp|gif|svg|avif|bmp)(\?.*)?$/i
+const isImageLike = (value: unknown): value is string =>
+  typeof value === 'string' && IMAGE_EXT.test(value)
+
+function GenericSectionPreview({ section }: { section: PageSection }) {
+  const entries = Object.entries(section.content ?? {})
+  const image = entries.find(([, value]) => isImageLike(value))?.[1] as string | undefined
+  const texts: string[] = []
+  const pills: { label: string; value: string }[] = []
+  for (const [key, value] of entries) {
+    if (key === image && isImageLike(value)) continue
+    if (typeof value === 'string' && value.trim()) {
+      texts.push(value)
+    } else if (typeof value === 'number') {
+      pills.push({ label: key, value: String(value) })
+    } else if (typeof value === 'boolean') {
+      pills.push({ label: key, value: value ? 'Yes' : 'No' })
+    } else if (Array.isArray(value)) {
+      pills.push({ label: key, value: `${value.length} item${value.length === 1 ? '' : 's'}` })
+    } else if (value && typeof value === 'object') {
+      pills.push({ label: key, value: `${Object.keys(value as Record<string, unknown>).length} fields` })
+    }
+  }
+  return (
+    <div>
+      <div className="flex items-center justify-between">
+        <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
+          {section.type}
+        </p>
+        <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-semibold text-slate-400">
+          {entries.length} fields
+        </span>
+      </div>
+      {image ? (
+        <img
+          src={image}
+          alt=""
+          className="mt-4 h-40 w-full rounded-xl object-cover"
+          onError={(event) => {
+            ;(event.currentTarget as HTMLImageElement).style.display = 'none'
+          }}
+        />
+      ) : null}
+      {texts.length > 0 ? (
+        <div className="mt-4 space-y-1.5">
+          <p className="text-lg font-bold text-slate-900">{texts[0]}</p>
+          {texts.slice(1).map((line, index) => (
+            <p key={index} className="text-xs leading-relaxed text-slate-500">
+              {line}
+            </p>
+          ))}
+        </div>
+      ) : null}
+      {pills.length > 0 ? (
+        <div className="mt-3 flex flex-wrap gap-1.5">
+          {pills.map((pill) => (
+            <span
+              key={pill.label}
+              className="rounded-full border border-slate-200 px-2.5 py-1 text-[10px] font-semibold text-slate-500"
+            >
+              {pill.label}: {pill.value}
+            </span>
+          ))}
+        </div>
+      ) : null}
+      {entries.length === 0 ? (
+        <p className="mt-4 rounded-xl border border-dashed border-slate-200 bg-slate-50 p-4 text-center text-xs text-slate-400">
+          Empty section — edit its fields in the properties panel.
+        </p>
+      ) : null}
+    </div>
+  )
+}
+
 const PREVIEWS: Record<string, React.FC<{ section: PageSection }>> = {
   hero: HeroPreview,
   about: AboutPreview,
@@ -326,8 +400,7 @@ const PREVIEWS: Record<string, React.FC<{ section: PageSection }>> = {
 
 export function SectionPreview({ section }: { section: PageSection }) {
   if (!section.isActive) return null
-  const Component = PREVIEWS[section.type] ?? null
-  if (!Component) return null
+  const Component = PREVIEWS[section.type] ?? GenericSectionPreview
   return (
     <SectionFrame section={section}>
       <Component section={section} />

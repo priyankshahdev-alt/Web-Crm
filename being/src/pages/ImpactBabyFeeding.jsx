@@ -1,8 +1,43 @@
 import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
+import { usePageContent } from '../hooks/usePageContent';
 
 export default function ImpactBabyFeeding() {
   useEffect(() => { window.scrollTo(0, 0); }, []);
+
+  const content = usePageContent('impact-baby-feeding');
+
+  const headingTag = content('baby-feeding-heading', 'tag') ?? 'NUTRITION & CARE PROGRAM';
+  const headingTitle = content('baby-feeding-heading', 'heading') ?? 'Baby Feeding Kit Support';
+  const headingText =
+    content('baby-feeding-heading', 'description') ??
+    'Proper nutrition is essential for every child\'s growth and development. Through our Baby Feeding Kit Support program, Being Sevak Charitable Trust provides essential feeding kits, infant nutrition supplies, and baby care essentials to underprivileged families. This initiative ensures that newborns and infants receive the care and nourishment they need for a healthy start in life.';
+  const mainImage = content('baby-feeding-heading', 'image') ?? '/images/g1.jpeg';
+  const cards =
+    content('baby-feeding-cards', 'items') ?? [
+      { title: 'Nutrition Essentials', description: 'Providing quality feeding bottles, formula, and nutrition supplies for infants.' },
+      { title: 'Baby Care Kits', description: 'Complete feeding and hygiene kits to ensure proper care for newborns and infants.' },
+      { title: 'Maternal Support', description: 'Helping new mothers with the resources they need to care for their babies properly.' },
+      { title: 'Healthy Beginnings', description: 'Ensuring every child gets the nutritional foundation they need for healthy growth.' },
+    ];
+  const storyTag = content('baby-feeding-impact', 'tag') ?? 'SUCCESS STORY';
+  const storyTitle = content('baby-feeding-impact', 'heading') ?? 'A Healthier Start for Every Child';
+  const storyText =
+    content('baby-feeding-impact', 'text') ??
+    'For families struggling to make ends meet, providing proper nutrition for their newborns can be a challenge. Through the Baby Feeding Kit Support program, Being Sevak Charitable Trust ensures that infants from underprivileged families receive essential feeding supplies and nutrition, giving them a healthy and hopeful start to life.';
+  const stats =
+    content('baby-feeding-impact', 'stats') ?? [
+      { value: '3000+', label: 'Kits Distributed' },
+      { value: '100%', label: 'Quality Products' },
+      { value: '1000+', label: 'Families Helped' },
+    ];
+  const galleryTag = content('baby-feeding-gallery', 'tag') ?? 'PROJECT GALLERY';
+  const galleryTitle = content('baby-feeding-gallery', 'heading') ?? 'Moments of Impact';
+  const galleryText =
+    content('baby-feeding-gallery', 'description') ??
+    'Explore glimpses of our initiatives, community outreach programs, and the positive impact created through collective efforts.';
+  const galleryImages =
+    content('baby-feeding-gallery', 'images') ?? ['/images/g2.webp', '/images/g3.webp', '/images/g4.webp'];
 
   const css = `
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -64,69 +99,38 @@ export default function ImpactBabyFeeding() {
       <section className="baby-feeding-section">
         <div className="baby-container">
           <div className="baby-heading">
-            <span className="baby-tag">NUTRITION & CARE PROGRAM</span>
-            <h2>Baby Feeding Kit Support</h2>
-            <p>
-              Proper nutrition is essential for every child's growth and
-              development. Through our Baby Feeding Kit Support program,
-              Being Sevak Charitable Trust provides essential feeding kits,
-              infant nutrition supplies, and baby care essentials to
-              underprivileged families. This initiative ensures that
-              newborns and infants receive the care and nourishment they
-              need for a healthy start in life.
-            </p>
+            <span className="baby-tag">{headingTag}</span>
+            <h2>{headingTitle}</h2>
+            <p>{headingText}</p>
           </div>
 
           <div className="baby-grid">
             <div className="baby-image">
-              <img src="/images/g1.jpeg" alt="Baby Feeding Kit Support" />
+              <img src={mainImage} alt="Baby Feeding Kit Support" />
             </div>
             <div className="baby-content">
-              <div className="baby-card">
-                <h3>Nutrition Essentials</h3>
-                <p>Providing quality feeding bottles, formula, and nutrition supplies for infants.</p>
-              </div>
-              <div className="baby-card">
-                <h3>Baby Care Kits</h3>
-                <p>Complete feeding and hygiene kits to ensure proper care for newborns and infants.</p>
-              </div>
-              <div className="baby-card">
-                <h3>Maternal Support</h3>
-                <p>Helping new mothers with the resources they need to care for their babies properly.</p>
-              </div>
-              <div className="baby-card">
-                <h3>Healthy Beginnings</h3>
-                <p>Ensuring every child gets the nutritional foundation they need for healthy growth.</p>
-              </div>
+              {cards.map((card, i) => (
+                <div className="baby-card" key={i}>
+                  <h3>{card.title}</h3>
+                  <p>{card.description}</p>
+                </div>
+              ))}
             </div>
           </div>
 
           <div className="baby-impact">
             <div className="baby-story">
-              <span>SUCCESS STORY</span>
-              <h3>A Healthier Start for Every Child</h3>
-              <p>
-                For families struggling to make ends meet, providing proper
-                nutrition for their newborns can be a challenge. Through the
-                Baby Feeding Kit Support program, Being Sevak Charitable
-                Trust ensures that infants from underprivileged families
-                receive essential feeding supplies and nutrition, giving
-                them a healthy and hopeful start to life.
-              </p>
+              <span>{storyTag}</span>
+              <h3>{storyTitle}</h3>
+              <p>{storyText}</p>
             </div>
             <div className="baby-stats">
-              <div className="baby-box">
-                <h2>3000+</h2>
-                <span>Kits Distributed</span>
-              </div>
-              <div className="baby-box">
-                <h2>100%</h2>
-                <span>Quality Products</span>
-              </div>
-              <div className="baby-box">
-                <h2>1000+</h2>
-                <span>Families Helped</span>
-              </div>
+              {stats.map((s, i) => (
+                <div className="baby-box" key={i}>
+                  <h2>{s.value}</h2>
+                  <span>{s.label}</span>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -134,14 +138,14 @@ export default function ImpactBabyFeeding() {
 
       <section className="shital-gallery-section">
         <div className="shital-gallery-heading">
-          <span>PROJECT GALLERY</span>
-          <h2>Moments of Impact</h2>
-          <p>Explore glimpses of our initiatives, community outreach programs, and the positive impact created through collective efforts.</p>
+          <span>{galleryTag}</span>
+          <h2>{galleryTitle}</h2>
+          <p>{galleryText}</p>
         </div>
         <div className="shital-gallery">
-          <div className="shital-gallery-item"><img src="/images/g2.webp" alt="" /></div>
-          <div className="shital-gallery-item"><img src="/images/g3.webp" alt="" /></div>
-          <div className="shital-gallery-item"><img src="/images/g4.webp" alt="" /></div>
+          {galleryImages.map((src, i) => (
+            <div className="shital-gallery-item" key={i}><img src={src} alt="" /></div>
+          ))}
         </div>
       </section>
     </>

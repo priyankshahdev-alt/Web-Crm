@@ -4,6 +4,7 @@ export interface WebUserSession {
   accessToken: string
   refreshToken: string
   currentOrgId?: string
+  currentOrgSlug?: string
   user: {
     id: string
     email: string

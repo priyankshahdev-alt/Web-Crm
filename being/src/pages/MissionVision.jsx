@@ -1,7 +1,35 @@
 import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
+import { usePageContent } from '../hooks/usePageContent';
 
 const MissionVision = () => {
+  const content = usePageContent('mission-vision');
+
+  const heroTitle = content('mv-hero', 'heading') ?? 'MISSION / VISION';
+  const breadcrumb = content('mv-hero', 'breadcrumb') ?? 'Mission / Vision';
+
+  const missionImage = content('mv-mission', 'image') ?? 'https://beingsevak.org/wp-content/uploads/2023/11/Untitled-design-2.png';
+  const missionHeading = content('mv-mission', 'heading') ?? 'Mission';
+  const missionText =
+    content('mv-mission', 'text') ??
+    'Empower and uplift the lives of visually impaired individuals and underprivileged children, ensuring their basic rights to education and livelihood. Through our different Mission & activities in the field of education, healthcare, and support programs, we aim to eliminate avoidable blindness, promote inclusivity, and enable all those we serve to lead lives of independence and dignity.';
+
+  const valuesHeading = content('mv-values', 'heading') ?? 'VALUES';
+  const values =
+    content('mv-values', 'items') ?? [
+      { icon: 'fa-scale-balanced', label: 'ACCOUNTABILITY' },
+      { icon: 'fa-chalkboard-user', label: 'LEADERSHIP' },
+      { icon: 'fa-eye', label: 'TRANSPARENCY' },
+      { icon: 'fa-people-group', label: 'TEAM WORK' },
+      { icon: 'fa-shapes', label: 'INNOVATION' },
+    ];
+
+  const visionImage = content('mv-vision', 'image') ?? 'https://beingsevak.org/wp-content/uploads/2023/11/Untitled-design-1-2.png';
+  const visionHeading = content('mv-vision', 'heading') ?? 'Vision';
+  const visionText =
+    content('mv-vision', 'text') ??
+    "The NGO's vision is to create a world where visually impaired, underprivileged children, and needy individuals have access to their basic rights of livelihood and education. This vision is rooted in the belief that every individual, regardless of their circumstances or disabilities, deserves the opportunity to live a life of independence and dignity.";
+
   return (
     <>
       <style>{`
@@ -29,30 +57,28 @@ const MissionVision = () => {
 
       <section className="hero-banner">
         <div className="hero-content">
-          <h1>MISSION / VISION</h1>
-          <div className="breadcrumb">Home <span>»</span> Mission / Vision</div>
+          <h1>{heroTitle}</h1>
+          <div className="breadcrumb">Home <span>»</span> {breadcrumb}</div>
         </div>
       </section>
 
       <section className="mv-section">
         <div className="mv-container">
           <div className="mv-card">
-            <img src="https://beingsevak.org/wp-content/uploads/2023/11/Untitled-design-2.png" alt="Mission"/>
-            <h2>Mission</h2>
-            <p>Empower and uplift the lives of visually impaired individuals and underprivileged children, ensuring their basic rights to education and livelihood. Through our different Mission &amp; activities in the field of education, healthcare, and support programs, we aim to eliminate avoidable blindness, promote inclusivity, and enable all those we serve to lead lives of independence and dignity.</p>
+            <img src={missionImage} alt={missionHeading}/>
+            <h2>{missionHeading}</h2>
+            <p>{missionText}</p>
           </div>
           <div className="values-box">
-            <h2>VALUES</h2>
-            <div className="value-item"><i className="fas fa-scale-balanced"></i><span>ACCOUNTABILITY</span></div>
-            <div className="value-item"><i className="fas fa-chalkboard-user"></i><span>LEADERSHIP</span></div>
-            <div className="value-item"><i className="fas fa-eye"></i><span>TRANSPARENCY</span></div>
-            <div className="value-item"><i className="fas fa-people-group"></i><span>TEAM WORK</span></div>
-            <div className="value-item"><i className="fas fa-shapes"></i><span>INNOVATION</span></div>
+            <h2>{valuesHeading}</h2>
+            {values.map((v, i) => (
+              <div className="value-item" key={i}><i className={`fas ${v.icon}`}></i><span>{v.label}</span></div>
+            ))}
           </div>
           <div className="mv-card">
-            <img src="https://beingsevak.org/wp-content/uploads/2023/11/Untitled-design-1-2.png" alt="Vision"/>
-            <h2>Vision</h2>
-            <p>The NGO's vision is to create a world where visually impaired, underprivileged children, and needy individuals have access to their basic rights of livelihood and education. This vision is rooted in the belief that every individual, regardless of their circumstances or disabilities, deserves the opportunity to live a life of independence and dignity.</p>
+            <img src={visionImage} alt={visionHeading}/>
+            <h2>{visionHeading}</h2>
+            <p>{visionText}</p>
           </div>
         </div>
       </section>

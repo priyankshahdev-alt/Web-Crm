@@ -1,0 +1,73 @@
+{
+  "slug": "photos",
+  "title": "Our Gallery",
+  "metaTitle": "Our Gallery | Being Sevak Foundation",
+  "metaDescription": "Gallery of photographs capturing the spirit of service of Being Sevak Charitable Trust through community programs and impact.",
+  "template": "default",
+  "sortOrder": 44,
+  "isHome": false,
+  "sections": [
+    {
+      "type": "photos-hero",
+      "name": "Photos Hero",
+      "sortOrder": 1,
+      "isActive": true,
+      "content": {
+        "titlePrefix": "Our",
+        "titleHighlight": "Gallery"
+      }
+    },
+    {
+      "type": "photos-heading",
+      "name": "Gallery Heading",
+      "sortOrder": 2,
+      "isActive": true,
+      "content": {
+        "titlePrefix": "Moments of",
+        "titleHighlight": "Impact",
+        "subtitle": "Capturing the spirit of service through our journey of compassion and change"
+      }
+    },
+    {
+      "type": "photos-gallery",
+      "name": "Gallery Items",
+      "sortOrder": 3,
+      "isActive": true,
+      "content": {
+        "items": [
+          { "category": "campaigns", "img": "/images/annapurna 2.png", "title": "Mission Annapurna", "desc": "Food distribution drive reaching thousands of families", "wide": true },
+          { "category": "education", "img": "/images/KIT.png", "title": "Mission Vidhya", "desc": "Education kits distributed to underprivileged children" },
+          { "category": "community", "img": "/images/Aurat 2.png", "title": "Mission Aurat", "desc": "Sanitary pad & hygiene kit distribution drives" },
+          { "category": "community", "img": "/images/Aatmnirbhar 1.png", "title": "Mission Atma Nirbhar", "desc": "Employment & self-reliance support programs" },
+          { "category": "health", "img": "/images/Dialysis Centre.png", "title": "Dialysis Centre", "desc": "Affordable medical & dialysis support for all" },
+          { "category": "campaigns", "img": "/images/BEACH.png", "title": "Mission Beach Sevak", "desc": "Beach cleaning & environmental awareness drives" },
+          { "category": "community", "img": "/images/Animal.png", "title": "Mission Bezubaan", "desc": "Animal care & feeding initiative for strays" },
+          { "category": "health", "img": "/images/eye.jpg", "title": "Sevak Eye Health Programme", "desc": "Free eye screenings & cataract surgeries" },
+          { "category": "education", "img": "/images/vidhya 1.png", "title": "Digital Education", "desc": "Digital education centers bridging the gap" },
+          { "category": "campaigns", "img": "/images/tree plantion 2.png", "title": "Sevak Eco Initiative", "desc": "Plantation drives & eco-awareness campaigns", "wide": true },
+          { "category": "events", "img": "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=600&auto=format&fit=crop", "title": "Community Outreach", "desc": "Engaging with local communities across regions" },
+          { "category": "events", "img": "https://images.unsplash.com/photo-1511632765486-a01980e01a18?q=80&w=600&auto=format&fit=crop", "title": "Awareness Drive", "desc": "Spreading awareness in rural communities" },
+          { "category": "campaigns", "img": "/images/KIT 1.png", "title": "Stationery Distribution", "desc": "School supplies for underprivileged students" },
+          { "category": "health", "img": "/images/h2.png", "title": "Project H2O", "desc": "School renovation & hygiene facility projects" },
+          { "category": "community", "img": "/images/babycare.png", "title": "Baby Care Center", "desc": "Infant nutrition & care programs" }
+        ]
+      }
+    },
+    {
+      "type": "photos-more",
+      "name": "Load More Gallery Items",
+      "sortOrder": 4,
+      "isActive": true,
+      "content": {
+        "items": [
+          { "category": "community", "img": "https://images.unsplash.com/photo-1593113630400-ea4288922497?q=80&w=600&auto=format&fit=crop", "title": "Community Kitchen", "desc": "Mid-day meal program in action", "wide": true },
+          { "category": "health", "img": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=600&auto=format&fit=crop", "title": "Medical Camp", "desc": "Free health checkup camps for villagers" },
+          { "category": "education", "img": "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?q=80&w=600&auto=format&fit=crop", "title": "School Supplies", "desc": "Distributing books and stationery" },
+          { "category": "events", "img": "https://images.unsplash.com/photo-1544027993-37dbfe43562a?q=80&w=600&auto=format&fit=crop", "title": "Award Ceremony", "desc": "Celebrating community achievements" },
+          { "category": "campaigns", "img": "https://images.unsplash.com/photo-1559027615-cd4628902d4a?q=80&w=600&auto=format&fit=crop", "title": "Clean-Up Drive", "desc": "Volunteers making a difference" },
+          { "category": "community", "img": "https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?q=80&w=600&auto=format&fit=crop", "title": "Festival Celebration", "desc": "Spreading joy during festivals" }
+        ]
+      }
+    }
+  ]
+}

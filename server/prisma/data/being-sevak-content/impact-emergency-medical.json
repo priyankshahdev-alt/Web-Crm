@@ -1,0 +1,65 @@
+{
+  "slug": "impact-emergency-medical",
+  "title": "Emergency Medical Support",
+  "metaTitle": "Emergency Medical Support | Being Sevak Foundation",
+  "metaDescription": "The Emergency Medical Support initiative provides timely financial assistance, medicines, hospitalization aid, and life-saving care to underprivileged patients facing critical health conditions.",
+  "template": "default",
+  "sortOrder": 48,
+  "isHome": false,
+  "sections": [
+    {
+      "type": "impact-emergency-medical-heading",
+      "name": "Emergency Medical Header",
+      "sortOrder": 1,
+      "isActive": true,
+      "content": {
+        "tag": "HEALTHCARE SUPPORT PROGRAM",
+        "heading": "Emergency Medical Support",
+        "description": "Medical emergencies can strike any family without warning. Through our Emergency Medical Support initiative, Being Sevak Charitable Trust provides timely financial assistance, treatment support, medicines, hospitalization aid, and life-saving care to underprivileged patients facing critical health conditions. Our mission is to ensure that no life is lost due to lack of medical resources or financial constraints.",
+        "image": "/images/g54.webp"
+      }
+    },
+    {
+      "type": "impact-emergency-medical-cards",
+      "name": "Program Highlights",
+      "sortOrder": 2,
+      "isActive": true,
+      "content": {
+        "items": [
+          { "title": "Critical Care Assistance", "description": "Providing urgent medical aid for life-threatening illnesses, surgeries, and emergency treatments." },
+          { "title": "Hospitalization Support", "description": "Helping financially challenged families access quality healthcare and hospitalization facilities." },
+          { "title": "Medicines & Treatment", "description": "Supporting patients with essential medicines, diagnostics, and specialized medical care." },
+          { "title": "Saving Precious Lives", "description": "Every contribution helps a patient receive timely treatment and a second chance at life." }
+        ]
+      }
+    },
+    {
+      "type": "impact-emergency-medical-impact",
+      "name": "Success Story & Stats",
+      "sortOrder": 3,
+      "isActive": true,
+      "content": {
+        "tag": "IMPACT STORY",
+        "heading": "Hope During a Medical Emergency",
+        "text": "Master Imad Shaikh, an 8-month-old child suffering from congenital heart disease, came from Uttar Pradesh with his family seeking urgent medical assistance. His father worked as a labourer and his mother was a housewife. Through the support of Being Sevak Charitable Trust, he received emergency medical help and hospitalization support during a critical stage of treatment.",
+        "stats": [
+          { "value": "2400+", "label": "Medical Relief Cases" },
+          { "value": "24/7", "label": "Emergency Response" },
+          { "value": "100%", "label": "Life Saving Focus" }
+        ]
+      }
+    },
+    {
+      "type": "impact-emergency-medical-gallery",
+      "name": "Project Gallery",
+      "sortOrder": 4,
+      "isActive": true,
+      "content": {
+        "tag": "PROJECT GALLERY",
+        "heading": "Moments of Impact",
+        "description": "Explore glimpses of our initiatives, community outreach programs, and the positive impact created through collective efforts.",
+        "images": ["/images/g51.webp", "/images/g52.webp", "/images/g53.webp"]
+      }
+    }
+  ]
+}

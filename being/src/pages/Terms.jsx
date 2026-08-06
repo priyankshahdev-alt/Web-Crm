@@ -1,7 +1,83 @@
 import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
+import { usePageContent } from '../hooks/usePageContent';
 
 const Terms = () => {
+  const content = usePageContent('terms');
+
+  const bannerTitle = content('terms-banner', 'title') ?? 'Terms & Conditions';
+
+  const privacyTitle = content('terms-privacy', 'title') ?? 'Privacy Statement';
+  const privacyText =
+    content('terms-privacy', 'text') ??
+    'Being Sevak Charitable Trust is committed to protecting the privacy of all users and donors visiting this website. Any information received from users is kept strictly confidential and is disclosed to third parties only when necessary for processing donations or fulfilling legal obligations. We ensure responsible handling of your personal information and maintain appropriate safeguards to protect your privacy.';
+
+  const termsTitle = content('terms-conditions', 'title') ?? 'Terms and Conditions';
+  const termsParagraphs =
+    content('terms-conditions', 'paragraphs') ?? [
+      'Being Sevak Charitable Trust respects and protects your privacy rights and personal information. Any details provided by you through this website will not be shared with external parties except where required to process donations, comply with legal requirements, or improve our services.',
+      'By accessing this website and/or making a donation, you agree to comply with and be bound by these Terms and Conditions. Being Sevak Charitable Trust reserves the right to modify or update these terms at any time without prior notice. Continued use of the website after changes are posted constitutes your acceptance of those changes.',
+      'These Terms and Conditions shall be governed and interpreted in accordance with the laws of India.',
+    ];
+
+  const ownershipTitle = content('terms-ownership', 'title') ?? 'Content Ownership';
+  const ownershipParagraphs =
+    content('terms-ownership', 'paragraphs') ?? [
+      'All content published on this website, including but not limited to graphics, blogs, articles, write-ups, photographs, videos, logos, images, designs, and software, is the exclusive property of Being Sevak Charitable Trust and is protected under applicable intellectual property laws.',
+      'Unauthorised copying, reproduction, distribution, or use of any content without prior written permission from Being Sevak Charitable Trust may result in legal action.',
+    ];
+
+  const privacyPolicyTitle = content('terms-privacy-policy', 'title') ?? 'Privacy Policy';
+  const ppIntro =
+    content('terms-privacy-policy', 'intro') ??
+    'Being Sevak Charitable Trust is dedicated to protecting your privacy and ensuring transparency in the collection and use of personal data.';
+  const ppCollectIntro = content('terms-privacy-policy', 'collectIntro') ?? 'We may collect information such as:';
+  const ppCollectItems =
+    content('terms-privacy-policy', 'collectItems') ?? ['Name', 'Email address', 'Phone number', 'Donation amount', 'Address and payment details'];
+  const ppUseIntro = content('terms-privacy-policy', 'useIntro') ?? 'This information is used solely for:';
+  const ppUseItems =
+    content('terms-privacy-policy', 'useItems') ?? ['Processing donations', 'Sending donation receipts', 'Providing updates regarding our initiatives', 'Sharing newsletters or important communications'];
+  const ppClosing =
+    content('terms-privacy-policy', 'closing') ??
+    'We implement secure methods and industry-standard security practices to store and protect your personal information. Users may opt out of promotional communications at any time.';
+
+  const liabilityTitle = content('terms-liability', 'title') ?? 'Disclaimer of Liability';
+  const liabilityParagraphs =
+    content('terms-liability', 'paragraphs') ?? [
+      'Being Sevak Charitable Trust shall not be held responsible for any direct, indirect, incidental, or consequential damages arising from the misuse, unauthorised access, or disclosure of personal information by third parties through this website or external links.',
+      'Users are advised to exercise caution while sharing personal information online.',
+    ];
+
+  const refundTitle = content('terms-refund', 'title') ?? 'Cancellation and Refund Policy';
+  const refundParagraphs =
+    content('terms-refund', 'paragraphs') ?? [
+      'Being Sevak Charitable Trust does not generally entertain cancellation or refund requests due to internal policies.',
+      'Refund requests may only be considered in the following situations:',
+    ];
+  const refundItems =
+    content('terms-refund', 'items') ?? ['Duplicate donation transactions', 'Incorrect donation amount entered by mistake'];
+  const refundAfter =
+    content('terms-refund', 'after') ?? [
+      'Any refund request must be submitted within 15 days from the date of donation along with valid transaction details.',
+      'The decision of Being Sevak Charitable Trust regarding refunds shall be final.',
+    ];
+
+  const securityTitle = content('terms-security', 'title') ?? 'Security Measures';
+  const securityParagraphs =
+    content('terms-security', 'paragraphs') ?? [
+      'Being Sevak Charitable Trust employs robust security measures to safeguard your personal data against unauthorised access, misuse, loss, or disclosure. This includes:',
+    ];
+  const securityItems =
+    content('terms-security', 'items') ?? ['Secure servers', 'Encrypted payment gateways', 'Restricted access to sensitive information', 'Regular monitoring of website security practices'];
+
+  const contactTitle = content('terms-contact', 'title') ?? 'Contact Details';
+  const contactRows =
+    content('terms-contact', 'rows') ?? [
+      { icon: 'fa-building', text: 'Being Sevak Charitable Trust' },
+      { icon: 'fa-phone', text: '+91 8879035035 / +91 8879034034' },
+      { icon: 'fa-globe', text: 'www.beingsevak.org' },
+    ];
+
   return (
     <>
       <style>{`
@@ -28,74 +104,77 @@ const Terms = () => {
       `}</style>
 
       <section className="page-banner">
-        <h1>Terms &amp; Conditions</h1>
+        <h1>{bannerTitle}</h1>
       </section>
 
       <div className="content-wrap">
         <div className="section-block">
-          <h2>Privacy Statement</h2>
-          <p>Being Sevak Charitable Trust is committed to protecting the privacy of all users and donors visiting this website. Any information received from users is kept strictly confidential and is disclosed to third parties only when necessary for processing donations or fulfilling legal obligations. We ensure responsible handling of your personal information and maintain appropriate safeguards to protect your privacy.</p>
+          <h2>{privacyTitle}</h2>
+          <p>{privacyText}</p>
         </div>
 
         <div className="section-block">
-          <h2>Terms and Conditions</h2>
-          <p>Being Sevak Charitable Trust respects and protects your privacy rights and personal information. Any details provided by you through this website will not be shared with external parties except where required to process donations, comply with legal requirements, or improve our services.</p>
-          <p>By accessing this website and/or making a donation, you agree to comply with and be bound by these Terms and Conditions. Being Sevak Charitable Trust reserves the right to modify or update these terms at any time without prior notice. Continued use of the website after changes are posted constitutes your acceptance of those changes.</p>
-          <p>These Terms and Conditions shall be governed and interpreted in accordance with the laws of India.</p>
+          <h2>{termsTitle}</h2>
+          {termsParagraphs.map((para, i) => (
+            <p key={i}>{para}</p>
+          ))}
           <hr />
-          <h3>Content Ownership</h3>
-          <p>All content published on this website, including but not limited to graphics, blogs, articles, write-ups, photographs, videos, logos, images, designs, and software, is the exclusive property of Being Sevak Charitable Trust and is protected under applicable intellectual property laws.</p>
-          <p>Unauthorised copying, reproduction, distribution, or use of any content without prior written permission from Being Sevak Charitable Trust may result in legal action.</p>
+          <h3>{ownershipTitle}</h3>
+          {ownershipParagraphs.map((para, i) => (
+            <p key={i}>{para}</p>
+          ))}
           <hr />
-          <h3>Privacy Policy</h3>
-          <p>Being Sevak Charitable Trust is dedicated to protecting your privacy and ensuring transparency in the collection and use of personal data.</p>
-          <p>We may collect information such as:</p>
+          <h3>{privacyPolicyTitle}</h3>
+          <p>{ppIntro}</p>
+          <p>{ppCollectIntro}</p>
           <ul>
-            <li>Name</li>
-            <li>Email address</li>
-            <li>Phone number</li>
-            <li>Donation amount</li>
-            <li>Address and payment details</li>
+            {ppCollectItems.map((item, i) => (
+              <li key={i}>{item}</li>
+            ))}
           </ul>
-          <p>This information is used solely for:</p>
+          <p>{ppUseIntro}</p>
           <ul>
-            <li>Processing donations</li>
-            <li>Sending donation receipts</li>
-            <li>Providing updates regarding our initiatives</li>
-            <li>Sharing newsletters or important communications</li>
+            {ppUseItems.map((item, i) => (
+              <li key={i}>{item}</li>
+            ))}
           </ul>
-          <p>We implement secure methods and industry-standard security practices to store and protect your personal information. Users may opt out of promotional communications at any time.</p>
+          <p>{ppClosing}</p>
           <hr />
-          <h3>Disclaimer of Liability</h3>
-          <p>Being Sevak Charitable Trust shall not be held responsible for any direct, indirect, incidental, or consequential damages arising from the misuse, unauthorised access, or disclosure of personal information by third parties through this website or external links.</p>
-          <p>Users are advised to exercise caution while sharing personal information online.</p>
+          <h3>{liabilityTitle}</h3>
+          {liabilityParagraphs.map((para, i) => (
+            <p key={i}>{para}</p>
+          ))}
           <hr />
-          <h3>Cancellation and Refund Policy</h3>
-          <p>Being Sevak Charitable Trust does not generally entertain cancellation or refund requests due to internal policies.</p>
-          <p>Refund requests may only be considered in the following situations:</p>
+          <h3>{refundTitle}</h3>
+          {refundParagraphs.map((para, i) => (
+            <p key={i}>{para}</p>
+          ))}
           <ul>
-            <li>Duplicate donation transactions</li>
-            <li>Incorrect donation amount entered by mistake</li>
+            {refundItems.map((item, i) => (
+              <li key={i}>{item}</li>
+            ))}
           </ul>
-          <p>Any refund request must be submitted within 15 days from the date of donation along with valid transaction details.</p>
-          <p>The decision of Being Sevak Charitable Trust regarding refunds shall be final.</p>
+          {refundAfter.map((para, i) => (
+            <p key={i}>{para}</p>
+          ))}
           <hr />
-          <h3>Security Measures</h3>
-          <p>Being Sevak Charitable Trust employs robust security measures to safeguard your personal data against unauthorised access, misuse, loss, or disclosure. This includes:</p>
+          <h3>{securityTitle}</h3>
+          {securityParagraphs.map((para, i) => (
+            <p key={i}>{para}</p>
+          ))}
           <ul>
-            <li>Secure servers</li>
-            <li>Encrypted payment gateways</li>
-            <li>Restricted access to sensitive information</li>
-            <li>Regular monitoring of website security practices</li>
+            {securityItems.map((item, i) => (
+              <li key={i}>{item}</li>
+            ))}
           </ul>
         </div>
 
         <div className="section-block">
-          <h2>Contact Details</h2>
+          <h2>{contactTitle}</h2>
           <div className="contact-details">
-            <p><i className="fas fa-building"></i> Being Sevak Charitable Trust</p>
-            <p><i className="fas fa-phone"></i> +91 8879035035 / +91 8879034034</p>
-            <p><i className="fas fa-globe"></i> www.beingsevak.org</p>
+            {contactRows.map((row, i) => (
+              <p key={i}><i className={`fas ${row.icon}`}></i> {row.text}</p>
+            ))}
           </div>
         </div>
       </div>

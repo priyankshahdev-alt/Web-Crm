@@ -1,17 +1,32 @@
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
+import { usePageContent } from '../hooks/usePageContent';
 
 const UNIT_PRICE = { annapurna: 500, vidhya: 400, aurat: 300, atma: 600, bezubaan: 200 };
 
-const missions = [
-  { key: 'annapurna', icon: '\u{1F33E}', name: 'Mission Annapurna', desc: 'Dry Ration Kits & Mid-Day Meals for Visually Impaired & Underprivileged Individuals' },
-  { key: 'vidhya', icon: '\u{1F4DA}', name: 'Mission Vidhya', desc: 'D.E.C \u2013 Digital Education Centre, Free digital education, Writing Pad & Stationery Kit Distribution' },
-  { key: 'aurat', icon: '\u{1F469}', name: 'Mission Aurat', desc: 'Sanitary Pad Distribution & Hygiene Kit Distribution for underprivileged women' },
-  { key: 'atma', icon: '\u{1F4AA}', name: 'Mission Atma Nirbhar', desc: 'Rozgaar Booth, Wheelchair & Tricycle Distribution, Sewing Machine & Flour Mill Distribution' },
-  { key: 'bezubaan', icon: '\u{1F43E}', name: 'Mission Bezubaan', desc: 'Animal Feeding Center, Biscuit, Milk & Pedigree Distribution for stray animals' },
-];
-
 export default function IndividualDonation() {
+  const content = usePageContent('individual-donation');
+
+  const alertText = content('individual-alert', 'text') ?? 'Being Sevak Charitable Trust';
+  const heroHeading = content('individual-hero', 'heading') ?? 'Individual';
+  const heroText =
+    content('individual-hero', 'description') ??
+    'Every individual has the power to make a difference. Join us in our mission to serve humanity with compassion, dignity, and hope.';
+  const cards =
+    content('individual-cards', 'items') ?? [
+      { icon: 'fas fa-hands-helping', title: 'Make an Impact', description: 'Your support helps us provide food, education, healthcare, and hope to those who need it most.' },
+      { icon: 'fas fa-users', title: 'Join Our Community', description: 'Become part of a growing movement of individuals committed to positive change and compassionate service.' },
+      { icon: 'fas fa-heart', title: 'Spread Kindness', description: 'Every act of kindness creates ripples. Together we can build a better future for communities in need.' },
+    ];
+  const missions =
+    content('individual-missions', 'items') ?? [
+      { key: 'annapurna', icon: '\u{1F33E}', name: 'Mission Annapurna', desc: 'Dry Ration Kits & Mid-Day Meals for Visually Impaired & Underprivileged Individuals' },
+      { key: 'vidhya', icon: '\u{1F4DA}', name: 'Mission Vidhya', desc: 'D.E.C \u2013 Digital Education Centre, Free digital education, Writing Pad & Stationery Kit Distribution' },
+      { key: 'aurat', icon: '\u{1F469}', name: 'Mission Aurat', desc: 'Sanitary Pad Distribution & Hygiene Kit Distribution for underprivileged women' },
+      { key: 'atma', icon: '\u{1F4AA}', name: 'Mission Atma Nirbhar', desc: 'Rozgaar Booth, Wheelchair & Tricycle Distribution, Sewing Machine & Flour Mill Distribution' },
+      { key: 'bezubaan', icon: '\u{1F43E}', name: 'Mission Bezubaan', desc: 'Animal Feeding Center, Biscuit, Milk & Pedigree Distribution for stray animals' },
+    ];
+
   const [quickAmt, setQuickAmt] = useState('');
   const [activePreset, setActivePreset] = useState(200);
 
@@ -40,7 +55,12 @@ export default function IndividualDonation() {
     setCartQty(prev => ({ ...prev, [key]: Math.max(1, prev[key] + delta) }));
   };
 
-  const total = Object.keys(cartQty).reduce((s, k) => s + cartQty[k] * UNIT_PRICE[k], 0);
+  const priceOf = (key) => {
+    const item = missions.find((m) => m.key === key);
+    return item?.price ?? UNIT_PRICE[key] ?? 0;
+  };
+
+  const total = Object.keys(cartQty).reduce((s, k) => s + cartQty[k] * priceOf(k), 0);
 
   const quickDonate = () => {
     setBasketOpen(true);
@@ -524,7 +544,7 @@ export default function IndividualDonation() {
       `}</style>
 
       <div className="alert-banner">
-        <span className="alert-text">Being Sevak Charitable Trust</span>
+        <span className="alert-text">{alertText}</span>
         <Link to="/about" className="alert-link">Learn More</Link>
       </div>
 
@@ -559,27 +579,19 @@ export default function IndividualDonation() {
       </div>
 
       <section className="individual-hero">
-        <h1>Individual</h1>
-        <p>Every individual has the power to make a difference. Join us in our mission to serve humanity with compassion, dignity, and hope.</p>
+        <h1>{heroHeading}</h1>
+        <p>{heroText}</p>
       </section>
 
       <section className="individual-content">
         <div className="individual-grid">
-          <div className="individual-card">
-            <i className="fas fa-hands-helping"></i>
-            <h3>Make an Impact</h3>
-            <p>Your support helps us provide food, education, healthcare, and hope to those who need it most.</p>
-          </div>
-          <div className="individual-card">
-            <i className="fas fa-users"></i>
-            <h3>Join Our Community</h3>
-            <p>Become part of a growing movement of individuals committed to positive change and compassionate service.</p>
-          </div>
-          <div className="individual-card">
-            <i className="fas fa-heart"></i>
-            <h3>Spread Kindness</h3>
-            <p>Every act of kindness creates ripples. Together we can build a better future for communities in need.</p>
-          </div>
+          {cards.map((card, i) => (
+            <div className="individual-card" key={i}>
+              <i className={card.icon}></i>
+              <h3>{card.title}</h3>
+              <p>{card.description}</p>
+            </div>
+          ))}
         </div>
       </section>
 
@@ -602,7 +614,7 @@ export default function IndividualDonation() {
                 <div className="mission-desc">{m.desc}</div>
               </div>
               <div className="mission-right">
-                <div className="mission-price">{cartQty[m.key] > 0 ? `\u20B9${(cartQty[m.key] * UNIT_PRICE[m.key]).toLocaleString('en-IN')}` : '\u20B90'}</div>
+                <div className="mission-price">{cartQty[m.key] > 0 ? `\u20B9${(cartQty[m.key] * priceOf(m.key)).toLocaleString('en-IN')}` : '\u20B90'}</div>
                 <div className="mission-qty-row">
                   <button className="qty-btn" onClick={() => changeQty(m.key, -1)}><i className="fas fa-minus"></i></button>
                   <span className="qty-val">{cartQty[m.key]}</span>

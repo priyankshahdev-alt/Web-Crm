@@ -1,0 +1,115 @@
+{
+  "slug": "mission-annapurna",
+  "title": "Mission Annapurna",
+  "metaTitle": "Mission Annapurna | Being Sevak Foundation",
+  "metaDescription": "Mission Annapurna – Fight Against Hunger by Being Sevak Charitable Trust provides nutritious meals, Annapurna kits and food support to underprivileged children, visually impaired individuals and low-income families across India.",
+  "template": "default",
+  "sortOrder": 8,
+  "isHome": false,
+  "sections": [
+    {
+      "type": "mission-annapurna-tax",
+      "name": "Page Title",
+      "sortOrder": 1,
+      "isActive": true,
+      "content": {
+        "title": "Mission Annapurna"
+      }
+    },
+    {
+      "type": "mission-annapurna-hero",
+      "name": "Hero Section",
+      "sortOrder": 2,
+      "isActive": true,
+      "content": {
+        "tag": "Fight Against Hunger",
+        "headingLine1": "Nourishing Lives",
+        "headingLine2": "With",
+        "headingHighlight": "Hope & Humanity",
+        "description": "Being Sevak Charitable Trust presents the Annapurna Mission: Fight against Hunger, a humanitarian initiative dedicated to addressing hunger and malnutrition among underprivileged children, visually impaired individuals, and low-income families across India.",
+        "image": "/images/a1.jpeg"
+      }
+    },
+    {
+      "type": "annapurna-hero-stats",
+      "name": "Hero Stats",
+      "sortOrder": 3,
+      "isActive": true,
+      "content": {
+        "items": [
+          { "value": "102K+", "label": "Annapurna Kits" },
+          { "value": "12K+", "label": "Meals Distributed" }
+        ]
+      }
+    },
+    {
+      "type": "annapurna-about",
+      "name": "About The Mission",
+      "sortOrder": 4,
+      "isActive": true,
+      "content": {
+        "tag": "ABOUT THE MISSION",
+        "heading": "Feeding Families. Empowering Communities.",
+        "image": "/images/a2.jpg",
+        "items": [
+          { "title": "Annapurna Kit Distribution", "description": "Helping families with essential ration kits for survival." },
+          { "title": "Snack Distribution for Underprivileged Children", "description": "Bringing smiles through snacks for needy children." },
+          { "title": "Meals for Persons with Disabilities", "description": "Serving fresh meals to fight hunger every day." },
+          { "title": "Roti Drive for all Underprivileged Children", "description": "No one sleeps hungry, sharing fresh rotis daily." }
+        ]
+      }
+    },
+    {
+      "type": "annapurna-programs",
+      "name": "Our Programs",
+      "sortOrder": 5,
+      "isActive": true,
+      "content": {
+        "tag": "OUR PROGRAMS",
+        "text1": "Mission Annapurna (Fight Against Hunger) by Being Sevak Charitable Trust is a humanitarian initiative focused on reducing hunger and malnutrition among underprivileged children, visually impaired individuals, and low-income families across India.",
+        "text2": "With the support of CSR partners, donors, and volunteers, the mission provides nutritious meals and essential food supplies to build a hunger-free and dignified society.",
+        "items": [
+          { "number": "01", "title": "Cooked Meal Distribution", "description": "Providing freshly cooked nutritious meals to underprivileged children to support healthy growth, education, and overall well-being." },
+          { "number": "02", "title": "Dry Ration Kits", "description": "Distributing easy-to-use ration kits to visually impaired individuals to ensure dignity, independence, and food security." },
+          { "number": "03", "title": "Nutrition Meal Support", "description": "Serving balanced and hygienic meals to children and vulnerable individuals to fight malnutrition and improve health outcomes." },
+          { "number": "04", "title": "Family Food-Grain Kits", "description": "Providing essential food-grain kits in small, medium, and large sizes to support struggling families based on their needs." }
+        ]
+      }
+    },
+    {
+      "type": "annapurna-gallery",
+      "name": "Project Gallery",
+      "sortOrder": 6,
+      "isActive": true,
+      "content": {
+        "images": ["/images/a3.jpg", "/images/a6.jpg", "/images/snackKit.jpeg", "/images/rotidrive.jpeg"]
+      }
+    },
+    {
+      "type": "annapurna-donation",
+      "name": "Donation CTA",
+      "sortOrder": 7,
+      "isActive": true,
+      "content": {
+        "tag": "Mission Annapurna",
+        "title": "Nourishing Lives, Spreading Hope",
+        "description": "Support food distribution initiatives to ensure that no family sleeps hungry and everyone receives nutritious meals.",
+        "donationUrl": "/donations/donation-inline.html"
+      }
+    },
+    {
+      "type": "annapurna-testimonials",
+      "name": "Testimonials",
+      "sortOrder": 8,
+      "isActive": true,
+      "content": {
+        "heading": "What Our Donors Say",
+        "items": [
+          { "quote": "Being Sevak is doing incredible work for visually impaired and needy families. Proud to support this mission.", "name": "Riya Sharma" },
+          { "quote": "Transparent work, genuine impact, and a wonderful team dedicated to helping people with dignity.", "name": "Rahul Mehta" },
+          { "quote": "Every donation creates real change. Their food distribution drives truly touch lives.", "name": "Anjali Verma" }
+        ]
+      }
+    }
+  ]
+}

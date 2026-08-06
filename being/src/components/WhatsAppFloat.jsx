@@ -1,7 +1,13 @@
+import { useSite } from '../context/SiteContext';
+
 export default function WhatsAppFloat() {
+  const { getSetting } = useSite();
+  const number = (getSetting('whatsapp.number', '') || getSetting('contact.phone', '')).replace(/\D+/g, '') || '918879035035';
+  const name = getSetting('site.siteName', 'Being Sevak Charitable Trust');
+  const href = `https://wa.me/${number}?text=${encodeURIComponent(`Hello ${name}, I would like to know more.`)}`;
   return (
     <a
-      href="https://wa.me/918879035035?text=Hello%20Being%20Sevak%20Charitable%20Trust%2C%20I%20would%20like%20to%20know%20more."
+      href={href}
       target="_blank"
       rel="noopener noreferrer"
       className="whatsapp-float"

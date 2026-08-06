@@ -1,0 +1,138 @@
+{
+  "slug": "trust-documents",
+  "title": "Trust Documents",
+  "metaTitle": "Trust Documents | Being Sevak Foundation",
+  "metaDescription": "View the legal certificates, registrations, compliance documents, and annual activity reports of Being Sevak Charitable Trust.",
+  "template": "default",
+  "sortOrder": 4,
+  "isHome": false,
+  "sections": [
+    {
+      "type": "td-title",
+      "name": "Page Title",
+      "sortOrder": 1,
+      "isActive": true,
+      "content": {
+        "heading": "Trust Documents"
+      }
+    },
+    {
+      "type": "td-hero",
+      "name": "Hero Section",
+      "sortOrder": 2,
+      "isActive": true,
+      "content": {
+        "tag": "BEING SEVAK CHARITABLE TRUST",
+        "heading": "Trust",
+        "highlight": "Documents",
+        "description": "View important legal certificates, registrations, compliance documents, and annual activity reports of Being Sevak Charitable Trust.",
+        "card1Value": "18+",
+        "card1Label": "Registered Documents",
+        "card2Value": "80G",
+        "card2Label": "Tax Exemption",
+        "image": "/images/trustdocumentspng.png"
+      }
+    },
+    {
+      "type": "td-booklets",
+      "name": "Activity Report Booklets",
+      "sortOrder": 3,
+      "isActive": true,
+      "content": {
+        "title": "Activity Report Year Wise",
+        "items": [
+          { "year": "2016", "img": "/BSCT Trust Document/booklet/2016.png", "pdf": "/BSCT Trust Document/activity report/BSCT Activity Report 2016.pdf" },
+          { "year": "2017", "img": "/BSCT Trust Document/booklet/2017.png", "pdf": "/BSCT Trust Document/activity report/Activity-Report-2017 UPDATED.pdf" },
+          { "year": "2018", "img": "/BSCT Trust Document/booklet/2018.png", "pdf": "/BSCT Trust Document/activity report/Activity-Report-2018 UPDATED.pdf" },
+          { "year": "2019", "img": "/BSCT Trust Document/booklet/2019.png", "pdf": "" },
+          { "year": "2020", "img": "/BSCT Trust Document/booklet/2020.png", "pdf": "" },
+          { "year": "2021", "img": "/BSCT Trust Document/booklet/2021.png", "pdf": "/BSCT Trust Document/activity report/Activity Report 2021.pdf" },
+          { "year": "2022", "img": "/BSCT Trust Document/booklet/2022.png", "pdf": "/BSCT Trust Document/activity report/Activity Report 2022.pdf" },
+          { "year": "2023", "img": "/BSCT Trust Document/booklet/2023.png", "pdf": "/BSCT Trust Document/activity report/Activity Report 2023.pdf" },
+          { "year": "2024", "img": "/BSCT Trust Document/booklet/2024.png", "pdf": "/BSCT Trust Document/activity report/Activity Report Jan 2024 To Dec 2024).pdf" },
+          { "year": "2025", "img": "/BSCT Trust Document/booklet/2025.png", "pdf": "" }
+        ]
+      }
+    },
+    {
+      "type": "td-portal",
+      "name": "Document Portal",
+      "sortOrder": 4,
+      "isActive": true,
+      "content": {
+        "title": "Trust Documents & Reports",
+        "subtitle": "Transparency, Accountability & Impact — Building Trust Through Every Action.",
+        "tab1Label": "Trust Documents",
+        "tab2Label": "BSCT Audit Reports"
+      }
+    },
+    {
+      "type": "td-legal",
+      "name": "Trust Documents List",
+      "sortOrder": 5,
+      "isActive": true,
+      "content": {
+        "items": [
+          { "title": "Registration Certificate", "desc": "Legal Compliance Document", "icon": "fas fa-file-contract", "pdf": "/BSCT Trust Document/documents/regeistrationCertificate.pdf" },
+          { "title": "PAN Card", "desc": "Tax Identification Document", "icon": "fas fa-id-card", "pdf": "/BSCT Trust Document/documents/PanCard.pdf" },
+          { "title": "80G Certificate (New)", "desc": "Tax Exemption Certificate", "icon": "fas fa-certificate", "pdf": "/BSCT Trust Document/documents/Being Sevak 80G Form New Certificate.pdf" },
+          { "title": "80G Certificate (Old)", "desc": "Tax Exemption Certificate", "icon": "fas fa-certificate", "pdf": "/BSCT Trust Document/documents/80G Certificate (Old).pdf" },
+          { "title": "12A Certificate (New)", "desc": "Trust Registration Exemption", "icon": "fas fa-file-invoice", "pdf": "/BSCT Trust Document/documents/12A Certificate (New).pdf" },
+          { "title": "CSR Certificate", "desc": "Corporate Social Responsibility Compliance", "icon": "fas fa-hand-holding-heart", "pdf": "/BSCT Trust Document/documents/CSR Funds Certificate.PDF" },
+          { "title": "NITI Aayog Registration", "desc": "Government Registry", "icon": "fas fa-building", "pdf": "/BSCT Trust Document/documents/NITI Aayog Registration.pdf" }
+        ]
+      }
+    },
+    {
+      "type": "td-audit",
+      "name": "Audit Reports List",
+      "sortOrder": 6,
+      "isActive": true,
+      "content": {
+        "items": [
+          { "title": "BSCT Audit Report 2016-2017", "desc": "Annual Audit Report", "icon": "fas fa-calendar-alt", "pdf": "/BSCT Trust Document/BSCT Audit Report/BSCT Audit Report 2016-2017.pdf" },
+          { "title": "BSCT Audit Report 2017-2018", "desc": "Annual Audit Report", "icon": "fas fa-calendar-alt", "pdf": "/BSCT Trust Document/BSCT Audit Report/BSCT Audit Report 2017-2018.pdf" },
+          { "title": "BSCT Audit Report 2018-2019", "desc": "Annual Audit Report", "icon": "fas fa-calendar-alt", "pdf": "/BSCT Trust Document/BSCT Audit Report/BSCT Audit Report 2018-2019.pdf" },
+          { "title": "BSCT Audit Report 2019-2020", "desc": "Annual Audit Report", "icon": "fas fa-calendar-alt", "pdf": "/BSCT Trust Document/BSCT Audit Report/BSCT Audit Report 2019-2020.pdf" },
+          { "title": "BSCT Audit Report 2020-2021", "desc": "Annual Audit Report", "icon": "fas fa-calendar-alt", "pdf": "/BSCT Trust Document/BSCT Audit Report/BSCT Audit Report 2020-2021 .pdf" },
+          { "title": "BSCT Audit Report 2021-2022", "desc": "Annual Audit Report", "icon": "fas fa-calendar-alt", "pdf": "/BSCT Trust Document/BSCT Audit Report/BSCT Audit Report 2021 2022.pdf" },
+          { "title": "BSCT Audit Report 2022-2023", "desc": "Annual Audit Report", "icon": "fas fa-calendar-alt", "pdf": "/BSCT Trust Document/BSCT Audit Report/BSCT Audit Report 2022- 2023.pdf" },
+          { "title": "BSCT Audit Report 2024", "desc": "Annual Audit Report", "icon": "fas fa-calendar-alt", "pdf": "/BSCT Trust Document/BSCT Audit Report/Being Sevak Audit Report BSCT 2024.pdf" }
+        ]
+      }
+    },
+    {
+      "type": "td-compliance",
+      "name": "Compliance Values",
+      "sortOrder": 7,
+      "isActive": true,
+      "content": {
+        "tag": "OUR COMPLIANCE",
+        "heading": "Certified & Transparent",
+        "description": "Ensuring full regulatory compliance and transparent operations across all our activities.",
+        "items": [
+          { "icon": "fa-file-shield", "title": "Registered Trust", "desc": "Registered under Bombay Trust Act 2015 with Registration No. E-31948." },
+          { "icon": "fa-certificate", "title": "80G Certified", "desc": "Donors get 50% tax exemption under Section 80G of Income Tax Act." },
+          { "icon": "fa-scale-balanced", "title": "Full Compliance", "desc": "All statutory compliances including 12A, PAN, and CSR certifications." },
+          { "icon": "fa-calendar-check", "title": "Annual Reports", "desc": "Transparent activity reports published yearly since inception." }
+        ]
+      }
+    },
+    {
+      "type": "td-testimonials",
+      "name": "Testimonials",
+      "sortOrder": 8,
+      "isActive": true,
+      "content": {
+        "tag": "TESTIMONIALS",
+        "heading": "Verified by Experts",
+        "description": "What professionals and auditors say about BSCT's compliance and documentation standards.",
+        "items": [
+          { "quote": "Their documentation and compliance standards are impeccable. A model NGO in terms of transparency.", "name": "CA Sunil Mehta", "role": "Tax Consultant" },
+          { "quote": "Having audited their books for 5 years, I can vouch for their financial discipline and proper record-keeping.", "name": "Ravi Agarwal", "role": "Chartered Accountant" },
+          { "quote": "BSCT's compliance with all regulatory requirements makes them a trusted partner for donors and corporations alike.", "name": "Neha Singh", "role": "CSR Auditor" }
+        ]
+      }
+    }
+  ]
+}

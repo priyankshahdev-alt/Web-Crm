@@ -1,10 +1,45 @@
 import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
+import { usePageContent } from '../hooks/usePageContent';
 
 export default function ImpactSewingMachine() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  const content = usePageContent('impact-sewing-machine');
+
+  const headingTag = content('impact-sewing-machine-heading', 'tag') ?? 'WOMEN EMPOWERMENT PROGRAM';
+  const headingTitle = content('impact-sewing-machine-heading', 'heading') ?? 'Sewing Machine ';
+  const headingText =
+    content('impact-sewing-machine-heading', 'description') ??
+    'A sewing machine is more than a tool — it is a pathway to dignity, financial independence, and a brighter future. Through this initiative, Being Sevak Charitable Trust provides sewing machines to visually impaired and economically challenged families, helping them create sustainable livelihoods and support their households with confidence.';
+  const mainImage = content('impact-sewing-machine-heading', 'image') ?? '/images/g94.webp';
+  const cards =
+    content('impact-sewing-machine-cards', 'items') ?? [
+      { title: 'Income Generation', description: 'Enables beneficiaries and their family members to earn a stable livelihood through tailoring and stitching work.' },
+      { title: 'Women Empowerment', description: 'Creates opportunities for women to work from home and become financially independent.' },
+      { title: 'Skill Utilization', description: 'Supports skilled individuals by providing the tools needed to transform talent into income.' },
+      { title: 'Family Support', description: 'Strengthens household income and improves the quality of life for entire families.' },
+    ];
+  const storyTag = content('impact-sewing-machine-impact', 'tag') ?? 'IMPACT STORY';
+  const storyTitle = content('impact-sewing-machine-impact', 'heading') ?? 'Transforming Lives Through Opportunity';
+  const storyText =
+    content('impact-sewing-machine-impact', 'text') ??
+    'Arvind Vyas, a visually impaired member facing financial challenges, received a sewing machine through Being Sevak Charitable Trust. This support empowered his wife to start tailoring work and contribute towards the family\'s income. What seemed like a simple machine became a symbol of hope, resilience, and self-reliance for their family.';
+  const stats =
+    content('impact-sewing-machine-impact', 'stats') ?? [
+      { value: '100+', label: 'Families Supported' },
+      { value: '100%', label: 'Livelihood Focused' },
+      { value: '24/7', label: 'Income Opportunity' },
+    ];
+  const galleryTag = content('impact-sewing-machine-gallery', 'tag') ?? 'PROJECT GALLERY';
+  const galleryTitle = content('impact-sewing-machine-gallery', 'heading') ?? 'Moments of Impact';
+  const galleryText =
+    content('impact-sewing-machine-gallery', 'description') ??
+    'Explore glimpses of our initiatives, community outreach programs, and the positive impact created through collective efforts.';
+  const galleryImages =
+    content('impact-sewing-machine-gallery', 'images') ?? ['/images/g91.webp', '/images/g92.webp', '/images/g93.webp'];
 
   const css = `
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -70,68 +105,38 @@ export default function ImpactSewingMachine() {
       <section className="sewing-success-section">
         <div className="sewing-container">
           <div className="sewing-heading">
-            <span className="sewing-tag">WOMEN EMPOWERMENT PROGRAM</span>
-            <h2>Sewing Machine </h2>
-            <p>
-              A sewing machine is more than a tool — it is a pathway to
-              dignity, financial independence, and a brighter future.
-              Through this initiative, Being Sevak Charitable Trust provides
-              sewing machines to visually impaired and economically challenged
-              families, helping them create sustainable livelihoods and
-              support their households with confidence.
-            </p>
+            <span className="sewing-tag">{headingTag}</span>
+            <h2>{headingTitle}</h2>
+            <p>{headingText}</p>
           </div>
 
           <div className="sewing-grid">
             <div className="sewing-content">
-              <div className="sewing-card">
-                <h3>Income Generation</h3>
-                <p>Enables beneficiaries and their family members to earn a stable livelihood through tailoring and stitching work.</p>
-              </div>
-              <div className="sewing-card">
-                <h3>Women Empowerment</h3>
-                <p>Creates opportunities for women to work from home and become financially independent.</p>
-              </div>
-              <div className="sewing-card">
-                <h3>Skill Utilization</h3>
-                <p>Supports skilled individuals by providing the tools needed to transform talent into income.</p>
-              </div>
-              <div className="sewing-card">
-                <h3>Family Support</h3>
-                <p>Strengthens household income and improves the quality of life for entire families.</p>
-              </div>
+              {cards.map((card, i) => (
+                <div className="sewing-card" key={i}>
+                  <h3>{card.title}</h3>
+                  <p>{card.description}</p>
+                </div>
+              ))}
             </div>
             <div className="sewing-image">
-              <img src="/images/g94.webp" alt="" />
+              <img src={mainImage} alt="" />
             </div>
           </div>
 
           <div className="impact-story">
             <div className="story-left">
-              <span>IMPACT STORY</span>
-              <h3>Transforming Lives Through Opportunity</h3>
-              <p>
-                Arvind Vyas, a visually impaired member facing financial
-                challenges, received a sewing machine through Being Sevak
-                Charitable Trust. This support empowered his wife to start
-                tailoring work and contribute towards the family's income.
-                What seemed like a simple machine became a symbol of hope,
-                resilience, and self-reliance for their family.
-              </p>
+              <span>{storyTag}</span>
+              <h3>{storyTitle}</h3>
+              <p>{storyText}</p>
             </div>
             <div className="story-right">
-              <div className="impact-box">
-                <h2>100+</h2>
-                <span>Families Supported</span>
-              </div>
-              <div className="impact-box">
-                <h2>100%</h2>
-                <span>Livelihood Focused</span>
-              </div>
-              <div className="impact-box">
-                <h2>24/7</h2>
-                <span>Income Opportunity</span>
-              </div>
+              {stats.map((s, i) => (
+                <div className="impact-box" key={i}>
+                  <h2>{s.value}</h2>
+                  <span>{s.label}</span>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -139,14 +144,14 @@ export default function ImpactSewingMachine() {
 
       <section className="shital-gallery-section">
         <div className="shital-gallery-heading">
-          <span>PROJECT GALLERY</span>
-          <h2>Moments of Impact</h2>
-          <p>Explore glimpses of our initiatives, community outreach programs, and the positive impact created through collective efforts.</p>
+          <span>{galleryTag}</span>
+          <h2>{galleryTitle}</h2>
+          <p>{galleryText}</p>
         </div>
         <div className="shital-gallery">
-          <div className="shital-gallery-item"><img src="/images/g91.webp" alt="" /></div>
-          <div className="shital-gallery-item"><img src="/images/g92.webp" alt="" /></div>
-          <div className="shital-gallery-item"><img src="/images/g93.webp" alt="" /></div>
+          {galleryImages.map((src, i) => (
+            <div className="shital-gallery-item" key={i}><img src={src} alt="" /></div>
+          ))}
         </div>
       </section>
     </>

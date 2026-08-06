@@ -1,0 +1,65 @@
+{
+  "slug": "impact-rozgaar-booth",
+  "title": "Rozgaar Booth",
+  "metaTitle": "Rozgaar Booth | Being Sevak Foundation",
+  "metaDescription": "Through the Rozgaar Booth Repairing initiative, Being Sevak Charitable Trust helps visually impaired and specially-abled individuals restore and renovate their livelihood booths.",
+  "template": "default",
+  "sortOrder": 45,
+  "isHome": false,
+  "sections": [
+    {
+      "type": "impact-rozgaar-booth-heading",
+      "name": "Rozgaar Booth Header",
+      "sortOrder": 1,
+      "isActive": true,
+      "content": {
+        "tag": "MISSION ATMANIRBHAR",
+        "heading": "Rozgaar Booth ",
+        "description": "Through the Rozgaar Booth Repairing initiative, Being Sevak Charitable Trust helps visually impaired and specially-abled individuals restore and renovate their livelihood booths. These booths serve as a primary source of income, enabling beneficiaries to run small businesses independently and live with dignity and self-reliance.",
+        "image": "/images/g15.webp"
+      }
+    },
+    {
+      "type": "impact-rozgaar-booth-cards",
+      "name": "Program Highlights",
+      "sortOrder": 2,
+      "isActive": true,
+      "content": {
+        "items": [
+          { "title": "Livelihood Restoration", "description": "Repairing damaged booths helps beneficiaries restart their businesses and regain financial stability." },
+          { "title": "Economic Independence", "description": "A functional booth creates a sustainable source of income for visually impaired individuals and families." },
+          { "title": "Safe Work Environment", "description": "Renovated structures provide a secure and comfortable workplace for daily business operations." },
+          { "title": "Empowering Dreams", "description": "Every repaired booth becomes a symbol of hope, confidence, and self-sufficiency." }
+        ]
+      }
+    },
+    {
+      "type": "impact-rozgaar-booth-impact",
+      "name": "Success Story & Stats",
+      "sortOrder": 3,
+      "isActive": true,
+      "content": {
+        "tag": "SUCCESS STORY",
+        "heading": "From Struggle to Sustainable Income",
+        "text": "Geeta Nazre, a visually impaired beneficiary, was allotted a telephone booth in poor condition. Since her family's livelihood depended on the booth, urgent repairs and replacement were essential. Through support from Being Sevak Charitable Trust, the booth was restored, helping her continue earning and supporting her family with dignity.",
+        "stats": [
+          { "value": "100+", "label": "Booths Supported" },
+          { "value": "500+", "label": "Lives Empowered" },
+          { "value": "100%", "label": "Livelihood Focused" }
+        ]
+      }
+    },
+    {
+      "type": "impact-rozgaar-booth-gallery",
+      "name": "Project Gallery",
+      "sortOrder": 4,
+      "isActive": true,
+      "content": {
+        "tag": "PROJECT GALLERY",
+        "heading": "Moments of Impact",
+        "description": "Explore glimpses of our initiatives, community outreach programs, and the positive impact created through collective efforts.",
+        "images": ["/images/g11.webp", "/images/g12.webp", "/images/g14.webp"]
+      }
+    }
+  ]
+}

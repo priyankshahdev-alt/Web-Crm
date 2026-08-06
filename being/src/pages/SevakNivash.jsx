@@ -1,105 +1,154 @@
 import { Link } from 'react-router-dom';
-
-const facilities = [
-  {
-    title: 'Help, Support & Counseling Center',
-    desc: 'Professional guidance, emotional support and counseling services for individuals in need.',
-    fullDesc: 'Your support helps us provide professional counseling, emotional assistance, guidance, and rehabilitation services for visually impaired, disabled, and underprivileged individuals. Through this facility, we empower beneficiaries to overcome challenges, build confidence, and lead independent lives with dignity and hope.',
-    amount: '₹1,50,000',
-    img: '/images/nivash9.jpeg',
-    side: 'left',
-  },
-  {
-    title: 'Vocational Training & Youth Skill Development Unit',
-    desc: 'Supporting skill development and livelihood opportunities for a brighter future.',
-    fullDesc: 'This facility provides vocational education, practical skill training, and career guidance to youth and individuals from underserved communities. Your contribution helps create employment opportunities, encourage self-reliance, and empower beneficiaries with the skills needed for a sustainable future.',
-    amount: '₹3,00,000',
-    img: '/images/nivash6.jpeg',
-    side: 'right',
-  },
-  {
-    title: 'Library – Study and Explore',
-    desc: 'Providing accessible books, learning resources, and educational opportunities for all.',
-    fullDesc: 'This facility provides an inclusive learning space equipped with books, study materials, Braille resources, audio learning tools, and digital educational content. Your support helps visually impaired, disabled, and underprivileged individuals access knowledge, enhance their education, and unlock new opportunities for personal and professional growth.',
-    amount: '₹2,00,000',
-    img: '/images/nivash1.jpeg',
-    side: 'left',
-  },
-  {
-    title: 'BPO & Employment Training Unit',
-    desc: 'Creating employment opportunities through professional training and workplace readiness.',
-    fullDesc: 'This facility equips visually impaired, disabled, and underprivileged individuals with professional communication, computer, and workplace skills required for BPO and corporate employment opportunities. Your support helps beneficiaries gain industry-relevant training, improve employability, and achieve financial independence through sustainable careers.',
-    amount: '₹3,00,000',
-    img: '/images/nivash3.jpeg',
-    side: 'right',
-  },
-  {
-    title: 'Computer Training Lab',
-    desc: 'Providing digital education, computer skills, and technology-based learning opportunities.',
-    fullDesc: "This facility equips visually impaired, disabled, and underprivileged individuals with essential computer and digital skills required in today's technology-driven world. Your support helps provide access to computers, assistive technologies, software training, and digital literacy programs, enabling beneficiaries to pursue education, employment, and greater independence.",
-    amount: '₹5,00,000',
-    img: '/images/nivash2.jpeg',
-    side: 'left',
-  },
-  {
-    title: 'Communication & Personality Development Center',
-    desc: 'Building confidence, communication skills, and leadership qualities for a brighter future.',
-    fullDesc: 'This facility helps individuals enhance their communication, leadership, confidence, and interpersonal skills through structured training and personal development programs. Your support empowers beneficiaries to build self-confidence, improve public interaction, and prepare for educational, professional, and social success.',
-    amount: '₹3,00,000',
-    img: '/images/nivash7.jpeg',
-    side: 'right',
-  },
-  {
-    title: 'Career Guidance & Placement Center',
-    desc: 'Guiding individuals towards meaningful careers and sustainable employment opportunities.',
-    fullDesc: 'This facility provides career counseling, job readiness training, placement support, and professional guidance for visually impaired, disabled, and underprivileged individuals. Your support helps beneficiaries identify suitable career paths, develop workplace skills, and connect with employment opportunities, paving the way for financial independence and long-term success.',
-    amount: '₹3,50,000',
-    img: '/images/nivash6.jpeg',
-    side: 'left',
-  },
-  {
-    title: 'AI & Digital Innovation Lab',
-    desc: 'Empowering future innovators through AI, technology, and digital skill development.',
-    fullDesc: 'This facility provides access to emerging technologies, artificial intelligence, digital tools, and innovation-driven learning opportunities. Your support helps individuals develop future-ready skills, explore digital careers, and participate in a technology-enabled world with confidence and independence.',
-    amount: '₹4,00,000',
-    img: '/images/nivash4.jpeg',
-    side: 'right',
-  },
-  {
-    title: 'Physiotherapy & Wellness Room',
-    desc: 'Supporting physical well-being, mobility, and rehabilitation through specialized care.',
-    fullDesc: 'This facility provides physiotherapy, rehabilitation support, and wellness services for visually impaired, disabled, and underprivileged individuals. Your contribution helps improve mobility, physical health, independence, and overall quality of life by ensuring access to essential therapeutic care and wellness resources.',
-    amount: '₹2,00,000',
-    img: '/images/nivash10.jpeg',
-    side: 'left',
-  },
-  {
-    title: 'Women Empowerment & Self Employment Unit',
-    desc: 'Empowering women with skills, confidence, and opportunities for self-reliance.',
-    fullDesc: 'This facility supports women through skill development, entrepreneurship training, and livelihood opportunities. Your contribution helps women become financially independent, build self-confidence, and create sustainable sources of income for themselves and their families.',
-    amount: '₹2,00,000',
-    img: '/images/nivash12.jpeg',
-    side: 'right',
-  },
-  {
-    title: 'Community Kitchen (Rasoi Ghar)',
-    desc: 'Providing nutritious meals and food support to those in need with dignity and care.',
-    fullDesc: 'This facility serves freshly prepared and nutritious meals to visually impaired individuals, persons with disabilities, underprivileged families, and those facing food insecurity. Your support helps ensure that no one goes hungry while promoting health, dignity, and community care through regular meal assistance programs.',
-    amount: '₹3,00,000',
-    img: '/images/nivash5.jpeg',
-    side: 'left',
-  },
-  {
-    title: 'Sevak Nivas (Temporary Accommodation for Blind Students)',
-    desc: 'Providing a safe and supportive home for visually impaired students.',
-    fullDesc: 'This facility provides safe, accessible, and comfortable temporary accommodation for visually impaired students pursuing education and skill development opportunities. Your support helps create a secure living environment where students can focus on learning, personal growth, and building a brighter future with dignity and independence.',
-    amount: '₹4,00,000',
-    img: '/images/nivash11.jpeg',
-    side: 'right',
-  },
-];
+import { usePageContent } from '../hooks/usePageContent';
 
 export default function SevakNivash() {
+  const content = usePageContent('sevak-nivash');
+
+  const bannerImage = content('sevak-nivash-hero', 'image') ?? '/images/sevaknivash.jpeg';
+  const bannerHeading = content('sevak-nivash-hero', 'heading') ?? 'Sevakनिवास';
+  const bannerTagline =
+    content('sevak-nivash-hero', 'tagline') ?? 'Providing Shelter, Care & Opportunities for Independent Living';
+
+  const introMiniTitle = content('sevak-nivash-intro', 'miniTitle') ?? 'Being Sevak Charitable Trust';
+  const introLine1 = content('sevak-nivash-intro', 'headingLine1') ?? 'Providing Shelter';
+  const introLine2 = content('sevak-nivash-intro', 'headingLine2') ?? '& Support Through Sevak Nivas';
+  const introText =
+    content('sevak-nivash-intro', 'description') ??
+    'Sevak Nivas offers a safe, accessible, and supportive temporary accommodation facility for visually impaired students. By providing a comfortable living environment, we help students focus on their education, skill development, personal growth, and journey toward an independent and dignified future.';
+
+  const visionMission =
+    content('sevak-nivash-vision-mission', 'items') ?? [
+      {
+        title: 'OUR VISION',
+        description:
+          'To build an inclusive society where every individual, regardless of ability or background, gets equal opportunity to learn, grow, and live with dignity.',
+      },
+      {
+        title: 'OUR MISSION',
+        description:
+          'To provide education, skill training, employment opportunities, health care, and a supportive environment for overall development and independence.',
+      },
+    ];
+
+  const aboutHeading = content('sevak-nivash-about', 'heading') ?? 'Sevak Niwas';
+  const aboutText =
+    content('sevak-nivash-about', 'text') ??
+    'Sevak Seva Kendra is a one-stop hub with 12 dedicated facilities aimed at education, skill development, employment, wellness, and independent living. We envision a society where every individual is respected, empowered, and included.';
+  const facilitiesTitle = content('sevak-nivash-about', 'facilitiesTitle') ?? 'OUR 12 FACILITIES & PROGRAMS';
+
+  const facilitiesTag = content('sevak-nivash-facilities', 'tag') ?? 'OUR FACILITY';
+  const facilities =
+    content('sevak-nivash-facilities', 'items') ?? [
+      {
+        title: 'Help, Support & Counseling Center',
+        desc: 'Professional guidance, emotional support and counseling services for individuals in need.',
+        fullDesc:
+          'Your support helps us provide professional counseling, emotional assistance, guidance, and rehabilitation services for visually impaired, disabled, and underprivileged individuals. Through this facility, we empower beneficiaries to overcome challenges, build confidence, and lead independent lives with dignity and hope.',
+        amount: '₹1,50,000',
+        img: '/images/nivash9.jpeg',
+        side: 'left',
+      },
+      {
+        title: 'Vocational Training & Youth Skill Development Unit',
+        desc: 'Supporting skill development and livelihood opportunities for a brighter future.',
+        fullDesc:
+          'This facility provides vocational education, practical skill training, and career guidance to youth and individuals from underserved communities. Your contribution helps create employment opportunities, encourage self-reliance, and empower beneficiaries with the skills needed for a sustainable future.',
+        amount: '₹3,00,000',
+        img: '/images/nivash6.jpeg',
+        side: 'right',
+      },
+      {
+        title: 'Library – Study and Explore',
+        desc: 'Providing accessible books, learning resources, and educational opportunities for all.',
+        fullDesc:
+          'This facility provides an inclusive learning space equipped with books, study materials, Braille resources, audio learning tools, and digital educational content. Your support helps visually impaired, disabled, and underprivileged individuals access knowledge, enhance their education, and unlock new opportunities for personal and professional growth.',
+        amount: '₹2,00,000',
+        img: '/images/nivash1.jpeg',
+        side: 'left',
+      },
+      {
+        title: 'BPO & Employment Training Unit',
+        desc: 'Creating employment opportunities through professional training and workplace readiness.',
+        fullDesc:
+          'This facility equips visually impaired, disabled, and underprivileged individuals with professional communication, computer, and workplace skills required for BPO and corporate employment opportunities. Your support helps beneficiaries gain industry-relevant training, improve employability, and achieve financial independence through sustainable careers.',
+        amount: '₹3,00,000',
+        img: '/images/nivash3.jpeg',
+        side: 'right',
+      },
+      {
+        title: 'Computer Training Lab',
+        desc: 'Providing digital education, computer skills, and technology-based learning opportunities.',
+        fullDesc:
+          "This facility equips visually impaired, disabled, and underprivileged individuals with essential computer and digital skills required in today's technology-driven world. Your support helps provide access to computers, assistive technologies, software training, and digital literacy programs, enabling beneficiaries to pursue education, employment, and greater independence.",
+        amount: '₹5,00,000',
+        img: '/images/nivash2.jpeg',
+        side: 'left',
+      },
+      {
+        title: 'Communication & Personality Development Center',
+        desc: 'Building confidence, communication skills, and leadership qualities for a brighter future.',
+        fullDesc:
+          'This facility helps individuals enhance their communication, leadership, confidence, and interpersonal skills through structured training and personal development programs. Your support empowers beneficiaries to build self-confidence, improve public interaction, and prepare for educational, professional, and social success.',
+        amount: '₹3,00,000',
+        img: '/images/nivash7.jpeg',
+        side: 'right',
+      },
+      {
+        title: 'Career Guidance & Placement Center',
+        desc: 'Guiding individuals towards meaningful careers and sustainable employment opportunities.',
+        fullDesc:
+          'This facility provides career counseling, job readiness training, placement support, and professional guidance for visually impaired, disabled, and underprivileged individuals. Your support helps beneficiaries identify suitable career paths, develop workplace skills, and connect with employment opportunities, paving the way for financial independence and long-term success.',
+        amount: '₹3,50,000',
+        img: '/images/nivash6.jpeg',
+        side: 'left',
+      },
+      {
+        title: 'AI & Digital Innovation Lab',
+        desc: 'Empowering future innovators through AI, technology, and digital skill development.',
+        fullDesc:
+          'This facility provides access to emerging technologies, artificial intelligence, digital tools, and innovation-driven learning opportunities. Your support helps individuals develop future-ready skills, explore digital careers, and participate in a technology-enabled world with confidence and independence.',
+        amount: '₹4,00,000',
+        img: '/images/nivash4.jpeg',
+        side: 'right',
+      },
+      {
+        title: 'Physiotherapy & Wellness Room',
+        desc: 'Supporting physical well-being, mobility, and rehabilitation through specialized care.',
+        fullDesc:
+          'This facility provides physiotherapy, rehabilitation support, and wellness services for visually impaired, disabled, and underprivileged individuals. Your contribution helps improve mobility, physical health, independence, and overall quality of life by ensuring access to essential therapeutic care and wellness resources.',
+        amount: '₹2,00,000',
+        img: '/images/nivash10.jpeg',
+        side: 'left',
+      },
+      {
+        title: 'Women Empowerment & Self Employment Unit',
+        desc: 'Empowering women with skills, confidence, and opportunities for self-reliance.',
+        fullDesc:
+          'This facility supports women through skill development, entrepreneurship training, and livelihood opportunities. Your contribution helps women become financially independent, build self-confidence, and create sustainable sources of income for themselves and their families.',
+        amount: '₹2,00,000',
+        img: '/images/nivash12.jpeg',
+        side: 'right',
+      },
+      {
+        title: 'Community Kitchen (Rasoi Ghar)',
+        desc: 'Providing nutritious meals and food support to those in need with dignity and care.',
+        fullDesc:
+          'This facility serves freshly prepared and nutritious meals to visually impaired individuals, persons with disabilities, underprivileged families, and those facing food insecurity. Your support helps ensure that no one goes hungry while promoting health, dignity, and community care through regular meal assistance programs.',
+        amount: '₹3,00,000',
+        img: '/images/nivash5.jpeg',
+        side: 'left',
+      },
+      {
+        title: 'Sevak Nivas (Temporary Accommodation for Blind Students)',
+        desc: 'Providing a safe and supportive home for visually impaired students.',
+        fullDesc:
+          'This facility provides safe, accessible, and comfortable temporary accommodation for visually impaired students pursuing education and skill development opportunities. Your support helps create a secure living environment where students can focus on learning, personal growth, and building a brighter future with dignity and independence.',
+        amount: '₹4,00,000',
+        img: '/images/nivash11.jpeg',
+        side: 'right',
+      },
+    ];
+
   return (
     <>
       <style>{`
@@ -250,12 +299,12 @@ export default function SevakNivash() {
 
       <div className="sevak-nivash">
         <section className="anndaan-hero-banner">
-          <img src="/images/sevaknivash.jpeg" alt="Sevak Nivas Banner" />
+          <img src={bannerImage} alt="Sevak Nivas Banner" />
           <div className="anndaan-overlay"></div>
           <div className="anndaan-content">
             <br /><br />
-            <h1>Sevakनिवास</h1>
-            <p>Providing Shelter, Care & Opportunities for Independent Living</p>
+            <h1>{bannerHeading}</h1>
+            <p>{bannerTagline}</p>
           </div>
         </section>
 
@@ -265,14 +314,10 @@ export default function SevakNivash() {
             <div className="annaseva-floating-circle two"></div>
             <div className="annaseva-floating-circle three"></div>
             <div className="annaseva-hero-content">
-              <span className="annaseva-mini-title">Being Sevak Charitable Trust</span>
-              <h1>Providing Shelter <br />& Support Through Sevak Nivas</h1>
+              <span className="annaseva-mini-title">{introMiniTitle}</span>
+              <h1>{introLine1} <br />{introLine2}</h1>
               <p>
-                Sevak Nivas offers a safe, accessible, and supportive temporary
-                accommodation facility for visually impaired students. By providing
-                a comfortable living environment, we help students focus on their
-                education, skill development, personal growth, and journey toward
-                an independent and dignified future.
+                {introText}
               </p>
               <div className="annaseva-hero-buttons">
                 <Link to="/donate" className="annaseva-btn-main">Support Sevak Nivas</Link>
@@ -283,34 +328,28 @@ export default function SevakNivash() {
 
         <section className="sevak-section">
           <div className="sevak-container">
-            <div className="sevak-box">
-              <h3>OUR VISION</h3>
-              <p>To build an inclusive society where every individual, regardless of ability or background, gets equal opportunity to learn, grow, and live with dignity.</p>
-            </div>
-            <div className="sevak-box">
-              <h3>OUR MISSION</h3>
-              <p>To provide education, skill training, employment opportunities, health care, and a supportive environment for overall development and independence.</p>
-            </div>
+            {visionMission.map((vm, i) => (
+              <div className="sevak-box" key={i}>
+                <h3>{vm.title}</h3>
+                <p>{vm.description}</p>
+              </div>
+            ))}
           </div>
         </section>
 
         <section className="about-sevak">
           <div className="section-heading">
-            <h2>Sevak Niwas</h2>
+            <h2>{aboutHeading}</h2>
             <p>
-              Sevak Seva Kendra is a one-stop hub with 12 dedicated facilities
-              aimed at education, skill development, employment, wellness,
-              and independent living. We envision a society where every
-              individual is respected, empowered, and included.
+              {aboutText}
             </p>
           </div>
           <div className="facility-title">
-            <h2>OUR 12 FACILITIES & PROGRAMS</h2>
+            <h2>{facilitiesTitle}</h2>
           </div>
         </section>
 
         {facilities.map((f, i) => {
-          const Section = i % 2 === 0 ? 'section' : 'section';
           const sectionClass = i % 2 === 0 ? 'about-sevak' : 'facility-section';
           return (
             <section key={i} className={sectionClass}>
@@ -327,7 +366,7 @@ export default function SevakNivash() {
                       <Link to="/donate" className="donate-btn">Donate Now</Link>
                     </div>
                     <div className="facility-content">
-                      <span className="facility-tag">OUR FACILITY</span>
+                      <span className="facility-tag">{facilitiesTag}</span>
                       <h3>{f.title}</h3>
                       <p>{f.fullDesc}</p>
                     </div>
@@ -335,7 +374,7 @@ export default function SevakNivash() {
                 ) : (
                   <>
                     <div className="facility-content">
-                      <span className="facility-tag">OUR FACILITY</span>
+                      <span className="facility-tag">{facilitiesTag}</span>
                       <h2>{f.title}</h2>
                       <p>{f.fullDesc}</p>
                     </div>

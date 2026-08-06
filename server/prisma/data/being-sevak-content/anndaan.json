@@ -1,0 +1,187 @@
+{
+  "slug": "anndaan",
+  "title": "Ann Daan",
+  "metaTitle": "Ann Daan | Being Sevak Foundation",
+  "metaDescription": "Ann Daan by Being Sevak Charitable Trust serves humanity with love and food through Annapurna Kits, Sevak Meal Drives, Roti Drives, Annapurna Thali and seasonal food distribution initiatives.",
+  "template": "default",
+  "sortOrder": 18,
+  "isHome": false,
+  "sections": [
+    {
+      "type": "anndaan-hero",
+      "name": "Hero Banner",
+      "sortOrder": 1,
+      "isActive": true,
+      "content": {
+        "image": "/images/anndan.jpeg",
+        "heading": "Annदान",
+        "tagline": "Serving Humanity With Love & Food"
+      }
+    },
+    {
+      "type": "anndaan-intro",
+      "name": "Introduction",
+      "sortOrder": 2,
+      "isActive": true,
+      "content": {
+        "miniTitle": "Being Sevak Charitable Trust",
+        "headingLine1": "Nourishing Lives",
+        "headingLine2": "Through Every Meal & Ration kit",
+        "description": "From hot meals to nutrition kits, every initiative is a step toward fighting hunger and spreading humanity with dignity, love, and care."
+      }
+    },
+    {
+      "type": "anndaan-annapurna-kit",
+      "name": "Annapurna Kit",
+      "sortOrder": 3,
+      "isActive": true,
+      "content": {
+        "tag": "SUPPORT KITS",
+        "heading": "Annapurna Kit",
+        "text1": "Annapurna Kits are thoughtfully prepared with essential grocery items such as rice, flour, pulses, oil, sugar, and daily nutrition supplies to support families facing difficult times with dignity and care.",
+        "text2": "These kits are distributed during emergency relief drives, poverty support initiatives, and community welfare programs to ensure that no family sleeps hungry.",
+        "text3": "The kits are also extended to dedicated life supporters and humanitarian contributors who continuously stand with society during times of need, as a gesture of gratitude and community solidarity.",
+        "images": [
+          { "src": "/images/a1.jpeg", "alt": "" },
+          { "src": "/images/a4.jpeg", "alt": "" },
+          { "src": "/images/a3.jpg", "alt": "" },
+          { "src": "/images/a2.jpg", "alt": "" }
+        ]
+      }
+    },
+    {
+      "type": "anndaan-snack-distribution",
+      "name": "Snack Distribution",
+      "sortOrder": 4,
+      "isActive": true,
+      "content": {
+        "tag": "COMMUNITY CARE",
+        "heading": "Snack Distribution",
+        "text": "Through our Snack Distribution Drive, we provide wafers, biscuits, chocolates, and other nutritious snacks to children and families living in slum areas. This initiative aims to bring joy, support, and care to underprivileged communities while ensuring that every child receives a small treat filled with happiness and hope.",
+        "images": [
+          { "src": "/images/snk1.jpeg", "alt": "" },
+          { "src": "/images/snk2.jpeg", "alt": "" },
+          { "src": "/images/snk3.jpeg", "alt": "" },
+          { "src": "/images/snk4.jpeg", "alt": "" }
+        ]
+      }
+    },
+    {
+      "type": "anndaan-sevak-meal-drive",
+      "name": "Sevak Meal Drive",
+      "sortOrder": 5,
+      "isActive": true,
+      "content": {
+        "tag": "HUMANITY DRIVE",
+        "heading": "Sevak Meal Drive",
+        "text1": "Through the Sevak Nutrition Drive, we provide nutritious food support to school children by adding healthy ingredients like milk, pulses, cereals, and essential nutrition supplements to their daily meals.",
+        "text2": "Our mission is to improve children's health, energy, and overall development by ensuring they receive proper nutrition for a brighter and healthier future.",
+        "points": [
+          "Fresh & Hygienic Food",
+          "Community Volunteer Participation",
+          "Serving with Love & Respect"
+        ],
+        "images": [
+          { "src": "/images/roti1.jpg", "alt": "" },
+          { "src": "/images/roti2.jpg", "alt": "" },
+          { "src": "/images/roti3.jpg", "alt": "" },
+          { "src": "/images/roti4.jpg", "alt": "" }
+        ]
+      }
+    },
+    {
+      "type": "anndaan-roti-drive",
+      "name": "Sevak Roti Drive",
+      "sortOrder": 6,
+      "isActive": true,
+      "content": {
+        "tag": "FOOD SERVICE",
+        "heading": "Sevak Roti Drive",
+        "text1": "Our Sevak Meal Drive focuses on distributing fresh and hygienic meals to needy families, laborers, senior citizens, and homeless individuals. Through this initiative, we ensure that no person sleeps hungry.",
+        "text2": "Every meal served carries compassion, hope, and humanity. Volunteers actively participate in meal preparation, packaging, and distribution.",
+        "stats": [
+          { "value": "10K+", "label": "Meals Distributed" },
+          { "value": "Daily", "label": "Community Support" }
+        ],
+        "images": [
+          { "src": "/images/meal1.jpg", "alt": "" },
+          { "src": "/images/meal2.jpg", "alt": "" },
+          { "src": "/images/meal3.jpg", "alt": "" },
+          { "src": "/images/meal4.jpg", "alt": "" }
+        ]
+      }
+    },
+    {
+      "type": "anndaan-festive-care",
+      "name": "Festive Care",
+      "sortOrder": 7,
+      "isActive": true,
+      "content": {
+        "tag": "FESTIVE CARE",
+        "heading": "Distribution of clothes and Sweets",
+        "text": "During festivals, celebrations, and special community events, we organize lunch and sweets distribution programs to spread happiness among children, elderly people, and families in need.",
+        "images": [
+          { "src": "/images/shi1.jpg", "alt": "" },
+          { "src": "/images/shi2.jpg", "alt": "" },
+          { "src": "/images/shi3.jpg", "alt": "" },
+          { "src": "/images/shi5.jpg", "alt": "" }
+        ]
+      }
+    },
+    {
+      "type": "anndaan-summer-drive",
+      "name": "Sevak Summer Drive",
+      "sortOrder": 8,
+      "isActive": true,
+      "content": {
+        "tag": "COMMUNITY CARE",
+        "heading": "Sevak Summer Drive",
+        "text": "We also provide refreshing buttermilk to help people stay hydrated and protected from the extreme heat, while promoting care, compassion, and community well-being.",
+        "images": [
+          { "src": "/images/snack2.jpeg", "alt": "" },
+          { "src": "/images/snack3.jpeg", "alt": "" },
+          { "src": "/images/snack7.jpeg", "alt": "" },
+          { "src": "/images/snack8.jpeg", "alt": "" },
+          { "src": "/images/snack9.jpeg", "alt": "" }
+        ]
+      }
+    },
+    {
+      "type": "anndaan-annapurna-thali",
+      "name": "Annapurna Thali",
+      "sortOrder": 9,
+      "isActive": true,
+      "content": {
+        "tag": "FOOD & NUTRITION SUPPORT",
+        "heading": "Annapurna Thali",
+        "text1": "The Annapurna Thali initiative is dedicated to serving nutritious, freshly prepared meals to underprivileged children, women, elderly individuals, and families struggling with food insecurity.",
+        "text2": "Each thali is designed to provide a balanced diet including essential nutrients, helping improve health, reduce hunger, and restore dignity to those in need.",
+        "miniCards": [
+          { "title": "Nutritious", "description": "Balanced Meals" },
+          { "title": "Hunger-Free", "description": "Community Support" }
+        ],
+        "images": [
+          { "src": "/images/Thali1.jpg", "alt": "Annapurna Thali Meal Distribution" },
+          { "src": "/images/Thali2.jpg", "alt": "Food Distribution Drive" },
+          { "src": "/images/Thali3.jpg", "alt": "Community Meal Service" },
+          { "src": "/images/Thali4.jpg", "alt": "Volunteers Serving Food" }
+        ]
+      }
+    },
+    {
+      "type": "anndaan-testimonials",
+      "name": "Donor Testimonials",
+      "sortOrder": 10,
+      "isActive": true,
+      "content": {
+        "tag": "DONOR TESTIMONIALS",
+        "heading": "What Supporters Say",
+        "items": [
+          { "quote": "\"Aadhar initiative is doing amazing work by helping needy families with food support.\"", "name": "Riya Sharma" },
+          { "quote": "\"Very transparent and impactful work. Happy to support this mission.\"", "name": "Rahul Mehta" },
+          { "quote": "\"They truly bring hope to families struggling for basic needs.\"", "name": "Anjali Verma" }
+        ]
+      }
+    }
+  ]
+}

@@ -1,8 +1,96 @@
 import { Link } from 'react-router-dom';
 import { useRef, useEffect } from 'react';
+import { usePageContent } from '../hooks/usePageContent';
 
 export default function MissionWellness() {
   const iframeRef = useRef(null);
+
+  const content = usePageContent('mission-wellness');
+
+  const taxTitle = content('mission-wellness-tax', 'title') ?? 'Mission Aarogya';
+
+  const heroTag = content('mission-wellness-hero', 'tag') ?? 'Mission Aarogya';
+  const heroLine1 = content('mission-wellness-hero', 'headingLine1') ?? 'Bringing';
+  const heroHighlight = content('mission-wellness-hero', 'headingHighlight') ?? 'Health';
+  const heroLine2 = content('mission-wellness-hero', 'headingLine2') ?? 'Into Every Life';
+  const heroText =
+    content('mission-wellness-hero', 'description') ??
+    'Mission Aarogya by Being Sevak Charitable Trust provides healthcare support, medical assistance, emergency aid and wellness initiatives for underprivileged communities across India.';
+  const heroImage = content('mission-wellness-hero', 'image') ?? '/images/arogya1.png';
+  const heroStats =
+    content('wellness-hero-stats', 'items') ?? [
+      { value: '3000+', label: 'Lives Supported' },
+      { value: '24/7', label: 'Care Support' },
+    ];
+
+  const aboutTag = content('wellness-about', 'tag') ?? 'About Mission';
+  const aboutLine1 = content('wellness-about', 'headingLine1') ?? 'Helping Patients With';
+  const aboutHighlight = content('wellness-about', 'headingHighlight') ?? 'Care & Emergency Support';
+  const aboutText =
+    content('wellness-about', 'text') ??
+    'Our mission supports heart patients, children and old age people by helping them during medical emergencies, hospital treatments and critical healthcare situations with compassion and care.';
+  const aboutItems =
+    content('wellness-about', 'items') ?? [
+      { title: 'Heart Patient Help', description: 'Supporting heart patients with emergency medical assistance.' },
+      { title: 'Child Healthcare', description: 'Helping small children receive proper hospital treatment.' },
+      { title: 'Old Age Support', description: 'Providing healthcare help for elderly people in need.' },
+      { title: 'Hospital Assistance', description: 'Helping needy families with treatment and hospital support.' },
+    ];
+  const aboutImage = content('wellness-about', 'image') ?? '/images/arogya2.png';
+
+  const supportTag = content('wellness-support', 'tag') ?? 'Our Support';
+  const supportHeading = content('wellness-support', 'heading') ?? 'How We Help Schools & Colleges';
+  const supportCards =
+    content('wellness-support', 'cards') ?? [
+      { icon: '01', title: 'Washroom Renovation', description: 'We renovate old school and college toilets to provide students with clean, safe and hygienic washroom facilities.' },
+      { icon: '02', title: 'Clean Water Filters', description: 'Installing clean drinking water filters to ensure healthy and safe water access for students and staff members.' },
+      { icon: '03', title: 'Kitchen & Wash Basin Support', description: 'We help schools by building new kitchens, wash basins and hygiene areas for better cleanliness and student wellbeing.' },
+    ];
+  const projectImages =
+    content('wellness-support', 'images') ?? [
+      { src: '/images/arogya4.png', alt: '' },
+      { src: '/images/arogya3.png', alt: '' },
+      { src: '/images/arogya5.png', alt: '' },
+    ];
+
+  const babyTag = content('wellness-baby-care', 'tag') ?? 'Baby Care Center';
+  const babyHeading = content('wellness-baby-care', 'heading') ?? 'Safe Feeding Spaces For Mothers & Babies';
+  const babyText =
+    content('wellness-baby-care', 'text') ??
+    'Our Baby Care Center initiative creates safe and comfortable feeding spaces where mothers can feed and care for their babies peacefully in public places with privacy, hygiene and proper support.';
+  const babyItems =
+    content('wellness-baby-care', 'items') ?? [
+      { title: 'Baby Feeding Rooms', description: 'Providing clean and safe feeding areas for mothers and babies.' },
+      { title: 'Mother Support', description: 'Helping mothers with comfortable care facilities in public places.' },
+      { title: 'Hygienic Environment', description: 'Maintaining cleanliness and safety for newborn baby care.' },
+      { title: 'Public Care Centers', description: 'Setting up baby care centers at different public locations.' },
+    ];
+  const babyImage = content('wellness-baby-care', 'image') ?? '/images/g1.jpeg';
+
+  const galleryTag = content('wellness-gallery', 'tag') ?? 'Gallery';
+  const galleryHeading = content('wellness-gallery', 'heading') ?? 'Moments Of Support & Care';
+  const galleryImages =
+    content('wellness-gallery', 'images') ?? [
+      { src: '/images/vision4.jpg', alt: 'Gallery', big: true },
+      { src: '/images/vision5.jpeg', alt: 'Gallery', big: false },
+      { src: '/images/vision6.jpeg', alt: 'Gallery', big: false },
+      { src: '/images/vision7.jpeg', alt: 'Gallery', big: false },
+    ];
+
+  const donationTag = content('wellness-donation', 'tag') ?? 'Mission Aarogya';
+  const donationUrl = content('wellness-donation', 'donationUrl') ?? '/donations/donation-inline-arogya.html';
+  const donationTitle = content('wellness-donation', 'title') ?? 'Health is the True Wealth';
+  const donationText =
+    content('wellness-donation', 'description') ??
+    'Your donation provides healthcare, medical support and wellness services to underprivileged communities across India.';
+
+  const testimonialHeading = content('wellness-testimonials', 'heading') ?? 'What Our Donors Say';
+  const testimonials =
+    content('wellness-testimonials', 'items') ?? [
+      { quote: 'Being Sevak is doing incredible work for healthcare and needy families. Proud to support this mission.', name: 'Riya Sharma' },
+      { quote: 'Transparent work, genuine impact, and a wonderful team dedicated to helping people with dignity.', name: 'Rahul Mehta' },
+      { quote: 'Every donation creates real change. Their healthcare initiatives truly touch lives.', name: 'Anjali Verma' },
+    ];
 
   useEffect(() => {
     function handleMessage(e) {
@@ -284,21 +372,19 @@ export default function MissionWellness() {
 
       <div className="mission-wellness">
         <section className="tax-box">
-          <h1>Mission Aarogya</h1>
+          <h1>{taxTitle}</h1>
         </section>
 
         <section className="hero-section">
           <div className="hero-content">
             <div className="hero-left">
-              <span className="mini-title">Mission Aarogya</span>
+              <span className="mini-title">{heroTag}</span>
               <h1>
-                Bringing <span>Health</span><br />
-                Into Every Life
+                {heroLine1} <span>{heroHighlight}</span><br />
+                {heroLine2}
               </h1>
               <p>
-                Mission Aarogya by Being Sevak Charitable Trust provides healthcare support,
-                medical assistance, emergency aid and wellness initiatives for underprivileged
-                communities across India.
+                {heroText}
               </p>
               <div className="hero-buttons">
                 <a href="#donate" className="primary-btn">Donate Now</a>
@@ -306,15 +392,13 @@ export default function MissionWellness() {
             </div>
             <div className="hero-right">
               <div className="image-box">
-                <img src="/images/arogya1.png" alt="Mission Aarogya" />
-                <div className="floating-card card1">
-                  <h3>3000+</h3>
-                  <p>Lives Supported</p>
-                </div>
-                <div className="floating-card card2">
-                  <h3>24/7</h3>
-                  <p>Care Support</p>
-                </div>
+                <img src={heroImage} alt="Mission Aarogya" />
+                {heroStats.map((stat, i) => (
+                  <div className={`floating-card card${i + 1}`} key={i}>
+                    <h3>{stat.value}</h3>
+                    <p>{stat.label}</p>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
@@ -323,7 +407,7 @@ export default function MissionWellness() {
         <div id="donate" style={{ width: '100%', background: '#f4f7fb', padding: '0', overflow: 'hidden', marginBottom: '0', position: 'relative', zIndex: 10, isolation: 'isolate' }}>
           <iframe
             ref={iframeRef}
-            src="/donations/donation-inline-arogya.html"
+            src={donationUrl}
             style={{ width: '100%', height: '650px', border: 'none', display: 'block' }}
             title="Donate to Mission Aarogya"
           />
@@ -331,126 +415,88 @@ export default function MissionWellness() {
 
         <section className="about-section" id="about">
           <div className="about-image">
-            <img src="/images/arogya2.png" alt="Healthcare Support" />
+            <img src={aboutImage} alt="Healthcare Support" />
           </div>
           <div className="about-content">
-            <span className="mini-title">About Mission</span>
-            <h2>Helping Patients With <span>Care & Emergency Support</span></h2>
+            <span className="mini-title">{aboutTag}</span>
+            <h2>{aboutLine1} <span>{aboutHighlight}</span></h2>
             <p>
-              Our mission supports heart patients, children and old age people by
-              helping them during medical emergencies, hospital treatments and critical
-              healthcare situations with compassion and care.
+              {aboutText}
             </p>
             <div className="about-grid">
-              <div className="about-box">
-                <h3>Heart Patient Help</h3>
-                <p>Supporting heart patients with emergency medical assistance.</p>
-              </div>
-              <div className="about-box">
-                <h3>Child Healthcare</h3>
-                <p>Helping small children receive proper hospital treatment.</p>
-              </div>
-              <div className="about-box">
-                <h3>Old Age Support</h3>
-                <p>Providing healthcare help for elderly people in need.</p>
-              </div>
-              <div className="about-box">
-                <h3>Hospital Assistance</h3>
-                <p>Helping needy families with treatment and hospital support.</p>
-              </div>
+              {aboutItems.map((item, i) => (
+                <div className="about-box" key={i}>
+                  <h3>{item.title}</h3>
+                  <p>{item.description}</p>
+                </div>
+              ))}
             </div>
           </div>
         </section>
 
         <section className="mission-section">
           <div className="section-title">
-            <span>Our Support</span>
-            <h2>How We Help Schools & Colleges</h2>
+            <span>{supportTag}</span>
+            <h2>{supportHeading}</h2>
           </div>
           <div className="mission-cards">
-            <div className="mission-card">
-              <div className="icon">01</div>
-              <h3>Washroom Renovation</h3>
-              <p>We renovate old school and college toilets to provide students with clean, safe and hygienic washroom facilities.</p>
-            </div>
-            <div className="mission-card">
-              <div className="icon">02</div>
-              <h3>Clean Water Filters</h3>
-              <p>Installing clean drinking water filters to ensure healthy and safe water access for students and staff members.</p>
-            </div>
-            <div className="mission-card">
-              <div className="icon">03</div>
-              <h3>Kitchen & Wash Basin Support</h3>
-              <p>We help schools by building new kitchens, wash basins and hygiene areas for better cleanliness and student wellbeing.</p>
-            </div>
+            {supportCards.map((c, i) => (
+              <div className="mission-card" key={i}>
+                <div className="icon">{c.icon}</div>
+                <h3>{c.title}</h3>
+                <p>{c.description}</p>
+              </div>
+            ))}
           </div>
           <div className="mission-cards" style={{ marginTop: '40px' }}>
-            <div className="project-image-card">
-              <img src="/images/arogya4.png" alt="" />
-            </div>
-            <div className="project-image-card">
-              <img src="/images/arogya3.png" alt="" />
-            </div>
-            <div className="project-image-card">
-              <img src="/images/arogya5.png" alt="" />
-            </div>
+            {projectImages.map((img, i) => (
+              <div className="project-image-card" key={i}>
+                <img src={img.src} alt={img.alt} />
+              </div>
+            ))}
           </div>
         </section>
 
         <section className="about-section">
           <div className="about-content">
-            <span className="mini-title">Baby Care Center</span>
-            <h2>Safe Feeding Spaces For Mothers & Babies</h2>
+            <span className="mini-title">{babyTag}</span>
+            <h2>{babyHeading}</h2>
             <p>
-              Our Baby Care Center initiative creates safe and comfortable feeding
-              spaces where mothers can feed and care for their babies peacefully in
-              public places with privacy, hygiene and proper support.
+              {babyText}
             </p>
             <div className="about-grid">
-              <div className="about-box">
-                <h3>Baby Feeding Rooms</h3>
-                <p>Providing clean and safe feeding areas for mothers and babies.</p>
-              </div>
-              <div className="about-box">
-                <h3>Mother Support</h3>
-                <p>Helping mothers with comfortable care facilities in public places.</p>
-              </div>
-              <div className="about-box">
-                <h3>Hygienic Environment</h3>
-                <p>Maintaining cleanliness and safety for newborn baby care.</p>
-              </div>
-              <div className="about-box">
-                <h3>Public Care Centers</h3>
-                <p>Setting up baby care centers at different public locations.</p>
-              </div>
+              {babyItems.map((item, i) => (
+                <div className="about-box" key={i}>
+                  <h3>{item.title}</h3>
+                  <p>{item.description}</p>
+                </div>
+              ))}
             </div>
           </div>
           <div className="about-image">
-            <img src="/images/g1.jpeg" alt="Baby Care Center" />
+            <img src={babyImage} alt="Baby Care Center" />
           </div>
         </section>
 
         <section className="gallery-section" id="gallery">
           <div className="gallery-title">
-            <span>Gallery</span>
-            <h2>Moments Of Support & Care</h2>
+            <span>{galleryTag}</span>
+            <h2>{galleryHeading}</h2>
           </div>
           <div className="gallery-grid">
-            <div className="gallery-item large"><img src="/images/vision4.jpg" alt="Gallery" /></div>
-            <div className="gallery-item"><img src="/images/vision5.jpeg" alt="Gallery" /></div>
-            <div className="gallery-item"><img src="/images/vision6.jpeg" alt="Gallery" /></div>
-            <div className="gallery-item"><img src="/images/vision7.jpeg" alt="Gallery" /></div>
+            {galleryImages.map((g, i) => (
+              <div className={g.big ? 'gallery-item large' : 'gallery-item'} key={i}><img src={g.src} alt={g.alt} /></div>
+            ))}
           </div>
         </section>
 
         <section className="sevak-donation" id="donate-section">
           <div className="sevak-donation-content">
             <div className="sevak-left">
-              <span className="sevak-tag">Mission Aarogya</span>
-              <h2 className="sevak-title">Health is the True Wealth</h2>
+              <span className="sevak-tag">{donationTag}</span>
+              <h2 className="sevak-title">{donationTitle}</h2>
               <p className="sevak-desc">
-                Your donation provides healthcare, medical support and wellness
-                services to underprivileged communities across India.
+                {donationText}
               </p>
             </div>
             <div className="sevak-right">
@@ -461,21 +507,15 @@ export default function MissionWellness() {
 
         <section className="testimonial-section">
           <div className="section-header">
-            <h2>What Our Donors Say</h2>
+            <h2>{testimonialHeading}</h2>
           </div>
           <div className="testimonial-grid">
-            <div className="testimonial-card">
-              <p>Being Sevak is doing incredible work for healthcare and needy families. Proud to support this mission.</p>
-              <h4>Riya Sharma</h4>
-            </div>
-            <div className="testimonial-card">
-              <p>Transparent work, genuine impact, and a wonderful team dedicated to helping people with dignity.</p>
-              <h4>Rahul Mehta</h4>
-            </div>
-            <div className="testimonial-card">
-              <p>Every donation creates real change. Their healthcare initiatives truly touch lives.</p>
-              <h4>Anjali Verma</h4>
-            </div>
+            {testimonials.map((t, i) => (
+              <div className="testimonial-card" key={i}>
+                <p>{t.quote}</p>
+                <h4>{t.name}</h4>
+              </div>
+            ))}
           </div>
         </section>
 

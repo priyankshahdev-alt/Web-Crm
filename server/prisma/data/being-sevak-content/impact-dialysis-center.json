@@ -1,0 +1,65 @@
+{
+  "slug": "impact-dialysis-center",
+  "title": "Dialysis Centre Support",
+  "metaTitle": "Dialysis Centre Support | Being Sevak Foundation",
+  "metaDescription": "The Dialysis Centre initiative ensures access to quality dialysis machines, skilled medical professionals, and compassionate patient care for patients from low-income backgrounds.",
+  "template": "default",
+  "sortOrder": 50,
+  "isHome": false,
+  "sections": [
+    {
+      "type": "impact-dialysis-center-heading",
+      "name": "Dialysis Centre Header",
+      "sortOrder": 1,
+      "isActive": true,
+      "content": {
+        "tag": "HEALTHCARE SUPPORT PROGRAM",
+        "heading": "Dialysis Centre Support",
+        "description": "Chronic kidney disease demands regular dialysis treatment, which can be financially exhausting for patients from low-income backgrounds. Through our Dialysis Centre initiative, Being Sevak Charitable Trust ensures access to quality dialysis machines, skilled medical professionals, and compassionate patient care. We believe every life deserves a chance to heal and thrive.",
+        "image": "/images/g65.png"
+      }
+    },
+    {
+      "type": "impact-dialysis-center-cards",
+      "name": "Program Highlights",
+      "sortOrder": 2,
+      "isActive": true,
+      "content": {
+        "items": [
+          { "title": "Advanced Dialysis Machines", "description": "State-of-the-art equipment ensuring safe and efficient dialysis sessions." },
+          { "title": "Skilled Medical Team", "description": "Experienced nephrologists and nurses providing round-the-clock patient care." },
+          { "title": "Affordable Treatment", "description": "Free or subsidized dialysis sessions for patients from underprivileged backgrounds." },
+          { "title": "Compassionate Care", "description": "A supportive environment where patients feel cared for beyond their medical needs." }
+        ]
+      }
+    },
+    {
+      "type": "impact-dialysis-center-impact",
+      "name": "Success Story & Stats",
+      "sortOrder": 3,
+      "isActive": true,
+      "content": {
+        "tag": "SUCCESS STORY",
+        "heading": "Healing with Dignity",
+        "text": "Ravi, a daily wage worker, was diagnosed with chronic kidney disease and faced the impossible choice between treatment and feeding his family. Through the Dialysis Centre initiative of Being Sevak Charitable Trust, he received free dialysis sessions and continued medical support, giving him the strength to fight his illness while keeping his family's hopes alive.",
+        "stats": [
+          { "value": "1000+", "label": "Patients Treated" },
+          { "value": "24/7", "label": "Care Available" },
+          { "value": "100%", "label": "Life Saving Focus" }
+        ]
+      }
+    },
+    {
+      "type": "impact-dialysis-center-gallery",
+      "name": "Project Gallery",
+      "sortOrder": 4,
+      "isActive": true,
+      "content": {
+        "tag": "PROJECT GALLERY",
+        "heading": "Moments of Impact",
+        "description": "Explore glimpses of our initiatives, community outreach programs, and the positive impact created through collective efforts.",
+        "images": ["/images/g62.png", "/images/g63.png", "/images/g64.png"]
+      }
+    }
+  ]
+}

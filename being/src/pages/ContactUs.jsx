@@ -1,7 +1,52 @@
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { useSite } from '../context/SiteContext';
+import { usePageContent } from '../hooks/usePageContent';
 
 const ContactUs = () => {
+  const content = usePageContent('contact');
+
+  const bannerHeading = content('contact-banner', 'heading') ?? 'Get in Touch';
+  const infoHeading = content('contact-heading', 'heading') ?? 'Let\'s Connect';
+  const infoText =
+    content('contact-heading', 'description') ??
+    'Whether you want to volunteer, collaborate, or learn more about our work, we\'re just a message away. Visit any of our offices across India.';
+  const phoneTitle = content('contact-details', 'phoneTitle') ?? 'Phone';
+  const emailTitle = content('contact-details', 'emailTitle') ?? 'Email';
+  const bankTitle = content('contact-details', 'bankTitle') ?? 'Bank Details';
+  const visitTitle = content('contact-details', 'visitTitle') ?? 'Visit Us';
+  const hoursTitle = content('contact-details', 'hoursTitle') ?? 'Office Hours';
+  const bankNameLabel = content('contact-details', 'bankNameLabel') ?? 'Name:';
+  const bankBankLabel = content('contact-details', 'bankBankLabel') ?? 'Bank:';
+  const bankAccountLabel = content('contact-details', 'bankAccountLabel') ?? 'A/C No:';
+  const bankIfscLabel = content('contact-details', 'bankIfscLabel') ?? 'IFSC:';
+  const bankNameValue = content('contact-details', 'bankName') ?? 'Axis Bank, Kandivali (West), Mumbai';
+  const hoursText = content('contact-details', 'hoursText') ?? 'Monday \u2013 Saturday: 10:00 AM \u2013 6:30 PM';
+  const visitItems =
+    content('contact-visit', 'items') ?? [
+      { name: 'Mumbai Office', address: 'New Delights CHS Ltd, A Wing, 4th Floor, Office No 401, Chandavarkar Road, Borivali West, Mumbai, Maharashtra, 400092.' },
+      { name: 'Mumbai Office 2', address: 'D-45/380, DEVDAYA CHS, SECTOR NO -3 CHARKOP KANDIVALI WEST, MUMBAI, Maharashtra, 400067, IN, D-45/380, DEVDAYA CHS, MUMBAI, 400067, IN' },
+      { name: 'Gujarat Office', address: 'Bharat Min, Next to Maruti Mobile Home Guard Chowk, Home Guard Chowk Road, Dwarka, Gujarat, Pin-361335' },
+      { name: 'Tamil Nadu Office', address: 'No:85, Tansi, opposite G.S.T Road, Marai Malai Nagar, Chengalpattu, Tamil Nadu, Pin-603209.' },
+      { name: 'West Bengal Office', address: 'Vill+po-Harishpur, P.S-Basirhat, Dist-North 24 Parganas, West Bengal, Pin-743412.' },
+      { name: 'Uttar Pradesh Office', address: 'Shop no 2, Sundar Complex, Sundar City, Chandrawal Bijnor Road, Near CRPF camp Sarojni Nagar, Lucknow UP, Pin-226002' },
+    ];
+  const socialHeading = content('contact-social', 'heading') ?? 'Follow Us';
+  const formHeading = content('contact-form', 'heading') ?? 'Send Us a Message';
+  const formText = content('contact-form', 'description') ?? 'We\'ll get back to you within 24 hours.';
+  const mapHeading = content('contact-map', 'heading') ?? 'Find Us';
+
+  const { getSetting } = useSite();
+  const contactPhone = getSetting('contact.phone', '+91 8879035035');
+  const contactEmail = getSetting('contact.email', 'being.sevak@gmail.com');
+  const bankName = getSetting('bank.accountName', '');
+  const bankAccount = getSetting('bank.accountNumber', '');
+  const bankIfsc = getSetting('bank.ifsc', '');
+  const mapSrc = getSetting('map.embedUrl', '');
+  const socialFb = getSetting('social.facebook', '');
+  const socialIg = getSetting('social.instagram', '');
+  const socialYt = getSetting('social.youtube', '');
+  const socialLi = getSetting('social.linkedin', '');
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -181,77 +226,53 @@ const ContactUs = () => {
       `}</style>
 
       <section className="tax-box">
-        <h1>Get in Touch</h1>
+        <h1>{bannerHeading}</h1>
       </section>
 
       <section className="contact-container">
         <div className="contact-grid">
           <div className="contact-info">
-            <h2>Let's Connect</h2>
-            <p>Whether you want to volunteer, collaborate, or learn more about our work, we're just a message away. Visit
-              any of our offices across India.</p>
+            <h2>{infoHeading}</h2>
+            <p>{infoText}</p>
 
             <div className="info-card">
               <div className="icon-box"><i className="fas fa-phone"></i></div>
               <div>
-                <h4>Phone</h4>
-                <p><a href="tel:+918879035035" style={{color:'inherit',textDecoration:'none'}}>+91 8879035035</a></p>
+                <h4>{phoneTitle}</h4>
+                <p><a href={`tel:${contactPhone.replace(/\s+/g, '')}`} style={{color:'inherit',textDecoration:'none'}}>{contactPhone}</a></p>
               </div>
             </div>
 
             <div className="info-card">
               <div className="icon-box"><i className="fas fa-envelope"></i></div>
               <div>
-                <h4>Email</h4>
-                <p><a href="mailto:being.sevak@gmail.com">being.sevak@gmail.com</a></p>
+                <h4>{emailTitle}</h4>
+                <p><a href={`mailto:${contactEmail}`}>{contactEmail}</a></p>
               </div>
             </div>
 
             <div className="info-card">
               <div className="icon-box"><i className="fas fa-university"></i></div>
               <div>
-                <h4>Bank Details</h4>
-                <p><strong>Name:</strong> Being Sevak Charitable Trust</p>
-                <p><strong>Bank:</strong> Axis Bank, Kandivali (West), Mumbai</p>
-                <p><strong>A/C No:</strong> 920010066029137</p>
-                <p><strong>IFSC:</strong> UTIB0000201</p>
+                <h4>{bankTitle}</h4>
+                <p><strong>{bankNameLabel}</strong> {bankName || 'Being Sevak Charitable Trust'}</p>
+                <p><strong>{bankBankLabel}</strong> {bankNameValue}</p>
+                <p><strong>{bankAccountLabel}</strong> {bankAccount || '920010066029137'}</p>
+                <p><strong>{bankIfscLabel}</strong> {bankIfsc || 'UTIB0000201'}</p>
               </div>
             </div>
 
             <div className="info-card visit-card">
               <div className="icon-box"><i className="fas fa-map-marker-alt"></i></div>
               <div>
-                <h4>Visit Us</h4>
+                <h4>{visitTitle}</h4>
                 <div className="visit-accordion">
-                  <div className="visit-item">
-                    <strong>Mumbai Office</strong>
-                    <p>New Delights CHS Ltd, A Wing, 4th Floor, Office No 401, Chandavarkar Road, Borivali West, Mumbai,
-                      Maharashtra, 400092.</p>
-                  </div>
-                  <div className="visit-item">
-                    <strong>Mumbai Office 2</strong>
-                    <p>D-45/380, DEVDAYA CHS, SECTOR NO -3 CHARKOP KANDIVALI WEST,
-                      MUMBAI, Maharashtra, 400067, IN,
-                      D-45/380, DEVDAYA CHS, MUMBAI, 400067, IN</p>
-                  </div>
-                  <div className="visit-item">
-                    <strong>Gujarat Office</strong>
-                    <p>Bharat Min, Next to Maruti Mobile Home Guard Chowk, Home Guard Chowk Road, Dwarka, Gujarat,
-                      Pin-361335</p>
-                  </div>
-                  <div className="visit-item">
-                    <strong>Tamil Nadu Office</strong>
-                    <p>No:85, Tansi, opposite G.S.T Road, Marai Malai Nagar, Chengalpattu, Tamil Nadu, Pin-603209.</p>
-                  </div>
-                  <div className="visit-item">
-                    <strong>West Bengal Office</strong>
-                    <p>Vill+po-Harishpur, P.S-Basirhat, Dist-North 24 Parganas, West Bengal, Pin-743412.</p>
-                  </div>
-                  <div className="visit-item">
-                    <strong>Uttar Pradesh Office</strong>
-                    <p>Shop no 2, Sundar Complex, Sundar City, Chandrawal Bijnor Road, Near CRPF camp Sarojni Nagar, Lucknow
-                      UP, Pin-226002</p>
-                  </div>
+                  {visitItems.map((item, i) => (
+                    <div className="visit-item" key={i}>
+                      <strong>{item.name}</strong>
+                      <p>{item.address}</p>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
@@ -259,25 +280,25 @@ const ContactUs = () => {
             <div className="info-card">
               <div className="icon-box"><i className="fas fa-clock"></i></div>
               <div>
-                <h4>Office Hours</h4>
-                <p>Monday – Saturday: 10:00 AM – 6:30 PM</p>
+                <h4>{hoursTitle}</h4>
+                <p>{hoursText}</p>
               </div>
             </div>
 
             <div className="social-section">
-              <h3>Follow Us</h3>
+              <h3>{socialHeading}</h3>
               <div className="social-links">
-                <a href="https://www.facebook.com/share/1P33YzE6HM/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i className="fab fa-facebook-f"></i></a>
-                <a href="https://www.instagram.com/beingsevak?igsh=MTRjam5nNjU4a2w1Mw==" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i className="fab fa-instagram"></i></a>
-                <a href="https://youtube.com/@beingsevak?si=T_qcPUg699KmS8_2" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><i className="fab fa-youtube"></i></a>
-                <a href="https://www.linkedin.com/company/www-linkedin-cominshwetashah2658ba102/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i className="fab fa-linkedin-in"></i></a>
+                <a href={socialFb ? `https://www.facebook.com/${socialFb}` : 'https://www.facebook.com/share/1P33YzE6HM/?mibextid=wwXIfr'} target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i className="fab fa-facebook-f"></i></a>
+                <a href={socialIg ? `https://www.instagram.com/${socialIg}` : 'https://www.instagram.com/beingsevak?igsh=MTRjam5nNjU4a2w1Mw=='} target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i className="fab fa-instagram"></i></a>
+                <a href={socialYt ? `https://www.youtube.com/@${socialYt}` : 'https://youtube.com/@beingsevak?si=T_qcPUg699KmS8_2'} target="_blank" rel="noopener noreferrer" aria-label="YouTube"><i className="fab fa-youtube"></i></a>
+                <a href={socialLi ? `https://www.linkedin.com/company/${socialLi}` : 'https://www.linkedin.com/company/www-linkedin-cominshwetashah2658ba102/'} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i className="fab fa-linkedin-in"></i></a>
               </div>
             </div>
           </div>
 
           <div className="contact-form-wrap">
-            <h3>Send Us a Message</h3>
-            <p>We'll get back to you within 24 hours.</p>
+            <h3>{formHeading}</h3>
+            <p>{formText}</p>
             {!formSubmitted ? (
               <form onSubmit={handleSubmit}>
                 <div className="form-row">
@@ -333,10 +354,10 @@ const ContactUs = () => {
       </section>
 
       <section className="map-section">
-        <h2 className="section-label">Find Us</h2>
+        <h2 className="section-label">{mapHeading}</h2>
         <div className="map-wrap">
           <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d241317.11609981036!2d72.74109991096822!3d19.082197838769528!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7c6306644edc1%3A0x5c0d2c4a1c8b8b0b!2sMumbai%2C%20Maharashtra%2C%20India!5e0!3m2!1sen!2s!4v1"
+            src={mapSrc || 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d241317.11609981036!2d72.74109991096822!3d19.082197838769528!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7c6306644edc1%3A0x5c0d2c4a1c8b8b0b!2sMumbai%2C%20Maharashtra%2C%20India!5e0!3m2!1sen!2s!4v1'}
             allowFullScreen loading="lazy" title="Google Maps Mumbai"></iframe>
         </div>
       </section>

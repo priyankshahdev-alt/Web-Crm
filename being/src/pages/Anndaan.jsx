@@ -1,6 +1,152 @@
 import { Link } from 'react-router-dom';
+import { usePageContent } from '../hooks/usePageContent';
 
 export default function Anndaan() {
+  const content = usePageContent('anndaan');
+
+  const bannerImage = content('anndaan-hero', 'image') ?? '/images/anndan.jpeg';
+  const bannerHeading = content('anndaan-hero', 'heading') ?? 'Annदान';
+  const bannerTagline = content('anndaan-hero', 'tagline') ?? 'Serving Humanity With Love & Food';
+
+  const introMiniTitle = content('anndaan-intro', 'miniTitle') ?? 'Being Sevak Charitable Trust';
+  const introLine1 = content('anndaan-intro', 'headingLine1') ?? 'Nourishing Lives';
+  const introLine2 = content('anndaan-intro', 'headingLine2') ?? 'Through Every Meal & Ration kit';
+  const introText =
+    content('anndaan-intro', 'description') ??
+    'From hot meals to nutrition kits, every initiative is a step toward fighting hunger and spreading humanity with dignity, love, and care.';
+
+  const kitTag = content('anndaan-annapurna-kit', 'tag') ?? 'SUPPORT KITS';
+  const kitHeading = content('anndaan-annapurna-kit', 'heading') ?? 'Annapurna Kit';
+  const kitText1 =
+    content('anndaan-annapurna-kit', 'text1') ??
+    'Annapurna Kits are thoughtfully prepared with essential grocery items such as rice, flour, pulses, oil, sugar, and daily nutrition supplies to support families facing difficult times with dignity and care.';
+  const kitText2 =
+    content('anndaan-annapurna-kit', 'text2') ??
+    'These kits are distributed during emergency relief drives, poverty support initiatives, and community welfare programs to ensure that no family sleeps hungry.';
+  const kitText3 =
+    content('anndaan-annapurna-kit', 'text3') ??
+    'The kits are also extended to dedicated life supporters and humanitarian contributors who continuously stand with society during times of need, as a gesture of gratitude and community solidarity.';
+  const kitImages =
+    content('anndaan-annapurna-kit', 'images') ?? [
+      { src: '/images/a1.jpeg', alt: '' },
+      { src: '/images/a4.jpeg', alt: '' },
+      { src: '/images/a3.jpg', alt: '' },
+      { src: '/images/a2.jpg', alt: '' },
+    ];
+
+  const snackTag = content('anndaan-snack-distribution', 'tag') ?? 'COMMUNITY CARE';
+  const snackHeading = content('anndaan-snack-distribution', 'heading') ?? 'Snack Distribution';
+  const snackText =
+    content('anndaan-snack-distribution', 'text') ??
+    'Through our Snack Distribution Drive, we provide wafers, biscuits, chocolates, and other nutritious snacks to children and families living in slum areas. This initiative aims to bring joy, support, and care to underprivileged communities while ensuring that every child receives a small treat filled with happiness and hope.';
+  const snackImages =
+    content('anndaan-snack-distribution', 'images') ?? [
+      { src: '/images/snk1.jpeg', alt: '' },
+      { src: '/images/snk2.jpeg', alt: '' },
+      { src: '/images/snk3.jpeg', alt: '' },
+      { src: '/images/snk4.jpeg', alt: '' },
+    ];
+
+  const mealTag = content('anndaan-sevak-meal-drive', 'tag') ?? 'HUMANITY DRIVE';
+  const mealHeading = content('anndaan-sevak-meal-drive', 'heading') ?? 'Sevak Meal Drive';
+  const mealText1 =
+    content('anndaan-sevak-meal-drive', 'text1') ??
+    'Through the Sevak Nutrition Drive, we provide nutritious food support to school children by adding healthy ingredients like milk, pulses, cereals, and essential nutrition supplements to their daily meals.';
+  const mealText2 =
+    content('anndaan-sevak-meal-drive', 'text2') ??
+    "Our mission is to improve children's health, energy, and overall development by ensuring they receive proper nutrition for a brighter and healthier future.";
+  const mealPoints =
+    content('anndaan-sevak-meal-drive', 'points') ?? [
+      'Fresh & Hygienic Food',
+      'Community Volunteer Participation',
+      'Serving with Love & Respect',
+    ];
+  const mealImages =
+    content('anndaan-sevak-meal-drive', 'images') ?? [
+      { src: '/images/roti1.jpg', alt: '' },
+      { src: '/images/roti2.jpg', alt: '' },
+      { src: '/images/roti3.jpg', alt: '' },
+      { src: '/images/roti4.jpg', alt: '' },
+    ];
+
+  const rotiTag = content('anndaan-roti-drive', 'tag') ?? 'FOOD SERVICE';
+  const rotiHeading = content('anndaan-roti-drive', 'heading') ?? 'Sevak Roti Drive';
+  const rotiText1 =
+    content('anndaan-roti-drive', 'text1') ??
+    'Our Sevak Meal Drive focuses on distributing fresh and hygienic meals to needy families, laborers, senior citizens, and homeless individuals. Through this initiative, we ensure that no person sleeps hungry.';
+  const rotiText2 =
+    content('anndaan-roti-drive', 'text2') ??
+    'Every meal served carries compassion, hope, and humanity. Volunteers actively participate in meal preparation, packaging, and distribution.';
+  const rotiStats =
+    content('anndaan-roti-drive', 'stats') ?? [
+      { value: '10K+', label: 'Meals Distributed' },
+      { value: 'Daily', label: 'Community Support' },
+    ];
+  const rotiImages =
+    content('anndaan-roti-drive', 'images') ?? [
+      { src: '/images/meal1.jpg', alt: '' },
+      { src: '/images/meal2.jpg', alt: '' },
+      { src: '/images/meal3.jpg', alt: '' },
+      { src: '/images/meal4.jpg', alt: '' },
+    ];
+
+  const festiveTag = content('anndaan-festive-care', 'tag') ?? 'FESTIVE CARE';
+  const festiveHeading = content('anndaan-festive-care', 'heading') ?? 'Distribution of clothes and Sweets';
+  const festiveText =
+    content('anndaan-festive-care', 'text') ??
+    'During festivals, celebrations, and special community events, we organize lunch and sweets distribution programs to spread happiness among children, elderly people, and families in need.';
+  const festiveImages =
+    content('anndaan-festive-care', 'images') ?? [
+      { src: '/images/shi1.jpg', alt: '' },
+      { src: '/images/shi2.jpg', alt: '' },
+      { src: '/images/shi3.jpg', alt: '' },
+      { src: '/images/shi5.jpg', alt: '' },
+    ];
+
+  const summerTag = content('anndaan-summer-drive', 'tag') ?? 'COMMUNITY CARE';
+  const summerHeading = content('anndaan-summer-drive', 'heading') ?? 'Sevak Summer Drive';
+  const summerText =
+    content('anndaan-summer-drive', 'text') ??
+    'We also provide refreshing buttermilk to help people stay hydrated and protected from the extreme heat, while promoting care, compassion, and community well-being.';
+  const summerImages =
+    content('anndaan-summer-drive', 'images') ?? [
+      { src: '/images/snack2.jpeg', alt: '' },
+      { src: '/images/snack3.jpeg', alt: '' },
+      { src: '/images/snack7.jpeg', alt: '' },
+      { src: '/images/snack8.jpeg', alt: '' },
+      { src: '/images/snack9.jpeg', alt: '' },
+    ];
+
+  const thaliTag = content('anndaan-annapurna-thali', 'tag') ?? 'FOOD & NUTRITION SUPPORT';
+  const thaliHeading = content('anndaan-annapurna-thali', 'heading') ?? 'Annapurna Thali';
+  const thaliText1 =
+    content('anndaan-annapurna-thali', 'text1') ??
+    'The Annapurna Thali initiative is dedicated to serving nutritious, freshly prepared meals to underprivileged children, women, elderly individuals, and families struggling with food insecurity.';
+  const thaliText2 =
+    content('anndaan-annapurna-thali', 'text2') ??
+    'Each thali is designed to provide a balanced diet including essential nutrients, helping improve health, reduce hunger, and restore dignity to those in need.';
+  const thaliMiniCards =
+    content('anndaan-annapurna-thali', 'miniCards') ?? [
+      { title: 'Nutritious', description: 'Balanced Meals' },
+      { title: 'Hunger-Free', description: 'Community Support' },
+    ];
+  const thaliImages =
+    content('anndaan-annapurna-thali', 'images') ?? [
+      { src: '/images/Thali1.jpg', alt: 'Annapurna Thali Meal Distribution' },
+      { src: '/images/Thali2.jpg', alt: 'Food Distribution Drive' },
+      { src: '/images/Thali3.jpg', alt: 'Community Meal Service' },
+      { src: '/images/Thali4.jpg', alt: 'Volunteers Serving Food' },
+    ];
+
+  const testimonialTag = content('anndaan-testimonials', 'tag') ?? 'DONOR TESTIMONIALS';
+  const testimonialHeading = content('anndaan-testimonials', 'heading') ?? 'What Supporters Say';
+  const testimonials =
+    content('anndaan-testimonials', 'items') ?? [
+      { quote: '"Aadhar initiative is doing amazing work by helping needy families with food support."', name: 'Riya Sharma' },
+      { quote: '"Very transparent and impactful work. Happy to support this mission."', name: 'Rahul Mehta' },
+      { quote: '"They truly bring hope to families struggling for basic needs."', name: 'Anjali Verma' },
+    ];
+
   return (
     <>
       <style>{`
@@ -193,12 +339,12 @@ export default function Anndaan() {
 
       <div className="anndaan-page">
         <section className="anndaan-hero-banner">
-          <img src="/images/anndan.jpeg" alt="Annदान Banner" />
+          <img src={bannerImage} alt="Annदान Banner" />
           <div className="anndaan-overlay"></div>
           <div className="anndaan-content">
             <br /><br />
-            <h1>Annदान</h1>
-            <p>Serving Humanity With Love & Food</p>
+            <h1>{bannerHeading}</h1>
+            <p>{bannerTagline}</p>
           </div>
         </section>
 
@@ -208,11 +354,10 @@ export default function Anndaan() {
             <div className="annaseva-floating-circle two"></div>
             <div className="annaseva-floating-circle three"></div>
             <div className="annaseva-hero-content">
-              <span className="annaseva-mini-title">Being Sevak Charitable Trust</span>
-              <h1>Nourishing Lives <br />Through Every Meal & Ration kit</h1>
+              <span className="annaseva-mini-title">{introMiniTitle}</span>
+              <h1>{introLine1} <br />{introLine2}</h1>
               <p>
-                From hot meals to nutrition kits, every initiative is a step toward
-                fighting hunger and spreading humanity with dignity, love, and care.
+                {introText}
               </p>
               <div className="annaseva-hero-buttons">
                 <Link to="/donate" className="annaseva-btn-main">Join The Mission</Link>
@@ -222,52 +367,49 @@ export default function Anndaan() {
 
           <section className="kitcare-wrapper">
             <div className="kitcare-content">
-              <span className="kitcare-tag">SUPPORT KITS</span>
-              <h2>Annapurna Kit</h2>
-              <p>Annapurna Kits are thoughtfully prepared with essential grocery items such as rice, flour, pulses, oil, sugar, and daily nutrition supplies to support families facing difficult times with dignity and care.</p>
-              <p>These kits are distributed during emergency relief drives, poverty support initiatives, and community welfare programs to ensure that no family sleeps hungry.</p>
-              <p>The kits are also extended to dedicated life supporters and humanitarian contributors who continuously stand with society during times of need, as a gesture of gratitude and community solidarity.</p>
+              <span className="kitcare-tag">{kitTag}</span>
+              <h2>{kitHeading}</h2>
+              <p>{kitText1}</p>
+              <p>{kitText2}</p>
+              <p>{kitText3}</p>
               <Link to="/donate" className="kitcare-btn">Support Annapurna Mission</Link>
             </div>
             <div className="kitcare-gallery">
-              <img src="/images/a1.jpeg" alt="" />
-              <img src="/images/a4.jpeg" alt="" />
-              <img src="/images/a3.jpg" alt="" />
-              <img src="/images/a2.jpg" alt="" />
+              {kitImages.map((img, i) => (
+                <img key={i} src={img.src} alt={img.alt} />
+              ))}
             </div>
           </section>
 
           <section className="sweetmeal-section">
             <div className="sweetmeal-top">
-              <span className="sweetmeal-tag">COMMUNITY CARE</span>
-              <h2>Snack Distribution</h2>
-              <p>Through our Snack Distribution Drive, we provide wafers, biscuits, chocolates, and other nutritious snacks to children and families living in slum areas. This initiative aims to bring joy, support, and care to underprivileged communities while ensuring that every child receives a small treat filled with happiness and hope.</p>
+              <span className="sweetmeal-tag">{snackTag}</span>
+              <h2>{snackHeading}</h2>
+              <p>{snackText}</p>
               <Link to="/donate" className="kitcare-btn">Support our Mission</Link>
             </div>
             <div className="sweetmeal-grid">
-              <img src="/images/snk1.jpeg" alt="" />
-              <img src="/images/snk2.jpeg" alt="" />
-              <img src="/images/snk3.jpeg" alt="" />
-              <img src="/images/snk4.jpeg" alt="" />
+              {snackImages.map((img, i) => (
+                <img key={i} src={img.src} alt={img.alt} />
+              ))}
             </div>
           </section>
 
           <section className="rotiseva-zone">
             <div className="rotiseva-gallery">
-              <img src="/images/roti1.jpg" alt="" />
-              <img src="/images/roti2.jpg" alt="" />
-              <img src="/images/roti3.jpg" alt="" />
-              <img src="/images/roti4.jpg" alt="" />
+              {mealImages.map((img, i) => (
+                <img key={i} src={img.src} alt={img.alt} />
+              ))}
             </div>
             <div className="rotiseva-content">
-              <span className="rotiseva-tag">HUMANITY DRIVE</span>
-              <h2>Sevak Meal Drive</h2>
-              <p>Through the Sevak Nutrition Drive, we provide nutritious food support to school children by adding healthy ingredients like milk, pulses, cereals, and essential nutrition supplements to their daily meals.</p>
-              <p>Our mission is to improve children's health, energy, and overall development by ensuring they receive proper nutrition for a brighter and healthier future.</p>
+              <span className="rotiseva-tag">{mealTag}</span>
+              <h2>{mealHeading}</h2>
+              <p>{mealText1}</p>
+              <p>{mealText2}</p>
               <ul>
-                <li>Fresh & Hygienic Food</li>
-                <li>Community Volunteer Participation</li>
-                <li>Serving with Love & Respect</li>
+                {mealPoints.map((point, i) => (
+                  <li key={i}>{point}</li>
+                ))}
               </ul>
               <Link to="/donate" className="kitcare-btn">Support Annapurna Mission</Link>
             </div>
@@ -275,72 +417,69 @@ export default function Anndaan() {
 
           <section className="mealwave-section">
             <div className="mealwave-left">
-              <span className="mealwave-tag">FOOD SERVICE</span>
-              <h2>Sevak Roti Drive</h2>
-              <p>Our Sevak Meal Drive focuses on distributing fresh and hygienic meals to needy families, laborers, senior citizens, and homeless individuals. Through this initiative, we ensure that no person sleeps hungry.</p>
-              <p>Every meal served carries compassion, hope, and humanity. Volunteers actively participate in meal preparation, packaging, and distribution.</p>
+              <span className="mealwave-tag">{rotiTag}</span>
+              <h2>{rotiHeading}</h2>
+              <p>{rotiText1}</p>
+              <p>{rotiText2}</p>
               <div className="mealwave-highlight-box">
-                <div><h3>10K+</h3><span>Meals Distributed</span></div>
-                <div><h3>Daily</h3><span>Community Support</span></div>
+                {rotiStats.map((s, i) => (
+                  <div key={i}><h3>{s.value}</h3><span>{s.label}</span></div>
+                ))}
               </div>
               <Link to="/donate" className="kitcare-btn">Support Annapurna Mission</Link>
             </div>
             <div className="mealwave-gallery">
-              <img src="/images/meal1.jpg" alt="" />
-              <img src="/images/meal2.jpg" alt="" />
-              <img src="/images/meal3.jpg" alt="" />
-              <img src="/images/meal4.jpg" alt="" />
+              {rotiImages.map((img, i) => (
+                <img key={i} src={img.src} alt={img.alt} />
+              ))}
             </div>
           </section>
 
           <section className="sweetmeal-section">
             <div className="sweetmeal-top">
-              <span className="sweetmeal-tag">FESTIVE CARE</span>
-              <h2>Distribution of clothes and Sweets</h2>
-              <p>During festivals, celebrations, and special community events, we organize lunch and sweets distribution programs to spread happiness among children, elderly people, and families in need.</p>
+              <span className="sweetmeal-tag">{festiveTag}</span>
+              <h2>{festiveHeading}</h2>
+              <p>{festiveText}</p>
               <Link to="/donate" className="kitcare-btn">Support Annapurna Mission</Link>
             </div>
             <div className="sweetmeal-grid">
-              <img src="/images/shi1.jpg" alt="" />
-              <img src="/images/shi2.jpg" alt="" />
-              <img src="/images/shi3.jpg" alt="" />
-              <img src="/images/shi5.jpg" alt="" />
+              {festiveImages.map((img, i) => (
+                <img key={i} src={img.src} alt={img.alt} />
+              ))}
             </div>
           </section>
 
           <section className="snackdrive-container">
             <div className="snackdrive-content">
-              <span className="snackdrive-tag">COMMUNITY CARE</span>
-              <h2>Sevak Summer Drive</h2>
-              <p>We also provide refreshing buttermilk to help people stay hydrated and protected from the extreme heat, while promoting care, compassion, and community well-being.</p>
+              <span className="snackdrive-tag">{summerTag}</span>
+              <h2>{summerHeading}</h2>
+              <p>{summerText}</p>
               <Link to="/donate" className="kitcare-btn">Support Annapurna Mission</Link>
             </div>
             <div className="snackdrive-images">
-              <img src="/images/snack2.jpeg" alt="" />
-              <img src="/images/snack3.jpeg" alt="" />
-              <img src="/images/snack7.jpeg" alt="" />
-              <img src="/images/snack8.jpeg" alt="" />
-              <img src="/images/snack9.jpeg" alt="" />
+              {summerImages.map((img, i) => (
+                <img key={i} src={img.src} alt={img.alt} />
+              ))}
             </div>
           </section>
 
           <section className="nutritioncare-wrap">
             <div className="nutritioncare-content">
-              <span className="nutritioncare-tag">FOOD & NUTRITION SUPPORT</span>
-              <h2>Annapurna Thali</h2>
-              <p>The Annapurna Thali initiative is dedicated to serving nutritious, freshly prepared meals to underprivileged children, women, elderly individuals, and families struggling with food insecurity.</p>
-              <p>Each thali is designed to provide a balanced diet including essential nutrients, helping improve health, reduce hunger, and restore dignity to those in need.</p>
+              <span className="nutritioncare-tag">{thaliTag}</span>
+              <h2>{thaliHeading}</h2>
+              <p>{thaliText1}</p>
+              <p>{thaliText2}</p>
               <div className="nutritioncare-card-row">
-                <div className="nutrition-mini-card"><h3>Nutritious</h3><p>Balanced Meals</p></div>
-                <div className="nutrition-mini-card"><h3>Hunger-Free</h3><p>Community Support</p></div>
+                {thaliMiniCards.map((mc, i) => (
+                  <div className="nutrition-mini-card" key={i}><h3>{mc.title}</h3><p>{mc.description}</p></div>
+                ))}
               </div>
               <Link to="/donate" className="kitcare-btn">Support Annapurna Thali Mission</Link>
             </div>
             <div className="nutritioncare-gallery">
-              <img src="/images/Thali1.jpg" alt="Annapurna Thali Meal Distribution" />
-              <img src="/images/Thali2.jpg" alt="Food Distribution Drive" />
-              <img src="/images/Thali3.jpg" alt="Community Meal Service" />
-              <img src="/images/Thali4.jpg" alt="Volunteers Serving Food" />
+              {thaliImages.map((img, i) => (
+                <img key={i} src={img.src} alt={img.alt} />
+              ))}
             </div>
           </section>
         </section>
@@ -349,22 +488,16 @@ export default function Anndaan() {
 
         <section className="testimonial-section">
           <div className="section-header">
-            <span>DONOR TESTIMONIALS</span>
-            <h2>What Supporters Say</h2>
+            <span>{testimonialTag}</span>
+            <h2>{testimonialHeading}</h2>
           </div>
           <div className="testimonial-grid">
-            <div className="testimonial-card">
-              <p>"Aadhar initiative is doing amazing work by helping needy families with food support."</p>
-              <h4>Riya Sharma</h4>
-            </div>
-            <div className="testimonial-card">
-              <p>"Very transparent and impactful work. Happy to support this mission."</p>
-              <h4>Rahul Mehta</h4>
-            </div>
-            <div className="testimonial-card">
-              <p>"They truly bring hope to families struggling for basic needs."</p>
-              <h4>Anjali Verma</h4>
-            </div>
+            {testimonials.map((t, i) => (
+              <div className="testimonial-card" key={i}>
+                <p>{t.quote}</p>
+                <h4>{t.name}</h4>
+              </div>
+            ))}
           </div>
         </section>
 

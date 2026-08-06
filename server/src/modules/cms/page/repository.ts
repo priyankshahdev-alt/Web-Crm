@@ -1,5 +1,6 @@
 import { Prisma, PublishStatus } from '@prisma/client';
 import { prisma } from '../../../libs/prisma';
+import type { SectionPatch } from './schema';
 
 export interface ListParams {
   organizationId: string;
@@ -104,5 +105,27 @@ export const pageRepository = {
       ),
     );
     return orderedIds;
+  },
+
+  async replaceSections(pageId: string, organizationId: string, sections: SectionPatch[]) {
+    await prisma.$transaction(async (tx) => {
+      await tx.pageSection.deleteMany({ where: { pageId, organizationId } });
+      if (sections.length > 0) {
+        await tx.pageSection.createMany({
+          data: sections.map((section) => ({
+            id: section.id,
+            pageId,
+            organizationId,
+            type: section.type,
+            name: section.name ?? null,
+            sortOrder: section.sortOrder ?? 0,
+            isActive: section.isActive ?? true,
+            settings: (section.settings ?? undefined) as never,
+            content: (section.content ?? undefined) as never,
+          })),
+        });
+      }
+    });
+    return sections.length;
   },
 };

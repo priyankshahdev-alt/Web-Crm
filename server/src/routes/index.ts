@@ -15,6 +15,7 @@ import menuRouter from '../modules/cms/menu/routes';
 import bannerRouter from '../modules/cms/banner/routes';
 import sliderRouter from '../modules/cms/slider/routes';
 import siteRouter from '../modules/cms/site/routes';
+import websiteRouter from '../modules/cms/website/routes';
 import entityRouter from '../modules/entities/index';
 
 const router = Router();
@@ -39,6 +40,7 @@ router.use('/menus', menuRouter);
 router.use('/banners', bannerRouter);
 router.use('/sliders', sliderRouter);
 router.use('/site', siteRouter);
+router.use('/websites', websiteRouter);
 router.use('/', entityRouter);
 
 export default router;

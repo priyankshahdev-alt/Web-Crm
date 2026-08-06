@@ -1,0 +1,94 @@
+{
+  "slug": "newspaper",
+  "title": "As Featured In Newspapers",
+  "metaTitle": "As Featured In Newspapers | Being Sevak Foundation",
+  "metaDescription": "Browse scanned clippings of newspaper articles featuring Being Sevak Charitable Trust's initiatives, achievements, and community impact across India.",
+  "template": "default",
+  "sortOrder": 43,
+  "isHome": false,
+  "sections": [
+    {
+      "type": "newspaper-banner",
+      "name": "In News Paper Banner",
+      "sortOrder": 1,
+      "isActive": true,
+      "content": {
+        "title": "In News Paper"
+      }
+    },
+    {
+      "type": "newspaper-hero",
+      "name": "Newspaper Hero",
+      "sortOrder": 2,
+      "isActive": true,
+      "content": {
+        "tag": "BEING SEVAK CHARITABLE TRUST",
+        "titlePrefix": "As Featured In",
+        "titleHighlight": "Newspapers",
+        "description": "Browse through scanned clippings of newspaper articles featuring Being Sevak Charitable Trust's initiatives, achievements, and community impact across India.",
+        "image": "/images/newapperhero.jpeg"
+      }
+    },
+    {
+      "type": "newspaper-ticker",
+      "name": "News Ticker",
+      "sortOrder": 3,
+      "isActive": true,
+      "content": {
+        "label": "Breaking",
+        "items": [
+          "Being Sevak featured across 12 major newspaper publications",
+          "Mission Annapurna receives widespread media acclaim",
+          "National Award coverage reaches millions of readers",
+          "Save the Flag campaign highlighted in leading dailies",
+          "World Record achievement celebrated in the press",
+          "Paryavaran Mitra recognition covered by Raj Bhavan",
+          "Diwali Anna Potli distribution featured across 7 states"
+        ]
+      }
+    },
+    {
+      "type": "newspaper-featured",
+      "name": "Featured Clip",
+      "sortOrder": 4,
+      "isActive": true,
+      "content": {
+        "tag": "Featured Clip",
+        "titlePrefix": "Press Coverage That",
+        "titleHighlight": "Inspires Change",
+        "text": "Each newspaper clipping tells a story of compassion, dedication, and the collective effort to build a better tomorrow. Click on any image to explore the full article."
+      }
+    },
+    {
+      "type": "newspaper-coverage",
+      "name": "Newspaper Coverage Heading",
+      "sortOrder": 5,
+      "isActive": true,
+      "content": {
+        "heading": "Newspaper Coverage"
+      }
+    },
+    {
+      "type": "newspaper-gallery",
+      "name": "Newspaper Clippings Gallery",
+      "sortOrder": 6,
+      "isActive": true,
+      "content": {
+        "items": [
+          { "url": "/images/newspaperpress/1.jpg", "label": "Mumbai Edition", "year": 2023 },
+          { "url": "/images/newspaperpress/2.jpg", "label": "National Daily", "year": 2023 },
+          { "url": "/images/newspaperpress/3.jpg", "label": "City Times", "year": 2023 },
+          { "url": "/images/newspaperpress/4.jpg", "label": "The Chronicle", "year": 2023 },
+          { "url": "/images/newspaperpress/5.jpg", "label": "Morning Herald", "year": 2023 },
+          { "url": "/images/newspaperpress/6.jpg", "label": "Press Gazette", "year": 2023 },
+          { "url": "/images/newspaperpress/7.jpg", "label": "Community Voice", "year": 2023 },
+          { "url": "/images/newspaperpress/8.jpg", "label": "Daily Post", "year": 2023 },
+          { "url": "/images/newspaperpress/9.jpg", "label": "Metro News", "year": 2023 },
+          { "url": "/images/newspaperpress/10.jpg", "label": "Regional Times", "year": 2023 },
+          { "url": "/images/newspaperpress/11.jpg", "label": "The Guardian Post", "year": 2023 },
+          { "url": "/images/newspaperpress/12.jpg", "label": "Front Page", "year": 2023 }
+        ]
+      }
+    }
+  ]
+}

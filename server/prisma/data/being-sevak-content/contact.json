@@ -1,0 +1,93 @@
+{
+  "slug": "contact",
+  "title": "Get in Touch",
+  "metaTitle": "Contact Us | Being Sevak Foundation",
+  "metaDescription": "Get in touch with Being Sevak Charitable Trust to volunteer, collaborate, or learn more about our work across India.",
+  "template": "default",
+  "sortOrder": 63,
+  "isHome": false,
+  "sections": [
+    {
+      "type": "contact-banner",
+      "name": "Page Banner",
+      "sortOrder": 1,
+      "isActive": true,
+      "content": {
+        "heading": "Get in Touch"
+      }
+    },
+    {
+      "type": "contact-heading",
+      "name": "Contact Intro",
+      "sortOrder": 2,
+      "isActive": true,
+      "content": {
+        "heading": "Let's Connect",
+        "description": "Whether you want to volunteer, collaborate, or learn more about our work, we're just a message away. Visit any of our offices across India."
+      }
+    },
+    {
+      "type": "contact-details",
+      "name": "Contact Info Cards",
+      "sortOrder": 3,
+      "isActive": true,
+      "content": {
+        "phoneTitle": "Phone",
+        "emailTitle": "Email",
+        "bankTitle": "Bank Details",
+        "visitTitle": "Visit Us",
+        "hoursTitle": "Office Hours",
+        "bankNameLabel": "Name:",
+        "bankBankLabel": "Bank:",
+        "bankAccountLabel": "A/C No:",
+        "bankIfscLabel": "IFSC:",
+        "bankName": "Axis Bank, Kandivali (West), Mumbai",
+        "hoursText": "Monday – Saturday: 10:00 AM – 6:30 PM"
+      }
+    },
+    {
+      "type": "contact-visit",
+      "name": "Office Locations",
+      "sortOrder": 4,
+      "isActive": true,
+      "content": {
+        "items": [
+          { "name": "Mumbai Office", "address": "New Delights CHS Ltd, A Wing, 4th Floor, Office No 401, Chandavarkar Road, Borivali West, Mumbai, Maharashtra, 400092." },
+          { "name": "Mumbai Office 2", "address": "D-45/380, DEVDAYA CHS, SECTOR NO -3 CHARKOP KANDIVALI WEST, MUMBAI, Maharashtra, 400067, IN, D-45/380, DEVDAYA CHS, MUMBAI, 400067, IN" },
+          { "name": "Gujarat Office", "address": "Bharat Min, Next to Maruti Mobile Home Guard Chowk, Home Guard Chowk Road, Dwarka, Gujarat, Pin-361335" },
+          { "name": "Tamil Nadu Office", "address": "No:85, Tansi, opposite G.S.T Road, Marai Malai Nagar, Chengalpattu, Tamil Nadu, Pin-603209." },
+          { "name": "West Bengal Office", "address": "Vill+po-Harishpur, P.S-Basirhat, Dist-North 24 Parganas, West Bengal, Pin-743412." },
+          { "name": "Uttar Pradesh Office", "address": "Shop no 2, Sundar Complex, Sundar City, Chandrawal Bijnor Road, Near CRPF camp Sarojni Nagar, Lucknow UP, Pin-226002" }
+        ]
+      }
+    },
+    {
+      "type": "contact-social",
+      "name": "Social Section",
+      "sortOrder": 5,
+      "isActive": true,
+      "content": {
+        "heading": "Follow Us"
+      }
+    },
+    {
+      "type": "contact-form",
+      "name": "Contact Form Heading",
+      "sortOrder": 6,
+      "isActive": true,
+      "content": {
+        "heading": "Send Us a Message",
+        "description": "We'll get back to you within 24 hours."
+      }
+    },
+    {
+      "type": "contact-map",
+      "name": "Map Section",
+      "sortOrder": 7,
+      "isActive": true,
+      "content": {
+        "heading": "Find Us"
+      }
+    }
+  ]
+}

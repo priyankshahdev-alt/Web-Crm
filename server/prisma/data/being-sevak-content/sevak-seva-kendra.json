@@ -1,0 +1,191 @@
+{
+  "slug": "sevak-seva-kendra",
+  "title": "Sevak Seva Kendra",
+  "metaTitle": "Sevak Seva Kendra | Being Sevak Foundation",
+  "metaDescription": "Sevak Seva Kendra by Being Sevak Charitable Trust is a one-stop hub with 12 dedicated facilities for education, digital learning, healthcare, women empowerment and skill development.",
+  "template": "default",
+  "sortOrder": 16,
+  "isHome": false,
+  "sections": [
+    {
+      "type": "sevak-seva-kendra-tax",
+      "name": "Page Title",
+      "sortOrder": 1,
+      "isActive": true,
+      "content": {
+        "title": "Sevak Seva Kendra"
+      }
+    },
+    {
+      "type": "sevak-seva-kendra-hero",
+      "name": "Hero Section",
+      "sortOrder": 2,
+      "isActive": true,
+      "content": {
+        "tag": "Sevak Seva Kendra",
+        "headingLine1": "Building A Better",
+        "headingHighlight": "Community",
+        "headingLine2": "Through Care & Development",
+        "description": "Sevak Niwas Kendra by Being Sevak Charitable Trust provides education, digital learning, healthcare, women empowerment and skill development initiatives for building a stronger and self-reliant society.",
+        "image": "/images/sevak1.jpeg"
+      }
+    },
+    {
+      "type": "seva-kendra-hero-stats",
+      "name": "Hero Stats",
+      "sortOrder": 3,
+      "isActive": true,
+      "content": {
+        "items": [
+          { "value": "5000+", "label": "Lives Empowered" },
+          { "value": "50+", "label": "Community Programs" }
+        ]
+      }
+    },
+    {
+      "type": "seva-kendra-library",
+      "name": "Library",
+      "sortOrder": 4,
+      "isActive": true,
+      "content": {
+        "tag": "Library",
+        "headingLine1": "Knowledge & Learning",
+        "headingHighlight": "For Everyone",
+        "text": "Our library provides books, study material and peaceful learning spaces for children, students and community members to encourage education and growth.",
+        "features": [
+          { "icon": "📚", "title": "Study Resources", "description": "Books and learning material for students." },
+          { "icon": "📖", "title": "Reading Space", "description": "Quiet and comfortable learning environment." }
+        ],
+        "image": "/images/library.jpeg"
+      }
+    },
+    {
+      "type": "seva-kendra-computer-centre",
+      "name": "Sevak Computer Centre",
+      "sortOrder": 5,
+      "isActive": true,
+      "content": {
+        "tag": "Sevak Computer Centre",
+        "heading": "Digital Skills For The Future",
+        "stats": [
+          { "value": "3000+", "label": "Students Trained" },
+          { "value": "100+", "label": "Computer Workshops" },
+          { "value": "50+", "label": "Digital Courses" },
+          { "value": "24/7", "label": "Learning Support" }
+        ]
+      }
+    },
+    {
+      "type": "seva-kendra-ai-centre",
+      "name": "AI & Digital Innovation Centre",
+      "sortOrder": 6,
+      "isActive": true,
+      "content": {
+        "miniTitle": "AI & Digital Innovation Centre",
+        "heading": "Technology Driven Learning & Innovation",
+        "text1": "Our AI & Digital Innovation Centre is focused on empowering students and youth with future-ready technology skills. Through practical learning, workshops, and digital exposure, we help individuals explore the world of Artificial Intelligence, coding, robotics, and innovation.",
+        "text2": "The centre creates opportunities for creative thinking, digital transformation, and modern skill development while building confidence among young learners for tomorrow's technology-driven world.",
+        "image": "/images/ai2.jpg",
+        "features": [
+          { "title": "AI Learning", "description": "Hands-on practical training" },
+          { "title": "Digital Skills", "description": "Modern technology education" },
+          { "title": "Innovation Lab", "description": "Creative project development" }
+        ]
+      }
+    },
+    {
+      "type": "seva-kendra-physiotherapy",
+      "name": "Physiotherapy Centre",
+      "sortOrder": 7,
+      "isActive": true,
+      "content": {
+        "tag": "Physiotherapy Centre",
+        "headingLine1": "Care & Recovery Through",
+        "headingHighlight": "Therapy Support",
+        "text": "Our Physiotherapy Centre provides rehabilitation and physical therapy support for elderly people, patients and individuals recovering from injuries.",
+        "features": [
+          { "icon": "🧑‍⚕️", "title": "Therapy Sessions", "description": "Professional physiotherapy and rehabilitation support." },
+          { "icon": "❤️", "title": "Patient Care", "description": "Helping patients recover with proper guidance." },
+          { "icon": "💪", "title": "Rehabilitation", "description": "Guided recovery exercises for injury patients." },
+          { "icon": "🏥", "title": "Elderly Care", "description": "Special therapy sessions for senior citizens." }
+        ],
+        "image": "/images/physio.jpeg"
+      }
+    },
+    {
+      "type": "seva-kendra-women-empowerment",
+      "name": "Women Empowerment",
+      "sortOrder": 8,
+      "isActive": true,
+      "content": {
+        "tag": "Women Empowerment",
+        "heading": "Empowering Women Towards Independence",
+        "stats": [
+          { "value": "2000+", "label": "Women Supported" },
+          { "value": "150+", "label": "Skill Workshops" },
+          { "value": "100+", "label": "Employment Support" },
+          { "value": "50+", "label": "Self Help Groups" }
+        ]
+      }
+    },
+    {
+      "type": "seva-kendra-rasoi-ghar",
+      "name": "Rasoi Ghar",
+      "sortOrder": 9,
+      "isActive": true,
+      "content": {
+        "miniTitle": "Rasoi Ghar",
+        "heading": "Serving Nutritious Meals With Love & Care",
+        "text1": "Our Rasoi Ghar initiative is dedicated to providing fresh, hygienic, and nutritious meals to underprivileged families, homeless individuals, senior citizens, and daily wage workers. Through this initiative, we aim to fight hunger and spread humanity across communities.",
+        "text2": "Every meal served represents compassion, dignity, and hope for those in need. With the support of volunteers and donors, we continue creating a positive social impact by ensuring that no one sleeps hungry.",
+        "image": "/images/rasoi.jpeg",
+        "features": [
+          { "title": "1000+", "description": "Meals Served Every Month" },
+          { "title": "Daily Support", "description": "Helping Families & Workers" },
+          { "title": "Community Care", "description": "Driven By Humanity & Kindness" }
+        ]
+      }
+    },
+    {
+      "type": "seva-kendra-youth-skill",
+      "name": "Youth Skill Development",
+      "sortOrder": 10,
+      "isActive": true,
+      "content": {
+        "tag": "Youth Skill Development",
+        "heading": "Training & Career Development Programmes",
+        "stats": [
+          { "value": "500+", "label": "Youth Trained" },
+          { "value": "80+", "label": "Skill Workshops" },
+          { "value": "40+", "label": "Training Sessions" },
+          { "value": "100+", "label": "Career Opportunities" }
+        ]
+      }
+    },
+    {
+      "type": "seva-kendra-donation",
+      "name": "Donation CTA",
+      "sortOrder": 11,
+      "isActive": true,
+      "content": {
+        "tag": "Mission Sevak Niwas",
+        "title": "Providing Shelter & Support",
+        "description": "Your donation provides housing, care and dignity to visually impaired individuals and families in need."
+      }
+    },
+    {
+      "type": "seva-kendra-testimonials",
+      "name": "Testimonials",
+      "sortOrder": 12,
+      "isActive": true,
+      "content": {
+        "heading": "What Our Donors Say",
+        "items": [
+          { "quote": "Being Sevak is doing incredible work for visually impaired and needy families. Proud to support this mission.", "name": "Riya Sharma" },
+          { "quote": "Transparent work, genuine impact, and a wonderful team dedicated to helping people with dignity.", "name": "Rahul Mehta" },
+          { "quote": "Every donation creates real change. Their food distribution drives truly touch lives.", "name": "Anjali Verma" }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "slug": "donate",
+  "title": "Choose a Project, Make an Impact",
+  "metaTitle": "Donate | Being Sevak Foundation",
+  "metaDescription": "Support Being Sevak Charitable Trust's life-changing programs across India. Select a project and contribute to a brighter future.",
+  "template": "default",
+  "sortOrder": 60,
+  "isHome": false,
+  "sections": [
+    {
+      "type": "donate-hero",
+      "name": "Donation Hero",
+      "sortOrder": 1,
+      "isActive": true,
+      "content": {
+        "tag": "Support Our Mission",
+        "headingLine1": "Choose a Project,",
+        "headingLine2": "Make an Impact",
+        "description": "Your generosity fuels life-changing programs across India. Select a project below and contribute to a brighter future.",
+        "image": "/images/bs.png",
+        "stats": [
+          { "value": "7+", "label": "Active Missions" },
+          { "value": "1000+", "label": "Lives Impacted" }
+        ]
+      }
+    },
+    {
+      "type": "donate-projects",
+      "name": "Projects Header & Missions",
+      "sortOrder": 2,
+      "isActive": true,
+      "content": {
+        "tag": "WHAT WE DO",
+        "heading": "Our Projects",
+        "description": "Click on a mission to learn more and donate directly.",
+        "items": [
+          { "id": "tab-annapurna", "label": "Mission Annapurna", "icon": "fa-utensils", "title": "Mission Annapurna", "desc": "Providing nutritious meals and dry ration kits to underprivileged children and visually impaired individuals across Mumbai.", "src": "../donations/donation-inline.html" },
+          { "id": "tab-vidya", "label": "Mission Vidya", "icon": "fa-graduation-cap", "title": "Mission Vidya", "desc": "Quality education support for underprivileged children, school dropouts, and visually impaired students through scholarships and supplies.", "src": "../donations/donation-vidhya.html" },
+          { "id": "tab-aurat", "label": "Mission Aurat", "icon": "fa-fist-raised", "title": "Mission Aurat", "desc": "Empowering women through education, skill development, legal awareness, health support, and self-help groups.", "src": "../donations/donation-aurat.html" },
+          { "id": "tab-bezubaan", "label": "Mission Bezubaan", "icon": "fa-paw", "title": "Mission Bezubaan", "desc": "Animal welfare initiatives including rescue, medical care, feeding programs, and shelter for stray and abandoned animals.", "src": "../donations/donation-bezubaan.html" },
+          { "id": "tab-atmanirbhar", "label": "Mission Atmanirbhar", "icon": "fa-hand-holding-heart", "title": "Mission Atmanirbhar", "desc": "Skill development and vocational training for visually impaired individuals, widows, and underprivileged youth to achieve self-reliance.", "src": "../donations/donation-atmanirbhar.html" },
+          { "id": "tab-arogya", "label": "Mission Arogya", "icon": "fa-heartbeat", "title": "Mission Arogya", "desc": "Healthcare initiatives including medical camps, eye check-ups, health awareness drives, and medicine distribution for the needy.", "src": "../donations/donation-arogya.html" },
+          { "id": "tab-eco", "label": "Mission Eco Warriors", "icon": "fa-leaf", "title": "Mission Eco Warriors", "desc": "Environmental conservation projects including tree plantation drives, beach clean-ups, recycling awareness, and sustainability education.", "src": "../donations/donation-ecowarriors.html" },
+          { "id": "tab-sevaknivas", "label": "Sevak Nivas", "icon": "fa-home", "title": "Sevak Nivas", "desc": "Providing shelter, care, skill development, and independent living opportunities for visually impaired students through 12 dedicated facilities.", "src": "../donations/donation-sevaknivas.html" }
+        ]
+      }
+    },
+    {
+      "type": "donate-tax",
+      "name": "Tax Exemption Strip",
+      "sortOrder": 3,
+      "isActive": true,
+      "content": {
+        "lead": "Get",
+        "highlight1": "50% Exemption",
+        "middle": "on your donation under",
+        "highlight2": "Section 80G of Income Tax Act 1961"
+      }
+    }
+  ]
+}

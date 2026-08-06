@@ -186,7 +186,9 @@ const WEBSITE_ENTITY_RESOURCES = [
 ];
 const WEBSITE_USER_PERMISSIONS = permissionCodes(PERMISSION_RESOURCES, (action, resource) => {
   if (resource === 'dashboard') return action === 'view';
-  if (action === 'delete') return false;
+  if (action === 'delete') {
+    return WEBSITE_CMS_RESOURCES.includes(resource) || WEBSITE_ENTITY_RESOURCES.includes(resource);
+  }
   if (WEBSITE_CMS_RESOURCES.includes(resource) || WEBSITE_ENTITY_RESOURCES.includes(resource)) {
     return true;
   }

@@ -1,6 +1,9 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { cmsService } from '../services/cms'
+import { websiteService } from '../services/website'
+import { isLiveMode } from '../services/api'
 import type { CmsPage, PageSection, SectionType } from '../types'
+import { SectionFieldEditor } from '../components/website/SectionFieldEditor'
 import { uuid } from '../utils/uuid'
 import { useToast } from '../context/ToastContext'
 import { PageHeader } from '../components/ui/PageHeader'
@@ -125,6 +128,50 @@ export function HomepageEditorPage() {
 
   const load = useCallback(async () => {
     setLoading(true)
+    if (isLiveMode()) {
+      try {
+        const content = await websiteService.getContentTree()
+        const webHome =
+          content.pages.find((item) => item.isHome) ??
+          content.pages.find((item) => item.slug === 'home') ??
+          content.pages[0]
+        if (webHome) {
+          const home: CmsPage = {
+            id: webHome.id,
+            slug: webHome.slug,
+            title: webHome.title,
+            metaTitle: webHome.metaTitle,
+            metaDescription: webHome.metaDescription,
+            status: webHome.status as CmsPage['status'],
+            template: webHome.template,
+            sortOrder: webHome.sortOrder,
+            isHome: webHome.isHome,
+            author: '',
+            createdAt: webHome.createdAt,
+            updatedAt: webHome.updatedAt,
+            sections: webHome.sections.map((section) => ({
+              id: section.id,
+              pageId: webHome.id,
+              type: section.component,
+              name: section.sectionName,
+              sortOrder: section.displayOrder,
+              isActive: section.status === 'ACTIVE',
+              settings: section.settings ?? {},
+              content: section.content ?? {},
+              fields: section.fields,
+              createdAt: section.createdAt,
+              updatedAt: section.updatedAt,
+            })),
+          }
+          setPage(home)
+          setSelectedId((current) => current ?? home.sections[0]?.id ?? null)
+          setLoading(false)
+          return
+        }
+      } catch {
+        /* fall through to store */
+      }
+    }
     const pages = await cmsService.allPages()
     const home = pages.find((item) => item.isHome) ?? pages.find((item) => item.slug === 'home') ?? pages[0]
     setPage(home ?? null)
@@ -165,13 +212,28 @@ export function HomepageEditorPage() {
     )
   }
 
-  const removeSection = (section: PageSection) => {
+  const removeSection = async (section: PageSection) => {
+    setDeleteTarget(null)
+    if (page && isLiveMode()) {
+      try {
+        await websiteService.deleteSection(page.slug, section.type)
+        patchPage(
+          sections
+            .filter((item) => item.id !== section.id)
+            .map((item, index) => ({ ...item, sortOrder: index + 1 })),
+        )
+        if (selectedId === section.id) setSelectedId(null)
+        toast('Section removed and published', { variant: 'info' })
+      } catch {
+        toast('Remove failed', { variant: 'error', description: 'The section could not be deleted.' })
+      }
+      return
+    }
     patchPage(
       sections
         .filter((item) => item.id !== section.id)
         .map((item, index) => ({ ...item, sortOrder: index + 1 })),
     )
-    setDeleteTarget(null)
     if (selectedId === section.id) setSelectedId(null)
     toast('Section removed', { variant: 'info' })
   }
@@ -200,7 +262,7 @@ export function HomepageEditorPage() {
     patchPage(sections.map((item) => (item.id === id ? { ...item, ...patch } : item)))
   }
 
-  const updateContent = (key: string, value: string) => {
+  const updateContent = (key: string, value: unknown) => {
     if (!selected) return
     updateSection(selected.id, { content: { ...selected.content, [key]: value } })
   }
@@ -214,8 +276,29 @@ export function HomepageEditorPage() {
     if (!page) return
     setSaving(true)
     try {
-      await cmsService.saveSections(page.id, sections)
-      toast('Homepage saved', { variant: 'success', description: 'Your latest changes are stored.' })
+      if (isLiveMode()) {
+        for (const section of sections) {
+          await websiteService.saveSection(page.slug, section.type, {
+            name: section.name,
+            isActive: section.isActive,
+            settings: section.settings,
+            content: section.content,
+          })
+        }
+        await websiteService.reorderSections(
+          page.slug,
+          sections.map((section) => section.type),
+        )
+        await load()
+        toast('Homepage saved & published', {
+          variant: 'success',
+          description: 'The live website now reflects your changes.',
+        })
+      } else {
+        const result = await cmsService.saveSections(page.id, sections)
+        if (result) setPage(result)
+        toast('Homepage saved', { variant: 'success', description: 'Your latest changes are stored.' })
+      }
     } finally {
       setSaving(false)
     }
@@ -305,11 +388,11 @@ export function HomepageEditorPage() {
                               isSelected ? 'bg-brand text-white' : 'bg-brand-soft text-brand'
                             }`}
                           >
-                            {SECTION_ICONS[section.type]}
+                            {SECTION_ICONS[section.type] ?? <LayersIcon className="h-4 w-4" />}
                           </span>
                           <span className="min-w-0">
                             <span className="block truncate text-sm font-semibold text-ink">
-                              {section.name ?? SECTION_TITLES[section.type]}
+                              {section.name ?? SECTION_TITLES[section.type] ?? section.type}
                             </span>
                             <span className="block text-[11px] font-medium uppercase tracking-wide text-faint">
                               {section.type}
@@ -443,38 +526,46 @@ export function HomepageEditorPage() {
                 <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-faint">
                   Content
                 </p>
-                <div className="space-y-3">
-                  {CONTENT_FIELDS[selected.type]?.map((key) =>
-                    key === 'description' ? (
-                      <Field key={key} label={CONTENT_LABELS[key]} htmlFor={`c-${key}`}>
-                        <Textarea
-                          id={`c-${key}`}
-                          rows={3}
-                          value={typeof selected.content[key] === 'string' ? (selected.content[key] as string) : ''}
-                          onChange={(event) => updateContent(key, event.target.value)}
-                        />
-                      </Field>
-                    ) : key === 'html' ? (
-                      <Field key={key} label="HTML source" htmlFor="c-html" hint="Rendered inside a code block in preview">
-                        <Textarea
-                          id="c-html"
-                          rows={5}
-                          value={typeof selected.content[key] === 'string' ? (selected.content[key] as string) : ''}
-                          onChange={(event) => updateContent(key, event.target.value)}
-                          className="font-mono text-xs"
-                        />
-                      </Field>
-                    ) : (
-                      <Field key={key} label={CONTENT_LABELS[key] ?? key} htmlFor={`c-${key}`}>
-                        <Input
-                          id={`c-${key}`}
-                          value={typeof selected.content[key] === 'string' ? (selected.content[key] as string) : ''}
-                          onChange={(event) => updateContent(key, event.target.value)}
-                        />
-                      </Field>
-                    ),
-                  )}
-                </div>
+                {selected.fields && selected.fields.length > 0 ? (
+                  <SectionFieldEditor
+                    fields={selected.fields}
+                    content={selected.content}
+                    onChange={updateContent}
+                  />
+                ) : (
+                  <div className="space-y-3">
+                    {CONTENT_FIELDS[selected.type]?.map((key) =>
+                      key === 'description' ? (
+                        <Field key={key} label={CONTENT_LABELS[key]} htmlFor={`c-${key}`}>
+                          <Textarea
+                            id={`c-${key}`}
+                            rows={3}
+                            value={typeof selected.content[key] === 'string' ? (selected.content[key] as string) : ''}
+                            onChange={(event) => updateContent(key, event.target.value)}
+                          />
+                        </Field>
+                      ) : key === 'html' ? (
+                        <Field key={key} label="HTML source" htmlFor="c-html" hint="Rendered inside a code block in preview">
+                          <Textarea
+                            id="c-html"
+                            rows={5}
+                            value={typeof selected.content[key] === 'string' ? (selected.content[key] as string) : ''}
+                            onChange={(event) => updateContent(key, event.target.value)}
+                            className="font-mono text-xs"
+                          />
+                        </Field>
+                      ) : (
+                        <Field key={key} label={CONTENT_LABELS[key] ?? key} htmlFor={`c-${key}`}>
+                          <Input
+                            id={`c-${key}`}
+                            value={typeof selected.content[key] === 'string' ? (selected.content[key] as string) : ''}
+                            onChange={(event) => updateContent(key, event.target.value)}
+                          />
+                        </Field>
+                      ),
+                    )}
+                  </div>
+                )}
               </div>
 
               <div>
@@ -574,7 +665,7 @@ export function HomepageEditorPage() {
         message={`"${deleteTarget?.name ?? 'This section'}" will be removed from your homepage.`}
         confirmLabel="Remove section"
         destructive
-        onConfirm={() => deleteTarget && removeSection(deleteTarget)}
+        onConfirm={() => deleteTarget && void removeSection(deleteTarget)}
         onClose={() => setDeleteTarget(null)}
       />
 

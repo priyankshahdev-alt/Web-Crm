@@ -1,8 +1,43 @@
 import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
+import { usePageContent } from '../hooks/usePageContent';
 
 export default function ImpactBottleCrusher() {
   useEffect(() => { window.scrollTo(0, 0); }, []);
+
+  const content = usePageContent('impact-bottle-crusher');
+
+  const headingTag = content('impact-bottle-crusher-heading', 'tag') ?? 'ENVIRONMENTAL PROGRAM';
+  const headingTitle = content('impact-bottle-crusher-heading', 'heading') ?? 'Bottle Crusher Initiative';
+  const headingText =
+    content('impact-bottle-crusher-heading', 'description') ??
+    'Plastic pollution is one of the most pressing environmental challenges of our time. Through the Bottle Crusher Initiative, Being Sevak Charitable Trust provides bottle crushing machines that reduce plastic waste volume, promote recycling, and create livelihood opportunities for the underprivileged while contributing to a cleaner, greener future.';
+  const mainImage = content('impact-bottle-crusher-heading', 'image') ?? '/images/g66.png';
+  const cards =
+    content('impact-bottle-crusher-cards', 'items') ?? [
+      { title: 'Waste Reduction', description: 'Reducing plastic waste volume by up to 90% for easier recycling and disposal.' },
+      { title: 'Livelihood Generation', description: 'Creating income opportunities for beneficiaries through plastic collection and recycling.' },
+      { title: 'Environmental Impact', description: 'Contributing to cleaner surroundings and a healthier environment for communities.' },
+      { title: 'Community Awareness', description: 'Educating communities about the importance of waste management and recycling.' },
+    ];
+  const storyTag = content('impact-bottle-crusher-impact', 'tag') ?? 'SUCCESS STORY';
+  const storyTitle = content('impact-bottle-crusher-impact', 'heading') ?? 'Turning Waste into Opportunity';
+  const storyText =
+    content('impact-bottle-crusher-impact', 'text') ??
+    'Plastic bottles that would otherwise pollute our streets and waterways are now being crushed, recycled, and converted into valuable resources. Through this initiative, beneficiaries have found a sustainable livelihood while contributing to environmental conservation, proving that social impact and environmental responsibility can go hand in hand.';
+  const stats =
+    content('impact-bottle-crusher-impact', 'stats') ?? [
+      { value: '500+', label: 'Tons Recycled' },
+      { value: '100+', label: 'Beneficiaries' },
+      { value: '100%', label: 'Eco-Friendly' },
+    ];
+  const galleryTag = content('impact-bottle-crusher-gallery', 'tag') ?? 'PROJECT GALLERY';
+  const galleryTitle = content('impact-bottle-crusher-gallery', 'heading') ?? 'Moments of Impact';
+  const galleryText =
+    content('impact-bottle-crusher-gallery', 'description') ??
+    'Explore glimpses of our initiatives, community outreach programs, and the positive impact created through collective efforts.';
+  const galleryImages =
+    content('impact-bottle-crusher-gallery', 'images') ?? ['/images/g67.png', '/images/g68.png', '/images/g69.png'];
 
   const css = `
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -64,69 +99,38 @@ export default function ImpactBottleCrusher() {
       <section className="crusher-section">
         <div className="crusher-container">
           <div className="crusher-heading">
-            <span className="crusher-tag">ENVIRONMENTAL PROGRAM</span>
-            <h2>Bottle Crusher Initiative</h2>
-            <p>
-              Plastic pollution is one of the most pressing environmental
-              challenges of our time. Through the Bottle Crusher Initiative,
-              Being Sevak Charitable Trust provides bottle crushing machines
-              that reduce plastic waste volume, promote recycling, and create
-              livelihood opportunities for the underprivileged while
-              contributing to a cleaner, greener future.
-            </p>
+            <span className="crusher-tag">{headingTag}</span>
+            <h2>{headingTitle}</h2>
+            <p>{headingText}</p>
           </div>
 
           <div className="crusher-grid">
             <div className="crusher-image">
-              <img src="/images/g66.png" alt="Bottle Crusher Initiative" />
+              <img src={mainImage} alt="Bottle Crusher Initiative" />
             </div>
             <div className="crusher-content">
-              <div className="crusher-card">
-                <h3>Waste Reduction</h3>
-                <p>Reducing plastic waste volume by up to 90% for easier recycling and disposal.</p>
-              </div>
-              <div className="crusher-card">
-                <h3>Livelihood Generation</h3>
-                <p>Creating income opportunities for beneficiaries through plastic collection and recycling.</p>
-              </div>
-              <div className="crusher-card">
-                <h3>Environmental Impact</h3>
-                <p>Contributing to cleaner surroundings and a healthier environment for communities.</p>
-              </div>
-              <div className="crusher-card">
-                <h3>Community Awareness</h3>
-                <p>Educating communities about the importance of waste management and recycling.</p>
-              </div>
+              {cards.map((card, i) => (
+                <div className="crusher-card" key={i}>
+                  <h3>{card.title}</h3>
+                  <p>{card.description}</p>
+                </div>
+              ))}
             </div>
           </div>
 
           <div className="crusher-impact">
             <div className="crusher-story">
-              <span>SUCCESS STORY</span>
-              <h3>Turning Waste into Opportunity</h3>
-              <p>
-                Plastic bottles that would otherwise pollute our streets
-                and waterways are now being crushed, recycled, and
-                converted into valuable resources. Through this initiative,
-                beneficiaries have found a sustainable livelihood while
-                contributing to environmental conservation, proving that
-                social impact and environmental responsibility can go
-                hand in hand.
-              </p>
+              <span>{storyTag}</span>
+              <h3>{storyTitle}</h3>
+              <p>{storyText}</p>
             </div>
             <div className="crusher-stats">
-              <div className="crusher-box">
-                <h2>500+</h2>
-                <span>Tons Recycled</span>
-              </div>
-              <div className="crusher-box">
-                <h2>100+</h2>
-                <span>Beneficiaries</span>
-              </div>
-              <div className="crusher-box">
-                <h2>100%</h2>
-                <span>Eco-Friendly</span>
-              </div>
+              {stats.map((s, i) => (
+                <div className="crusher-box" key={i}>
+                  <h2>{s.value}</h2>
+                  <span>{s.label}</span>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -134,14 +138,14 @@ export default function ImpactBottleCrusher() {
 
       <section className="shital-gallery-section">
         <div className="shital-gallery-heading">
-          <span>PROJECT GALLERY</span>
-          <h2>Moments of Impact</h2>
-          <p>Explore glimpses of our initiatives, community outreach programs, and the positive impact created through collective efforts.</p>
+          <span>{galleryTag}</span>
+          <h2>{galleryTitle}</h2>
+          <p>{galleryText}</p>
         </div>
         <div className="shital-gallery">
-          <div className="shital-gallery-item"><img src="/images/g67.png" alt="" /></div>
-          <div className="shital-gallery-item"><img src="/images/g68.png" alt="" /></div>
-          <div className="shital-gallery-item"><img src="/images/g69.png" alt="" /></div>
+          {galleryImages.map((src, i) => (
+            <div className="shital-gallery-item" key={i}><img src={src} alt="" /></div>
+          ))}
         </div>
       </section>
     </>

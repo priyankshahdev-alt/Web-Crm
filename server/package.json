@@ -16,6 +16,7 @@
     "db:deploy": "prisma migrate deploy",
     "db:push": "prisma db push",
     "db:seed": "prisma db seed",
+    "db:seed:website": "tsx prisma/seed-website.ts",
     "vercel-build": "prisma generate && npm run build"
   },
   "prisma": {

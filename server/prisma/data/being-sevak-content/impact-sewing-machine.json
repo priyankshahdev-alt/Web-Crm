@@ -1,0 +1,65 @@
+{
+  "slug": "impact-sewing-machine",
+  "title": "Sewing Machine",
+  "metaTitle": "Sewing Machine | Being Sevak Foundation",
+  "metaDescription": "Being Sevak Charitable Trust provides sewing machines to visually impaired and economically challenged families, helping them create sustainable livelihoods and financial independence.",
+  "template": "default",
+  "sortOrder": 43,
+  "isHome": false,
+  "sections": [
+    {
+      "type": "impact-sewing-machine-heading",
+      "name": "Sewing Machine Header",
+      "sortOrder": 1,
+      "isActive": true,
+      "content": {
+        "tag": "WOMEN EMPOWERMENT PROGRAM",
+        "heading": "Sewing Machine ",
+        "description": "A sewing machine is more than a tool — it is a pathway to dignity, financial independence, and a brighter future. Through this initiative, Being Sevak Charitable Trust provides sewing machines to visually impaired and economically challenged families, helping them create sustainable livelihoods and support their households with confidence.",
+        "image": "/images/g94.webp"
+      }
+    },
+    {
+      "type": "impact-sewing-machine-cards",
+      "name": "Program Highlights",
+      "sortOrder": 2,
+      "isActive": true,
+      "content": {
+        "items": [
+          { "title": "Income Generation", "description": "Enables beneficiaries and their family members to earn a stable livelihood through tailoring and stitching work." },
+          { "title": "Women Empowerment", "description": "Creates opportunities for women to work from home and become financially independent." },
+          { "title": "Skill Utilization", "description": "Supports skilled individuals by providing the tools needed to transform talent into income." },
+          { "title": "Family Support", "description": "Strengthens household income and improves the quality of life for entire families." }
+        ]
+      }
+    },
+    {
+      "type": "impact-sewing-machine-impact",
+      "name": "Success Story & Stats",
+      "sortOrder": 3,
+      "isActive": true,
+      "content": {
+        "tag": "IMPACT STORY",
+        "heading": "Transforming Lives Through Opportunity",
+        "text": "Arvind Vyas, a visually impaired member facing financial challenges, received a sewing machine through Being Sevak Charitable Trust. This support empowered his wife to start tailoring work and contribute towards the family's income. What seemed like a simple machine became a symbol of hope, resilience, and self-reliance for their family.",
+        "stats": [
+          { "value": "100+", "label": "Families Supported" },
+          { "value": "100%", "label": "Livelihood Focused" },
+          { "value": "24/7", "label": "Income Opportunity" }
+        ]
+      }
+    },
+    {
+      "type": "impact-sewing-machine-gallery",
+      "name": "Project Gallery",
+      "sortOrder": 4,
+      "isActive": true,
+      "content": {
+        "tag": "PROJECT GALLERY",
+        "heading": "Moments of Impact",
+        "description": "Explore glimpses of our initiatives, community outreach programs, and the positive impact created through collective efforts.",
+        "images": ["/images/g91.webp", "/images/g92.webp", "/images/g93.webp"]
+      }
+    }
+  ]
+}

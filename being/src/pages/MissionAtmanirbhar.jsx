@@ -1,8 +1,69 @@
 import { Link } from 'react-router-dom';
 import { useRef, useEffect } from 'react';
+import { usePageContent } from '../hooks/usePageContent';
 
 const MissionAtmanirbhar = () => {
   const iframeRef = useRef(null);
+
+  const content = usePageContent('mission-atmanirbhar');
+
+  const taxTitle = content('mission-atmanirbhar-tax', 'title') ?? 'Mission AtmaNirbhar';
+
+  const heroTag = content('mission-atmanirbhar-hero', 'tag') ?? 'Mission Atma Nirbhar';
+  const heroHeading = content('mission-atmanirbhar-hero', 'heading') ?? 'Building Self Reliant & Empowered Communities';
+  const heroText =
+    content('mission-atmanirbhar-hero', 'description') ??
+    'Atma Nirbhar initiative by Being Sevak focuses on empowering individuals through skills, education, and sustainable livelihood opportunities.';
+  const heroImage = content('mission-atmanirbhar-hero', 'image') ?? '/images/at7.jpeg';
+
+  const aboutTag = content('atmanirbhar-about', 'tag') ?? 'About Initiative';
+  const aboutHeading = content('atmanirbhar-about', 'heading') ?? 'Empowering People For A Better Future';
+  const aboutText =
+    content('atmanirbhar-about', 'text') ??
+    'We support skill development, self employment training and awareness programs that help individuals become financially independent.';
+  const aboutItems =
+    content('atmanirbhar-about', 'items') ?? [
+      { title: 'Skill Development', description: 'Training programs for practical skills.' },
+      { title: 'Employment Support', description: 'Helping people find sustainable jobs.' },
+      { title: 'Entrepreneurship', description: 'Encouraging small business creation.' },
+      { title: 'Awareness', description: 'Spreading financial literacy.' },
+    ];
+  const aboutImage = content('atmanirbhar-about', 'image') ?? '/images/at6.jpg';
+
+  const impactStats =
+    content('atmanirbhar-impact', 'stats') ?? [
+      { value: '200+', label: 'Training Programs' },
+      { value: '50+', label: 'Communities' },
+      { value: '5K+', label: 'Lives Improved' },
+    ];
+
+  const galleryTag = content('atmanirbhar-gallery', 'tag') ?? 'Program Highlights';
+  const galleryHeading = content('atmanirbhar-gallery', 'heading') ?? 'Moments Of Empowerment';
+  const galleryText =
+    content('atmanirbhar-gallery', 'text') ?? 'Empowering women with opportunity, confidence, and hope - Mission Atmanirbhar';
+  const galleryItems =
+    content('atmanirbhar-gallery', 'items') ?? [
+      { src: '/images/at1.jpg', title: 'Awareness Drive', className: 'gallery-item large' },
+      { src: '/images/wheelchairman.jpg', title: 'Wheelchair Support', className: 'gallery-item' },
+      { src: '/images/at3.jpeg', title: 'Skill Training', className: 'gallery-item' },
+      { src: '/images/at8.jpeg', title: 'Community Care', className: 'gallery-item' },
+      { src: '/images/at5.jpg', title: 'Empowering Together', className: 'gallery-item' },
+    ];
+
+  const donationTag = content('atmanirbhar-donation', 'tag') ?? 'Mission Atmanirbhar';
+  const donationUrl = content('atmanirbhar-donation', 'donationUrl') ?? '/donations/donation-inline-atmanirbhar.html';
+  const donationTitle = content('atmanirbhar-donation', 'title') ?? 'Empowering Lives Through Self-Reliance';
+  const donationText =
+    content('atmanirbhar-donation', 'description') ??
+    'Help individuals and families become self-reliant through skill development, livelihood support, education, and sustainable opportunities for a brighter future.';
+
+  const testimonialHeading = content('atmanirbhar-testimonials', 'heading') ?? 'What Our Donors Say';
+  const testimonials =
+    content('atmanirbhar-testimonials', 'items') ?? [
+      { quote: 'Being Sevak is doing incredible work for visually impaired and needy families. Proud to support this mission.', name: 'Riya Sharma' },
+      { quote: 'Transparent work, genuine impact, and a wonderful team dedicated to helping people with dignity.', name: 'Rahul Mehta' },
+      { quote: 'Every donation creates real change. Their food distribution drives truly touch lives.', name: 'Anjali Verma' },
+    ];
 
   useEffect(() => {
     function handleMessage(e) {
@@ -211,21 +272,21 @@ const MissionAtmanirbhar = () => {
 
       <div className="mission-atmanirbhar">
         <section className="tax-box">
-          <h1>Mission AtmaNirbhar</h1>
+          <h1>{taxTitle}</h1>
         </section>
 
         <section className="hero-section">
           <div className="hero-content">
             <div className="hero-left">
-              <span className="tag">Mission Atma Nirbhar</span>
-              <h1>Building Self Reliant &amp; Empowered Communities</h1>
-              <p>Atma Nirbhar initiative by Being Sevak focuses on empowering individuals through skills, education, and sustainable livelihood opportunities.</p>
+              <span className="tag">{heroTag}</span>
+              <h1>{heroHeading}</h1>
+              <p>{heroText}</p>
               <div className="hero-buttons">
                 <a href="#donate" className="primary-btn">Support The Mission</a>
               </div>
             </div>
             <div className="hero-right">
-              <img src="/images/at7.jpeg" alt="Atmanirbhar" />
+              <img src={heroImage} alt="Atmanirbhar" />
             </div>
           </div>
         </section>
@@ -233,7 +294,7 @@ const MissionAtmanirbhar = () => {
         <div id="donate" style={{ width: '100%', background: '#f4f7fb', padding: '0', overflow: 'hidden', marginBottom: '0', position: 'relative', zIndex: 10, isolation: 'isolate' }}>
           <iframe
             ref={iframeRef}
-            src="/donations/donation-inline-atmanirbhar.html"
+            src={donationUrl}
             style={{ width: '100%', height: '650px', border: 'none', display: 'block' }}
             title="Donate to Mission Atmanirbhar"
           />
@@ -241,71 +302,53 @@ const MissionAtmanirbhar = () => {
 
         <section className="about-section" id="about">
           <div className="about-image">
-            <img src="/images/at6.jpg" alt="Atmanirbhar" />
+            <img src={aboutImage} alt="Atmanirbhar" />
           </div>
           <div className="about-content">
-            <span>About Initiative</span>
-            <h2>Empowering People For A Better Future</h2>
-            <p>We support skill development, self employment training and awareness programs that help individuals become financially independent.</p>
+            <span>{aboutTag}</span>
+            <h2>{aboutHeading}</h2>
+            <p>{aboutText}</p>
             <div className="about-grid">
-              <div className="about-box">
-                <h3>Skill Development</h3>
-                <p>Training programs for practical skills.</p>
-              </div>
-              <div className="about-box">
-                <h3>Employment Support</h3>
-                <p>Helping people find sustainable jobs.</p>
-              </div>
-              <div className="about-box">
-                <h3>Entrepreneurship</h3>
-                <p>Encouraging small business creation.</p>
-              </div>
-              <div className="about-box">
-                <h3>Awareness</h3>
-                <p>Spreading financial literacy.</p>
-              </div>
+              {aboutItems.map((item, i) => (
+                <div className="about-box" key={i}>
+                  <h3>{item.title}</h3>
+                  <p>{item.description}</p>
+                </div>
+              ))}
             </div>
           </div>
         </section>
 
         <section className="impact-section" id="impact">
           <div className="impact-wrapper">
-            <div className="impact-card">
-              <h3>200+</h3>
-              <p>Training Programs</p>
-            </div>
-            <div className="impact-card">
-              <h3>50+</h3>
-              <p>Communities</p>
-            </div>
-            <div className="impact-card">
-              <h3>5K+</h3>
-              <p>Lives Improved</p>
-            </div>
+            {impactStats.map((s, i) => (
+              <div className="impact-card" key={i}>
+                <h3>{s.value}</h3>
+                <p>{s.label}</p>
+              </div>
+            ))}
           </div>
         </section>
 
         <section className="gallery-section" id="gallery">
           <div className="gallery-title">
-            <span>Program Highlights</span>
-            <h2>Moments Of Empowerment</h2>
-            <p>Empowering women with opportunity, confidence, and hope - Mission Atmanirbhar</p>
+            <span>{galleryTag}</span>
+            <h2>{galleryHeading}</h2>
+            <p>{galleryText}</p>
           </div>
           <div className="gallery-grid">
-            <div className="gallery-item large"><img src="/images/at1.jpg" alt="" /><div className="gallery-overlay"><h3>Awareness Drive</h3></div></div>
-            <div className="gallery-item"><img src="/images/wheelchairman.jpg" alt="" /><div className="gallery-overlay"><h3>Wheelchair Support</h3></div></div>
-            <div className="gallery-item"><img src="/images/at3.jpeg" alt="" /><div className="gallery-overlay"><h3>Skill Training</h3></div></div>
-            <div className="gallery-item"><img src="/images/at8.jpeg" alt="" /><div className="gallery-overlay"><h3>Community Care</h3></div></div>
-            <div className="gallery-item"><img src="/images/at5.jpg" alt="" /><div className="gallery-overlay"><h3>Empowering Together</h3></div></div>
+            {galleryItems.map((g, i) => (
+              <div className={g.className} key={i}><img src={g.src} alt="" /><div className="gallery-overlay"><h3>{g.title}</h3></div></div>
+            ))}
           </div>
         </section>
 
         <section className="sevak-donation">
           <div className="sevak-donation-content">
             <div className="sevak-left">
-              <span className="sevak-tag">Mission Atmanirbhar</span>
-              <h2 className="sevak-title">Empowering Lives Through Self-Reliance</h2>
-              <p className="sevak-desc">Help individuals and families become self-reliant through skill development, livelihood support, education, and sustainable opportunities for a brighter future.</p>
+              <span className="sevak-tag">{donationTag}</span>
+              <h2 className="sevak-title">{donationTitle}</h2>
+              <p className="sevak-desc">{donationText}</p>
             </div>
             <div className="sevak-right">
               <a href="#donate" className="sevak-btn">Donate Now</a>
@@ -315,21 +358,15 @@ const MissionAtmanirbhar = () => {
 
         <section className="testimonial-section">
           <div className="section-header">
-            <h2>What Our Donors Say</h2>
+            <h2>{testimonialHeading}</h2>
           </div>
           <div className="testimonial-grid">
-            <div className="testimonial-card">
-              <p>Being Sevak is doing incredible work for visually impaired and needy families. Proud to support this mission.</p>
-              <h4>Riya Sharma</h4>
-            </div>
-            <div className="testimonial-card">
-              <p>Transparent work, genuine impact, and a wonderful team dedicated to helping people with dignity.</p>
-              <h4>Rahul Mehta</h4>
-            </div>
-            <div className="testimonial-card">
-              <p>Every donation creates real change. Their food distribution drives truly touch lives.</p>
-              <h4>Anjali Verma</h4>
-            </div>
+            {testimonials.map((t, i) => (
+              <div className="testimonial-card" key={i}>
+                <p>{t.quote}</p>
+                <h4>{t.name}</h4>
+              </div>
+            ))}
           </div>
         </section>
 

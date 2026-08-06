@@ -1,6 +1,77 @@
 import { useEffect } from 'react';
+import { useSite } from '../context/SiteContext';
+import { usePageContent } from '../hooks/usePageContent';
 
 const AboutBSCT = () => {
+  const content = usePageContent('about');
+
+  const { getSetting, getSection } = useSite();
+  const storySection = getSection('about', 'story');
+  const storyParagraphs = (storySection?.content?.paragraphs || []).filter(
+    (p) => p && p.trim(),
+  );
+  const aboutDesc =
+    storyParagraphs.join(' ') || getSetting('site.description', '');
+  const pageTitle = content('about-title', 'heading') ?? 'About BSCT';
+
+  const heroTag = content('about-hero', 'tag') ?? 'BEING SEVAK CHARITABLE TRUST';
+  const heroHeading = content('about-hero', 'heading') ?? 'Serving Society';
+  const heroHighlight = content('about-hero', 'highlight') ?? 'Compassion & Dignity';
+  const heroCard1Value = content('about-hero', 'card1Value') ?? '10+';
+  const heroCard1Label = content('about-hero', 'card1Label') ?? 'Years of Service';
+  const heroCard2Value = content('about-hero', 'card2Value') ?? '7';
+  const heroCard2Label = content('about-hero', 'card2Label') ?? 'Active Missions';
+  const heroImage = content('about-hero', 'image') ?? '/images/aboutus1.jpeg';
+
+  const missionLabel = content('about-mission', 'label') ?? 'ABOUT US';
+  const missionTitle = content('about-mission', 'missionTitle') ?? 'Our Mission in';
+  const missionHighlight = content('about-mission', 'missionHighlight') ?? 'Action';
+  const missionText =
+    content('about-mission', 'missionText') ??
+    'To empower underprivileged communities, specially-abled individuals, women, and children through education, healthcare, skill development, livelihood support, and social welfare initiatives. Being Sevak Charitable Trust is committed Is to create opportunities that promote dignity, independence, equality, and sustainable community development.';
+  const visionTitle = content('about-mission', 'visionTitle') ?? 'Our Vision in';
+  const visionHighlight = content('about-mission', 'visionHighlight') ?? 'Action';
+  const visionText =
+    content('about-mission', 'visionText') ??
+    'To build an inclusive and compassionate society where every individual, regardless of their social or economic background, has equal access to education, healthcare, livelihood opportunities, and the right to live with dignity, confidence, and self-reliance.';
+  const aboutImage = content('about-mission', 'image') ?? '/images/aboutus2.jpeg';
+
+  const valuesTag = content('about-values', 'tag') ?? 'OUR VALUES';
+  const valuesHeading = content('about-values', 'heading') ?? 'What Drives Us';
+  const values =
+    content('about-values', 'items') ?? [
+      { icon: 'fa-heart', title: 'Accountability', desc: 'We take responsibility for every action and initiative undertaken for community welfare.' },
+      { icon: 'fa-hand-holding-heart', title: 'Compassion & Service', desc: 'We are committed to selfless service and to uplift lives with empathy, care, and dignity.' },
+      { icon: 'fa-graduation-cap', title: 'Leadership', desc: 'We inspire positive change through dedicated social leadership and community engagement.' },
+      { icon: 'fa-globe-asia', title: 'Teamwork', desc: 'We work together with volunteers, partners, and communities to create a greater social impact.' },
+      { icon: 'fa-globe-asia', title: 'Innovation', desc: 'We encourage creative and sustainable solutions to address social challenges effectively.' },
+    ];
+
+  const stats =
+    content('about-stats', 'items') ?? [
+      { icon: 'fa-book-open', num: '195000+', label: 'Vidhya Kits' },
+      { icon: 'fa-bread-slice', num: '180000+', label: 'Mid-Day Meal' },
+      { icon: 'fa-boxes-stacked', num: '650000+', label: 'Annapurna Kits' },
+      { icon: 'fa-kit-medical', num: '100000+', label: 'Covid-19 Kits' },
+      { icon: 'fa-plus-circle', num: '2500+', label: 'Medical Relief' },
+      { icon: 'fa-eye', num: '40000+', label: 'Eye Care' },
+    ];
+
+  const testimonialsTag = content('about-testimonials', 'tag') ?? 'TESTIMONIALS';
+  const testimonialsHeading = content('about-testimonials', 'heading') ?? 'What People Say';
+  const testimonials =
+    content('about-testimonials', 'items') ?? [
+      { quote: 'Being Sevak has transformed the lives of so many in our community. Their dedication to education and nourishment is truly inspiring.', name: 'Priya Sharma', role: 'Beneficiary, Mission Vidhya' },
+      { quote: 'The mid-day meal program has ensured that no child in our area goes to school hungry. Grateful for their relentless service.', name: 'Rajesh Patel', role: 'Community Leader, Mumbai' },
+      { quote: "As a volunteer, I've witnessed first-hand impact BSCT has on underprivileged families. A truly transparent and dedicated trust.", name: 'Anita Desai', role: 'Volunteer since 2018' },
+    ];
+
+  const taxPart1 = content('about-tax-banner', 'part1') ?? 'Get ';
+  const taxHighlight1 = content('about-tax-banner', 'highlight1') ?? '50% Exemption';
+  const taxPart2 = content('about-tax-banner', 'part2') ?? ' On Your Donation To Us Under ';
+  const taxHighlight2 = content('about-tax-banner', 'highlight2') ?? 'Section 80G';
+  const taxPart3 = content('about-tax-banner', 'part3') ?? ' Of Income Tax Act 1961.';
+
   useEffect(() => {
     const revealEls = document.querySelectorAll('.reveal');
     const revealObserver = new IntersectionObserver((entries) => {
@@ -278,22 +349,20 @@ const AboutBSCT = () => {
       <div className="about-page">
         {/* TAX BOX HEADER */}
         <section className="tax-box">
-          <h1>About BSCT</h1>
+          <h1>{pageTitle}</h1>
         </section>
 
         {/* HERO SECTION */}
         <section className="hero" id="home">
           <div className="hero-content">
-            <span className="tag">BEING SEVAK CHARITABLE TRUST</span>
+            <span className="tag">{heroTag}</span>
             <h1>
-              Serving Society <br />
-              With <span>Compassion & Dignity</span>
+              {heroHeading} <br />
+              With <span>{heroHighlight}</span>
             </h1>
             <p>
-              Being Sevak Charitable Trust is a dedicated non-profit organization working since 2015 with a mission to serve
-              humanity through compassion, care, and inclusive development. Guided by the belief of &quot;Sevak Bano&quot; Become a
-              Servant of Society the organization is committed to create meaningful change in the lives of underprivileged
-              communities, specially-abled individuals, women, and children across India.
+              {aboutDesc ||
+                'Being Sevak Charitable Trust is a dedicated non-profit organization working since 2015 with a mission to serve humanity through compassion, care, and inclusive development. Guided by the belief of "Sevak Bano" Become a Servant of Society the organization is committed to create meaningful change in the lives of underprivileged communities, specially-abled individuals, women, and children across India.'}
             </p>
             <div className="hero-buttons">
               <a href="#about" className="donate-btn">Know More</a>
@@ -302,14 +371,14 @@ const AboutBSCT = () => {
 
           <div className="hero-image">
             <div className="floating-card card1">
-              <h3>10+</h3>
-              <p>Years of Service</p>
+              <h3>{heroCard1Value}</h3>
+              <p>{heroCard1Label}</p>
             </div>
             <div className="floating-card card2">
-              <h3>7</h3>
-              <p>Active Missions</p>
+              <h3>{heroCard2Value}</h3>
+              <p>{heroCard2Label}</p>
             </div>
-            <img src="/images/aboutus1.jpeg" alt="BSCT" />
+            <img src={heroImage} alt="BSCT" />
           </div>
 
           <div className="blur blur1"></div>
@@ -319,23 +388,14 @@ const AboutBSCT = () => {
         {/* ABOUT US 2-COL GRID */}
         <section className="about-grid-wrap reveal" id="about">
           <div className="about-image-col">
-            <img src="/images/aboutus2.jpeg" alt="BSCT Community Work" loading="lazy" />
+            <img src={aboutImage} alt="BSCT Community Work" loading="lazy" />
           </div>
           <div className="about-content-col">
-            <h2 className="section-label section-label-custom">ABOUT US</h2>
-            <h2>Our Mission in <span>Action</span></h2>
-            <p>
-              To empower underprivileged communities, specially-abled individuals, women, and children through education,
-              healthcare, skill development, livelihood support, and social welfare initiatives. Being Sevak Charitable Trust
-              is committed Is to create opportunities that promote dignity, independence, equality, and sustainable community
-              development.
-            </p>
-            <h2>Our Vision in <span>Action</span></h2>
-            <p>
-              To build an inclusive and compassionate society where every individual, regardless of their social or economic
-              background, has equal access to education, healthcare, livelihood opportunities, and the right to live with
-              dignity, confidence, and self-reliance.
-            </p>
+            <h2 className="section-label section-label-custom">{missionLabel}</h2>
+            <h2>{missionTitle} <span>{missionHighlight}</span></h2>
+            <p>{missionText}</p>
+            <h2>{visionTitle} <span>{visionHighlight}</span></h2>
+            <p>{visionText}</p>
           </div>
         </section>
 
@@ -346,19 +406,13 @@ const AboutBSCT = () => {
               <span style={{
                 color: 'var(--cyan)', fontWeight: 700, fontSize: '1.5rem',
                 letterSpacing: '1px', display: 'block', marginBottom: '8px'
-              }}>OUR VALUES</span>
+              }}>{valuesTag}</span>
               <h2 style={{
                 fontFamily: "'Montserrat', sans-serif", fontSize: '2rem', color: 'var(--navy)'
-              }}>What Drives Us</h2>
+              }}>{valuesHeading}</h2>
             </div>
             <div className="values-grid">
-              {[
-                { icon: 'fa-heart', title: 'Accountability', desc: 'We take responsibility for every action and initiative undertaken for community welfare.' },
-                { icon: 'fa-hand-holding-heart', title: 'Compassion & Service', desc: 'We are committed to selfless service and to uplift lives with empathy, care, and dignity.' },
-                { icon: 'fa-graduation-cap', title: 'Leadership', desc: 'We inspire positive change through dedicated social leadership and community engagement.' },
-                { icon: 'fa-globe-asia', title: 'Teamwork', desc: 'We work together with volunteers, partners, and communities to create a greater social impact.' },
-                { icon: 'fa-globe-asia', title: 'Innovation', desc: 'We encourage creative and sustainable solutions to address social challenges effectively.' },
-              ].map((v, i) => (
+              {values.map((v, i) => (
                 <div key={i} className="value-card reveal">
                   <div className="val-icon"><i className={`fas ${v.icon}`}></i></div>
                   <h3>{v.title}</h3>
@@ -372,14 +426,7 @@ const AboutBSCT = () => {
         {/* STATS */}
         <section className="stats-section">
           <div className="stats-grid">
-            {[
-              { icon: 'fa-book-open', num: '195000+', label: 'Vidhya Kits' },
-              { icon: 'fa-bread-slice', num: '180000+', label: 'Mid-Day Meal' },
-              { icon: 'fa-boxes-stacked', num: '650000+', label: 'Annapurna Kits' },
-              { icon: 'fa-kit-medical', num: '100000+', label: 'Covid-19 Kits' },
-              { icon: 'fa-plus-circle', num: '2500+', label: 'Medical Relief' },
-              { icon: 'fa-eye', num: '40000+', label: 'Eye Care' },
-            ].map((s, i) => (
+            {stats.map((s, i) => (
               <div key={i} className="stat-item">
                 <div className="stat-icon"><i className={`fas ${s.icon}`}></i></div>
                 <div className="stat-num">{s.num}</div>
@@ -396,17 +443,13 @@ const AboutBSCT = () => {
               <span style={{
                 color: 'var(--cyan)', fontWeight: 700, fontSize: '1.5rem',
                 letterSpacing: '1px', display: 'block', marginBottom: '8px'
-              }}>TESTIMONIALS</span>
+              }}>{testimonialsTag}</span>
               <h2 style={{
                 fontFamily: "'Montserrat', sans-serif", fontSize: '2rem', color: 'var(--navy)'
-              }}>What People Say</h2>
+              }}>{testimonialsHeading}</h2>
             </div>
             <div className="testimonial-grid">
-              {[
-                { quote: "Being Sevak has transformed the lives of so many in our community. Their dedication to education and nourishment is truly inspiring.", name: 'Priya Sharma', role: 'Beneficiary, Mission Vidhya' },
-                { quote: "The mid-day meal program has ensured that no child in our area goes to school hungry. Grateful for their relentless service.", name: 'Rajesh Patel', role: 'Community Leader, Mumbai' },
-                { quote: "As a volunteer, I've witnessed first-hand impact BSCT has on underprivileged families. A truly transparent and dedicated trust.", name: 'Anita Desai', role: 'Volunteer since 2018' },
-              ].map((t, i) => (
+              {testimonials.map((t, i) => (
                 <div key={i} className="testimonial-card reveal">
                   <div>
                     <div className="quote-icon"><i className="fas fa-quote-left"></i></div>
@@ -424,7 +467,7 @@ const AboutBSCT = () => {
 
         {/* TAX EXEMPTION BANNER */}
         <section className="tax-banner">
-          <p>Get <span>50% Exemption</span> On Your Donation To Us Under <span>Section 80G</span> Of Income Tax Act 1961.</p>
+          <p>{taxPart1}<span>{taxHighlight1}</span>{taxPart2}<span>{taxHighlight2}</span>{taxPart3}</p>
         </section>
       </div>
     </>

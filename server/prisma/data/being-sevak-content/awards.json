@@ -1,0 +1,113 @@
+{
+  "slug": "awards",
+  "title": "Awards & Achievements",
+  "metaTitle": "Awards & Achievements | Being Sevak Foundation",
+  "metaDescription": "Being Sevak Charitable Trust is recognized nationally with awards including Dada Saheb Phalke Award, Mahatma Gandhi Ratna Award, and numerous other accolades for social welfare.",
+  "template": "default",
+  "sortOrder": 6,
+  "isHome": false,
+  "sections": [
+    {
+      "type": "awards-title",
+      "name": "Page Title",
+      "sortOrder": 1,
+      "isActive": true,
+      "content": {
+        "heading": "Awards & Achievements"
+      }
+    },
+    {
+      "type": "awards-hero",
+      "name": "Hero Section",
+      "sortOrder": 2,
+      "isActive": true,
+      "content": {
+        "tag": "BEING SEVAK CHARITABLE TRUST",
+        "heading": "Awards &",
+        "highlight": "Achievements",
+        "description": "Recognized nationally for outstanding contribution to social welfare, community development, and humanitarian service across India.",
+        "card1Value": "17+",
+        "card1Label": "National Awards",
+        "card2Value": "1M+",
+        "card2Label": "Lives Impacted",
+        "image": "/images/awardsAchive.jpg"
+      }
+    },
+    {
+      "type": "awards-list",
+      "name": "Awards Grid",
+      "sortOrder": 3,
+      "isActive": true,
+      "content": {
+        "title": "Our Achievements",
+        "items": [
+          { "image": "/images/IIIA AWARD.jpg", "alt": "IIIA Award", "name": "IIIA AWARD" },
+          { "image": "/images/COVID WARRIOR.jpg", "alt": "Covid Warrior", "name": "COVID WARRIOR" },
+          { "image": "/images/BUSINESS AWARD 2023.jpg", "alt": "Business Award 2023", "name": "BUSINESS AWARD 2023" },
+          { "image": "/images/ACHIEVEMENT AWARD.jpg", "alt": "Achievement Award", "name": "ACHIEVEMENT AWARD" },
+          { "image": "/images/SEVAK STAR AWARD.jpg", "alt": "Sevak Star Award", "name": "SEVAK STAR AWARD" },
+          { "image": "/images/POPULAR CIVILIAN   AWARD.jpg", "alt": "Popular Civilian Award", "name": "POPULAR CIVILIAN AWARD" },
+          { "image": "/images/DADA SAHEB.jpg", "alt": "Dada Saheb Phalke Award", "name": "DADA SAHEB PHALKE AWARD" },
+          { "image": "/images/PRIDE OF INDIA ICON AWARD.jpg", "alt": "Pride of India Icon Award", "name": "PRIDE OF INDIA ICON AWARD" },
+          { "image": "/images/BUSINESS AWARD 2023 (1).jpg", "alt": "Business Award 2023", "name": "BUSINESS AWARD 2023" },
+          { "image": "/images/MAHATMA GANDHI RATNA AWARD.jpg", "alt": "Mahatma Gandhi Ratna Award", "name": "MAHATMA GANDHI RATNA AWARD" },
+          { "image": "/images/CHHATRAPATI SHIVAJI   MAHARAJ GAURAV AWARD 2021.jpg", "alt": "Shivaji Maharaj Gaurav Award", "name": "SHIVAJI MAHARAJ GAURAV AWARD" },
+          { "image": "/images/BORIVALI BLOOD CENTRE  AWARD.jpg", "alt": "Borivali Blood Centre Award", "name": "BORIVALI BLOOD CENTRE AWARD" },
+          { "image": "/images/MARATHA LIFE FOUNDATION AWARD.jpg", "alt": "Maratha Life Foundation", "name": "MARATHA LIFE FOUNDATION" }
+        ]
+      }
+    },
+    {
+      "type": "awards-letters",
+      "name": "Appreciation Letters",
+      "sortOrder": 4,
+      "isActive": true,
+      "content": {
+        "title": "Appreciation Letters",
+        "images": [
+          { "src": "/images/appre1.jpeg", "alt": "Appreciation 1" },
+          { "src": "/images/appre2.jpeg", "alt": "Appreciation 2" },
+          { "src": "/images/appre3.jpeg", "alt": "Appreciation 3" },
+          { "src": "/images/appre4.jpeg", "alt": "Appreciation 4" },
+          { "src": "/images/appre5.jpeg", "alt": "Appreciation 5" },
+          { "src": "/images/appre6.jpeg", "alt": "Appreciation 6" },
+          { "src": "/images/appre7.jpeg", "alt": "Appreciation 7" },
+          { "src": "/images/appre8.jpeg", "alt": "Appreciation 8" },
+          { "src": "/images/appre9.jpeg", "alt": "Appreciation 9" },
+          { "src": "/images/appre11.jpg", "alt": "Appreciation 11" }
+        ]
+      }
+    },
+    {
+      "type": "awards-honors",
+      "name": "Awards & Recognition",
+      "sortOrder": 5,
+      "isActive": true,
+      "content": {
+        "tag": "OUR HONORS",
+        "heading": "Awards & Recognition",
+        "items": [
+          { "icon": "fa-trophy", "title": "National Recognition", "desc": "Honored with prestigious awards including Dada Saheb Phalke Award and Mahatma Gandhi Ratna." },
+          { "icon": "fa-star", "title": "Excellence", "desc": "Recognized for outstanding contribution to social welfare and community development." },
+          { "icon": "fa-medal", "title": "World Records", "desc": "Harvard World Record and multiple national accolades for humanitarian work." },
+          { "icon": "fa-award", "title": "Industry Honor", "desc": "IIIA Award, Business Award 2023, and numerous other prestigious recognitions." }
+        ]
+      }
+    },
+    {
+      "type": "awards-testimonials",
+      "name": "Testimonials",
+      "sortOrder": 6,
+      "isActive": true,
+      "content": {
+        "tag": "TESTIMONIALS",
+        "heading": "Recognized by Leaders",
+        "items": [
+          { "quote": "BSCT's award-winning work in education and nourishment sets a benchmark for NGOs across India.", "name": "Dr. Amit Sharma", "role": "Award Committee Member" },
+          { "quote": "Their Harvard World Record is a testament to the scale and quality of their social impact.", "name": "Prof. Sunita Reddy", "role": "Academic & Researcher" },
+          { "quote": "Being Sevak's achievements inspire other organizations to strive for excellence in social service.", "name": "Rajiv Kapoor", "role": "Philanthropist" }
+        ]
+      }
+    }
+  ]
+}

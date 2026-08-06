@@ -1,0 +1,79 @@
+{
+  "slug": "school-collaboration",
+  "title": "School & Institute Collaboration",
+  "metaTitle": "School Collaboration | Being Sevak Foundation",
+  "metaDescription": "Being Sevak Charitable Trust's Joy Of Giving (JOG) Program collaborates with schools and institutes to inspire compassion and social responsibility in students.",
+  "template": "default",
+  "sortOrder": 66,
+  "isHome": false,
+  "sections": [
+    {
+      "type": "school-heading",
+      "name": "Page Heading",
+      "sortOrder": 1,
+      "isActive": true,
+      "content": {
+        "heading": "School & Institute",
+        "headingSpan": "Collaboration",
+        "text1": "At Being Sevak Charitable Trust, we believe that children are not only the future of our nation but also powerful agents of positive change within society.",
+        "text2": "Instilling compassion, empathy, and social responsibility at an early age helps shape responsible individuals and future leaders."
+      }
+    },
+    {
+      "type": "school-jog",
+      "name": "JOG Program Highlight",
+      "sortOrder": 2,
+      "isActive": true,
+      "content": {
+        "title": "Joy Of Giving (JOG) Program",
+        "text": "Launched in 2022, the JOG Program is a unique student engagement initiative designed to create awareness about social inequalities and encourage kindness, gratitude, and community participation among students."
+      }
+    },
+    {
+      "type": "school-engagement",
+      "name": "Engagement Details",
+      "sortOrder": 3,
+      "isActive": true,
+      "content": {
+        "text1": "Through interactive sessions, awareness activities, and meaningful engagements conducted in schools and educational institutions, the JOG Program helps students understand the realities faced by underprivileged communities.",
+        "text2": "The initiative encourages children to value their privileges, develop empathy for others, and contribute positively towards society."
+      }
+    },
+    {
+      "type": "school-points",
+      "name": "Program Points",
+      "sortOrder": 4,
+      "isActive": true,
+      "content": {
+        "items": [
+          { "number": "01", "title": "Empathy Building", "description": "Helping students understand social realities and humanity." },
+          { "number": "02", "title": "Community Participation", "description": "Encouraging kindness, gratitude, and the spirit of giving." },
+          { "number": "03", "title": "Future Leaders", "description": "Nurturing socially conscious and responsible citizens." }
+        ]
+      }
+    },
+    {
+      "type": "school-bottom",
+      "name": "Closing Statement",
+      "sortOrder": 5,
+      "isActive": true,
+      "content": {
+        "text": "BSCT collaborates with schools, colleges, and educational institutes to conduct impactful sessions and activities that inspire students to embrace humanity, kindness, and social responsibility.",
+        "heading": "Together, let us inspire the next generation to become compassionate and socially aware citizens."
+      }
+    },
+    {
+      "type": "school-cards",
+      "name": "Collaboration Cards",
+      "sortOrder": 6,
+      "isActive": true,
+      "content": {
+        "items": [
+          { "title": "Awareness Sessions", "description": "Interactive activities that create awareness about social inequalities and community welfare." },
+          { "title": "Student Engagement", "description": "Meaningful participation programs that encourage kindness and empathy among students." },
+          { "title": "Social Responsibility", "description": "Inspiring children to become responsible citizens dedicated to building a better society." }
+        ]
+      }
+    }
+  ]
+}

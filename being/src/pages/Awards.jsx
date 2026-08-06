@@ -1,7 +1,76 @@
 import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
+import { usePageContent } from '../hooks/usePageContent';
 
 const Awards = () => {
+  const content = usePageContent('awards');
+
+  const pageTitle = content('awards-title', 'heading') ?? 'Awards & Achievements';
+
+  const heroTag = content('awards-hero', 'tag') ?? 'BEING SEVAK CHARITABLE TRUST';
+  const heroHeading = content('awards-hero', 'heading') ?? 'Awards &';
+  const heroHighlight = content('awards-hero', 'highlight') ?? 'Achievements';
+  const heroDescription =
+    content('awards-hero', 'description') ??
+    'Recognized nationally for outstanding contribution to social welfare, community development, and humanitarian service across India.';
+  const heroCard1Value = content('awards-hero', 'card1Value') ?? '17+';
+  const heroCard1Label = content('awards-hero', 'card1Label') ?? 'National Awards';
+  const heroCard2Value = content('awards-hero', 'card2Value') ?? '1M+';
+  const heroCard2Label = content('awards-hero', 'card2Label') ?? 'Lives Impacted';
+  const heroImage = content('awards-hero', 'image') ?? '/images/awardsAchive.jpg';
+
+  const awardsTitle = content('awards-list', 'title') ?? 'Our Achievements';
+  const awards =
+    content('awards-list', 'items') ?? [
+      { image: '/images/IIIA AWARD.jpg', alt: 'IIIA Award', name: 'IIIA AWARD' },
+      { image: '/images/COVID WARRIOR.jpg', alt: 'Covid Warrior', name: 'COVID WARRIOR' },
+      { image: '/images/BUSINESS AWARD 2023.jpg', alt: 'Business Award 2023', name: 'BUSINESS AWARD 2023' },
+      { image: '/images/ACHIEVEMENT AWARD.jpg', alt: 'Achievement Award', name: 'ACHIEVEMENT AWARD' },
+      { image: '/images/SEVAK STAR AWARD.jpg', alt: 'Sevak Star Award', name: 'SEVAK STAR AWARD' },
+      { image: '/images/POPULAR CIVILIAN   AWARD.jpg', alt: 'Popular Civilian Award', name: 'POPULAR CIVILIAN AWARD' },
+      { image: '/images/DADA SAHEB.jpg', alt: 'Dada Saheb Phalke Award', name: 'DADA SAHEB PHALKE AWARD' },
+      { image: '/images/PRIDE OF INDIA ICON AWARD.jpg', alt: 'Pride of India Icon Award', name: 'PRIDE OF INDIA ICON AWARD' },
+      { image: '/images/BUSINESS AWARD 2023 (1).jpg', alt: 'Business Award 2023', name: 'BUSINESS AWARD 2023' },
+      { image: '/images/MAHATMA GANDHI RATNA AWARD.jpg', alt: 'Mahatma Gandhi Ratna Award', name: 'MAHATMA GANDHI RATNA AWARD' },
+      { image: '/images/CHHATRAPATI SHIVAJI   MAHARAJ GAURAV AWARD 2021.jpg', alt: 'Shivaji Maharaj Gaurav Award', name: 'SHIVAJI MAHARAJ GAURAV AWARD' },
+      { image: '/images/BORIVALI BLOOD CENTRE  AWARD.jpg', alt: 'Borivali Blood Centre Award', name: 'BORIVALI BLOOD CENTRE AWARD' },
+      { image: '/images/MARATHA LIFE FOUNDATION AWARD.jpg', alt: 'Maratha Life Foundation', name: 'MARATHA LIFE FOUNDATION' },
+    ];
+
+  const lettersTitle = content('awards-letters', 'title') ?? 'Appreciation Letters';
+  const letters =
+    content('awards-letters', 'images') ?? [
+      { src: '/images/appre1.jpeg', alt: 'Appreciation 1' },
+      { src: '/images/appre2.jpeg', alt: 'Appreciation 2' },
+      { src: '/images/appre3.jpeg', alt: 'Appreciation 3' },
+      { src: '/images/appre4.jpeg', alt: 'Appreciation 4' },
+      { src: '/images/appre5.jpeg', alt: 'Appreciation 5' },
+      { src: '/images/appre6.jpeg', alt: 'Appreciation 6' },
+      { src: '/images/appre7.jpeg', alt: 'Appreciation 7' },
+      { src: '/images/appre8.jpeg', alt: 'Appreciation 8' },
+      { src: '/images/appre9.jpeg', alt: 'Appreciation 9' },
+      { src: '/images/appre11.jpg', alt: 'Appreciation 11' },
+    ];
+
+  const honorsTag = content('awards-honors', 'tag') ?? 'OUR HONORS';
+  const honorsHeading = content('awards-honors', 'heading') ?? 'Awards & Recognition';
+  const honors =
+    content('awards-honors', 'items') ?? [
+      { icon: 'fa-trophy', title: 'National Recognition', desc: 'Honored with prestigious awards including Dada Saheb Phalke Award and Mahatma Gandhi Ratna.' },
+      { icon: 'fa-star', title: 'Excellence', desc: 'Recognized for outstanding contribution to social welfare and community development.' },
+      { icon: 'fa-medal', title: 'World Records', desc: 'Harvard World Record and multiple national accolades for humanitarian work.' },
+      { icon: 'fa-award', title: 'Industry Honor', desc: 'IIIA Award, Business Award 2023, and numerous other prestigious recognitions.' },
+    ];
+
+  const testimonialsTag = content('awards-testimonials', 'tag') ?? 'TESTIMONIALS';
+  const testimonialsHeading = content('awards-testimonials', 'heading') ?? 'Recognized by Leaders';
+  const testimonials =
+    content('awards-testimonials', 'items') ?? [
+      { quote: "BSCT's award-winning work in education and nourishment sets a benchmark for NGOs across India.", name: 'Dr. Amit Sharma', role: 'Award Committee Member' },
+      { quote: 'Their Harvard World Record is a testament to the scale and quality of their social impact.', name: 'Prof. Sunita Reddy', role: 'Academic & Researcher' },
+      { quote: "Being Sevak's achievements inspire other organizations to strive for excellence in social service.", name: 'Rajiv Kapoor', role: 'Philanthropist' },
+    ];
+
   useEffect(() => {
     const revealEls = document.querySelectorAll('.reveal');
     const revealObserver = new IntersectionObserver((entries) => {
@@ -87,73 +156,53 @@ const Awards = () => {
         @media(max-width:768px){.awards-grid{padding:20px;grid-template-columns:1fr}.letter-grid{padding:20px;grid-template-columns:1fr}.values-grid{grid-template-columns:1fr}.testimonial-grid{grid-template-columns:1fr}}
       `}</style>
 
-      <section className="tax-box"><h1>Awards &amp; Achievements</h1></section>
+      <section className="tax-box"><h1>{pageTitle}</h1></section>
 
       <section className="hero" id="home">
         <div className="hero-content">
-          <span className="tag">BEING SEVAK CHARITABLE TRUST</span>
-          <h1>Awards &amp; <span>Achievements</span></h1>
-          <p>Recognized nationally for outstanding contribution to social welfare, community development, and humanitarian service across India.</p>
+          <span className="tag">{heroTag}</span>
+          <h1>{heroHeading} <span>{heroHighlight}</span></h1>
+          <p>{heroDescription}</p>
           <div className="hero-buttons"><a href="#achievements" className="donate-btn">View Awards</a></div>
         </div>
         <div className="hero-image">
-          <div className="floating-card card1"><h3>17+</h3><p>National Awards</p></div>
-          <div className="floating-card card2"><h3>1M+</h3><p>Lives Impacted</p></div>
-          <img src="/images/awardsAchive.jpg" alt="Awards"/>
+          <div className="floating-card card1"><h3>{heroCard1Value}</h3><p>{heroCard1Label}</p></div>
+          <div className="floating-card card2"><h3>{heroCard2Value}</h3><p>{heroCard2Label}</p></div>
+          <img src={heroImage} alt="Awards"/>
         </div>
         <div className="blur blur1"></div><div className="blur blur2"></div>
       </section>
 
-      <h2 className="section-title reveal" id="achievements">Our Achievements</h2>
+      <h2 className="section-title reveal" id="achievements">{awardsTitle}</h2>
       <div className="awards-grid reveal">
-        <div className="award-card"><img src="/images/IIIA AWARD.jpg" alt="IIIA Award"/><div className="award-name">IIIA AWARD</div></div>
-        <div className="award-card"><img src="/images/COVID WARRIOR.jpg" alt="Covid Warrior"/><div className="award-name">COVID WARRIOR</div></div>
-        <div className="award-card"><img src="/images/BUSINESS AWARD 2023.jpg" alt="Business Award 2023"/><div className="award-name">BUSINESS AWARD 2023</div></div>
-        <div className="award-card"><img src="/images/ACHIEVEMENT AWARD.jpg" alt="Achievement Award"/><div className="award-name">ACHIEVEMENT AWARD</div></div>
-        <div className="award-card"><img src="/images/SEVAK STAR AWARD.jpg" alt="Sevak Star Award"/><div className="award-name">SEVAK STAR AWARD</div></div>
-        <div className="award-card"><img src="/images/POPULAR CIVILIAN   AWARD.jpg" alt="Popular Civilian Award"/><div className="award-name">POPULAR CIVILIAN AWARD</div></div>
-        <div className="award-card"><img src="/images/DADA SAHEB.jpg" alt="Dada Saheb Phalke Award"/><div className="award-name">DADA SAHEB PHALKE AWARD</div></div>
-        <div className="award-card"><img src="/images/PRIDE OF INDIA ICON AWARD.jpg" alt="Pride of India Icon Award"/><div className="award-name">PRIDE OF INDIA ICON AWARD</div></div>
-        <div className="award-card"><img src="/images/BUSINESS AWARD 2023 (1).jpg" alt="Business Award 2023"/><div className="award-name">BUSINESS AWARD <br/>2023</div></div>
-        <div className="award-card"><img src="/images/MAHATMA GANDHI RATNA AWARD.jpg" alt="Mahatma Gandhi Ratna Award"/><div className="award-name">MAHATMA GANDHI RATNA AWARD</div></div>
-        <div className="award-card"><img src="/images/CHHATRAPATI SHIVAJI   MAHARAJ GAURAV AWARD 2021.jpg" alt="Shivaji Maharaj Gaurav Award"/><div className="award-name">SHIVAJI MAHARAJ GAURAV AWARD</div></div>
-        <div className="award-card"><img src="/images/BORIVALI BLOOD CENTRE  AWARD.jpg" alt="Borivali Blood Centre Award"/><div className="award-name">BORIVALI BLOOD CENTRE AWARD</div></div>
-        <div className="award-card"><img src="/images/MARATHA LIFE FOUNDATION AWARD.jpg" alt="Maratha Life Foundation"/><div className="award-name">MARATHA LIFE FOUNDATION</div></div>
+        {awards.map((award, i) => (
+          <div className="award-card" key={i}><img src={award.image} alt={award.alt}/><div className="award-name">{award.name}</div></div>
+        ))}
       </div>
 
-      <h2 className="section-title reveal">Appreciation Letters</h2>
+      <h2 className="section-title reveal">{lettersTitle}</h2>
       <div className="letter-grid reveal">
-        <img src="/images/appre1.jpeg" alt="Appreciation 1"/>
-        <img src="/images/appre2.jpeg" alt="Appreciation 2"/>
-        <img src="/images/appre3.jpeg" alt="Appreciation 3"/>
-        <img src="/images/appre4.jpeg" alt="Appreciation 4"/>
-        <img src="/images/appre5.jpeg" alt="Appreciation 5"/>
-        <img src="/images/appre6.jpeg" alt="Appreciation 6"/>
-        <img src="/images/appre7.jpeg" alt="Appreciation 7"/>
-        <img src="/images/appre8.jpeg" alt="Appreciation 8"/>
-        <img src="/images/appre9.jpeg" alt="Appreciation 9"/>
-        <img src="/images/appre11.jpg" alt="Appreciation 11"/>
+        {letters.map((img, i) => <img key={i} src={img.src} alt={img.alt}/>)}
       </div>
 
       <section className="values-section">
         <div className="values-inner">
-          <div className="section-header" style={{textAlign:'center'}}><span style={{color:'var(--cyan)',fontWeight:700,fontSize:'1.5rem',letterSpacing:1,display:'block',marginBottom:8}}>OUR HONORS</span><h2 style={{fontFamily:'Montserrat, sans-serif',fontSize:'2rem',color:'var(--navy)'}}>Awards &amp; Recognition</h2></div>
+          <div className="section-header" style={{textAlign:'center'}}><span style={{color:'var(--cyan)',fontWeight:700,fontSize:'1.5rem',letterSpacing:1,display:'block',marginBottom:8}}>{honorsTag}</span><h2 style={{fontFamily:'Montserrat, sans-serif',fontSize:'2rem',color:'var(--navy)'}}>{honorsHeading}</h2></div>
           <div className="values-grid">
-            <div className="value-card reveal"><div className="val-icon"><i className="fas fa-trophy"></i></div><h3>National Recognition</h3><p>Honored with prestigious awards including Dada Saheb Phalke Award and Mahatma Gandhi Ratna.</p></div>
-            <div className="value-card reveal"><div className="val-icon"><i className="fas fa-star"></i></div><h3>Excellence</h3><p>Recognized for outstanding contribution to social welfare and community development.</p></div>
-            <div className="value-card reveal"><div className="val-icon"><i className="fas fa-medal"></i></div><h3>World Records</h3><p>Harvard World Record and multiple national accolades for humanitarian work.</p></div>
-            <div className="value-card reveal"><div className="val-icon"><i className="fas fa-award"></i></div><h3>Industry Honor</h3><p>IIIA Award, Business Award 2023, and numerous other prestigious recognitions.</p></div>
+            {honors.map((v, i) => (
+              <div className="value-card reveal" key={i}><div className="val-icon"><i className={`fas ${v.icon}`}></i></div><h3>{v.title}</h3><p>{v.desc}</p></div>
+            ))}
           </div>
         </div>
       </section>
 
       <section className="testimonials-section">
         <div className="testimonials-inner">
-          <div className="section-header" style={{textAlign:'center'}}><span style={{color:'var(--cyan)',fontWeight:700,fontSize:'1.5rem',letterSpacing:1,display:'block',marginBottom:8}}>TESTIMONIALS</span><h2 style={{fontFamily:'Montserrat, sans-serif',fontSize:'2rem',color:'var(--navy)'}}>Recognized by Leaders</h2></div>
+          <div className="section-header" style={{textAlign:'center'}}><span style={{color:'var(--cyan)',fontWeight:700,fontSize:'1.5rem',letterSpacing:1,display:'block',marginBottom:8}}>{testimonialsTag}</span><h2 style={{fontFamily:'Montserrat, sans-serif',fontSize:'2rem',color:'var(--navy)'}}>{testimonialsHeading}</h2></div>
           <div className="testimonial-grid">
-            <div className="testimonial-card reveal"><div><div className="quote-icon"><i className="fas fa-quote-left"></i></div><p>BSCT's award-winning work in education and nourishment sets a benchmark for NGOs across India.</p></div><div><h4>Dr. Amit Sharma</h4><span>Award Committee Member</span></div></div>
-            <div className="testimonial-card reveal"><div><div className="quote-icon"><i className="fas fa-quote-left"></i></div><p>Their Harvard World Record is a testament to the scale and quality of their social impact.</p></div><div><h4>Prof. Sunita Reddy</h4><span>Academic &amp; Researcher</span></div></div>
-            <div className="testimonial-card reveal"><div><div className="quote-icon"><i className="fas fa-quote-left"></i></div><p>Being Sevak's achievements inspire other organizations to strive for excellence in social service.</p></div><div><h4>Rajiv Kapoor</h4><span>Philanthropist</span></div></div>
+            {testimonials.map((t, i) => (
+              <div className="testimonial-card reveal" key={i}><div><div className="quote-icon"><i className="fas fa-quote-left"></i></div><p>{t.quote}</p></div><div><h4>{t.name}</h4><span>{t.role}</span></div></div>
+            ))}
           </div>
         </div>
       </section>

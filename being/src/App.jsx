@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import WhatsAppFloat from './components/WhatsAppFloat';
+import { useSite } from './context/SiteContext';
 import Home from './pages/Home';
 import AboutBSCT from './pages/AboutBSCT';
 import Management from './pages/Management';
@@ -52,10 +53,33 @@ function ScrollToTop() {
   return null;
 }
 
+function SeoManager() {
+  const { pathname } = useLocation();
+  const { getPage, getSetting, isLive } = useSite();
+  useEffect(() => {
+    const slug = pathname === '/' ? 'home' : pathname.replace(/^\//, '').split('/')[0];
+    const page = getPage(slug);
+    const name = getSetting('site.siteName', 'Being Sevak Charitable Trust');
+    const tagline = getSetting('site.tagline', '');
+    const pageTitle = page?.metaTitle || page?.title || '';
+    document.title = pageTitle ? `${pageTitle} — ${name}` : (tagline ? `${name} — ${tagline}` : name);
+    const description = page?.metaDescription || getSetting('site.description', '');
+    let meta = document.querySelector('meta[name="description"]');
+    if (!meta) {
+      meta = document.createElement('meta');
+      meta.name = 'description';
+      document.head.appendChild(meta);
+    }
+    if (description) meta.content = description;
+  }, [pathname, isLive, getPage, getSetting]);
+  return null;
+}
+
 function App() {
   return (
     <Router>
       <ScrollToTop />
+      <SeoManager />
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />

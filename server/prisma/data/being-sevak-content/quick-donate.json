@@ -1,0 +1,35 @@
+{
+  "slug": "quick-donate",
+  "title": "Quick Donate",
+  "metaTitle": "Quick Donate | Being Sevak Foundation",
+  "metaDescription": "Quickly donate to Being Sevak Charitable Trust and support our missions for food, education, healthcare, and animal welfare.",
+  "template": "default",
+  "sortOrder": 62,
+  "isHome": false,
+  "sections": [
+    {
+      "type": "quick-banner",
+      "name": "Top Banner",
+      "sortOrder": 1,
+      "isActive": true,
+      "content": {
+        "text": "Being Sevak Charitable Trust"
+      }
+    },
+    {
+      "type": "quick-missions",
+      "name": "Donation Basket Missions",
+      "sortOrder": 2,
+      "isActive": true,
+      "content": {
+        "items": [
+          { "key": "annapurna", "icon": "🌾", "name": "Mission Annapurna", "desc": "Dry Ration Kits & Mid-Day Meals for Visually Impaired & Underprivileged Individuals", "price": 500 },
+          { "key": "vidhya", "icon": "📚", "name": "Mission Vidhya", "desc": "D.E.C – Digital Education Centre, Free digital education, Writing Pad & Stationery Kit Distribution", "price": 400 },
+          { "key": "aurat", "icon": "👩", "name": "Mission Aurat", "desc": "Sanitary Pad Distribution & Hygiene Kit Distribution for underprivileged women", "price": 300 },
+          { "key": "atma", "icon": "💪", "name": "Mission Atma Nirbhar", "desc": "Rozgaar Booth, Wheelchair & Tricycle Distribution, Sewing Machine & Flour Mill Distribution", "price": 600 },
+          { "key": "bezubaan", "icon": "🐾", "name": "Mission Bezubaan", "desc": "Animal Feeding Center, Biscuit, Milk & Pedigree Distribution for stray animals", "price": 200 }
+        ]
+      }
+    }
+  ]
+}
