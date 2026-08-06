@@ -26,6 +26,7 @@ export function SettingsPage() {
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [tab, setTab] = useState('brand')
+  const [siteOnline, setSiteOnline] = useState<boolean | null>(null)
 
   const load = useCallback(async () => {
     setLoading(true)
@@ -36,6 +37,52 @@ export function SettingsPage() {
   useEffect(() => {
     void load()
   }, [load])
+
+  const rawSiteUrl = settings?.connectedSite?.url?.trim() ?? ''
+  const siteUrl = /^https?:\/\//i.test(rawSiteUrl)
+    ? rawSiteUrl
+    : rawSiteUrl
+      ? `https://${rawSiteUrl}`
+      : ''
+
+  useEffect(() => {
+    let cancelled = false
+    if (!siteUrl) {
+      setSiteOnline(null)
+      return
+    }
+    const controller = new AbortController()
+    const timer = setTimeout(() => controller.abort(), 4000)
+    fetch(siteUrl, { mode: 'no-cors', signal: controller.signal })
+      .then(() => {
+        if (!cancelled) setSiteOnline(true)
+      })
+      .catch(() => {
+        if (!cancelled) setSiteOnline(false)
+      })
+      .finally(() => clearTimeout(timer))
+    return () => {
+      cancelled = true
+      clearTimeout(timer)
+      controller.abort()
+    }
+  }, [siteUrl])
+
+  const siteStatusText =
+    !siteUrl
+      ? 'Add a website link to check its status.'
+      : siteOnline === null
+        ? 'Checking…'
+        : siteOnline
+          ? 'Reachable — the website is live and loads this content.'
+          : 'Unreachable right now — check the link and that the site is running.'
+  const siteStatusDot = !siteUrl
+    ? 'h-2.5 w-2.5 rounded-full bg-slate-300'
+    : siteOnline === null
+      ? 'h-2.5 w-2.5 animate-pulse rounded-full bg-amber-400'
+      : siteOnline
+        ? 'h-2.5 w-2.5 rounded-full bg-success'
+        : 'h-2.5 w-2.5 rounded-full bg-danger'
 
   const update = <K extends keyof WebsiteSettings>(key: K, value: WebsiteSettings[K]) =>
     setSettings((current) => (current ? { ...current, [key]: value } : current))
@@ -87,6 +134,7 @@ export function SettingsPage() {
           { id: 'brand', label: 'Branding', icon: <PaletteIcon /> },
           { id: 'contact', label: 'Contact', icon: <MailIcon /> },
           { id: 'social', label: 'Social links', icon: <LinkIcon /> },
+          { id: 'website', label: 'Website', icon: <GlobeIcon /> },
           { id: 'analytics', label: 'Analytics', icon: <GlobeIcon /> },
         ]}
         active={tab}
@@ -204,6 +252,58 @@ export function SettingsPage() {
                 />
               </Field>
             ))}
+          </div>
+        </Card>
+      ) : tab === 'website' ? (
+        <Card>
+          <CardHeader
+            title="Connected website"
+            description="The website this panel updates. Save changes here and they apply directly to the website at this link."
+          />
+          <div className="space-y-4 px-5 pb-5">
+            <Field label="Website link" htmlFor="set-site-url" hint="e.g. https://beingsevak.org or http://localhost:5173">
+              <Input
+                id="set-site-url"
+                value={rawSiteUrl}
+                placeholder="https://beingsevak.org"
+                onChange={(event) =>
+                  update('connectedSite', { ...settings.connectedSite, url: event.target.value })
+                }
+              />
+            </Field>
+            <Field label="Site slug" htmlFor="set-site-slug" hint="Used to load this website's content from the CMS">
+              <Input
+                id="set-site-slug"
+                value={settings.connectedSite?.slug ?? ''}
+                placeholder="being-sevak"
+                onChange={(event) =>
+                  update('connectedSite', { ...settings.connectedSite, slug: event.target.value })
+                }
+              />
+            </Field>
+            <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-line bg-slate-50 px-4 py-3">
+              <div>
+                <p className="text-sm font-medium text-ink">Website status</p>
+                <p className="text-xs text-muted">{siteStatusText}</p>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className={siteStatusDot} aria-hidden />
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  icon={<GlobeIcon />}
+                  disabled={!siteUrl}
+                  onClick={() => window.open(siteUrl, '_blank', 'noopener,noreferrer')}
+                >
+                  Open website
+                </Button>
+              </div>
+            </div>
+            <div className="flex items-start gap-2 rounded-xl bg-slate-50 p-3 text-xs text-muted">
+              <ShieldCheckIcon className="mt-0.5 h-4 w-4 shrink-0 text-success" />
+              Changes you save are stored in the CMS backend, and the website loads its content from
+              there — so saving in this panel updates the website directly.
+            </div>
           </div>
         </Card>
       ) : (

@@ -240,6 +240,7 @@ export interface WebsiteSettings extends IdEntity {
   socialLinks: { facebook?: string; twitter?: string; linkedin?: string; instagram?: string; youtube?: string }
   contact: { email?: string; phone?: string; address?: string; city?: string; state?: string }
   analytics: { gaId?: string; pixelId?: string; tagManagerId?: string }
+  connectedSite?: { url?: string | null; slug?: string | null }
 }
 
 export type ActivityAction = 'CREATE' | 'UPDATE' | 'DELETE' | 'PUBLISH' | 'REVIEW' | 'LOGIN' | 'LOGOUT'
