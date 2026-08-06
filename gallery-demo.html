@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Seamless Infinite Card Gallery</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Draggable.min.js"></script>
+  <style>
+    :root {
+      --bg: #0b0e17;
+      --accent-1: #ff4d8d;
+      --accent-2: #ffb347;
+      --cw: min(17rem, 72vw);
+      --font: "Segoe UI", ui-sans-serif, system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
+      --mono: ui-monospace, "Cascadia Code", "SF Mono", Menlo, Consolas, monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: #fff;
+      min-height: 100vh;
+      font-family: var(--font);
+      overflow-x: hidden;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* ================= GALLERY ================= */
+    .gallery {
+      position: absolute;
+      inset: 0;
+      height: 100vh;
+      overflow: hidden;
+      perspective: 900px;
+      background:
+        radial-gradient(60% 50% at 50% 0%, rgba(255, 77, 141, 0.08), transparent 60%),
+        radial-gradient(50% 60% at 85% 90%, rgba(255, 179, 71, 0.06), transparent 60%),
+        radial-gradient(50% 50% at 12% 80%, rgba(120, 90, 255, 0.08), transparent 60%),
+        var(--bg);
+    }
+
+    /* faint grid texture */
+    .gallery::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+      background-size: 60px 60px;
+      -webkit-mask-image: radial-gradient(75% 65% at 50% 45%, #000, transparent 75%);
+      mask-image: radial-gradient(75% 65% at 50% 45%, #000, transparent 75%);
+      pointer-events: none;
+    }
+
+    /* huge outlined number behind the stack */
+    .mark {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: clamp(13rem, 40vw, 28rem);
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: 0.05em;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(255, 255, 255, 0.05);
+      font-family: var(--mono);
+      user-select: none;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* ================= HEADER ================= */
+    .gallery-head {
+      position: absolute;
+      top: clamp(1.5rem, 5vh, 3.5rem);
+      left: 0;
+      right: 0;
+      text-align: center;
+      z-index: 20;
+      pointer-events: none;
+    }
+    .gallery-head h1 {
+      font-size: clamp(1.5rem, 4.2vw, 3.2rem);
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      background: linear-gradient(100deg, #fff 25%, var(--accent-1) 55%, var(--accent-2) 85%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .gallery-head p {
+      margin-top: 0.6rem;
+      font-size: clamp(0.62rem, 1.4vw, 0.8rem);
+      letter-spacing: 0.42em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.42);
+    }
+
+    /* ================= CARDS ================= */
+    .cards {
+      position: absolute;
+      width: var(--cw);
+      height: calc(var(--cw) * 1.78);
+      top: 42%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 2;
+      cursor: grab;
+      touch-action: none;
+      filter: drop-shadow(0 40px 80px rgba(0, 0, 0, 0.55));
+    }
+    .cards:active { cursor: grabbing; }
+
+    .cards li {
+      position: absolute;
+      inset: 0;
+      list-style: none;
+      pointer-events: none;
+      will-change: transform;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+    }
+
+    .card-frame {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border-radius: 0.9rem;
+      overflow: hidden;
+      background: #141a2c;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+    }
+    .card-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    /* subtle sheen across the image */
+    .card-frame::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), transparent 38%);
+      pointer-events: none;
+    }
+
+    .card-caption {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 1.6rem 1.1rem 1.1rem;
+      background: linear-gradient(to top, rgba(6, 8, 14, 0.9), transparent);
+      border-radius: 0 0 0.9rem 0.9rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+      pointer-events: none;
+    }
+    .card-num {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.3em;
+      color: var(--accent-1);
+    }
+    .card-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .card-tag {
+      font-size: 0.68rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.55);
+    }
+
+    /* ================= HUD (counter + progress) ================= */
+    .hud {
+      position: absolute;
+      left: clamp(1.4rem, 4vw, 3rem);
+      bottom: clamp(6.5rem, 12vh, 9rem);
+      z-index: 20;
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+    }
+    .counter {
+      font-family: var(--mono);
+      font-size: 0.85rem;
+      letter-spacing: 0.3em;
+      color: rgba(255, 255, 255, 0.5);
+    }
+    .counter b {
+      color: #fff;
+      font-size: 1.6rem;
+      font-weight: 700;
+      line-height: 1;
+    }
+    .progress {
+      width: min(11rem, 34vw);
+      height: 2px;
+      background: rgba(255, 255, 255, 0.14);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .progress span {
+      display: block;
+      height: 100%;
+      width: 100%;
+      transform: scaleX(0);
+      transform-origin: left;
+      background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
+    }
+
+    /* ================= ACTIONS ================= */
+    .actions {
+      position: absolute;
+      right: clamp(1.4rem, 4vw, 3rem);
+      bottom: clamp(1.6rem, 5vh, 2.6rem);
+      z-index: 20;
+      display: flex;
+      gap: 0.7rem;
+    }
+    .actions button {
+      width: 3.4rem;
+      height: 3.4rem;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      background: rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(8px);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      transition: background 0.25s, border-color 0.25s, transform 0.25s;
+    }
+    .actions button svg { width: 1.3rem; height: 1.3rem; }
+    .actions button:hover {
+      background: rgba(255, 255, 255, 0.14);
+      border-color: rgba(255, 255, 255, 0.35);
+      transform: translateY(-2px);
+    }
+    .actions button:active { transform: scale(0.92); }
+    .actions button:focus-visible {
+      outline: 2px solid var(--accent-1);
+      outline-offset: 3px;
+    }
+
+    /* ================= SCROLL HINT ================= */
+    .hint {
+      position: absolute;
+      left: 50%;
+      bottom: clamp(1.2rem, 3.5vh, 2rem);
+      transform: translateX(-50%);
+      z-index: 20;
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.34em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.3);
+      pointer-events: none;
+    }
+
+    .drag-proxy {
+      visibility: hidden;
+      position: absolute;
+    }
+
+    /* ================= MOBILE ================= */
+    @media (max-width: 640px) {
+      .hint { display: none; }
+      .actions button { width: 3rem; height: 3rem; }
+      .cards { top: 40%; }
+    }
+
+    /* ================= REDUCED MOTION FALLBACK ================= */
+    body.reduced .gallery {
+      position: relative;
+      height: auto;
+      overflow: visible;
+      perspective: none;
+      padding-bottom: 4rem;
+    }
+    body.reduced .gallery::before,
+    body.reduced .mark,
+    body.reduced .hud,
+    body.reduced .actions,
+    body.reduced .hint { display: none; }
+    body.reduced .cards {
+      position: relative;
+      top: auto;
+      left: auto;
+      transform: none;
+      width: 100%;
+      height: auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+      gap: 1.2rem;
+      padding: clamp(6rem, 16vh, 9rem) clamp(1rem, 6vw, 3rem) 0;
+      filter: none;
+    }
+    body.reduced .cards li {
+      position: relative;
+      inset: auto;
+      aspect-ratio: 9 / 16;
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  </style>
+</head>
+<body>
+
+  <main>
+    <section class="gallery">
+      <div class="mark" id="mark">01</div>
+
+      <header class="gallery-head">
+        <h1>Seamless Gallery</h1>
+        <p>Scroll &middot; Drag &middot; Arrows</p>
+      </header>
+
+      <ul class="cards" id="cards"></ul>
+
+      <div class="hud">
+        <div class="counter"><b id="current">01</b>&nbsp;&nbsp;/&nbsp;<span id="total">07</span></div>
+        <div class="progress"><span id="progressFill"></span></div>
+      </div>
+
+      <div class="actions">
+        <button class="prev" id="prevBtn" aria-label="Previous card">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <button class="next" id="nextBtn" aria-label="Next card">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+        </button>
+      </div>
+
+      <div class="hint">Scroll to scrub &middot; drag or use arrows</div>
+    </section>
+  </main>
+
+  <div class="drag-proxy"></div>
+
+  <script>
+    /* ============================================================
+       SEAMLESS INFINITE CARD GALLERY — GSAP 3
+       Improved take on the classic seamless-loop pattern:
+       - Scroll scrubs the playhead (pinned), drag to swipe,
+         arrow keys / buttons to step, optional autoplay.
+       - Cards fly right-to-left with a 3D tilt + pop-in/pop-out
+         and captions that fade up only at centre.
+       - HUD counter + progress bar + giant background number.
+       - prefers-reduced-motion users get a static grid.
+       ============================================================ */
+    gsap.registerPlugin(ScrollTrigger, Draggable);
+
+    // ---------- CONFIG ----------
+    const SETTINGS = {
+      spacing: 0.1,            // seconds between cards on the master timeline
+      scrollEnd: 3000,         // scroll distance to scrub one full loop
+      autoPlay: true,          // auto-advance every autoPlayDelay seconds
+      autoPlayDelay: 3.5,
+      snapOnScrollEnd: true,   // snap to the nearest card when scrolling stops
+    };
+
+    // ---------- CONTENT (swap in your own images) ----------
+    const CARDS = [
+      { img: "https://assets.codepen.io/16327/portrait-number-01.png", title: "Portrait One",   tag: "The Beginning" },
+      { img: "https://assets.codepen.io/16327/portrait-number-02.png", title: "Portrait Two",   tag: "Golden Hour" },
+      { img: "https://assets.codepen.io/16327/portrait-number-03.png", title: "Portrait Three", tag: "In Motion" },
+      { img: "https://assets.codepen.io/16327/portrait-number-04.png", title: "Portrait Four",  tag: "Silhouette" },
+      { img: "https://assets.codepen.io/16327/portrait-number-05.png", title: "Portrait Five",  tag: "Framed" },
+      { img: "https://assets.codepen.io/16327/portrait-number-06.png", title: "Portrait Six",   tag: "Reflection" },
+      { img: "https://assets.codepen.io/16327/portrait-number-07.png", title: "Portrait Seven", tag: "The End" },
+    ];
+
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const $ = (s, root = document) => root.querySelector(s);
+
+    // ---------- BUILD THE CARDS ----------
+    const cardsWrap = $("#cards");
+    CARDS.forEach((c, i) => {
+      const li = document.createElement("li");
+      li.innerHTML =
+        '<figure class="card-frame">' +
+          '<img src="' + c.img + '" alt="' + c.title + '" loading="lazy" draggable="false" />' +
+          '<figcaption class="card-caption">' +
+            '<span class="card-num">' + String(i + 1).padStart(2, "0") + "</span>" +
+            '<span class="card-title">' + c.title + "</span>" +
+            '<span class="card-tag">' + c.tag + "</span>" +
+          "</figcaption>" +
+        "</figure>";
+      cardsWrap.appendChild(li);
+    });
+
+    $("#total").textContent = String(CARDS.length).padStart(2, "0");
+
+    if (reduceMotion) {
+      document.body.classList.add("reduced");
+    } else {
+      setup();
+    }
+
+    // ============================================================
+    function setup() {
+      const cards = gsap.utils.toArray(".cards li");
+      const spacing = SETTINGS.spacing,
+            snapTime = gsap.utils.snap(spacing),
+            total = CARDS.length,
+            cycle = spacing * total; // time to complete one full pass of all cards
+
+      gsap.set(cards, { xPercent: 400, opacity: 0, scale: 0, rotateY: 0, transformPerspective: 900 });
+
+      // The animation for ONE card (starts off-right, pops in, travels left, fades out)
+      const animateFunc = (element) => {
+        const caption = element.querySelector(".card-caption");
+        const tl = gsap.timeline();
+        tl.fromTo(element, { scale: 0, opacity: 0 }, {
+            scale: 1, opacity: 1, zIndex: 100, duration: 0.5, yoyo: true, repeat: 1,
+            ease: "power1.in", immediateRender: false,
+          })
+          .fromTo(element, { xPercent: 400, rotateY: -22 }, {
+            xPercent: -400, rotateY: 22, duration: 1, ease: "none", immediateRender: false,
+          }, 0);
+        if (caption) {
+          tl.fromTo(caption, { opacity: 0, yPercent: 18 }, {
+              opacity: 1, yPercent: 0, duration: 0.3, ease: "power2.out", immediateRender: false,
+            }, 0.3)
+            .to(caption, { opacity: 0, yPercent: -12, duration: 0.35, ease: "power1.in" }, 0.67);
+        }
+        return tl;
+      };
+
+      const seamlessLoop = buildSeamlessLoop(cards, spacing, animateFunc);
+
+      // Proxy playhead — can go infinitely in either direction; scrubs the loop safely.
+      const playhead = { offset: 0 };
+      const wrapTime = gsap.utils.wrap(0, seamlessLoop.duration());
+      const scrub = gsap.to(playhead, {
+        offset: 0,
+        onUpdate() {
+          seamlessLoop.time(wrapTime(playhead.offset));
+          updateHUD(playhead.offset);
+        },
+        duration: 0.5,
+        ease: "power3",
+        paused: true,
+      });
+
+      // Pin the gallery and scrub with scroll.
+      let iteration = 0; // increments when we wrap around end<->start
+      const trigger = ScrollTrigger.create({
+        start: 0,
+        onUpdate(self) {
+          const scroll = self.scroll();
+          if (scroll > self.end - 1) {
+            wrap(1, 2);
+          } else if (scroll < 1 && self.direction < 0) {
+            wrap(-1, self.end - 2);
+          } else {
+            scrub.vars.offset = (iteration + self.progress) * seamlessLoop.duration();
+            scrub.invalidate().restart(); // reuse the same tween for performance
+          }
+        },
+        end: "+=" + SETTINGS.scrollEnd,
+        pin: ".gallery",
+      });
+
+      // Convert a 0-1 progress (may be outside when wrapping) into a "safe" scroll value.
+      const progressToScroll = (progress) =>
+        gsap.utils.clamp(1, trigger.end - 1, gsap.utils.wrap(0, 1, progress) * trigger.end);
+
+      const wrap = (iterationDelta, scrollTo) => {
+        iteration += iterationDelta;
+        trigger.scroll(scrollTo);
+        trigger.update(); // by default trigger.scroll() waits a tick before updating
+      };
+
+      // Keep the HUD in sync with the current centred card.
+      function updateHUD(offset) {
+        const idx = (((Math.round(offset / spacing) % total) + total) % total);
+        $("#current").textContent = String(idx + 1).padStart(2, "0");
+        $("#mark").textContent = String(idx + 1).padStart(2, "0");
+        const frac = ((offset % cycle) + cycle) % cycle;
+        $("#progressFill").style.transform = "scaleX(" + (frac / cycle).toFixed(4) + ")";
+      }
+
+      if (SETTINGS.snapOnScrollEnd) {
+        ScrollTrigger.addEventListener("scrollEnd", () => scrollToOffset(scrub.vars.offset));
+      }
+
+      // Feed an offset (time) and it sets the scroll position so the gallery lands there.
+      function scrollToOffset(offset) {
+        const snappedTime = snapTime(offset);
+        const progress = (snappedTime - seamlessLoop.duration() * iteration) / seamlessLoop.duration();
+        const scroll = progressToScroll(progress);
+        if (progress >= 1 || progress < 0) return wrap(Math.floor(progress), scroll);
+        trigger.scroll(scroll);
+      }
+
+      // ---------- CONTROLS ----------
+      const next = () => scrollToOffset(scrub.vars.offset + spacing);
+      const prev = () => scrollToOffset(scrub.vars.offset - spacing);
+
+      $("#nextBtn").addEventListener("click", () => { next(); restartAuto(); });
+      $("#prevBtn").addEventListener("click", () => { prev(); restartAuto(); });
+
+      window.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowRight") { e.preventDefault(); next(); restartAuto(); }
+        else if (e.key === "ArrowLeft") { e.preventDefault(); prev(); restartAuto(); }
+      });
+
+      // ---------- DRAG (mouse + touch) ----------
+      Draggable.create(".drag-proxy", {
+        type: "x",
+        trigger: ".cards",
+        onPress() {
+          stopAuto();
+          this.startOffset = scrub.vars.offset;
+        },
+        onDrag() {
+          scrub.vars.offset = this.startOffset + (this.startX - this.x) * 0.001;
+          scrub.invalidate().restart();
+        },
+        onDragEnd() {
+          scrollToOffset(scrub.vars.offset);
+          restartAuto();
+        },
+      });
+
+      // ---------- AUTOPLAY (pauses on hover / interaction) ----------
+      const auto = gsap.delayedCall(SETTINGS.autoPlayDelay, next);
+      auto.pause();
+      function startAuto() { if (SETTINGS.autoPlay) auto.restart(true); }
+      function stopAuto() { auto.pause(); }
+      function restartAuto() { startAuto(); }
+
+      const gallery = $(".gallery");
+      gallery.addEventListener("pointerenter", stopAuto);
+      gallery.addEventListener("pointerleave", startAuto);
+      gallery.addEventListener("pointerdown", stopAuto);
+
+      // ---------- KICK OFF ----------
+      updateHUD(0);
+      startAuto();
+      window.addEventListener("resize", () => ScrollTrigger.refresh());
+    }
+
+    // ============================================================
+    // Builds a master timeline that reuses the same few card
+    // animations so the playhead can loop forever seamlessly.
+    // ============================================================
+    function buildSeamlessLoop(items, spacing, animateFunc) {
+      const overlap = Math.ceil(1 / spacing), // extra animations on either side for seamless wrapping
+            startTime = items.length * spacing + 0.5,
+            loopTime = (items.length + overlap) * spacing + 1,
+            rawSequence = gsap.timeline({ paused: true }), // the "real" animations
+            seamlessLoop = gsap.timeline({
+              paused: true,
+              repeat: -1,
+              onRepeat() { // works around a super rare edge case (fixed in GSAP 3.6.1)
+                this._time === this._dur && (this._tTime += this._dur - 0.01);
+              },
+            }),
+            l = items.length + overlap * 2;
+      let time, i, index;
+
+      // stagger all the animations, including extra ones at the end for the loop
+      for (i = 0; i < l; i++) {
+        index = i % items.length;
+        time = i * spacing;
+        rawSequence.add(animateFunc(items[index]), time);
+      }
+
+      // scrub the raw sequence's playhead so it wraps forever
+      rawSequence.time(startTime);
+      seamlessLoop.to(rawSequence, {
+        time: loopTime,
+        duration: loopTime - startTime,
+        ease: "none",
+      }).fromTo(rawSequence, { time: overlap * spacing + 1 }, {
+        time: startTime,
+        duration: startTime - (overlap * spacing + 1),
+        immediateRender: false,
+        ease: "none",
+      });
+
+      return seamlessLoop;
+    }
+  </script>
+</body>
+</html>

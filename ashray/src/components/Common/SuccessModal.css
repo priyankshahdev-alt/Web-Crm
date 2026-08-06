@@ -1,0 +1,163 @@
+.sm-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(10, 18, 40, 0.6);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  animation: sm-fade 0.3s ease both;
+}
+
+.sm-card {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  background: #ffffff;
+  border-radius: 28px;
+  padding: 48px 32px 40px;
+  text-align: center;
+  box-shadow: 0 40px 90px -20px rgba(0, 23, 78, 0.55);
+  animation: sm-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  overflow: hidden;
+}
+
+.sm-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 9999px;
+  background: #f1f3fb;
+  color: #4059aa;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+.sm-close:hover {
+  background: #e3e8fa;
+  transform: rotate(90deg);
+}
+
+.sm-burst {
+  position: absolute;
+  top: 96px;
+  left: 50%;
+  width: 0;
+  height: 0;
+}
+.sm-burst span {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  left: -5px;
+  top: -5px;
+  opacity: 0;
+  animation: sm-burst 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.sm-check {
+  position: relative;
+  z-index: 1;
+  width: 88px;
+  height: 88px;
+  margin: 0 auto 24px;
+  border-radius: 9999px;
+  background: linear-gradient(135deg, #4059aa, #1e3a8a);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 18px 40px -12px rgba(64, 89, 170, 0.6);
+  animation: sm-check-pop 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s both;
+}
+.sm-check svg {
+  width: 44px;
+  height: 44px;
+  color: #ffffff;
+  stroke: #ffffff;
+}
+.sm-check svg polyline,
+.sm-check svg path {
+  stroke-dasharray: 30;
+  stroke-dashoffset: 30;
+  animation: sm-draw 0.5s ease 0.45s forwards;
+}
+
+.sm-title {
+  font-family: "Inter", "Segoe UI", sans-serif;
+  font-size: 24px;
+  font-weight: 800;
+  color: #00236f;
+  margin: 0 0 10px;
+}
+
+.sm-message {
+  font-family: "Inter", "Segoe UI", sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  color: #5a6478;
+  margin: 0 0 28px;
+}
+
+.sm-action {
+  margin-top: 4px;
+}
+
+@keyframes sm-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes sm-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.7) translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes sm-check-pop {
+  from { transform: scale(0); }
+  to { transform: scale(1); }
+}
+
+@keyframes sm-draw {
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes sm-burst {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+  70% { opacity: 1; }
+  100% {
+    opacity: 0;
+    transform: translate(var(--tx), var(--ty)) scale(0.2);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sm-overlay { animation: none; }
+  .sm-card,
+  .sm-check,
+  .sm-burst span,
+  .sm-check svg polyline,
+  .sm-check svg path {
+    animation: none;
+  }
+  .sm-burst { display: none; }
+}

@@ -1,87 +1,156 @@
 import { Link } from 'react-router-dom';
+import { useSite } from '../../context/SiteContext';
+import { getSetting } from '../../lib/site';
 import './Footer.css';
 
-const footerSections = [
+const DEFAULT_FOOTER_SECTIONS = [
   {
-    title: 'About Us',
+    title: 'Organization',
     links: [
-      { label: 'Management Team', path: '/about/management-team' },
-      { label: 'Legal Documents', path: '/about/legal-documents' },
-      { label: 'Gallery', path: '/gallery' },
+      { label: 'Our Story', url: '/about' },
+      { label: 'Our Mission', url: '/about' },
+      { label: 'Team & Careers', url: '/about/management-team' },
     ],
   },
   {
-    title: 'Our Projects',
+    title: 'Quick Links',
     links: [
-      { label: 'Vidhyalaya', path: '/programs/education' },
-      { label: 'Nari Tarang', path: '/programs/women-empowerment' },
-      { label: 'Zero Hunger Drive', path: '/programs/zero-hunger-drive' },
-      { label: 'Project JAL', path: '/programs/jal-project' },
-      { label: 'Ashray Ka Aashra', path: '/programs/orphanage' },
-      { label: 'Sahara', path: '/programs/medical' },
-      { label: 'Ashray Ka Aashram', path: '/programs/old-age-home' },
-      { label: 'Pashu Premi', path: '/programs/pashu-premi' },
+      { label: 'Donate', url: '/donate' },
+      { label: 'Volunteer', url: '/volunteer' },
+      { label: 'Events & Gallery', url: '/gallery' },
     ],
   },
   {
-    title: 'Get Involved',
+    title: 'Legal',
     links: [
-      { label: 'Volunteer', path: '/volunteer' },
-      { label: 'Donate', path: '/donate' },
-    ],
-  },
-  {
-    title: 'Contact Us',
-    links: [
-      { label: 'Get in Touch', path: '/ContactUs' },
+      { label: 'Audited Financials', url: '/about/legal-documents' },
+      { label: 'Privacy Policy', url: '#' },
+      { label: 'Terms of Service', url: '#' },
     ],
   },
 ];
 
-const socialLinks = [
-  { label: 'Facebook', url: 'https://www.facebook.com/share/1DvP7Ne98A/?mibextid=wwXIfr', icon: <img src="/images/facebook.png" alt="Facebook" className="footer-social-img" /> },
-  { label: 'Instagram', url: 'https://www.instagram.com/aflf_official?igsh=ZWxjb284a2Jjem12', icon: <img src="/images/instagram.png" alt="Instagram" className="footer-social-img" /> },
-  { label: 'YouTube', url: 'https://youtube.com/@ashrayforlifefoundation?si=Ys1DRMk-bzcjt-Or', icon: <img src="/images/youtube.png" alt="YouTube" className="footer-social-img" /> },
+const DEFAULT_SOCIALS = [
+  {
+    label: 'Facebook',
+    url: 'https://www.facebook.com/share/1DvP7Ne98A/?mibextid=wwXIfr',
+    icon: '/images/facebook.png',
+  },
+  {
+    label: 'Instagram',
+    url: 'https://www.instagram.com/aflf_official?igsh=ZWxjb284a2Jjem12',
+    icon: '/images/instagram.png',
+  },
+  {
+    label: 'YouTube',
+    url: 'https://youtube.com/@ashrayforlifefoundation?si=Ys1DRMk-bzcjt-Or',
+    icon: '/images/youtube.png',
+  },
 ];
+
+function parseFooterColumns(raw) {
+  try {
+    const parsed = JSON.parse(raw);
+    if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+  } catch {
+    /* fall through to default */
+  }
+  return DEFAULT_FOOTER_SECTIONS;
+}
 
 function Footer() {
+  const { site } = useSite();
+  const siteName = getSetting(site, 'site.siteName', 'Ashray Foundation');
+  const logoUrl =
+    site?.organization?.logoUrl || '/images/Ashray Foundation logo.png';
+  const copyright = getSetting(
+    site,
+    'footer.copyright',
+    '© 2026 Ashray Foundation. All rights reserved.'
+  );
+  const columns = parseFooterColumns(getSetting(site, 'footer.columns', ''));
+  const socials = DEFAULT_SOCIALS.map((social) => ({
+    ...social,
+    url: getSetting(site, `social.${social.label.toLowerCase()}`, social.url) ||
+      social.url,
+  }));
+
   return (
-    <footer className="footer">
-      <div className="footer-inner">
-        {footerSections.map((section) => (
-          <div key={section.title} className="footer-col">
-            <h5>{section.title}</h5>
-            <ul>
-              {section.links.map((link) => (
-                <li key={link.label}>
-                  <Link to={link.path}>{link.label}</Link>
-                </li>
-              ))}
-            </ul>
+    <footer className="bg-tertiary border-t-0">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-stack-lg px-gutter py-section-gap max-w-container-max mx-auto">
+        <div className="flex flex-col gap-4">
+          <div className="flex items-center gap-3">
+            <img
+              src={logoUrl}
+              alt={siteName}
+              className="h-12 w-auto object-contain rounded-lg bg-white p-1"
+            />
+            <span className="text-headline-sm font-headline-sm text-on-tertiary">
+              {siteName}
+            </span>
           </div>
-        ))}
-        <div className="footer-col footer-qr-col">
-          <div className="footer-qr">
-            <img src="/images/qr-code.jpeg" alt="QR Code" />
+          <p className="font-body-md text-body-md text-on-tertiary-container">
+            {copyright}
+          </p>
+          <div className="flex gap-4 mt-4">
+            {socials.map((social) => (
+              <a
+                key={social.label}
+                className="text-on-tertiary-container hover:text-secondary-fixed transition-colors opacity-80 hover:opacity-100"
+                href={social.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={social.label}
+              >
+                <img src={social.icon} alt={social.label} className="w-6 h-6 invert" />
+              </a>
+            ))}
           </div>
         </div>
-      </div>
 
-      <div className="footer-social-bar">
-        {socialLinks.map((platform) => (
-          <a key={platform.label} href={platform.url} target="_blank" rel="noopener noreferrer" aria-label={platform.label}>{platform.icon}</a>
+        {columns.map((section) => (
+          <div key={section.title} className="flex flex-col gap-3">
+            <h4 className="font-label-bold text-label-bold text-on-tertiary uppercase tracking-wider mb-2">
+              {section.title}
+            </h4>
+            {(section.links ?? []).map((link) =>
+              link.url === '#' || /^https?:/.test(link.url) ? (
+                <a
+                  key={link.label}
+                  className="font-body-md text-body-md text-on-tertiary-container hover:text-secondary-fixed transition-colors opacity-80 hover:opacity-100"
+                  href={link.url}
+                  target={/^https?:/.test(link.url) ? '_blank' : undefined}
+                  rel={/^https?:/.test(link.url) ? 'noopener noreferrer' : undefined}
+                >
+                  {link.label}
+                </a>
+              ) : (
+                <Link
+                  key={link.label}
+                  className="font-body-md text-body-md text-on-tertiary-container hover:text-secondary-fixed transition-colors opacity-80 hover:opacity-100"
+                  to={link.url}
+                >
+                  {link.label}
+                </Link>
+              )
+            )}
+          </div>
         ))}
       </div>
 
-      <div className="footer-bottom">
-        <p>Reg. No. E-37237, Mumbai, Maharashtra</p>
-        <p>&copy; 2022 Ashray for Life Foundation </p>
-        <div className="footer-links">
-          <Link to="#">Privacy Policy</Link>
-          <Link to="#">Terms &amp; Conditions</Link>
-          {/* <Link to="#">Safeguarding policy</Link>
-          <Link to="#">Donor rights</Link>
-          <Link to="#">Sitemap</Link> */}
+      <div className="max-w-container-max mx-auto px-gutter pb-10 pt-6 border-t border-on-tertiary/10 flex flex-col md:flex-row justify-between items-center gap-6">
+        <p className="font-label-bold text-label-bold text-on-tertiary-container">
+          Registered Charity No. E-37237 · 80G Tax Exempt
+        </p>
+        <div className="flex items-center gap-4">
+          <img
+            src="/images/qr-code.jpeg"
+            alt="Donation QR Code"
+            className="w-16 h-16 rounded-xl border border-outline-variant bg-white p-1 shadow-sm object-contain"
+          />
+          <p className="font-label-bold text-label-bold text-on-tertiary flex items-center gap-1">
+            Made with <span className="text-error">❤</span> for a better tomorrow.
+          </p>
         </div>
       </div>
     </footer>

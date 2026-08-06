@@ -41,6 +41,7 @@ export function authenticate(required = true): RequestHandler {
         isMaster: payload.isMaster,
         roles: payload.roles,
         permissions: payload.permissions,
+        websiteId: payload.websiteId ?? null,
       };
 
       req.user = authUser;

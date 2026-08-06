@@ -27,7 +27,9 @@ const DEMO_USER: WebUserSession = {
 export const authService = {
   async login(input: LoginInput): Promise<WebUserSession> {
     try {
-      const { data } = await http.post('/auth/login', input)
+      // Login can take a while when the backend DB pooler is slow, so give it
+      // a generous but bounded window instead of the shared 4.5s timeout.
+      const { data } = await http.post('/auth/login', input, { timeout: 30_000 })
       const payload = data.data
       const membership =
         payload.organizations?.find((org: { isCurrent: boolean }) => org.isCurrent) ??
@@ -55,6 +57,10 @@ export const authService = {
             throw new Error('Backend is unreachable, please try again')
           }
           throw new Error('Invalid email or password')
+        }
+        // Request aborted (client timeout) — the backend answered too slowly.
+        if (error.code === 'ECONNABORTED') {
+          throw new Error('Login timed out. The backend is responding slowly — please try again.')
         }
       }
       // Offline demo: accept the seeded demo account.

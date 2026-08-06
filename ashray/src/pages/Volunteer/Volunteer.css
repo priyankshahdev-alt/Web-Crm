@@ -2,11 +2,11 @@
 
 /* ===== VOLUNTEER PAGE ===== */
 .volunteer-page {
-  background: #eff3ff;
+  background: #f7f9fb;
 }
 
 .volunteer-hero {
-  background: linear-gradient(135deg, #eff3ff 0%, #d4e0f0 100%);
+  background: linear-gradient(135deg, #f7f9fb 0%, #dce1ff 100%);
 }
 
 /* ===== BENEFITS ===== */
@@ -14,7 +14,7 @@
   width: 56px;
   height: 56px;
   border-radius: 16px;
-  background: rgba(46, 44, 138, 0.08);
+  background: rgba(0, 35, 111, 0.08);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -23,11 +23,11 @@
 
 .volunteer-benefit-icon .material-symbol {
   font-size: 28px;
-  color: #2e2c8a;
+  color: #00236f;
 }
 
 .detail-mission-card:hover .volunteer-benefit-icon {
-  background: rgba(46, 44, 138, 0.15);
+  background: rgba(0, 35, 111, 0.15);
 }
 
 /* ===== OPPORTUNITIES ===== */
@@ -64,7 +64,7 @@
 .volunteer-opp-header h3 {
   font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
   font-size: 18px;
-  color: #2e2c8a;
+  color: #00236f;
 }
 
 .volunteer-opp-type {
@@ -73,8 +73,8 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: #4a6fa5;
-  background: rgba(74, 111, 165, 0.1);
+  color: #4059aa;
+  background: rgba(64, 89, 170, 0.1);
   padding: 4px 12px;
   border-radius: 9999px;
 }
@@ -84,19 +84,19 @@
   align-items: center;
   gap: 4px;
   font-size: 13px;
-  color: #4a6fa5;
+  color: #4059aa;
   margin-bottom: 12px;
 }
 
 .volunteer-opp-location .material-symbol {
   font-size: 16px;
-  color: #4a6fa5;
+  color: #4059aa;
 }
 
 .volunteer-opp-desc {
   font-size: 14px;
   line-height: 1.7;
-  color: #464651;
+  color: #444651;
 }
 
 /* ===== FORM ===== */
@@ -114,12 +114,12 @@
 .volunteer-form-card h2 {
   font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
   font-size: 36px;
-  color: #2e2c8a;
+  color: #00236f;
   margin-bottom: 12px;
 }
 
 .volunteer-form-card > p {
-  color: #464651;
+  color: #444651;
   margin-bottom: 32px;
 }
 
@@ -144,7 +144,7 @@
 .volunteer-form-group label {
   font-size: 13px;
   font-weight: 700;
-  color: #2e2c8a;
+  color: #00236f;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -153,7 +153,7 @@
 .volunteer-form-group select,
 .volunteer-form-group textarea {
   padding: 12px 16px;
-  border: 2px solid rgba(198, 219, 239, 0.8);
+  border: 2px solid rgba(220, 225, 255, 0.8);
   border-radius: 12px;
   font-size: 15px;
   font-family: inherit;
@@ -165,7 +165,7 @@
 .volunteer-form-group input:focus,
 .volunteer-form-group select:focus,
 .volunteer-form-group textarea:focus {
-  border-color: #2e2c8a;
+  border-color: #00236f;
 }
 
 .volunteer-form-card .btn-primary-glass {
@@ -187,12 +187,12 @@
 .volunteer-form-success h3 {
   font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
   font-size: 28px;
-  color: #2e2c8a;
+  color: #00236f;
   margin-bottom: 12px;
 }
 
 .volunteer-form-success p {
-  color: #464651;
+  color: #444651;
   font-size: 16px;
 }
 

@@ -122,7 +122,7 @@ export default function PlanCanadaSection() {
                   cursor: "pointer",
                   transition: "background 0.2s",
                 }}
-                onMouseOver={e => (e.target.style.background = "#005aa3")}
+                onMouseOver={e => (e.target.style.background = "#4059aa")}
                 onMouseOut={e => (e.target.style.background = card.btnColor)}
               >
                 {card.btn}

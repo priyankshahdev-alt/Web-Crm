@@ -1,5 +1,5 @@
 .footer {
-  background:#0a1730;
+  background:#1e3a8a;
   color: #ccc;
   padding: 24px 0 0;
 }
@@ -43,7 +43,7 @@
   text-decoration: none;
 }
 .footer-social a:hover {
-  color: #f6b73c;
+  color: #ffc329;
 }
 .footer-social a svg {
   width: 16px;
@@ -86,7 +86,7 @@
   text-decoration: none;
 }
 .footer-social-bar a:hover {
-  color: #f6b73c;
+  color: #ffc329;
 }
 .footer-bottom {
   max-width: 1200px;

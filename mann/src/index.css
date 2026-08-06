@@ -194,27 +194,11 @@ body {
   0% { transform: translateX(0); }
   100% { transform: translateX(-50%); }
 }
-@keyframes marquee-right {
-  0% { transform: translateX(-50%); }
-  100% { transform: translateX(0); }
-}
-.marquee-track-left {
-  display: flex;
-  width: max-content;
-  animation: marquee-left 45s linear infinite;
-}
 .marquee-track-partners {
   display: flex;
   width: max-content;
   animation: marquee-left 30s linear infinite;
 }
-.marquee-track-right {
-  display: flex;
-  width: max-content;
-  animation: marquee-right 45s linear infinite;
-}
-.marquee-container:hover .marquee-track-left,
-.marquee-container:hover .marquee-track-right,
 .marquee-container:hover .marquee-track-partners {
   animation-play-state: paused;
 }
@@ -262,36 +246,6 @@ html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; width: 0; heig
 @media (prefers-reduced-motion: reduce) { .support-heartbeat { animation: none; } }
 
 /* =============================================
-   Page transition – GSAP curve swipe (SVG morph)
-   ============================================= */
-.page-transition-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 100;
-  pointer-events: none;
-}
-.page-transition-svg {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-}
-.page-transition-word {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-display-lg);
-  font-size: clamp(36px, 7vw, 72px);
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  color: #ffffff;
-  opacity: 0;
-}
-
-/* =============================================
    Ripple ink on click
    ============================================= */
 .ripple-ink {
@@ -328,20 +282,227 @@ html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; width: 0; heig
 }
 
 /* =============================================
-   Pinned slides (home deck) – ScrollTrigger
-   Panels pin; tall content fake-scrolls up first,
-   then the panel shrinks & fades as the next one
-   arrives. Last panel stays in normal flow.
+   Seamless scrolling gallery (GSAP)
    ============================================= */
-.pinned-section {
+.sg-section {
   position: relative;
   overflow: hidden;
 }
-.pinned-inner {
-  overflow: hidden;
-  will-change: transform;
+.sg-stage {
+  position: relative;
+  height: clamp(460px, 76vh, 720px);
+  display: grid;
+  place-items: center;
 }
-@media (prefers-reduced-motion: reduce) {
-  .pinned-section { overflow: visible; }
-  .pinned-inner { overflow: visible; }
+.sg-cards {
+  position: absolute;
+  width: var(--sg-card-w, min(19rem, 70vw));
+  height: calc(var(--sg-card-w, min(19rem, 70vw)) * 1.42);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  cursor: grab;
+  touch-action: none;
+  filter: drop-shadow(0 30px 60px rgba(138, 0, 72, 0.25));
+}
+.sg-cards:active { cursor: grabbing; }
+
+.sg-card {
+  position: absolute;
+  inset: 0;
+  list-style: none;
+  pointer-events: none;
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.sg-frame {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 1.25rem;
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid rgba(138, 0, 72, 0.1);
+  box-shadow: 0 24px 60px -18px rgba(138, 0, 72, 0.35);
+}
+.sg-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+.sg-frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.18), transparent 40%);
+  pointer-events: none;
+}
+.sg-caption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 1.7rem 1.2rem 1.1rem;
+  background: linear-gradient(to top, rgba(62, 0, 29, 0.9), transparent);
+  color: #ffffff;
+  border-radius: 0 0 1.25rem 1.25rem;
+  pointer-events: none;
+}
+.sg-num {
+  font-size: 0.62rem;
+  letter-spacing: 0.3em;
+  color: var(--color-primary-fixed-dim);
+}
+.sg-title {
+  display: block;
+  margin-top: 0.15rem;
+  font-family: var(--font-display-lg);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 1rem;
+  line-height: 1.2;
+}
+.sg-tag {
+  display: block;
+  font-size: 0.66rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  opacity: 0.75;
+  margin-top: 0.15rem;
+}
+
+.sg-hud {
+  position: absolute;
+  left: clamp(1.2rem, 5vw, 3.5rem);
+  bottom: clamp(1.4rem, 4vw, 2.6rem);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+.sg-counter {
+  font-family: var(--font-display-lg);
+  letter-spacing: 0.28em;
+  color: var(--color-on-surface-variant);
+  font-size: 0.85rem;
+}
+.sg-counter b {
+  color: var(--color-primary);
+  font-size: 1.7rem;
+  font-weight: 800;
+}
+.sg-progress {
+  width: min(11rem, 30vw);
+  height: 3px;
+  background: rgba(138, 0, 72, 0.12);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.sg-progress span {
+  display: block;
+  height: 100%;
+  width: 100%;
+  transform: scaleX(0);
+  transform-origin: left;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+}
+
+.sg-controls {
+  position: absolute;
+  right: clamp(1.2rem, 5vw, 3.5rem);
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.sg-controls button {
+  width: 3.4rem;
+  height: 3.4rem;
+  border-radius: 50%;
+  border: 1px solid rgba(138, 0, 72, 0.18);
+  background: #ffffff;
+  color: var(--color-primary);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  box-shadow: 0 10px 25px -8px rgba(138, 0, 72, 0.3);
+  transition: background 0.25s, color 0.25s, transform 0.25s;
+}
+.sg-controls button svg { width: 1.4rem; height: 1.4rem; }
+.sg-controls button:hover {
+  background: var(--color-primary);
+  color: #ffffff;
+  transform: scale(1.06);
+}
+.sg-controls button:active { transform: scale(0.94); }
+.sg-controls button:focus-visible {
+  outline: 2px solid var(--color-secondary-container);
+  outline-offset: 3px;
+}
+
+.sg-drag-proxy {
+  position: absolute;
+  visibility: hidden;
+}
+
+@media (max-width: 640px) {
+  .sg-controls {
+    flex-direction: row;
+    top: auto;
+    bottom: clamp(1rem, 4vw, 2rem);
+    right: clamp(1rem, 4vw, 2rem);
+    transform: none;
+    gap: 0.6rem;
+  }
+  .sg-controls button { width: 2.9rem; height: 2.9rem; }
+  .sg-hud {
+    left: clamp(1rem, 4vw, 2rem);
+    bottom: clamp(1rem, 4vw, 2rem);
+  }
+}
+
+/* Reduced motion: static responsive grid */
+.sg-reduced .sg-stage {
+  height: auto;
+  display: block;
+  padding: 0.5rem clamp(1rem, 5vw, 3rem);
+}
+.sg-reduced .sg-cards {
+  position: relative;
+  top: auto;
+  left: auto;
+  transform: none;
+  width: 100%;
+  height: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+  gap: 1rem;
+  filter: none;
+  cursor: default;
+}
+.sg-reduced .sg-card {
+  position: relative;
+  inset: auto;
+  aspect-ratio: 9 / 13;
+  opacity: 1 !important;
+  transform: none !important;
+}
+.sg-reduced .sg-controls,
+.sg-reduced .sg-hud {
+  display: none;
+}
+
+/* =============================================
+   Responsive helpers
+   ============================================= */
+@media (max-width: 640px) {
+  .marquee-track-partners { animation-duration: 18s; }
 }

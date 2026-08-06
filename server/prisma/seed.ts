@@ -14,6 +14,13 @@ const DEMO_USER_EMAIL = 'rahul@beingsevak.org';
 const DEMO_USER_PASSWORD = 'Rahul@123456';
 const DEMO_ORG_SLUG = 'being-sevak';
 
+// Web-user emails that don't follow the derived admin@<slug-without-dashes>.org
+// convention. The mann site reuses the pre-existing admin@manncare.org account
+// instead of a freshly created admin@mann.org.
+const SITE_USER_EMAIL_OVERRIDES: Record<string, string> = {
+  mann: 'admin@manncare.org',
+};
+
 type Settings = Record<string, unknown>;
 
 const orgSettings: Record<string, Settings> = {
@@ -51,10 +58,39 @@ const orgSettings: Record<string, Settings> = {
     'contact.phone': '+91 9930028300',
     'contact.address': 'Mumbai, Maharashtra, India',
     'contact.regNumber': 'Reg. No. E-37237, Mumbai',
-    'social.facebook': '',
-    'social.instagram': '',
-    'social.youtube': '',
+    'social.facebook':
+      'https://www.facebook.com/share/1DvP7Ne98A/?mibextid=wwXIfr',
+    'social.instagram':
+      'https://www.instagram.com/aflf_official?igsh=ZWxjb284a2Jjem12',
+    'social.youtube':
+      'https://youtube.com/@ashrayforlifefoundation?si=Ys1DRMk-bzcjt-Or',
     'social.linkedin': '',
+    'footer.columns': JSON.stringify([
+      {
+        title: 'Organization',
+        links: [
+          { label: 'Our Story', url: '/about' },
+          { label: 'Our Mission', url: '/about' },
+          { label: 'Team & Careers', url: '/about/management-team' },
+        ],
+      },
+      {
+        title: 'Quick Links',
+        links: [
+          { label: 'Donate', url: '/donate' },
+          { label: 'Volunteer', url: '/volunteer' },
+          { label: 'Events & Gallery', url: '/gallery' },
+        ],
+      },
+      {
+        title: 'Legal',
+        links: [
+          { label: 'Audited Financials', url: '/about/legal-documents' },
+          { label: 'Privacy Policy', url: '#' },
+          { label: 'Terms of Service', url: '#' },
+        ],
+      },
+    ]),
     'whatsapp.number': '+91 9930028300',
     'map.embedUrl': 'https://www.google.com/maps?q=Mumbai&output=embed',
     'bank.accountName': 'Ashray Foundation',
@@ -71,7 +107,7 @@ const orgSettings: Record<string, Settings> = {
     'footer.copyright': '© 2026 Ashray Foundation. All rights reserved.',
     'footer.tagline': 'Just, equitable and humane society through holistic interventions.',
   },
-  'mann-care': {
+  mann: {
     'site.siteName': 'Mann Care Foundation',
     'site.tagline': 'Creating opportunities, restoring dignity.',
     'contact.email': 'manncarefoundation@gmail.com',
@@ -384,6 +420,750 @@ function innerPageSections(kind: string): SectionSpec[] {
   }
 }
 
+// ============================================================
+// ASHRAY-SPECIFIC CONTENT
+// Mirrors the copy/images currently hardcoded in the Ashray
+// React site (Web-Crm/ashray) so the CMS starts out identical.
+// ============================================================
+
+const ASHRAY_PROJECTS = [
+  {
+    slug: 'old-age-home',
+    title: 'Nutritious Meals',
+    tag: 'Nutrition',
+    summary:
+      'Providing healthy daily meals to elderly citizens in need, ensuring they receive the sustenance and care they deserve.',
+    cardImageUrl: '/images/oldage/img1.jpg',
+    heroImageUrl: '/images/oldage/img1.jpg',
+    sortOrder: 1,
+    featured: true,
+  },
+  {
+    slug: 'medical',
+    title: 'Healthcare Support',
+    tag: 'Healthcare',
+    summary:
+      'Specialized checkups and medical aid for disabled individuals, improving their quality of life and well-being.',
+    cardImageUrl: '/images/medical/img4.jpg',
+    heroImageUrl: '/images/medical/img4.jpg',
+    sortOrder: 2,
+    featured: true,
+  },
+  {
+    slug: 'education',
+    title: 'Empowering Education',
+    tag: 'Education',
+    summary:
+      'Supporting the dreams of underprivileged children with resources, tuition, and essential school supplies.',
+    cardImageUrl: '/images/education/Educationhome.jpg',
+    heroImageUrl: '/images/education/Educationhome.jpg',
+    sortOrder: 3,
+    featured: true,
+  },
+] as const;
+
+const ASHRAY_GALLERY_IMAGES = [
+  '/images/Ashray/img2.jpg',
+  '/images/Sahara/Sahara.jpg',
+  '/images/education/Educationhome.jpg',
+  '/images/medical/img4.jpg',
+  '/images/oldage/img1.jpg',
+  '/images/Ashray/img1.jpg',
+  '/images/gallery/vidhyalay1.jpg',
+  '/images/gallery/nari1.jpg',
+  '/images/gallery/hunger1.jpg',
+  '/images/gallery/jal1.jpg',
+  '/images/gallery/pashu1.jpg',
+  '/images/gallery/img5.jpg',
+] as const;
+
+function ashrayHomeSections(): SectionSpec[] {
+  return [
+    {
+      type: 'hero-slider',
+      name: 'Hero Slider',
+      sortOrder: 1,
+      content: {
+        heading: 'Ashray for Life Foundation',
+        subheading: 'Empowering Lives Since 2022',
+        slides: [
+          {
+            id: 'dignity',
+            eyebrow: 'Empowering Lives Since 2022',
+            title: 'Restoring Dignity,',
+            accent: 'One Life at a Time.',
+            subtitle:
+              'Ashray for Life Foundation is dedicated to providing compassionate care, nutritious meals, and essential support to elderly citizens, disabled individuals, and underprivileged children in our community.',
+            imageUrl: '/images/Ashray/img2.jpg',
+            subjectImageUrl: '/images/Ashray/img1.jpg',
+            subjectAlt: 'Ashray for Life community',
+            subjectPosition: 'center 45%',
+            ctaLabel: 'Donate Now',
+            ctaUrl: '/donate',
+            cta2Label: 'See Our Impact',
+            cta2Url: '/gallery',
+            panelLabel: 'Ashray for Life',
+            panelTitle: 'NOURISH. CARE. PROTECT.',
+          },
+          {
+            id: 'sahara',
+            eyebrow: 'Sahara · Elderly Care',
+            title: 'Caring For Our Elders,',
+            accent: 'With Love & Dignity.',
+            subtitle:
+              'Supporting elderly individuals with care, dignity, and companionship for a better quality of life.',
+            imageUrl: '/images/Sahara/Sahara.jpg',
+            subjectImageUrl: '/images/Sahara/img1.jpg',
+            subjectAlt: 'Sahara elderly care program',
+            subjectPosition: 'center 30%',
+            ctaLabel: 'Explore Sahara',
+            ctaUrl: '/programs/old-age-home',
+            cta2Label: 'Donate Now',
+            cta2Url: '/donate',
+            panelLabel: 'Project Sahara',
+            panelTitle: 'CARE. LOVE. DIGNITY.',
+          },
+          {
+            id: 'vidhyalay',
+            eyebrow: 'Project Vidhyalay · Education',
+            title: 'Educating Every Child,',
+            accent: 'Building Tomorrow Today.',
+            subtitle:
+              'Breaking the cycle of illiteracy by ensuring every underprivileged child has access to quality education.',
+            imageUrl: '/images/education/Educationhome.jpg',
+            subjectImageUrl: '/images/education/img2.JPG',
+            subjectAlt: 'Project Vidhyalay education program',
+            subjectPosition: 'center 32%',
+            ctaLabel: 'Explore Vidhyalay',
+            ctaUrl: '/programs/education',
+            cta2Label: 'See Our Impact',
+            cta2Url: '/gallery',
+            panelLabel: 'Project Vidhyalay',
+            panelTitle: 'EDUCATE. EMPOWER. ELEVATE.',
+          },
+        ],
+      },
+    },
+    {
+      type: 'stats',
+      name: 'Impact Stats',
+      sortOrder: 2,
+      content: {
+        heading: 'Our Impact',
+        items: [
+          { icon: 'group', value: '10,000+', label: 'Lives Impacted' },
+          { icon: 'volunteer_activism', value: '15+', label: 'Active Projects' },
+          { icon: 'currency_rupee', value: '₹50L+', label: 'Funds Raised' },
+          { icon: 'event_available', value: '2+ Years', label: 'of Service' },
+        ],
+      },
+    },
+    {
+      type: 'projects-grid',
+      name: 'Our Projects',
+      sortOrder: 3,
+      content: {
+        heading: 'Our Projects',
+        subheading: 'Our Initiatives',
+        showAll: true,
+        layout: 'cards',
+        projects: [
+          {
+            title: 'Nutritious Meals',
+            tag: 'Nutrition',
+            description:
+              'Providing healthy daily meals to elderly citizens in need, ensuring they receive the sustenance and care they deserve.',
+            image: '/images/oldage/img1.jpg',
+            url: '/programs/old-age-home',
+            position: '0% 50%',
+          },
+          {
+            title: 'Healthcare Support',
+            tag: 'Healthcare',
+            description:
+              'Specialized checkups and medical aid for disabled individuals, improving their quality of life and well-being.',
+            image: '/images/medical/img4.jpg',
+            url: '/programs/medical',
+            position: '50% 50%',
+          },
+          {
+            title: 'Empowering Education',
+            tag: 'Education',
+            description:
+              'Supporting the dreams of underprivileged children with resources, tuition, and essential school supplies.',
+            image: '/images/education/Educationhome.jpg',
+            url: '/programs/education',
+            position: '100% 50%',
+          },
+        ],
+      },
+    },
+    {
+      type: 'gallery',
+      name: 'Impact in Action',
+      sortOrder: 4,
+      content: {
+        heading: 'Our Impact',
+        layout: 'marquee',
+        images: [
+          '/images/Ashray/img2.jpg',
+          '/images/Sahara/Sahara.jpg',
+          '/images/education/Educationhome.jpg',
+          '/images/medical/img4.jpg',
+          '/images/oldage/img1.jpg',
+          '/images/Ashray/img1.jpg',
+          '/images/gallery/vidhyalay1.jpg',
+          '/images/gallery/nari1.jpg',
+          '/images/gallery/hunger1.jpg',
+          '/images/gallery/jal1.jpg',
+          '/images/gallery/pashu1.jpg',
+          '/images/gallery/img5.jpg',
+        ],
+      },
+    },
+    {
+      type: 'cta',
+      name: 'Join Us CTA',
+      sortOrder: 5,
+      content: {
+        heading:
+          'Your contribution provides meals, shelter, and care. Join us in making a difference today.',
+        paragraph: '',
+        buttonLabel: 'Donate Now',
+        buttonUrl: '/donate',
+        align: 'center',
+      },
+    },
+  ];
+}
+
+async function seedAshraySite(orgId: string): Promise<void> {
+  const homePage = await prisma.page.findFirst({
+    where: { organizationId: orgId, isHome: true },
+  });
+  if (!homePage) return;
+
+  const projectIds: string[] = [];
+  for (const def of ASHRAY_PROJECTS) {
+    const project = await prisma.project.upsert({
+      where: { organizationId_slug: { organizationId: orgId, slug: def.slug } },
+      update: {
+        title: def.title,
+        tag: def.tag,
+        summary: def.summary,
+        cardImageUrl: def.cardImageUrl,
+        heroImageUrl: def.heroImageUrl,
+        sortOrder: def.sortOrder,
+        featured: def.featured,
+        status: PublishStatus.PUBLISHED,
+      },
+      create: {
+        organizationId: orgId,
+        slug: def.slug,
+        title: def.title,
+        tag: def.tag,
+        summary: def.summary,
+        cardImageUrl: def.cardImageUrl,
+        heroImageUrl: def.heroImageUrl,
+        sortOrder: def.sortOrder,
+        featured: def.featured,
+        status: PublishStatus.PUBLISHED,
+      },
+    });
+    projectIds.push(project.id);
+  }
+
+  const gallery = await prisma.gallery.upsert({
+    where: { organizationId_slug: { organizationId: orgId, slug: 'ashray-gallery' } },
+    update: { title: 'Ashray Gallery', description: 'Moments that matter.', status: PublishStatus.PUBLISHED },
+    create: {
+      organizationId: orgId,
+      slug: 'ashray-gallery',
+      title: 'Ashray Gallery',
+      description: 'Moments that matter.',
+      status: PublishStatus.PUBLISHED,
+    },
+  });
+  await prisma.galleryItem.deleteMany({ where: { galleryId: gallery.id } });
+  await prisma.galleryItem.createMany({
+    data: ASHRAY_GALLERY_IMAGES.map((imageUrl, i) => ({
+      galleryId: gallery.id,
+      organizationId: orgId,
+      imageUrl,
+      altText: '',
+      sortOrder: i + 1,
+    })),
+  });
+
+  await prisma.pageSection.deleteMany({
+    where: { pageId: homePage.id, organizationId: orgId },
+  });
+
+  for (const def of ashrayHomeSections()) {
+    await prisma.pageSection.create({
+      data: {
+        pageId: homePage.id,
+        organizationId: orgId,
+        type: def.type,
+        name: def.name,
+        sortOrder: def.sortOrder,
+        isActive: true,
+        content: def.content as Prisma.InputJsonValue,
+      },
+    });
+  }
+
+  const aboutPage = await prisma.page.findFirst({
+    where: { organizationId: orgId, slug: 'about' },
+  });
+  if (aboutPage) {
+    const aboutUpdates: { type: string; content: Record<string, unknown> }[] = [
+      {
+        type: 'story',
+        content: {
+          tag: 'Who We Are',
+          heading: 'Welcome to Ashray for Life Foundation (AFLF)',
+          paragraphs: [
+            'We are a non-profit organization dedicated to supporting underprivileged children, orphans, and the families of daily wage workers, Divyang, visually impaired, Senior Citizens, Empowering poor Women and Child Health Development. Our mission is to provide essential resources and opportunities to improve their lives. Ashray for Life Foundation (AFLF) also creats awareness on various social, road safety, health and current issue among the citizens.',
+            'At Ashray for Life Foundation, we are committed to making a positive impact on the lives of those who need it most. Join us in our journey towards a better tomorrow. Together, we can create a world where every child has the opportunity to thrive. Join our cause and make a difference today!',
+          ],
+        },
+      },
+      {
+        type: 'mission-vision',
+        content: {
+          mission: {
+            title: 'Our Mission',
+            description:
+              'To empower underprivileged children, orphans, and the children of daily wage workers by providing them with access to quality education, instilling hope for a brighter future. We are dedicated to creating awareness about health and hygiene in slum communities, addressing education and health issues, and ensuring that every family has access to fresh, clean drinking water.',
+          },
+          vision: {
+            title: 'Our Vision',
+            description:
+              'A world where every child, regardless of their background, has the opportunity to receive a proper education, live a healthy life, and break free from the cycle of poverty. We aim to be a beacon of hope, fostering positive change in the lives of these children and their families, ultimately building stronger, more vibrant communities.',
+          },
+        },
+      },
+    ];
+    for (const update of aboutUpdates) {
+      const section = await prisma.pageSection.findFirst({
+        where: { pageId: aboutPage.id, organizationId: orgId, type: update.type },
+      });
+      if (section) {
+        await prisma.pageSection.update({
+          where: { id: section.id },
+          data: { content: update.content as Prisma.InputJsonValue },
+        });
+      }
+    }
+  }
+
+  const mainNav = await prisma.menu.upsert({
+    where: {
+      organizationId_location: { organizationId: orgId, location: 'main-nav' },
+    },
+    update: { name: 'Main Navigation' },
+    create: { organizationId: orgId, name: 'Main Navigation', location: 'main-nav' },
+  });
+  await prisma.menuItem.deleteMany({ where: { menuId: mainNav.id } });
+
+  const createMenuItem = async (
+    label: string,
+    url: string | null,
+    parentId: string | null,
+    sortOrder: number
+  ) =>
+    prisma.menuItem.create({
+      data: {
+        menuId: mainNav.id,
+        organizationId: orgId,
+        label,
+        url,
+        parentId,
+        sortOrder,
+        isActive: true,
+      },
+    });
+
+  const about = await createMenuItem('About Us', null, null, 1);
+  const projects = await createMenuItem('Our Projects', null, null, 2);
+  await createMenuItem('Gallery', '/gallery', null, 3);
+  await createMenuItem('Get Involved', '/volunteer', null, 4);
+  await createMenuItem('Contact Us', '/ContactUs', null, 5);
+
+  const aboutChildren = [
+    { label: 'Management Team', url: '/about/management-team' },
+    { label: 'Legal Documents', url: '/about/legal-documents' },
+  ];
+  for (const [i, child] of aboutChildren.entries()) {
+    await createMenuItem(child.label, child.url, about.id, i + 1);
+  }
+
+  const projectChildren = [
+    { label: 'Vidhyalaya', url: '/programs/education' },
+    { label: 'Nari Tarang', url: '/programs/women-empowerment' },
+    { label: 'Zero Hunger Drive', url: '/programs/zero-hunger-drive' },
+    { label: 'Project JAL', url: '/programs/jal-project' },
+    { label: 'Ashray Ka Aashra', url: '/programs/orphanage' },
+    { label: 'Sahara', url: '/programs/medical' },
+    { label: 'Ashray Ka Aashram', url: '/programs/old-age-home' },
+    { label: 'Pashu Premi', url: '/programs/pashu-premi' },
+  ];
+  for (const [i, child] of projectChildren.entries()) {
+    await createMenuItem(child.label, child.url, projects.id, i + 1);
+  }
+
+  console.log(`Ashray site content seeded for org ${orgId}.`);
+}
+
+// ============================================================
+// MANN-SPECIFIC CONTENT
+// Mirrors the copy/images currently hardcoded in the Mann React
+// site (Web-Crm/mann). Image paths are Mann's own Vite asset
+// paths (/images, /projects, /media) so the API-mode frontend
+// resolves them through its img() helper, while absolute URLs
+// uploaded from the editor pass straight through.
+// ============================================================
+
+const MANN_PROJECTS = [
+  {
+    slug: 'poshan',
+    title: 'Project Poshan',
+    tag: 'Nutrition Support Initiative',
+    summary:
+      'Addressing hunger, malnutrition and food insecurity through Dry Ration Kits, Nutritious Cooked Meals, Healthy Snack Kits, and Refreshment Support for all needy individuals.',
+    cardImageUrl: '/projects/hero1.jpeg',
+    heroImageUrl: '/projects/hero1.jpeg',
+    sortOrder: 1,
+  },
+  {
+    slug: 'gyaan',
+    title: 'Project Gyaan',
+    tag: 'Education Support Initiative',
+    summary:
+      'Ensuring inclusive, continuous, quality education for children from marginalized communities through academic and digital learning support.',
+    cardImageUrl: '/projects/hero2.jpeg',
+    heroImageUrl: '/projects/hero2.jpeg',
+    sortOrder: 2,
+  },
+  {
+    slug: 'sakhi',
+    title: 'Project Sakhi',
+    tag: 'Women Empowerment Initiative',
+    summary:
+      'Empowering women holistically through skill development, livelihood training, hygiene support, and confidence-building at the grassroots level.',
+    cardImageUrl: '/projects/hero3.jpeg',
+    heroImageUrl: '/projects/hero3.jpeg',
+    sortOrder: 3,
+  },
+  {
+    slug: 'swasth',
+    title: 'Project Swasth',
+    tag: 'Health & Hygiene Initiative',
+    summary:
+      'Promoting preventive healthcare, hygiene awareness, and access to essential health support — including oral health, menstrual hygiene, and medical assistance.',
+    cardImageUrl: '/projects/hero4.jpeg',
+    heroImageUrl: '/projects/hero4.jpeg',
+    sortOrder: 4,
+  },
+  {
+    slug: 'pashu',
+    title: 'Project Pashu',
+    tag: 'Animal Support Initiative',
+    summary:
+      'Dedicated to the care, protection, and well-being of animals — stray dogs, abandoned cattle, injured animals — with feeding drives, medical support, and community awareness.',
+    cardImageUrl: '/projects/hero5.jpeg',
+    heroImageUrl: '/projects/hero5.jpeg',
+    sortOrder: 5,
+  },
+  {
+    slug: 'paryavaran',
+    title: 'Project Paryavaran',
+    tag: 'Environment & Sustainability Initiative',
+    summary:
+      'Promoting environmental protection through tree plantation, cleanliness drives, and awareness programs to build a greener and healthier future for all.',
+    cardImageUrl: '/projects/hero6.jpeg',
+    heroImageUrl: '/projects/hero6.jpeg',
+    sortOrder: 6,
+  },
+];
+
+const MANN_GALLERY_IMAGES = [
+  '/media/b1.JPG',
+  '/media/b2.JPG',
+  '/media/b3.JPG',
+  '/media/b4.JPG',
+  '/media/b5.JPG',
+  '/media/b6.JPG',
+  '/media/w1.jpg',
+  '/media/w2.jpg',
+  '/media/w3.jpg',
+  '/media/w4.jpg',
+  '/media/w5.jpg',
+  '/media/l1.jpg',
+  '/media/l2.jpg',
+  '/media/l3.jpg',
+  '/media/l4.jpg',
+  '/media/snack1.jpeg',
+  '/media/snack2.jpeg',
+  '/media/snack3.jpeg',
+  '/media/snack4.jpeg',
+  '/media/snack5.jpeg',
+];
+
+const MANN_MARQUEE_IMAGES = [
+  '/media/b1.JPG',
+  '/media/w1.jpg',
+  '/media/l1.jpg',
+  '/media/snack1.jpeg',
+  '/media/b2.JPG',
+  '/media/w2.jpg',
+  '/media/l2.jpg',
+  '/media/snack2.jpeg',
+  '/media/b3.JPG',
+  '/media/w3.jpg',
+  '/media/l3.jpg',
+  '/media/snack3.jpeg',
+];
+
+function mannHomeSections(): SectionSpec[] {
+  return [
+    {
+      type: 'hero-slider',
+      name: 'Hero Slider',
+      sortOrder: 1,
+      content: {
+        heading: 'Mann Care Foundation',
+        subheading: 'Creating opportunities, restoring dignity.',
+        slides: [
+          {
+            id: 'welcome',
+            eyebrow: 'Welcome to Mann',
+            title: 'Empowering Women',
+            accent: '& Children.',
+            subtitle:
+              'Mann Care Foundation works to create opportunities and restore dignity for underprivileged and marginalized individuals across Mumbai.',
+            imageUrl: '/images/heroslide1.jpeg',
+            mobileImageUrl: '/images/mobile-slide1.jpeg',
+            altText: 'Empowering Women & Children',
+            ctaLabel: 'Donate Now',
+            ctaUrl: '/get-involved/donate-online',
+            panelLabel: 'Mann Care Foundation',
+            panelTitle: 'CREATE OPPORTUNITIES. RESTORE DIGNITY.',
+          },
+          {
+            id: 'poshan',
+            eyebrow: 'Project Poshan',
+            title: 'Nourishing Lives,',
+            accent: 'Restoring Hope.',
+            subtitle:
+              'Eradicating hunger with radical distribution networks across rural belts.',
+            imageUrl: '/images/heroslide2.jpeg',
+            mobileImageUrl: '/images/mobile-slide2.jpeg',
+            altText: 'Project Poshan',
+            ctaLabel: 'Support Poshan',
+            ctaUrl: '/projects/poshan',
+            panelLabel: 'Project Poshan',
+            panelTitle: 'NUTRITION. HOPE. HEALTH.',
+          },
+          {
+            id: 'gyaan',
+            eyebrow: 'Project Gyaan',
+            title: 'Educating Every Child,',
+            accent: 'Building Tomorrow Today.',
+            subtitle:
+              'Digital literacy as a fundamental human right — opening doors to global knowledge.',
+            imageUrl: '/images/heroslide3.jpeg',
+            mobileImageUrl: '/images/mobile-slide3.jpeg',
+            altText: 'Project Gyaan',
+            ctaLabel: 'Support Gyaan',
+            ctaUrl: '/projects/gyaan',
+            panelLabel: 'Project Gyaan',
+            panelTitle: 'EDUCATE. EMPOWER. ELEVATE.',
+          },
+        ],
+      },
+    },
+    {
+      type: 'stats',
+      name: 'Impact Stats',
+      sortOrder: 2,
+      content: {
+        heading: 'Our Impact',
+        items: [
+          { value: '12K+', label: 'Meals Distributed' },
+          { value: '5K+', label: 'Students Taught' },
+          { value: '850+', label: 'Women Skilled' },
+        ],
+      },
+    },
+    {
+      type: 'projects-grid',
+      name: 'Our Initiatives',
+      sortOrder: 3,
+      content: {
+        heading: 'Our Initiatives',
+        subheading: 'From nutrition to education, every project transforms lives.',
+        layout: 'cards',
+        projects: [
+          {
+            title: 'Project Poshan',
+            tag: 'Nutrition Support Initiative',
+            description:
+              'Addressing hunger, malnutrition and food insecurity through Dry Ration Kits, Nutritious Cooked Meals, Healthy Snack Kits, and Refreshment Support.',
+            image: '/projects/hero1.jpeg',
+            url: '/projects/poshan',
+          },
+          {
+            title: 'Project Gyaan',
+            tag: 'Education Support Initiative',
+            description:
+              'Ensuring inclusive, continuous, quality education for children from marginalized communities through academic and digital learning support.',
+            image: '/projects/hero2.jpeg',
+            url: '/projects/gyaan',
+          },
+          {
+            title: 'Project Sakhi',
+            tag: 'Women Empowerment Initiative',
+            description:
+              'Empowering women holistically through skill development, livelihood training, hygiene support, and confidence-building at the grassroots level.',
+            image: '/projects/hero3.jpeg',
+            url: '/projects/sakhi',
+          },
+          {
+            title: 'Project Swasth',
+            tag: 'Health & Hygiene Initiative',
+            description:
+              'Promoting preventive healthcare, hygiene awareness, and access to essential health support — including oral health, menstrual hygiene, and medical assistance.',
+            image: '/projects/hero4.jpeg',
+            url: '/projects/swasth',
+          },
+          {
+            title: 'Project Pashu',
+            tag: 'Animal Support Initiative',
+            description:
+              'Dedicated to the care, protection, and well-being of animals — stray dogs, abandoned cattle, injured animals — with feeding drives, medical support, and community awareness.',
+            image: '/projects/hero5.jpeg',
+            url: '/projects/pashu',
+          },
+          {
+            title: 'Project Paryavaran',
+            tag: 'Environment & Sustainability Initiative',
+            description:
+              'Promoting environmental protection through tree plantation, cleanliness drives, and awareness programs to build a greener and healthier future for all.',
+            image: '/projects/hero6.jpeg',
+            url: '/projects/paryavaran',
+          },
+        ],
+      },
+    },
+    {
+      type: 'gallery',
+      name: 'Impact in Action',
+      sortOrder: 4,
+      content: {
+        heading: 'Impact in Action',
+        layout: 'marquee',
+        images: MANN_MARQUEE_IMAGES,
+      },
+    },
+    {
+      type: 'cta',
+      name: 'Your Turn to Lead',
+      sortOrder: 5,
+      content: {
+        heading: 'Your Turn to Lead',
+        paragraph:
+          'Your support creates opportunities and restores dignity — one life at a time.',
+        buttonLabel: 'Donate Now',
+        buttonUrl: '/get-involved/donate-online',
+        align: 'center',
+      },
+    },
+  ];
+}
+
+async function seedMannSite(orgId: string): Promise<void> {
+  const homePage = await prisma.page.findFirst({
+    where: { organizationId: orgId, isHome: true },
+  });
+  if (!homePage) return;
+
+  for (const def of MANN_PROJECTS) {
+    await prisma.project.upsert({
+      where: { organizationId_slug: { organizationId: orgId, slug: def.slug } },
+      update: {
+        title: def.title,
+        tag: def.tag,
+        summary: def.summary,
+        cardImageUrl: def.cardImageUrl,
+        heroImageUrl: def.heroImageUrl,
+        sortOrder: def.sortOrder,
+        featured: true,
+        status: PublishStatus.PUBLISHED,
+      },
+      create: {
+        organizationId: orgId,
+        slug: def.slug,
+        title: def.title,
+        tag: def.tag,
+        summary: def.summary,
+        cardImageUrl: def.cardImageUrl,
+        heroImageUrl: def.heroImageUrl,
+        sortOrder: def.sortOrder,
+        featured: true,
+        status: PublishStatus.PUBLISHED,
+      },
+    });
+  }
+
+  const gallery = await prisma.gallery.upsert({
+    where: { organizationId_slug: { organizationId: orgId, slug: 'mann-gallery' } },
+    update: {
+      title: 'Mann Gallery',
+      description: 'Impact in action.',
+      status: PublishStatus.PUBLISHED,
+    },
+    create: {
+      organizationId: orgId,
+      slug: 'mann-gallery',
+      title: 'Mann Gallery',
+      description: 'Impact in action.',
+      status: PublishStatus.PUBLISHED,
+    },
+  });
+  await prisma.galleryItem.deleteMany({ where: { galleryId: gallery.id } });
+  await prisma.galleryItem.createMany({
+    data: MANN_GALLERY_IMAGES.map((imageUrl, i) => ({
+      galleryId: gallery.id,
+      organizationId: orgId,
+      imageUrl,
+      altText: '',
+      sortOrder: i + 1,
+    })),
+  });
+
+  await prisma.pageSection.deleteMany({
+    where: { pageId: homePage.id, organizationId: orgId },
+  });
+
+  for (const def of mannHomeSections()) {
+    await prisma.pageSection.create({
+      data: {
+        pageId: homePage.id,
+        organizationId: orgId,
+        type: def.type,
+        name: def.name,
+        sortOrder: def.sortOrder,
+        isActive: true,
+        content: def.content as Prisma.InputJsonValue,
+      },
+    });
+  }
+
+  console.log(`Mann site content seeded for org ${orgId}.`);
+}
+
 type BuiltinTemplateDef = {
   type: string;
   name: string;
@@ -425,12 +1205,20 @@ const BUILTIN_SECTION_TEMPLATES: BuiltinTemplateDef[] = [
         type: 'repeater',
         maxItems: 20,
         fields: [
+          { name: 'eyebrow', label: 'Eyebrow', ...t('text', 200) },
           { name: 'title', label: 'Title', ...t('text', 300), required: true },
+          { name: 'accent', label: 'Accent (highlight)', ...t('text', 300) },
           { name: 'subtitle', label: 'Subtitle', ...t('textarea', 1000) },
           { name: 'imageUrl', label: 'Image', type: 'image', required: true },
-          { name: 'mobileImageUrl', label: 'Mobile Image', type: 'image' },
+          { name: 'subjectImageUrl', label: 'Subject Image', type: 'image' },
+          { name: 'subjectAlt', label: 'Subject Alt Text', ...t('text', 300) },
+          { name: 'subjectPosition', label: 'Subject Position', ...t('text', 120) },
           { name: 'ctaLabel', label: 'CTA Label', ...t('text', 120) },
           { name: 'ctaUrl', label: 'CTA URL', ...t('url', 500) },
+          { name: 'cta2Label', label: 'Secondary CTA Label', ...t('text', 120) },
+          { name: 'cta2Url', label: 'Secondary CTA URL', ...t('url', 500) },
+          { name: 'panelLabel', label: 'Panel Label', ...t('text', 200) },
+          { name: 'panelTitle', label: 'Panel Tagline', ...t('text', 200) },
           { name: 'altText', label: 'Alt Text', ...t('text', 300) },
         ],
       },
@@ -504,6 +1292,7 @@ const BUILTIN_SECTION_TEMPLATES: BuiltinTemplateDef[] = [
         minItems: 1,
         maxItems: 12,
         fields: [
+          { name: 'icon', label: 'Icon', ...t('text', 120) },
           { name: 'value', label: 'Value', ...t('text', 60), required: true },
           { name: 'label', label: 'Label', ...t('text', 200), required: true },
         ],
@@ -587,6 +1376,20 @@ const BUILTIN_SECTION_TEMPLATES: BuiltinTemplateDef[] = [
       { name: 'showAll', label: 'Show all projects', type: 'boolean' },
       { name: 'layout', label: 'Layout', ...t('text', 60) },
       { name: 'cta', label: 'CTA', type: 'link' },
+      {
+        name: 'projects',
+        label: 'Featured Projects',
+        type: 'repeater',
+        maxItems: 30,
+        fields: [
+          { name: 'title', label: 'Title', ...t('text', 300), required: true },
+          { name: 'tag', label: 'Tag', ...t('text', 120) },
+          { name: 'description', label: 'Description', ...t('textarea', 2000) },
+          { name: 'image', label: 'Image', type: 'image' },
+          { name: 'url', label: 'URL', ...t('url', 500) },
+          { name: 'position', label: 'Object Position', ...t('text', 60) },
+        ],
+      },
     ],
   },
   {
@@ -749,6 +1552,7 @@ const BUILTIN_SECTION_TEMPLATES: BuiltinTemplateDef[] = [
       { name: 'heading', label: 'Heading', ...t('text', 300) },
       { name: 'galleryId', label: 'Gallery', type: 'entityRef', entityType: 'gallery' },
       { name: 'layout', label: 'Layout', ...t('text', 60) },
+      { name: 'images', label: 'Image URLs', type: 'gallery', maxItems: 200 },
     ],
   },
   {
@@ -1194,6 +1998,7 @@ async function main(): Promise<void> {
   console.log(`Built-in section templates ready: ${BUILTIN_SECTION_TEMPLATES.length}`);
 
   for (const [slug, settings] of Object.entries(orgSettings)) {
+    if (process.env.SEED_ORG && slug !== process.env.SEED_ORG) continue;
     const name = settings['site.siteName'] as string;
     const email = (settings['contact.email'] as string) || `${slug}@webcrm.com`;
 
@@ -1209,16 +2014,16 @@ async function main(): Promise<void> {
       },
     });
 
-    const settingUpserts = Object.entries(settings).map(([key, value]) =>
-      prisma.organizationSetting.upsert({
+    for (const [key, value] of Object.entries(settings)) {
+      await prisma.organizationSetting.upsert({
         where: { organizationId_key: { organizationId: org.id, key } },
         update: { value: value as unknown as Prisma.InputJsonValue },
         create: { organizationId: org.id, key, value: value as unknown as Prisma.InputJsonValue },
-      }),
-    );
-    await Promise.all(settingUpserts);
+      });
+    }
 
-    const siteUserEmail = `admin@${slug.replace('-', '')}.org`;
+    const siteUserEmail =
+      SITE_USER_EMAIL_OVERRIDES[slug] ?? `admin@${slug.replace('-', '')}.org`;
     const siteUser = await prisma.user.upsert({
       where: { email: siteUserEmail },
       update: {},
@@ -1276,6 +2081,14 @@ async function main(): Promise<void> {
     if (sectionCount === 0) {
       await seedSiteTemplate(org.id);
       console.log(`Site template seeded for ${slug}.`);
+    }
+
+    if (slug === 'ashray') {
+      await seedAshraySite(org.id);
+    }
+
+    if (slug === 'mann') {
+      await seedMannSite(org.id);
     }
 
     console.log(`Organization ready: ${name} (website user: ${siteUserEmail})`);

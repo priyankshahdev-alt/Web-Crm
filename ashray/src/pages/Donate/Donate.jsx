@@ -1,7 +1,8 @@
 import { useState } from "react";
-import "./Donate.css";
+import SuccessModal from "../../components/Common/SuccessModal";
+import { validatePersonForm, hasErrors } from "../../utils/validation";
 
-const RAZORPAY_TEST_KEY = "rzp_live_T1vEMMkRqw3jrw";
+const RAZORPAY_LIVE_KEY = "rzp_live_T1vEMMkRqw3jrw";
 
 const causeIcons = {
   education: (
@@ -51,7 +52,7 @@ const causes = [
     id: "education",
     label: "Education",
     icon: causeIcons.education,
-    color: "#4a6fa5",
+    color: "#4059aa",
     title: "Support Education for Every Child",
     description:
       "Your donation helps provide quality education, school supplies, and learning opportunities to underprivileged children. Every child deserves access to knowledge and the chance to build a brighter future.",
@@ -151,8 +152,10 @@ export default function Donate() {
   const [customAmount, setCustomAmount] = useState("");
   const [selectedAmount, setSelectedAmount] = useState(null);
   const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
-  const [submitted, setSubmitted] = useState(false);
+  const [errors, setErrors] = useState({});
+  const [showSuccess, setShowSuccess] = useState(false);
   const [hoveredCause, setHoveredCause] = useState(null);
+  const [processing, setProcessing] = useState(false);
 
   const cause = causes.find((c) => c.id === activeTab);
 
@@ -168,6 +171,17 @@ export default function Donate() {
 
   const handleFormChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+    if (errors[e.target.name]) {
+      setErrors({ ...errors, [e.target.name]: undefined });
+    }
+  };
+
+  const resetDonation = () => {
+    setShowSuccess(false);
+    setSelectedAmount(null);
+    setCustomAmount("");
+    setForm({ name: "", email: "", phone: "", message: "" });
+    setErrors({});
   };
 
   const getAmount = () => {
@@ -188,195 +202,214 @@ export default function Donate() {
 
   const handlePayment = async (e) => {
     e.preventDefault();
+    if (processing) return;
     const amount = getAmount();
-    if (!amount || amount < 1) return;
-
-    const scriptLoaded = await loadRazorpayScript();
-    if (!scriptLoaded) {
-      alert("Failed to load payment gateway. Please try again.");
+    const nextErrors = validatePersonForm(form);
+    if (!amount || amount < 1) {
+      nextErrors.amount = "Please select or enter a donation amount.";
+    }
+    setErrors(nextErrors);
+    if (hasErrors(nextErrors)) {
+      document.querySelector(".donate-form")?.scrollIntoView({ behavior: "smooth", block: "start" });
       return;
     }
 
-    const options = {
-      key: RAZORPAY_TEST_KEY,
-      amount: amount * 100,
-      currency: "INR",
-      name: "Ashray for Life Foundation",
-      description: `Donation for ${cause.label}`,
-      image: "/images/Ashray Foundation logo.png",
-      prefill: {
-        name: form.name || "Donor",
-        email: form.email || "donor@example.com",
-        contact: form.phone || "9999999999",
-      },
-      notes: {
-        cause: cause.label,
-        message: form.message || "",
-      },
-      theme: { color: "#4a6fa5" },
-      handler: function () {
-        setSubmitted(true);
-      },
-      modal: {
-        ondismiss: function () {},
-      },
-    };
+    setProcessing(true);
+    try {
+      const scriptLoaded = await loadRazorpayScript();
+      if (!scriptLoaded) {
+        alert("Failed to load payment gateway. Please try again.");
+        return;
+      }
 
-    const rzp = new window.Razorpay(options);
-    rzp.open();
+      const options = {
+        key: RAZORPAY_LIVE_KEY,
+        amount: amount * 100,
+        currency: "INR",
+        name: "Ashray for Life Foundation",
+        description: `Donation for ${cause.label}`,
+        image: "/images/Ashray Foundation logo.png",
+        prefill: {
+          name: form.name || "Donor",
+          email: form.email || "donor@example.com",
+          contact: form.phone || "9999999999",
+        },
+        notes: {
+          cause: cause.label,
+          message: form.message || "",
+        },
+        theme: { color: "#4059aa" },
+        handler: function () {
+          setShowSuccess(true);
+        },
+        modal: {
+          ondismiss: function () {},
+        },
+      };
+
+      const rzp = new window.Razorpay(options);
+      rzp.open();
+    } finally {
+      setProcessing(false);
+    }
   };
 
-  if (submitted) {
-    return (
-      <div className="donate-page">
-      {/* <section className="bsct-home-hero-section">
-        <picture>
-          <source media="(max-width: 768px)" srcSet="/images/banner-mobile7.png" />
-          <img src="/images/banner.jpg" alt="Donate" />
-        </picture>
-      </section> */}
-      <section className="donate-hero">
-        <div className="container">
-          <h1>Donate</h1>
-          <p>Your generosity makes our work possible. Thank you!</p>
-        </div>
-      </section>
-        <section className="container">
-          <div className="donate-success">
-            <div className="donate-success-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="#4a6fa5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-                <polyline points="22 4 12 14.01 9 11.01" />
-              </svg>
-            </div>
-            <h2>Thank You for Your Donation!</h2>
-            <p>Your support helps us continue our mission. A confirmation email will be sent to you shortly.</p>
-            <button className="donate-btn" onClick={() => { setSubmitted(false); setSelectedAmount(null); setCustomAmount(""); setForm({ name: "", email: "", phone: "", message: "" }); }}>
-              Make Another Donation
-            </button>
-          </div>
-        </section>
-      </div>
-    );
-  }
-
   return (
-    <div className="donate-page">
-      {/* <section className="bsct-home-hero-section">
-        <picture>
-          <source media="(max-width: 768px)" srcSet="/images/banner-mobile7.png" />
-          <img src="/images/banner.jpg" alt="Donate" />
-        </picture>
-      </section> */}
-      <section className="donate-hero">
-        <div className="container">
-          <h1>Donate</h1>
-          <p>Your generosity helps us create lasting change in the lives of those who need it most.</p>
+    <div className="bg-background text-on-surface font-body-md">
+      {/* ===== HERO ===== */}
+      <section className="relative bg-primary overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary via-on-primary-fixed-variant to-primary" />
+        <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-secondary-container opacity-20 blur-3xl" />
+        <div className="absolute -bottom-32 -left-16 w-96 h-96 rounded-full bg-secondary-fixed opacity-10 blur-3xl" />
+
+        <div className="relative z-10 max-w-container-max mx-auto px-5 md:px-margin-desktop py-24 md:py-32">
+          <div className="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-secondary-container">
+            <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>
+              volunteer_activism
+            </span>
+            <span className="font-label-sm uppercase tracking-widest font-bold">Give Back</span>
+          </div>
+          <h1 className="font-headline-xl text-white mt-8 mb-6">Donate</h1>
+          <p className="font-body-lg text-white/85 max-w-2xl">
+            Your generosity helps us create lasting change in the lives of those who need it most.
+          </p>
         </div>
       </section>
 
-      <section className="donate-main">
-        <div className="container">
-          <div className="donate-tabs">
+      {/* ===== DONATE MAIN ===== */}
+      <section className="py-20 md:py-28 bg-background">
+        <div className="max-w-container-max mx-auto px-5 md:px-margin-desktop">
+          {/* ===== TABS ===== */}
+          <div className="flex gap-3 overflow-x-auto pb-2 mb-12">
             {causes.map((c) => (
               <button
                 key={c.id}
-                className={`donate-tab ${activeTab === c.id ? "active" : ""}`}
+                className={`flex items-center gap-2 px-5 py-3 rounded-full font-label-md font-bold border transition-all whitespace-nowrap ${
+                  activeTab === c.id
+                    ? "bg-primary text-white border-primary shadow-lg"
+                    : "bg-white border border-outline text-on-surface-variant hover:border-primary hover:text-primary"
+                }`}
                 onClick={() => setActiveTab(c.id)}
                 onMouseEnter={() => setHoveredCause(c.id)}
                 onMouseLeave={() => setHoveredCause(null)}
               >
-                <span className="donate-tab-icon">{c.icon}</span>
-                <span className="donate-tab-label">{c.label}</span>
+                <span className="w-5 h-5 flex items-center justify-center flex-shrink-0 [&>svg]:w-5 [&>svg]:h-5">{c.icon}</span>
+                <span>{c.label}</span>
               </button>
             ))}
           </div>
 
-          <div className="donate-content">
-            <div className="donate-info">
-              <div className="donate-info-header" style={{ borderBottomColor: cause.color }}>
-                <div className="donate-info-icon" style={{ background: cause.color }}>
-                  {cause.icon}
+          {/* ===== CONTENT ===== */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            {/* ===== INFO PANEL ===== */}
+            <div className="lg:col-span-7">
+              <div className="flex items-start gap-5 mb-8">
+                <div
+                  className="w-16 h-16 rounded-2xl flex items-center justify-center text-white shrink-0"
+                  style={{ background: cause.color }}
+                >
+                  <span className="w-7 h-7 flex items-center justify-center [&>svg]:w-7 [&>svg]:h-7">{cause.icon}</span>
                 </div>
                 <div>
-                  <span className="donate-info-badge" style={{ background: cause.color }}>Support This Cause</span>
-                  <h2>{cause.title}</h2>
+                  <span
+                    className="inline-block font-label-sm text-white font-bold uppercase tracking-widest px-4 py-2 rounded-full mb-3"
+                    style={{ background: cause.color }}
+                  >
+                    Support This Cause
+                  </span>
+                  <h2 className="font-headline-lg text-primary">{cause.title}</h2>
                 </div>
               </div>
 
-              <p className="donate-info-desc">{cause.description}</p>
+              <p className="font-body-lg text-on-surface-variant mb-8 leading-relaxed">{cause.description}</p>
 
-              <div className="donate-impact-list">
-                <h4>Your donation will help:</h4>
+              <div className="bg-surface-container-high rounded-2xl border border-outline-variant p-6 mb-6">
+                <h4 className="font-label-md text-on-surface font-bold mb-4">Your donation will help:</h4>
                 <ul>
                   {cause.impact.map((item, i) => (
-                    <li key={i}>
-                      <span className="impact-emoji">{item.emoji}</span>
-                      <span>{item.text}</span>
+                    <li key={i} className="flex items-center gap-3 py-3 border-b border-outline-variant last:border-b-0">
+                      <span className="text-2xl w-8 text-center flex-shrink-0">{item.emoji}</span>
+                      <span className="font-body-md text-on-surface">{item.text}</span>
                     </li>
                   ))}
                 </ul>
               </div>
 
-              <div className="donate-stats-card">
-                <span className="donate-stats-value">{cause.stats.value}</span>
-                <span className="donate-stats-label">{cause.stats.label}</span>
+              <div className="bg-surface-container-high rounded-2xl border border-outline-variant p-8 text-center">
+                <span className="font-headline-lg text-primary block">{cause.stats.value}</span>
+                <span className="font-label-md text-on-surface-variant uppercase tracking-widest mt-2 block">
+                  {cause.stats.label}
+                </span>
               </div>
             </div>
 
-            <form className="donate-form" onSubmit={handlePayment}>
-              <h3>Choose Your Amount</h3>
-              <div className="donate-amounts">
+            {/* ===== FORM ===== */}
+            <form className="donate-form lg:col-span-5 bg-surface-container rounded-3xl border border-outline-variant subtle-shadow p-8" onSubmit={handlePayment}>
+              <h3 className="font-headline-md text-primary mb-6">Choose Your Amount</h3>
+              <div className="grid grid-cols-2 gap-3 mb-6">
                 {amounts.map((amt) => (
                   <button
                     key={amt.value}
                     type="button"
-                    className={`donate-amount-btn ${selectedAmount === amt.value ? "active" : ""}`}
+                    className={`flex flex-col items-start gap-1 px-5 py-4 rounded-2xl border font-label-md transition-all ${
+                      selectedAmount === amt.value
+                        ? "bg-primary border-primary text-white shadow-lg"
+                        : "bg-white border-outline text-on-surface-variant hover:border-primary"
+                    }`}
                     onClick={() => handleAmountClick(amt.value)}
                   >
-                    <span className="donate-amount-value">{amt.label}</span>
-                    <span className="donate-amount-desc">{amt.desc}</span>
+                    <span className="font-headline-md font-bold">{amt.label}</span>
+                    <span className="font-label-sm opacity-80">{amt.desc}</span>
                   </button>
                 ))}
-                <div className="donate-custom-amount">
-                  <span className="donate-amount-value">Custom</span>
-                  <div className="donate-custom-input-wrap">
-                    <span className="donate-currency">₹</span>
-                    <input
-                      type="number"
-                      placeholder="Enter amount"
-                      value={customAmount}
-                      onChange={handleCustomChange}
-                    />
-                  </div>
+                <div className="flex flex-col items-start gap-1 px-5 py-4 rounded-2xl border border-outline bg-white text-on-surface-variant">
+                    <span className="font-label-md font-bold">Custom</span>
+                    <div className="flex items-center gap-2 w-full">
+                      <span className="font-headline-md font-bold text-on-surface">₹</span>
+                      <input
+                        id="custom-amount"
+                        type="number"
+                        min="1"
+                        placeholder="Enter amount"
+                        aria-label="Custom donation amount in rupees"
+                        value={customAmount}
+                        onChange={handleCustomChange}
+                        className="w-full bg-white border border-outline rounded-xl px-4 py-2 font-body-md font-bold text-on-surface placeholder:text-on-surface-variant focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all"
+                      />
+                    </div>
                 </div>
               </div>
 
-              <h3>Your Details</h3>
-              <div className="donate-form-row">
-                <div className="donate-form-group">
-                  <label htmlFor="name">Full Name</label>
-                  <input id="name" name="name" type="text" placeholder="Your name" value={form.name} onChange={handleFormChange} required />
+              {errors.amount && <p className="form-error mb-6">⚠ {errors.amount}</p>}
+
+              <h3 className="font-headline-md text-primary mb-6">Your Details</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+                <div>
+                  <label htmlFor="name" className="font-label-md text-primary mb-2 block font-bold">Full Name</label>
+                  <input id="name" name="name" type="text" placeholder="Your name" value={form.name} onChange={handleFormChange} className={`w-full bg-white border ${errors.name ? "border-[#e8485b] focus:border-[#e8485b]" : "border-outline"} rounded-xl px-5 py-4 font-body-md text-on-surface placeholder:text-on-surface-variant/60 focus:outline-none focus:ring-2 focus:ring-primary/10 transition-all`} aria-invalid={!!errors.name} />
+                  {errors.name && <p className="form-error">⚠ {errors.name}</p>}
                 </div>
-                <div className="donate-form-group">
-                  <label htmlFor="email">Email Address</label>
-                  <input id="email" name="email" type="email" placeholder="your@email.com" value={form.email} onChange={handleFormChange} required />
+                <div>
+                  <label htmlFor="email" className="font-label-md text-primary mb-2 block font-bold">Email Address</label>
+                  <input id="email" name="email" type="email" placeholder="your@email.com" value={form.email} onChange={handleFormChange} className={`w-full bg-white border ${errors.email ? "border-[#e8485b] focus:border-[#e8485b]" : "border-outline"} rounded-xl px-5 py-4 font-body-md text-on-surface placeholder:text-on-surface-variant/60 focus:outline-none focus:ring-2 focus:ring-primary/10 transition-all`} aria-invalid={!!errors.email} />
+                  {errors.email && <p className="form-error">⚠ {errors.email}</p>}
                 </div>
               </div>
-              <div className="donate-form-group">
-                <label htmlFor="phone">Phone Number</label>
-                <input id="phone" name="phone" type="tel" placeholder="+91 99999 99999" value={form.phone} onChange={handleFormChange} />
+              <div className="mb-5">
+                <label htmlFor="phone" className="font-label-md text-primary mb-2 block font-bold">Phone Number</label>
+                <input id="phone" name="phone" type="tel" placeholder="+91 99999 99999" value={form.phone} onChange={handleFormChange} className={`w-full bg-white border ${errors.phone ? "border-[#e8485b] focus:border-[#e8485b]" : "border-outline"} rounded-xl px-5 py-4 font-body-md text-on-surface placeholder:text-on-surface-variant/60 focus:outline-none focus:ring-2 focus:ring-primary/10 transition-all`} aria-invalid={!!errors.phone} />
+                {errors.phone && <p className="form-error">⚠ {errors.phone}</p>}
               </div>
-              <div className="donate-form-group">
-                <label htmlFor="message">Message (Optional)</label>
-                <textarea id="message" name="message" rows="3" placeholder="Write a message..." value={form.message} onChange={handleFormChange}></textarea>
+              <div className="mb-8">
+                <label htmlFor="message" className="font-label-md text-primary mb-2 block font-bold">Message (Optional)</label>
+                <textarea id="message" name="message" rows="3" placeholder="Write a message..." value={form.message} onChange={handleFormChange} className="w-full bg-white border border-outline rounded-xl px-5 py-4 font-body-md text-on-surface placeholder:text-on-surface-variant/60 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all"></textarea>
               </div>
 
-              <button type="submit" className="donate-submit" disabled={!getAmount() || getAmount() < 1}>
+              <button type="submit" className="w-full bg-secondary-container text-on-secondary-container px-10 py-5 rounded-full font-label-md font-bold shadow-xl hover:-translate-y-0.5 transition-all disabled:opacity-50 disabled:cursor-not-allowed" disabled={!getAmount() || getAmount() < 1}>
                 {getAmount() ? <>Donate ₹{getAmount().toLocaleString()}</> : "Select an Amount"}
               </button>
 
-              <p className="donate-secure">
+              <p className="flex items-center justify-center gap-2 text-on-surface-variant font-label-sm mt-6">
                 <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2">
                   <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
                   <path d="M7 11V7a5 5 0 0 1 10 0v4" />
@@ -387,6 +420,15 @@ export default function Donate() {
           </div>
         </div>
       </section>
+
+      <SuccessModal
+        open={showSuccess}
+        onClose={resetDonation}
+        title="Thank You for Your Donation!"
+        message="Your support helps us continue our mission. A confirmation email will be sent to you shortly."
+        actionLabel="Make Another Donation"
+        onAction={resetDonation}
+      />
     </div>
   );
 }

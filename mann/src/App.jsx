@@ -1,7 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Layout from "./layout/Layout";
 import ScrollToTop from "./components/ScrollToTop";
-import PageTransition from "./components/PageTransition";
 
 import Home from "./pages/Home";
 import OurStory from "./pages/about/OurStory";
@@ -21,7 +20,6 @@ export default function App() {
   return (
     <BrowserRouter>
       <ScrollToTop />
-      <PageTransition />
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />

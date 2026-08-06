@@ -46,6 +46,7 @@ export const NAV_GROUPS: NavGroup[] = [
     items: [
       { to: '/pages', label: 'Pages', icon: <FileTextIcon /> },
       { to: '/homepage', label: 'Homepage Editor', icon: <HomeIcon /> },
+      { to: '/website-editor', label: 'Website Editor', icon: <LayoutIcon /> },
       { to: '/about', label: 'About Us', icon: <InfoIcon /> },
       { to: '/programs', label: 'Programs', icon: <LayersIcon /> },
       { to: '/events', label: 'Events', icon: <CalendarIcon /> },

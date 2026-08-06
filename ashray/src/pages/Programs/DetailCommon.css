@@ -4,7 +4,7 @@
 .detail-hero {
   height: 550px;
   overflow: hidden;
-  background: var(--hero-img, #eff3ff) center/cover no-repeat;
+  background: var(--hero-img, #f7f9fb) center/cover no-repeat;
 }
 
 .detail-hero-content,
@@ -16,7 +16,7 @@
 /* ===== SHARED TAGS ===== */
 .detail-section-tag {
   display: inline-block;
-  color: #2e2c8a;
+  color: #00236f;
   font-weight: 700;
   letter-spacing: 2px;
   font-size: 13px;
@@ -25,7 +25,7 @@
 
 .detail-section-subtitle {
   text-align: center;
-  color: #464651;
+  color: #444651;
   font-size: 16px;
   margin-bottom: 48px;
   max-width: 600px;
@@ -48,7 +48,7 @@
 .detail-intro-text h2 {
   font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
   font-size: 42px;
-  color: #2e2c8a;
+  color: #00236f;
   margin-bottom: 20px;
   line-height: 1.2;
 }
@@ -56,19 +56,19 @@
 .detail-intro-text p {
   font-size: 16px;
   line-height: 1.9;
-  color: #464651;
+  color: #444651;
   margin-bottom: 16px;
 }
 
 .detail-intro-text strong {
-  color: #2e2c8a;
+  color: #00236f;
 }
 
 .detail-quote {
   font-style: italic;
-  color: #4a6fa5 !important;
+  color: #4059aa !important;
   font-weight: 600;
-  border-left: 4px solid #4a6fa5;
+  border-left: 4px solid #4059aa;
   padding-left: 20px;
   margin-top: 20px;
 }
@@ -89,7 +89,7 @@
 }
 
 .detail-image-frame:hover {
-  border-color: rgba(46, 44, 138, 0.25);
+  border-color: rgba(0, 35, 111, 0.25);
 }
 
 .detail-image-frame:hover img {
@@ -105,7 +105,7 @@
   text-align: center;
   font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
   font-size: 42px;
-  color: #2e2c8a;
+  color: #00236f;
   margin-bottom: 10px;
 }
 
@@ -125,14 +125,14 @@
 .detail-mission-card:hover {
   transform: translateY(-8px);
   box-shadow: 0 20px 50px rgba(63, 64, 149, 0.18);
-  border-color: rgba(46, 44, 138, 0.25);
+  border-color: rgba(0, 35, 111, 0.25);
 }
 
 .detail-mission-num {
   font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
   font-size: 28px;
   font-weight: 800;
-  color: #4a6fa5;
+  color: #4059aa;
   margin-bottom: 20px;
   letter-spacing: 2px;
 }
@@ -140,13 +140,13 @@
 .detail-mission-card h3 {
   font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
   font-size: 20px;
-  color: #2e2c8a;
+  color: #00236f;
   margin-bottom: 14px;
 }
 
 .detail-mission-card p {
   line-height: 1.8;
-  color: #464651;
+  color: #444651;
   font-size: 14px;
 }
 
@@ -174,7 +174,7 @@
 .detail-impact-content h2 {
   font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
   font-size: 42px;
-  color: #2e2c8a;
+  color: #00236f;
   margin-bottom: 24px;
 }
 
@@ -182,7 +182,7 @@
   text-align: left;
   font-size: 16px;
   line-height: 1.9;
-  color: #464651;
+  color: #444651;
   margin-bottom: 16px;
 }
 
@@ -211,7 +211,7 @@
 .detail-stat:hover {
   transform: translateY(-5px);
   box-shadow: 0 16px 40px rgba(63, 64, 149, 0.15);
-  border-color: rgba(46, 44, 138, 0.25);
+  border-color: rgba(0, 35, 111, 0.25);
 }
 
 .detail-stat-number {
@@ -219,14 +219,14 @@
   font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
   font-size: 40px;
   font-weight: 800;
-  color: #2e2c8a;
+  color: #00236f;
   margin-bottom: 6px;
 }
 
 .detail-stat-label {
   display: block;
   font-size: 14px;
-  color: #464651;
+  color: #444651;
   font-weight: 600;
 }
 
@@ -239,7 +239,7 @@
   text-align: center;
   font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
   font-size: 38px;
-  color: #2e2c8a;
+  color: #00236f;
   margin-bottom: 10px;
 }
 
@@ -268,7 +268,7 @@
 }
 
 .detail-gallery-item:hover {
-  border-color: rgba(46, 44, 138, 0.25);
+  border-color: rgba(0, 35, 111, 0.25);
 }
 
 .detail-gallery-item:hover img {
@@ -278,7 +278,7 @@
 .detail-gallery-overlay {
   position: absolute;
   inset: 8px;
-  background: linear-gradient(to top, rgba(46, 44, 138, 0.75) 0%, transparent 60%);
+  background: linear-gradient(to top, rgba(0, 35, 111, 0.75) 0%, transparent 60%);
   border-radius: 25px;
   display: flex;
   align-items: flex-end;
@@ -303,19 +303,19 @@
   padding: 80px 24px;
   text-align: center;
   position: relative;
-  background: rgba(198, 219, 239, 0.3);
+  background: rgba(220, 225, 255, 0.3);
 }
 
 .detail-cta h2 {
   font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
   font-size: 38px;
-  color: #2e2c8a;
+  color: #00236f;
   margin-bottom: 16px;
 }
 
 .detail-cta p {
   font-size: 18px;
-  color: #464651;
+  color: #444651;
   margin-bottom: 36px;
   max-width: 600px;
   margin-left: auto;
@@ -334,14 +334,14 @@
   display: inline-flex;
   align-items: center;
   gap: 12px;
-  background: #2e2c8a;
+  background: #00236f;
   color: #fff;
   padding: 16px 48px;
   border-radius: 9999px;
   font-weight: 700;
   font-size: 18px;
   text-decoration: none;
-  box-shadow: 0 8px 30px rgba(46, 44, 138, 0.3);
+  box-shadow: 0 8px 30px rgba(0, 35, 111, 0.3);
   transition: transform 0.2s, box-shadow 0.2s;
   border: none;
   cursor: pointer;
@@ -350,7 +350,7 @@
 
 .btn-primary-glass:hover {
   transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 12px 40px rgba(46, 44, 138, 0.4);
+  box-shadow: 0 12px 40px rgba(0, 35, 111, 0.4);
 }
 
 .btn-primary-glass:active {
@@ -361,11 +361,11 @@
   display: inline-flex;
   align-items: center;
   gap: 12px;
-  background: rgba(198, 219, 239, 0.45);
+  background: rgba(220, 225, 255, 0.45);
   backdrop-filter: blur(16px) saturate(180%);
   -webkit-backdrop-filter: blur(16px) saturate(180%);
   border: 1px solid rgba(255, 255, 255, 0.3);
-  color: #2e2c8a;
+  color: #00236f;
   padding: 16px 48px;
   border-radius: 9999px;
   font-weight: 700;

@@ -6,6 +6,62 @@ export interface IdEntity {
   updatedAt: string
 }
 
+export interface WebsiteEditorOrg {
+  id: string
+  name: string
+  slug: string
+  description?: string | null
+  email?: string | null
+  phone?: string | null
+  website?: string | null
+  address?: string | null
+  city?: string | null
+  state?: string | null
+  country?: string | null
+  logoUrl?: string | null
+}
+
+export interface WebsiteSectionTemplate {
+  id: string
+  type: string
+  name: string
+  label: string
+  isSystem: boolean
+  fields: unknown[]
+}
+
+export interface WebsiteEditorSection {
+  id: string
+  type: string
+  name: string | null
+  sortOrder: number
+  isActive: boolean
+  settings: Record<string, unknown>
+  content: Record<string, unknown>
+  template?: WebsiteSectionTemplate | null
+}
+
+export interface WebsiteEditorPage {
+  id: string
+  slug: string
+  title: string
+  metaTitle?: string | null
+  metaDescription?: string | null
+  status: PublishStatus
+  isHome: boolean
+  sections: WebsiteEditorSection[]
+}
+
+export interface WebsiteEditorData {
+  website: WebsiteEditorOrg
+  settings: Record<string, string>
+  menus: Menu[]
+  banners: unknown[]
+  sliders: unknown[]
+  liveUrl: string
+  page: WebsiteEditorPage
+}
+
 export interface Website {
   id: string
   name: string

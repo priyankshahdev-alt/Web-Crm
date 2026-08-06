@@ -1,6 +1,6 @@
 /* ===== CONTACT PAGE ===== */
 .contact-page {
-  background: #eff3ff;
+  background: #f7f9fb;
   overflow-x: hidden;
 }
 
@@ -9,7 +9,7 @@
   position: relative;
   padding: 30px 24px 40px;
   overflow: hidden;
-  background: #eff3ff;
+  background: #f7f9fb;
 }
 
 .contact-hero-shape {
@@ -26,7 +26,7 @@
   right: -80px;
   width: 400px;
   height: 400px;
-  background: #4a6fa5;
+  background: #4059aa;
 }
 
 .contact-hero-shape--2 {
@@ -34,7 +34,7 @@
   left: -80px;
   width: 300px;
   height: 300px;
-  background: #2e2c8a;
+  background: #00236f;
   opacity: 0.15;
 }
 
@@ -50,7 +50,7 @@
   display: inline-block;
   padding: 10px 24px;
   border-radius: 9999px;
-  color: #2e2c8a;
+  color: #00236f;
   font-weight: 700;
   font-size: 13px;
   margin-bottom: 24px;
@@ -62,7 +62,7 @@
   font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
   font-size: 56px;
   line-height: 1.1;
-  color: #2e2c8a;
+  color: #00236f;
   margin-bottom: 20px;
   letter-spacing: -0.02em;
 }
@@ -70,7 +70,7 @@
 .contact-hero-content p {
   font-family: "Work Sans", "Segoe UI", sans-serif;
   font-size: 18px;
-  color: #464651;
+  color: #444651;
   line-height: 1.7;
   max-width: 580px;
   margin: 0 auto;
@@ -91,12 +91,12 @@
 .contact-info h2 {
   font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
   font-size: 32px;
-  color: #2e2c8a;
+  color: #00236f;
   margin-bottom: 12px;
 }
 
 .contact-info-desc {
-  color: #464651;
+  color: #444651;
   line-height: 1.8;
   margin-bottom: 36px;
 }
@@ -120,7 +120,7 @@
   flex-shrink: 0;
   width: 48px;
   height: 48px;
-  background: #2e2c8a;
+  background: #00236f;
   border-radius: 14px;
   display: flex;
   align-items: center;
@@ -136,12 +136,12 @@
 .contact-info-item h3 {
   font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
   font-size: 16px;
-  color: #2e2c8a;
+  color: #00236f;
   margin-bottom: 4px;
 }
 
 .contact-info-item p {
-  color: #464651;
+  color: #444651;
   line-height: 1.7;
   font-size: 14px;
 }
@@ -156,7 +156,7 @@
 .contact-form h2 {
   font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
   font-size: 24px;
-  color: #2e2c8a;
+  color: #00236f;
   margin-bottom: 24px;
 }
 
@@ -175,14 +175,14 @@
   font-weight: 600;
   font-size: 0.9rem;
   margin-bottom: 6px;
-  color: #2e2c8a;
+  color: #00236f;
 }
 
 .form-group input,
 .form-group textarea {
   width: 100%;
   padding: 12px 16px;
-  border: 2px solid rgba(198, 219, 239, 0.6);
+  border: 2px solid rgba(220, 225, 255, 0.6);
   border-radius: 12px;
   font-size: 0.95rem;
   outline: none;
@@ -194,8 +194,8 @@
 
 .form-group input:focus,
 .form-group textarea:focus {
-  border-color: #4a6fa5;
-  box-shadow: 0 0 0 3px rgba(74, 111, 165, 0.1);
+  border-color: #4059aa;
+  box-shadow: 0 0 0 3px rgba(64, 89, 170, 0.1);
   background: #fff;
 }
 
@@ -206,7 +206,7 @@
 .contact-submit {
   width: 100%;
   padding: 14px 32px;
-  background: #2e2c8a;
+  background: #00236f;
   color: #fff;
   border: none;
   border-radius: 9999px;
@@ -219,7 +219,7 @@
 
 .contact-submit:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(46, 44, 138, 0.3);
+  box-shadow: 0 8px 25px rgba(0, 35, 111, 0.3);
 }
 
 .contact-success {
@@ -239,12 +239,12 @@
 .contact-success h3 {
   font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
   font-size: 28px;
-  color: #2e2c8a;
+  color: #00236f;
   margin-bottom: 12px;
 }
 
 .contact-success p {
-  color: #464651;
+  color: #444651;
   line-height: 1.8;
   max-width: 400px;
   margin: 0 auto;

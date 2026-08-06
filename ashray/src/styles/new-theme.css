@@ -1,0 +1,551 @@
+/* =========================================================
+   ASHRAY — DESIGN SYSTEM OVERRIDES
+   Loaded LAST in App.jsx so these win the cascade over the
+   legacy per-page stylesheets (which share the same palette).
+   Layouts and images are untouched; only colors, type & feel.
+
+   Palette : primary #00236f · primary-container #1e3a8a
+             gold #ffc329 · gold-dark #6f5100
+             bg #f7f9fb · surface-container #eceef0 · text #444651
+   Fonts   : Manrope (headlines) · Inter (body)
+   ========================================================= */
+
+/* ---------- 1. FONTS ---------- */
+body {
+  font-family: "Inter", "Segoe UI", sans-serif;
+  background: #f7f9fb;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Manrope", "Inter", "Segoe UI", sans-serif;
+}
+
+[class*="hero-content"] p,
+[class*="hero-desc"] {
+  font-family: "Inter", "Segoe UI", sans-serif !important;
+}
+
+/* ---------- 2. PAGE BACKGROUNDS ---------- */
+.programs-page, .page-about, .contact-page, .volunteer-page, .donate-page,
+.management-page, .legal-page, .gallery-page,
+.education-page, .hunger-page, .jal-page, .medical-page,
+.oldage-page, .orphanage-page, .pashu-page, .womens-page {
+  background: #f7f9fb;
+}
+
+.volunteer-hero {
+  background: linear-gradient(135deg, #f7f9fb 0%, #eceef0 100%);
+}
+
+.about-sectors,
+.volunteer-opportunities {
+  background: rgba(220, 225, 255, 0.4);
+}
+
+.detail-cta {
+  background: rgba(220, 225, 255, 0.5);
+}
+
+/* ---------- 3. HEADLINES → MANROPE + NAVY ---------- */
+.page-about h1, .page-about h2, .page-about h3,
+.programs-page h1, .programs-page h2, .programs-page h3,
+.contact-page h1, .contact-page h2, .contact-page h3,
+.volunteer-page h1, .volunteer-page h2, .volunteer-page h3,
+.donate-page h1, .donate-page h2, .donate-page h3,
+.management-page h1, .management-page h2, .management-page h3,
+.legal-page h1, .legal-page h2, .legal-page h3,
+.gallery-page h2, .gallery-page h3,
+.education-page h1, .education-page h2, .education-page h3,
+.hunger-page h1, .hunger-page h2, .hunger-page h3,
+.jal-page h1, .jal-page h2, .jal-page h3,
+.medical-page h1, .medical-page h2, .medical-page h3,
+.oldage-page h1, .oldage-page h2, .oldage-page h3,
+.orphanage-page h1, .orphanage-page h2, .orphanage-page h3,
+.pashu-page h1, .pashu-page h2, .pashu-page h3,
+.womens-page h1, .womens-page h2, .womens-page h3 {
+  font-family: "Manrope", "Inter", "Segoe UI", sans-serif;
+  color: #00236f;
+  letter-spacing: -0.02em;
+}
+
+/* ---------- 4. REASSERT WHITE ON DARK SURFACES ---------- */
+.donate-hero,
+.donate-hero h1,
+.overlay,
+.overlay h1,
+.about-mv-card h2,
+.about-mv-card p,
+.glass-dark h2, .glass-dark h3, .glass-dark h4,
+.glass-morphism-dark h2, .glass-morphism-dark h3, .glass-morphism-dark h4 {
+  color: #fff;
+}
+
+.donate-hero h1,
+.overlay h1 {
+  color: #fff !important;
+}
+
+.donate-hero p,
+.overlay p {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.overlay h4 {
+  color: #ffc329;
+}
+
+/* ---------- 5. HERO SECTIONS → NAVY VIBRANT ---------- */
+.prog-hero,
+.about-hero,
+.contact-hero {
+  background: linear-gradient(135deg, #00236f 0%, #1e3a8a 100%);
+}
+
+.prog-hero-shape--1,
+.about-hero-shape--1,
+.contact-hero-shape--1 {
+  background: #ffc329;
+  opacity: 0.18;
+}
+
+.prog-hero-shape--2,
+.about-hero-shape--2,
+.contact-hero-shape--2 {
+  background: #ffc329;
+  opacity: 0.12;
+}
+
+.prog-hero-badge,
+.about-hero-badge,
+.contact-hero-badge {
+  color: #ffc329 !important;
+  background: rgba(0, 35, 111, 0.4) !important;
+  border: 1px solid rgba(255, 195, 41, 0.45) !important;
+}
+
+.prog-hero-title,
+.about-hero-content h1,
+.contact-hero-content h1 {
+  color: #fff !important;
+}
+
+.prog-hero-desc,
+.about-hero-content p,
+.contact-hero-content p {
+  color: rgba(255, 255, 255, 0.85) !important;
+}
+
+.donate-hero {
+  background: linear-gradient(135deg, #00236f 0%, #1e3a8a 100%);
+}
+
+/* ---------- 6. SHARED GLASS SURFACES ---------- */
+.glass,
+.glass-morphism {
+  background: rgba(220, 225, 255, 0.55);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid rgba(0, 35, 111, 0.06);
+}
+
+.glass-dark,
+.glass-morphism-dark {
+  background: linear-gradient(135deg, #00236f 0%, #1e3a8a 100%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.glass-dark p,
+.glass-morphism-dark p {
+  color: rgba(255, 255, 255, 0.88);
+}
+
+/* ---------- 7. SHARED BUTTONS ---------- */
+.btn-primary-glass {
+  background: linear-gradient(135deg, #00236f 0%, #1e3a8a 100%);
+  box-shadow: 0 8px 30px rgba(0, 35, 111, 0.3);
+}
+
+.btn-primary-glass:hover {
+  box-shadow: 0 12px 40px rgba(0, 35, 111, 0.4);
+}
+
+.btn-secondary-glass {
+  background: rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(0, 35, 111, 0.2);
+  color: #00236f;
+}
+
+.btn-secondary-glass:hover {
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.contact-submit,
+.legal-modal-download {
+  background: #00236f;
+}
+
+.contact-submit:hover,
+.legal-modal-download:hover {
+  box-shadow: 0 8px 25px rgba(0, 35, 111, 0.3);
+}
+
+/* ---------- 8. CARD SHADOWS (navy-tinted) ---------- */
+.detail-mission-card, .detail-stat, .prog-card-inner,
+.about-team-card, .contact-info-item, .contact-form-wrapper,
+.management-card, .legal-card {
+  box-shadow: 0 10px 30px rgba(0, 35, 111, 0.08);
+}
+
+.detail-mission-card:hover, .about-team-card:hover,
+.management-card:hover, .legal-card:hover, .contact-info-item:hover {
+  box-shadow: 0 20px 50px rgba(0, 35, 111, 0.18);
+}
+
+/* ---------- 9. ACCENTS — TAGS, PILLS, ICONS ---------- */
+.detail-section-tag,
+.about-founder-tag,
+.legal-card-link {
+  color: #00236f;
+}
+
+.prog-card-tag,
+.volunteer-opp-type {
+  background: rgba(255, 195, 41, 0.16);
+  color: #5c4300;
+}
+
+.prog-card-icon-wrap,
+.volunteer-benefit-icon,
+.about-team-avatar {
+  background: rgba(0, 35, 111, 0.08);
+}
+
+.prog-card-icon-wrap .material-symbol,
+.volunteer-benefit-icon .material-symbol,
+.about-sector-card .material-symbol,
+.about-team-avatar {
+  color: #00236f;
+}
+
+.contact-info-icon {
+  background: #00236f;
+}
+
+.detail-stat-number {
+  color: #00236f;
+}
+
+.detail-mission-num,
+.management-card-role,
+.about-team-role {
+  color: #5c4300;
+}
+
+.volunteer-opp-location,
+.volunteer-opp-location .material-symbol {
+  color: #00236f;
+}
+
+.volunteer-form-group label,
+.form-group label {
+  color: #00236f;
+}
+
+.volunteer-form-group input:focus,
+.volunteer-form-group select:focus,
+.volunteer-form-group textarea:focus,
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: #ffc329;
+  box-shadow: 0 0 0 3px rgba(255, 195, 41, 0.15);
+}
+
+.management-card-photo,
+.management-card-initials {
+  background: rgba(0, 35, 111, 0.06);
+}
+
+.legal-modal-close {
+  color: #00236f;
+}
+
+.legal-modal-close:hover {
+  background: rgba(0, 35, 111, 0.08);
+}
+
+/* ---------- 10. DONATE PAGE ---------- */
+.donate-tab.active {
+  background: #00236f;
+  box-shadow: 0 4px 14px rgba(0, 35, 111, 0.3);
+}
+
+.donate-tab:hover {
+  color: #00236f;
+  background: #eceef0;
+}
+
+.donate-amount-value,
+.donate-currency {
+  color: #00236f;
+}
+
+.donate-amount-btn:hover,
+.donate-custom-amount:focus-within,
+.donate-custom-amount:hover {
+  border-color: #ffc329;
+  background: #ffdf9f;
+}
+
+.donate-amount-btn.active {
+  border-color: #00236f;
+  background: #00236f;
+  box-shadow: 0 6px 20px rgba(0, 35, 111, 0.25);
+}
+
+.donate-submit {
+  background: linear-gradient(135deg, #00236f 0%, #1e3a8a 100%);
+}
+
+.donate-submit:hover {
+  box-shadow: 0 8px 25px rgba(0, 35, 111, 0.35);
+}
+
+.donate-btn {
+  background: #00236f;
+}
+
+.donate-btn:hover {
+  background: #1e3a8a;
+}
+
+.donate-form-group input:focus,
+.donate-form-group textarea:focus {
+  border-color: #00236f;
+  box-shadow: 0 0 0 3px rgba(0, 35, 111, 0.1);
+}
+
+.donate-impact-list {
+  background: #eceef0;
+}
+
+.donate-success-icon svg,
+.contact-success-icon svg {
+  stroke: #00236f;
+}
+
+/* ---------- 11. GALLERY PAGE ---------- */
+.gallery-content::before {
+  background: linear-gradient(90deg, transparent, #00236f, #ffc329, #00236f, transparent);
+}
+
+.gallery-content h2::after {
+  background: linear-gradient(90deg, #00236f, #ffc329);
+}
+
+.img-grid {
+  background: linear-gradient(135deg, rgba(0, 35, 111, 0.08), rgba(255, 195, 41, 0.1));
+}
+
+.img-grid::before {
+  background: linear-gradient(135deg, rgba(0, 35, 111, 0.3), rgba(255, 195, 41, 0.15), rgba(0, 35, 111, 0.3));
+}
+
+.img-grid.four > *::before,
+.img-grid.three > *::before {
+  background: linear-gradient(135deg, rgba(0, 35, 111, 0.5), rgba(255, 195, 41, 0.3));
+}
+
+.img-grid.four > *::after,
+.img-grid.three > *::after {
+  color: #00236f;
+}
+
+/* ---------- 12. DETAIL PAGE OVERLAYS ---------- */
+.prog-card-image-overlay {
+  background: linear-gradient(to top, rgba(0, 35, 111, 0.18), transparent);
+}
+
+.detail-gallery-overlay {
+  background: linear-gradient(to top, rgba(0, 35, 111, 0.75) 0%, transparent 60%);
+}
+
+/* =========================================================
+   13. MANN-STYLE TACTILE 3D BUTTON
+   Chunky pill with a hard "pressed" edge + soft drop shadow.
+   On hover/click the button sinks down and its shadow
+   shrinks — a physical key-press feel.
+   ========================================================= */
+.btn-3d {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 16px 36px;
+  border-radius: 9999px;
+  background: #00236f;
+  color: #ffffff;
+  font-family: "Inter", "Segoe UI", sans-serif;
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+  box-shadow:
+    0 6px 0 -1px #00164e,
+    0 16px 32px -10px rgba(0, 35, 111, 0.5);
+  transition:
+    transform 0.16s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.16s cubic-bezier(0.4, 0, 0.2, 1),
+    background 0.25s ease;
+  will-change: transform;
+}
+.btn-3d:hover {
+  background: #1e3a8a;
+  transform: translateY(3px);
+  box-shadow:
+    0 3px 0 -1px #00164e,
+    0 10px 20px -10px rgba(0, 35, 111, 0.45);
+}
+.btn-3d:active {
+  transform: translateY(5px);
+  box-shadow:
+    0 1px 0 -1px #00164e,
+    0 4px 12px -8px rgba(0, 35, 111, 0.35);
+}
+
+/* Slightly slimmer variant for the navbar */
+.btn-3d--nav {
+  padding: 14px 28px;
+  box-shadow:
+    0 5px 0 -1px #00164e,
+    0 12px 24px -8px rgba(0, 35, 111, 0.45);
+}
+.btn-3d--nav:hover {
+  box-shadow:
+    0 2px 0 -1px #00164e,
+    0 8px 16px -8px rgba(0, 35, 111, 0.4);
+}
+.btn-3d--nav:active {
+  box-shadow:
+    0 0 0 -1px #00164e,
+    0 3px 8px -8px rgba(0, 35, 111, 0.3);
+}
+
+.btn-3d--gold {
+  background: #ffc329;
+  color: #261a00;
+  box-shadow:
+    0 6px 0 -1px #b48308,
+    0 16px 32px -10px rgba(111, 81, 0, 0.45);
+}
+.btn-3d--gold:hover {
+  background: #f9bd22;
+  box-shadow:
+    0 3px 0 -1px #b48308,
+    0 10px 20px -10px rgba(111, 81, 0, 0.4);
+}
+.btn-3d--gold:active {
+  box-shadow:
+    0 1px 0 -1px #b48308,
+    0 4px 12px -8px rgba(111, 81, 0, 0.35);
+}
+
+/* Heartbeat pulse for the primary CTA (Mann-style "Support Us") */
+.btn-3d-heartbeat {
+  animation: btn-3d-heartbeat 1.6s ease-in-out infinite;
+  transform-origin: center;
+}
+.btn-3d-heartbeat:hover {
+  animation: none;
+}
+@keyframes btn-3d-heartbeat {
+  0%, 100% { transform: scale(1); }
+  10% { transform: scale(1.07); }
+  20% { transform: scale(1); }
+  30% { transform: scale(1.05); }
+  40% { transform: scale(1); }
+}
+
+.btn-3d .material-symbols-outlined {
+  font-size: 18px;
+  line-height: 1;
+}
+
+/* Icon inside a 3D CTA — sits inline with the label, vertically
+   centred, with a small consistent gap and its own hit box so it
+   never touches or overhangs the pill's rounded edge. */
+.btn-3d__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  font-size: 17px;
+  line-height: 1;
+}
+
+/* Editorial eyebrow label (Mann-style section chip) */
+.section-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 9999px;
+  font-family: "Inter", "Segoe UI", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: #00236f;
+  background: rgba(220, 225, 255, 0.6);
+  border: 1px solid rgba(0, 35, 111, 0.1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn-3d-heartbeat { animation: none; }
+}
+
+/* =========================================================
+   14. ASHRAY UPGRADE — BUTTON SHINE SWEEP
+   A light streak runs across the 3D button on hover.
+   ========================================================= */
+.btn-3d {
+  overflow: hidden;
+}
+.btn-3d::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -160%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(105deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+  transform: skewX(-20deg);
+  transition: left 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+.btn-3d:hover::after {
+  left: 160%;
+}
+.btn-3d--gold::after {
+  background: linear-gradient(105deg, transparent, rgba(255, 255, 255, 0.75), transparent);
+}
+.btn-3d:hover {
+  filter: brightness(1.08);
+}
+.btn-3d--gold:hover {
+  filter: brightness(1.05);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn-3d::after { display: none; }
+  .btn-3d:hover,
+  .btn-3d--gold:hover { filter: none; }
+}

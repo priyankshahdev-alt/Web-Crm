@@ -1,6 +1,6 @@
 /* ===== MANAGEMENT TEAM PAGE ===== */
 .management-page {
-  background: #eff3ff;
+  background: #f7f9fb;
   overflow-x: hidden;
 }
 
@@ -8,7 +8,7 @@
 .management-hero {
   height: 550px;
   overflow: hidden;
-  background: var(--hero-img, #eff3ff) center/cover no-repeat;
+  background: var(--hero-img, #f7f9fb) center/cover no-repeat;
 }
 
 .management-hero-content,
@@ -26,13 +26,13 @@
   text-align: center;
   font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
   font-size: 42px;
-  color: #2e2c8a;
+  color: #00236f;
   margin-bottom: 10px;
 }
 
 .management-subtitle {
   text-align: center;
-  color: #464651;
+  color: #444651;
   font-size: 16px;
   margin-bottom: 48px;
   max-width: 700px;
@@ -63,7 +63,7 @@
   width: 100%;
   height: 220px;
   overflow: hidden;
-  background: rgba(198, 219, 239, 0.3);
+  background: rgba(220, 225, 255, 0.3);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -85,8 +85,8 @@
   font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
   font-size: 36px;
   font-weight: 700;
-  color: #2e2c8a;
-  background: rgba(198, 219, 239, 0.3);
+  color: #00236f;
+  background: rgba(220, 225, 255, 0.3);
   width: 100%;
   height: 100%;
   display: flex;
@@ -102,13 +102,13 @@
 .management-card-info h3 {
   font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
   font-size: 17px;
-  color: #2e2c8a;
+  color: #00236f;
   margin-bottom: 4px;
 }
 
 .management-card-role {
   font-size: 13px;
-  color: #4a6fa5;
+  color: #4059aa;
   font-weight: 600;
   display: block;
 }

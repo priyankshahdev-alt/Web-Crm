@@ -2,17 +2,12 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Reveal from "../components/Reveal";
 import Icon from "../components/Icon";
-import PinnedSections from "../components/PinnedSections";
+import SeamlessGallery from "../components/SeamlessGallery";
 import { useSiteData } from "../api/useSiteData";
 
 // ============================================================
 // MANN CARE – SOFT MODERN HOME (reference design)
 // ============================================================
-
-// ScrollTrigger pinned-slides animation on the home page.
-// Set to false to remove the animation (page renders as a normal
-// scrolling page again).
-const PINNED_HOME = true;
 
 // ---------- HERO CAROUSEL ----------
 function HeroCarousel({ slides }) {
@@ -35,10 +30,16 @@ function HeroCarousel({ slides }) {
           <div className="hero-slide" key={i}>
             <Link to={s.cta} className="w-full h-full relative block" aria-label={s.alt}>
               <img
-                src={s.desktop}
+                src={s.mobile ?? s.desktop}
                 alt={s.alt}
                 loading={i === 0 ? "eager" : "lazy"}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover md:hidden"
+              />
+              <img
+                src={s.desktop}
+                alt=""
+                loading={i === 0 ? "eager" : "lazy"}
+                className="hidden md:block w-full h-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
             </Link>
@@ -128,12 +129,12 @@ export default function Home() {
           {stats.map((s, i) => (
             <Reveal key={s.label} delay={i * 100}>
               <div
-                className={`soft-modern-card text-center p-12! md:p-16! ${
+                className={`soft-modern-card text-center p-8! md:p-16! ${
                   i === 1 ? "bg-primary text-white border-none" : ""
                 }`}
               >
                 <div
-                  className={`font-display-lg text-6xl md:text-8xl mb-6 tracking-tighter font-extrabold ${
+                  className={`font-display-lg text-5xl md:text-8xl mb-6 tracking-tighter font-extrabold ${
                     i === 1 ? "text-white" : "text-primary"
                   }`}
                 >
@@ -260,13 +261,13 @@ export default function Home() {
       </div>
     </section>,
 
-    // ===== IMPACT IN ACTION (marquee) =====
+    // ===== IMPACT IN ACTION (scrolling gallery) =====
     <section
       key="impact-action"
-      className="py-section-padding-mobile md:py-section-padding-desktop bg-surface-container-low overflow-hidden marquee-container"
+      className="py-section-padding-mobile md:py-section-padding-desktop bg-surface-container-low overflow-hidden"
       id="impact-action"
     >
-      <div className="max-w-container-max mx-auto px-8 mb-20">
+      <div className="max-w-container-max mx-auto px-8 mb-12 md:mb-16">
         <Reveal>
           <h2 className="font-display-lg text-5xl md:text-9xl text-on-surface uppercase leading-[0.85] tracking-tighter font-extrabold">
             IMPACT IN
@@ -274,35 +275,14 @@ export default function Home() {
             <span className="italic text-primary">ACTION.</span>
           </h2>
         </Reveal>
+        <Reveal delay={80}>
+          <p className="font-body-lg text-xl md:text-2xl text-on-surface-variant max-w-2xl leading-snug mt-6">
+            Scroll, drag, or use the arrows — every image is a story of hope, dignity, and change
+            from our on-ground work.
+          </p>
+        </Reveal>
       </div>
-      <div className="marquee-track-left">
-        <div className="flex gap-8 px-4">
-          {activities.map((a) => (
-            <div
-              key={a.caption}
-              className="w-[450px] aspect-[4/3] rounded-3xl overflow-hidden shadow-lg bg-white p-3"
-            >
-              <img
-                alt={a.caption}
-                loading="lazy"
-                className="w-full h-full object-cover rounded-2xl"
-                src={a.image}
-              />
-            </div>
-          ))}
-        </div>
-        {/* Clone for loop */}
-        <div aria-hidden="true" className="flex gap-8 px-4">
-          {activities.map((a) => (
-            <div
-              key={a.caption}
-              className="w-[450px] aspect-[4/3] rounded-3xl overflow-hidden shadow-lg bg-white p-3"
-            >
-              <img alt="" loading="lazy" className="w-full h-full object-cover rounded-2xl" src={a.image} />
-            </div>
-          ))}
-        </div>
-      </div>
+      <SeamlessGallery items={activities} autoPlayDelay={3.2} />
     </section>,
 
     // ===== GET INVOLVED =====
@@ -351,28 +331,28 @@ export default function Home() {
             </div>
           </Reveal>
           <div className="marquee-track-partners">
-            <div className="flex gap-12 px-6">
+            <div className="flex gap-6 md:gap-12 px-6">
               {partners.map((logo, i) => (
                 <div
                   key={i}
-                  className="soft-modern-card p-8! flex items-center justify-center w-64 h-32 flex-shrink-0"
+                  className="soft-modern-card p-4! md:p-8! flex items-center justify-center w-36 md:w-64 h-24 md:h-32 flex-shrink-0"
                 >
                   <img
                     src={logo}
                     alt="Partner Logo"
-                    className="max-h-12 w-auto grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all"
+                    className="max-h-10 md:max-h-12 w-auto grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all"
                   />
                 </div>
               ))}
             </div>
             {/* Clone for loop */}
-            <div aria-hidden="true" className="flex gap-12 px-6">
+            <div aria-hidden="true" className="flex gap-6 md:gap-12 px-6">
               {partners.map((logo, i) => (
                 <div
                   key={i}
-                  className="soft-modern-card p-8! flex items-center justify-center w-64 h-32 flex-shrink-0"
+                  className="soft-modern-card p-4! md:p-8! flex items-center justify-center w-36 md:w-64 h-24 md:h-32 flex-shrink-0"
                 >
-                  <img alt="" src={logo} className="max-h-12 w-auto grayscale opacity-60" />
+                  <img alt="" src={logo} className="max-h-10 md:max-h-12 w-auto grayscale opacity-60" />
                 </div>
               ))}
             </div>
@@ -424,29 +404,29 @@ export default function Home() {
               <Reveal>
                 <Link
                   to="/get-involved/donate-online"
-                  className="w-full flex items-center justify-between p-6 md:p-8 rounded-3xl bg-primary text-white hover:bg-secondary transition-all group shadow-xl shadow-primary/20"
+                  className="w-full flex items-center justify-between gap-4 p-5 md:p-8 rounded-3xl bg-primary text-white hover:bg-secondary transition-all group shadow-xl shadow-primary/20"
                 >
-                  <div className="flex items-center gap-4 md:gap-8">
-                    <Icon name="volunteer_activism" className="text-4xl md:text-5xl" />
-                    <span className="font-display-lg text-2xl md:text-4xl uppercase tracking-tight font-bold">
+                  <div className="flex items-center gap-4 md:gap-8 min-w-0">
+                    <Icon name="volunteer_activism" className="text-3xl md:text-5xl flex-shrink-0" />
+                    <span className="font-display-lg text-xl md:text-4xl uppercase tracking-tight font-bold whitespace-nowrap">
                       Donate
                     </span>
                   </div>
-                  <Icon name="arrow_forward" className="text-3xl md:text-4xl group-hover:translate-x-4 transition-transform" />
+                  <Icon name="arrow_forward" className="text-3xl md:text-4xl flex-shrink-0 group-hover:translate-x-4 transition-transform" />
                 </Link>
               </Reveal>
               <Reveal delay={100}>
                 <Link
                   to="/get-involved/career"
-                  className="w-full flex items-center justify-between p-6 md:p-8 rounded-3xl bg-white text-primary border border-primary/10 hover:border-primary/30 transition-all group shadow-lg"
+                  className="w-full flex items-center justify-between gap-4 p-5 md:p-8 rounded-3xl bg-white text-primary border border-primary/10 hover:border-primary/30 transition-all group shadow-lg"
                 >
-                  <div className="flex items-center gap-4 md:gap-8">
-                    <Icon name="diversity_1" className="text-4xl md:text-5xl" />
-                    <span className="font-display-lg text-2xl md:text-4xl uppercase tracking-tight font-bold">
+                  <div className="flex items-center gap-4 md:gap-8 min-w-0">
+                    <Icon name="diversity_1" className="text-3xl md:text-5xl flex-shrink-0" />
+                    <span className="font-display-lg text-xl md:text-4xl uppercase tracking-tight font-bold whitespace-nowrap">
                       Volunteer
                     </span>
                   </div>
-                  <Icon name="arrow_forward" className="text-3xl md:text-4xl group-hover:translate-x-4 transition-transform" />
+                  <Icon name="arrow_forward" className="text-3xl md:text-4xl flex-shrink-0 group-hover:translate-x-4 transition-transform" />
                 </Link>
               </Reveal>
             </div>
@@ -527,7 +507,7 @@ export default function Home() {
     </section>,
   ];
 
-  return PINNED_HOME ? <PinnedSections>{homeSections}</PinnedSections> : <>{homeSections}</>;
+  return <>{homeSections}</>;
 }
 
 // ---------- CONTACT FORM (shared with Get In Touch) ----------

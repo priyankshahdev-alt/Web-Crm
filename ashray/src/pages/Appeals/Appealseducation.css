@@ -133,7 +133,7 @@
 }
 
 .program-content span {
-  color: #e63946;
+  color: #ba1a1a;
   font-weight: 600;
 }
 
@@ -149,7 +149,7 @@
 
 .program-content button {
   border: none;
-  background: #e63946;
+  background: #ba1a1a;
   color: white;
 
   padding: 14px 28px;
@@ -172,7 +172,7 @@
 
   background: linear-gradient(
     135deg,
-    #e63946,
+    #ba1a1a,
     #ff6b6b
   );
 }
@@ -189,7 +189,7 @@
 
 .education-cta button {
   background: white;
-  color: #e63946;
+  color: #ba1a1a;
   border: none;
 
   padding: 14px 30px;
