@@ -1,5 +1,4 @@
 import { useState } from "react";
-import "./ManagementTeam.css";
 
 const teamMembers = [
   { id: 1, name: "Mr. Naresh Bhanushali", role: "President", photo: "/images/team/naresh-bhanushali.jpg" },
@@ -24,50 +23,66 @@ function ManagementTeam() {
   const [imgError, setImgError] = useState({});
 
   return (
-    <main className="management-page">
-      {/* <section className="bsct-home-hero-section">
-        <picture>
-          <source media="(max-width: 768px)" srcSet="/images/banner-mobile2.png" />
-          <img src="/images/banner.jpg" alt="Management Team" />
-        </picture>
-      </section> */}
-      {/* HERO */}
-      {/* <section className="management-hero">
-        <div className="management-hero-shape management-hero-shape--1" />
-        <div className="management-hero-shape management-hero-shape--2" />
-        <div className="section-container">
-          <div className="management-hero-content">
-            <span className="management-hero-badge glass">Board of Trustees</span>
-            <h1>Management Team</h1>
-            <p>Meet the dedicated individuals steering Ashray for Life Foundation toward a brighter future.</p>
-          </div>
-        </div>
-      </section> */}
+    <main className="bg-background text-on-surface font-body-md">
+      {/* ===== HERO ===== */}
+      <section className="relative bg-primary overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary via-on-primary-fixed-variant to-primary" />
+        <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-secondary-container opacity-20 blur-3xl" />
+        <div className="absolute -bottom-32 -left-16 w-96 h-96 rounded-full bg-secondary-fixed opacity-10 blur-3xl" />
 
-      {/* TEAM */}
-      <section className="management-team">
-        <div className="section-container">
-          <h2>Board of Trustees / Executive Committee</h2>
-          <p className="management-subtitle">
-            The following individuals constitute the Board of Trustees and Executive Committee, entrusted with the governance, administration, strategic planning, and smooth functioning of the Trust.
+        <div className="relative z-10 max-w-container-max mx-auto px-5 md:px-margin-desktop py-24 md:py-32">
+          <div className="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-secondary-container">
+            <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>
+              groups
+            </span>
+            <span className="font-label-sm uppercase tracking-widest font-bold">Board of Trustees</span>
+          </div>
+          <h1 className="font-headline-xl text-white mt-8 mb-6">Management Team</h1>
+          <p className="font-body-lg text-white/85 max-w-2xl">
+            Meet the dedicated individuals steering Ashray for Life Foundation toward a brighter future.
           </p>
-          <div className="management-grid">
+        </div>
+      </section>
+
+      {/* ===== TEAM ===== */}
+      <section className="py-20 md:py-28 bg-white">
+        <div className="max-w-container-max mx-auto px-5 md:px-margin-desktop">
+          <div className="max-w-3xl mb-16">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-1 bg-primary rounded-full" />
+              <span className="font-label-md text-primary uppercase tracking-[0.2em]">Board of Trustees</span>
+            </div>
+            <h2 className="font-headline-lg text-primary mb-6">Board of Trustees / Executive Committee</h2>
+            <p className="font-body-lg text-on-surface-variant">
+              The following individuals constitute the Board of Trustees and Executive Committee, entrusted with the governance, administration, strategic planning, and smooth functioning of the Trust.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-gutter">
             {teamMembers.map((member) => (
-              <div key={member.id} className="management-card glass">
-                <div className="management-card-photo">
+              <div
+                key={member.id}
+                className="group bg-surface-container rounded-3xl border border-outline-variant subtle-shadow hover:-translate-y-1 transition-all overflow-hidden"
+              >
+                <div className="aspect-square overflow-hidden rounded-t-3xl bg-surface-container-high">
                   {imgError[member.id] ? (
-                    <div className="management-card-initials">{initials(member.name)}</div>
+                    <div className="w-full h-full flex items-center justify-center font-headline-xl text-primary">
+                      {initials(member.name)}
+                    </div>
                   ) : (
                     <img
                       src={member.photo}
                       alt={stripPrefix(member.name)}
                       onError={() => setImgError((prev) => ({ ...prev, [member.id]: true }))}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                     />
                   )}
                 </div>
-                <div className="management-card-info">
-                  <h3>{stripPrefix(member.name)}</h3>
-                  <span className="management-card-role">{member.role}</span>
+                <div className="p-8">
+                  <h3 className="font-headline-md text-xl text-primary mb-2">{stripPrefix(member.name)}</h3>
+                  <span className="font-label-sm text-on-primary-fixed-variant uppercase tracking-widest">
+                    {member.role}
+                  </span>
                 </div>
               </div>
             ))}

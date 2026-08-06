@@ -5,6 +5,7 @@ import { LoginPage } from './pages/LoginPage'
 import { DashboardPage } from './pages/DashboardPage'
 import { PagesPage } from './pages/PagesPage'
 import { HomepageEditorPage } from './pages/HomepageEditorPage'
+import { WebsiteEditorPage } from './pages/WebsiteEditorPage'
 import { AboutPage } from './pages/AboutPage'
 import { ProgramsPage } from './pages/ProgramsPage'
 import { EventsPage } from './pages/EventsPage'
@@ -35,6 +36,7 @@ export default function App() {
           <Route path="/" element={<DashboardPage />} />
           <Route path="/pages" element={<PagesPage />} />
           <Route path="/homepage" element={<HomepageEditorPage />} />
+          <Route path="/website-editor" element={<WebsiteEditorPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/programs" element={<ProgramsPage />} />
           <Route path="/events" element={<EventsPage />} />

@@ -2,6 +2,26 @@ import { prisma } from '../../libs/prisma';
 import { ApiError } from '../../utils/ApiError';
 import type { AuthUser } from '../../types';
 
+export interface MembershipSiteRef {
+  isCurrent: boolean;
+  isActive: boolean;
+  organization: { id: string };
+}
+
+/**
+ * Resolve the single website a user is scoped to. A user is a website user
+ * only when they have exactly one active membership (or one marked current);
+ * anything else is ambiguous and yields no website scope.
+ */
+export function resolveWebsiteId(memberships: MembershipSiteRef[]): string | null {
+  const active = memberships.filter((m) => m.isActive);
+  if (active.length === 0) return null;
+  const current = active.find((m) => m.isCurrent);
+  if (current) return current.organization.id;
+  if (active.length === 1) return active[0].organization.id;
+  return null;
+}
+
 /**
  * Build an AuthUser from DB with union of permissions across all memberships
  * and platform roles. Used when issuing access tokens.
@@ -28,7 +48,9 @@ export async function buildAuthUser(userId: string): Promise<AuthUser> {
       },
       memberships: {
         select: {
+          isCurrent: true,
           isActive: true,
+          organization: { select: { id: true } },
           role: {
             select: {
               permissions: { select: { permission: { select: { code: true } } } },
@@ -65,5 +87,6 @@ export async function buildAuthUser(userId: string): Promise<AuthUser> {
     isMaster: user.isMaster,
     roles: user.roles.map((r) => r.role.key),
     permissions: Array.from(permissions),
+    websiteId: resolveWebsiteId(user.memberships),
   };
 }

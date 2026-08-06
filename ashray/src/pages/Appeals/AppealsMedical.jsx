@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import "./AppealsMedical.css";
 
 const cases = [
   {
@@ -26,91 +25,128 @@ const cases = [
 
 const MedicalSupport = () => {
   return (
-    <div className="medical-page">
-      <section className="bsct-home-hero-section">
-        <picture>
-          <source media="(max-width: 768px)" srcSet="/images/banner-mobile5.png" />
-          <img src="/images/banner.jpg" alt="Medical Appeals" />
-        </picture>
-      </section>
+    <div className="bg-background text-on-surface font-body-md">
+      {/* ===== HERO ===== */}
+      <section className="relative bg-primary overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary via-on-primary-fixed-variant to-primary" />
+        <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-secondary-container opacity-20 blur-3xl" />
+        <div className="absolute -bottom-32 -left-16 w-96 h-96 rounded-full bg-secondary-fixed opacity-10 blur-3xl" />
 
-      {/* HERO SECTION */}
-      <section className="medical-hero">
-        <div className="overlay">
-          {/* <h4>Medical Support</h4>
-          <h1>Project LIFE-LINE – Saving Lives</h1>
-          <p>
+        <div className="relative z-10 max-w-container-max mx-auto px-5 md:px-margin-desktop py-24 md:py-32">
+          <span className="inline-flex items-center px-5 py-2 rounded-full bg-secondary-container text-on-secondary-container font-label-md font-bold uppercase tracking-widest">
+            Medical Support
+          </span>
+          <h1 className="font-headline-xl text-white mt-8 mb-6">
+            Project LIFE-LINE – Saving Lives
+          </h1>
+          <p className="font-body-lg text-white/85 max-w-2xl">
             Every heartbeat matters. Through Project LIFE-LINE, we support
             children and individuals who need urgent, life-saving medical care
             but cannot afford it.
-          </p> */}
+          </p>
         </div>
       </section>
 
-      {/* ABOUT SECTION */}
-      <section className="medical-about">
-        <h2>About Project LIFE-LINE</h2>
-        <p>
-          Ashray for Life Foundation (AFLF)
-          is committed to ensuring that no life is lost due to lack of medical
-          funds. We step in for critical surgeries, emergency treatments, and
-          hospitalization support for underprivileged families.
-        </p>
-      </section>
-
-      {/* MISSION */}
-      <section className="medical-mission">
-        <h2>Our Mission</h2>
-
-        <div className="mission-grid">
-          <div className="mission-box">
-            <h3>Saving Children’s Lives</h3>
-            <p>
-              Providing urgent surgeries and treatments for children suffering
-              from life-threatening conditions.
-            </p>
+      {/* ===== ABOUT ===== */}
+      <section className="py-20 md:py-28 bg-white">
+        <div className="max-w-container-max mx-auto px-5 md:px-margin-desktop">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-10 h-1 bg-primary rounded-full" />
+            <span className="font-label-md text-primary uppercase tracking-[0.2em]">
+              About Us
+            </span>
           </div>
-
-          <div className="mission-box">
-            <h3>Critical Care Support</h3>
-            <p>
-              Helping families who cannot afford expensive medical procedures
-              and hospitalization.
-            </p>
-          </div>
-
-          <div className="mission-box">
-            <h3>Compassion in Action</h3>
-            <p>
-              Building a community-driven support system to save lives through
-              collective donations.
-            </p>
-          </div>
+          <h2 className="font-headline-lg text-primary mb-8">
+            About Project LIFE-LINE
+          </h2>
+          <p className="font-body-lg text-on-surface-variant leading-relaxed max-w-3xl">
+            Ashray for Life Foundation (AFLF) is committed to ensuring that no
+            life is lost due to lack of medical funds. We step in for critical
+            surgeries, emergency treatments, and hospitalization support for
+            underprivileged families.
+          </p>
         </div>
       </section>
 
-      {/* APPEAL / CASES SECTION */}
-      <section className="appeal-section">
-        <h2>Active Medical Appeals</h2>
-
-        <div className="card-grid">
-          {cases.map((item, index) => (
-            <div className="card" key={index}>
-              <div className="card-header">
-                <h3>{item.name}</h3>
-              </div>
-
-              <p className="cost">Treatment Cost: {item.cost}</p>
-              <p className="desc">{item.desc}</p>
-
-              <Link to="/donate" className="donate-btn">Donate Now</Link>
+      {/* ===== MISSION ===== */}
+      <section className="py-20 md:py-28 bg-background">
+        <div className="max-w-container-max mx-auto px-5 md:px-margin-desktop">
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <h2 className="font-headline-lg text-primary mb-4">Our Mission</h2>
+            <p className="font-body-lg text-on-surface-variant">
+              Fighting for every heartbeat through urgent, life-saving care.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+            <div className="bg-surface-container rounded-3xl border border-outline-variant subtle-shadow p-8">
+              <h3 className="font-headline-md text-xl text-primary mb-3">
+                Saving Children’s Lives
+              </h3>
+              <p className="font-body-md text-on-surface-variant">
+                Providing urgent surgeries and treatments for children suffering
+                from life-threatening conditions.
+              </p>
             </div>
-          ))}
+            <div className="bg-surface-container rounded-3xl border border-outline-variant subtle-shadow p-8">
+              <h3 className="font-headline-md text-xl text-primary mb-3">
+                Critical Care Support
+              </h3>
+              <p className="font-body-md text-on-surface-variant">
+                Helping families who cannot afford expensive medical procedures
+                and hospitalization.
+              </p>
+            </div>
+            <div className="bg-surface-container rounded-3xl border border-outline-variant subtle-shadow p-8">
+              <h3 className="font-headline-md text-xl text-primary mb-3">
+                Compassion in Action
+              </h3>
+              <p className="font-body-md text-on-surface-variant">
+                Building a community-driven support system to save lives through
+                collective donations.
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 
-   
-
+      {/* ===== APPEALS ===== */}
+      <section className="py-20 md:py-28 bg-white">
+        <div className="max-w-container-max mx-auto px-5 md:px-margin-desktop">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-10 h-1 bg-primary rounded-full" />
+            <span className="font-label-md text-primary uppercase tracking-[0.2em]">
+              Donate Now
+            </span>
+          </div>
+          <h2 className="font-headline-lg text-primary mb-16">
+            Active Medical Appeals
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+            {cases.map((item, index) => (
+              <div
+                key={index}
+                className="bg-surface-container rounded-3xl border border-outline-variant subtle-shadow p-8"
+              >
+                <h3 className="font-headline-md text-xl text-primary mb-3">
+                  {item.name}
+                </h3>
+                <span className="inline-block font-label-md font-bold text-on-primary-fixed-variant bg-secondary-container/15 px-4 py-2 rounded-full mb-4">
+                  Treatment Cost: {item.cost}
+                </span>
+                <p className="font-body-md text-on-surface-variant mb-8">
+                  {item.desc}
+                </p>
+                <Link
+                  to="/donate"
+                  className="inline-flex items-center gap-2 bg-primary text-white px-8 py-3.5 rounded-full font-label-md font-bold shadow-lg hover:bg-on-primary-fixed-variant transition-all"
+                >
+                  Donate Now
+                </Link>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
     </div>
   );
 };

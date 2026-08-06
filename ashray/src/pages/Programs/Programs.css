@@ -1,6 +1,6 @@
 /* ===== PROGRAMS PAGE ===== */
 .programs-page {
-  background: #eff3ff;
+  background: #f7f9fb;
   overflow-x: hidden;
 }
 
@@ -9,7 +9,7 @@
   position: relative;
   padding: 120px 24px 80px;
   overflow: hidden;
-  background: #eff3ff;
+  background: #f7f9fb;
 }
 
 .prog-hero-shape {
@@ -26,7 +26,7 @@
   right: -80px;
   width: 400px;
   height: 400px;
-  background: #4a6fa5;
+  background: #4059aa;
 }
 
 .prog-hero-shape--2 {
@@ -34,7 +34,7 @@
   left: -80px;
   width: 300px;
   height: 300px;
-  background: #2e2c8a;
+  background: #00236f;
   opacity: 0.15;
 }
 
@@ -50,7 +50,7 @@
   display: inline-block;
   padding: 10px 24px;
   border-radius: 9999px;
-  color: #2e2c8a;
+  color: #00236f;
   font-weight: 700;
   font-size: 13px;
   margin-bottom: 24px;
@@ -62,7 +62,7 @@
   font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
   font-size: 56px;
   line-height: 1.1;
-  color: #2e2c8a;
+  color: #00236f;
   margin-bottom: 20px;
   letter-spacing: -0.02em;
 }
@@ -70,7 +70,7 @@
 .prog-hero-desc {
   font-family: "Work Sans", "Segoe UI", sans-serif;
   font-size: 18px;
-  color: #464651;
+  color: #444651;
   line-height: 1.7;
   max-width: 580px;
   margin: 0 auto;
@@ -110,7 +110,7 @@
 .prog-card-inner:hover {
   transform: translateY(-8px);
   box-shadow: 0 20px 50px rgba(63, 64, 149, 0.18);
-  border-color: rgba(46, 44, 138, 0.25);
+  border-color: rgba(0, 35, 111, 0.25);
 }
 
 .prog-card-image {
@@ -136,7 +136,7 @@
 .prog-card-image-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(46, 44, 138, 0.15), transparent);
+  background: linear-gradient(to top, rgba(0, 35, 111, 0.15), transparent);
   pointer-events: none;
 }
 
@@ -144,7 +144,7 @@
   width: 48px;
   height: 48px;
   border-radius: 16px;
-  background: rgba(46, 44, 138, 0.08);
+  background: rgba(0, 35, 111, 0.08);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -154,12 +154,12 @@
 }
 
 .prog-card-inner:hover .prog-card-icon-wrap {
-  background: rgba(46, 44, 138, 0.15);
+  background: rgba(0, 35, 111, 0.15);
 }
 
 .prog-card-icon-wrap .material-symbol {
   font-size: 24px;
-  color: #2e2c8a;
+  color: #00236f;
 }
 
 .prog-card-body {
@@ -173,14 +173,14 @@
   font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
   font-size: 20px;
   font-weight: 700;
-  color: #2e2c8a;
+  color: #00236f;
   margin-bottom: 8px;
   line-height: 1.3;
 }
 
 .prog-card-desc {
   font-size: 14px;
-  color: #464651;
+  color: #444651;
   line-height: 1.6;
   margin-bottom: 16px;
   flex: 1;
@@ -188,8 +188,8 @@
 
 .prog-card-tag {
   display: inline-block;
-  background: rgba(74, 111, 165, 0.1);
-  color: #4a6fa5;
+  background: rgba(64, 89, 170, 0.1);
+  color: #4059aa;
   font-size: 11px;
   font-weight: 700;
   text-transform: uppercase;

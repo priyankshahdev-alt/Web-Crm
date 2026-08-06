@@ -1,5 +1,5 @@
 .join-cta {
-  background: #4a6fa5;
+  background: #4059aa;
   padding: 28px 0;
 }
 .join-cta-inner {
@@ -16,7 +16,7 @@
 }
 .join-donate-btn {
   display: inline-block;
-  background: #2e2c8a;
+  background: #00236f;
   color: #fff;
   padding: 12px 32px;
   border-radius: 50px;
@@ -36,7 +36,7 @@
 }
 
 .join-tax {
-  background: #c6dbef;
+  background: #dce1ff;
   padding: 16px 0;
   text-align: center;
 }

@@ -18,6 +18,7 @@ import OldAgeHome from '../pages/Programs/OldAgeHome';
 import PashuPremi from '../pages/Programs/PashuPremi';
 import MedicalSupport from '../pages/Appeals/AppealsMedical';
 import ContactUs from '../pages/Contact/Contact'
+import UiInteractions from '../pages/UiInteractions/UiInteractions';
 // import Appealsfoodgrains from '../pages/Appeals/Appealsfoodgrains';
 // import Appealseducation from '../pages/Appeals/Appealseducation';
 
@@ -47,6 +48,7 @@ function AppRoutes() {
       {/* <Route path="/appeals/education" element={<Appealseducation />} /> */}
 
       <Route path="/gallery" element={<GalleryPage />} />
+      <Route path="/ui-interactions" element={<UiInteractions />} />
       <Route path="/donate" element={<Donate />} />
       <Route path="/volunteer" element={<Volunteer />} />
       <Route path="/contact" element={<Contact />} />

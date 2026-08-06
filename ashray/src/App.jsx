@@ -1,10 +1,11 @@
 import { BrowserRouter } from 'react-router-dom';
 import Navbar from './components/Navbar/Navbar';
-import JoinProject from './components/Common/JoinProject';
 import Footer from './components/Footer/Footer';
 import AppRoutes from './routes/AppRoutes';
+import ScrollProgress from './components/ScrollProgress/ScrollProgress';
 import './styles/global.css';
 import './styles/responsive.css';
+import './styles/new-theme.css';
 
 function App() {
   return (
@@ -14,9 +15,14 @@ function App() {
         v7_relativeSplatPath: true,
       }}
     >
+      <ScrollProgress />
+      <a href="#main" className="skip-link">
+        Skip to main content
+      </a>
       <Navbar />
-      <AppRoutes />
-      <JoinProject />
+      <div id="main" tabIndex={-1} className="outline-none">
+        <AppRoutes />
+      </div>
       <Footer />
     </BrowserRouter>
   );

@@ -1,5 +1,5 @@
 .partners-section {
-  background: #eff3ff;
+  background: #f7f9fb;
   padding: 60px 0 80px;
   text-align: center;
   overflow: hidden;
@@ -7,7 +7,7 @@
 
 .partners-section h2 {
   font-size: 2.5rem;
-  color: #1a1a2e;
+  color: #00236f;
   margin-bottom: 8px;
 }
 
@@ -32,6 +32,17 @@
   gap: 64px;
   align-items: center;
   animation: scrollLeft 30s linear infinite;
+}
+
+.partners-section:hover .partners-track-inner {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .partners-track-inner {
+    animation: none;
+    flex-wrap: wrap;
+  }
 }
 
 .partner-logo {

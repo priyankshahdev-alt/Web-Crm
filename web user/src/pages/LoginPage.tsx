@@ -17,10 +17,12 @@ export function LoginPage() {
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const submit = async (event: React.FormEvent) => {
     event.preventDefault()
     setLoading(true)
+    setError(null)
     try {
       const result = await authService.login({ email, password })
       if (result) {
@@ -28,8 +30,14 @@ export function LoginPage() {
         toast(`Welcome back, ${result.user.firstName}!`, { variant: 'success' })
         navigate('/', { replace: true })
       } else {
-        toast('Invalid email or password', { variant: 'error' })
+        const message = 'Invalid email or password'
+        setError(message)
+        toast(message, { variant: 'error' })
       }
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Login failed, please try again'
+      setError(message)
+      toast(message, { variant: 'error' })
     } finally {
       setLoading(false)
     }
@@ -87,6 +95,15 @@ export function LoginPage() {
                   </button>
                 </div>
               </Field>
+
+              {error ? (
+                <div
+                  role="alert"
+                  className="rounded-xl border border-danger/30 bg-danger/5 px-3.5 py-2.5 text-sm font-medium text-danger"
+                >
+                  {error}
+                </div>
+              ) : null}
 
               <Button type="submit" size="lg" fullWidth loading={loading}>
                 Sign in

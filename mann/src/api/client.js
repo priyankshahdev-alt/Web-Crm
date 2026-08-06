@@ -1,13 +1,14 @@
 // =============================================
-// Minimal fetch wrapper – backend ready hone par use hoga.
-// Abhi ke liye sirf static data fallback ke saath.
+// Minimal fetch wrapper.
+// Endpoints config.js me base sahit complete path dete hain,
+// isliye yahan sirf fetch kiya jata hai.
 // =============================================
 import { API_URL, SITE_SLUG } from "../config";
 
 export async function getJSON(endpoint, options = {}) {
   const url = endpoint.startsWith("http") ? endpoint : `${API_URL}${endpoint}`;
   const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), 6000);
+  const timer = setTimeout(() => controller.abort(), 20000);
   try {
     const res = await fetch(url, {
       headers: { "Content-Type": "application/json" },

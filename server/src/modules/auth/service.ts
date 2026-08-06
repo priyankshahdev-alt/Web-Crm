@@ -5,7 +5,7 @@ import { ApiError } from '../../utils/ApiError';
 import { hashPassword, verifyPassword } from '../../utils/password';
 import { signAccessToken, signRefreshToken, verifyRefreshToken } from '../../utils/jwt';
 import { authRepository } from './repository';
-import { buildAuthUser } from './authContext';
+import { buildAuthUser, resolveWebsiteId } from './authContext';
 import type { AuthUser } from '../../types';
 import type { ChangePasswordInput, LoginInput, RefreshInput } from './schema';
 
@@ -56,6 +56,7 @@ export const authService = {
       isMaster: user.isMaster,
       roles: user.roles.map((r) => r.role.key),
       permissions: Array.from(permissions),
+      websiteId: resolveWebsiteId(user.memberships),
     };
 
     const accessToken = signAccessToken(authUser);

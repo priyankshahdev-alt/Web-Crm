@@ -1,497 +1,535 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import galleryData from "../../data/galleryData";
-import Partners from "../../components/Partners/Partners";
 
+import CountUp from "../../components/Common/CountUp";
+import useBatchReveal from "../../hooks/useBatchReveal";
+import { useSite } from "../../context/SiteContext";
+import { getSection, getSetting } from "../../lib/site";
 import "./Home.css";
 
-const stories = [
+// ============================================================
+// ASHRAY HOME – editorial hero + motion
+// Hero carousel: full-bleed photo, arch subject cutout,
+// oversized campaign headline, tactile 3D CTA, arrows + dots.
+// Below the fold: staggered blur+rise batch reveals, count-up
+// stats and a parallax hero — smoother than pinned fake-scroll.
+// Content is DB-driven via site sections, with the original
+// hardcoded values as fallbacks so the site renders identically
+// before any edits are made in the Website Editor.
+// ============================================================
+
+const DEFAULT_HERO_SLIDES = [
   {
-    id: 1,
-    tag: "Impact Story",
-    date: "Oct 12, 2024",
-    title: "From Support to Self-Reliance",
-    description:
-      "Through our community initiatives, individuals facing difficult circumstances received the resources, guidance, and opportunities needed to rebuild their lives and move towards a brighter future.",
-    image:
-      "/images/Volunteers1.jpg",
+    id: "dignity",
+    eyebrow: "Empowering Lives Since 2022",
+    title: "Restoring Dignity,",
+    accent: "One Life at a Time.",
+    sub: "Ashray for Life Foundation is dedicated to providing compassionate care, nutritious meals, and essential support to elderly citizens, disabled individuals, and underprivileged children in our community.",
+    cta: { label: "Donate Now", to: "/donate" },
+    cta2: { label: "See Our Impact", to: "/gallery" },
+    bg: "/images/Ashray/img2.jpg",
+    subject: "/images/Ashray/img1.jpg",
+    subjectAlt: "Ashray for Life community",
+    subjectPosition: "center 45%",
+    panelLabel: "Ashray for Life",
+    panelTitle: "NOURISH. CARE. PROTECT.",
   },
   {
-    id: 2,
-    tag: "Project News",
-    date: "Sep 28, 2024",
-    title: "Sustainable water solutions reach 5 new villages",
-    description:
-      "Project JAL has successfully implemented solar-powered filtration plants in the drought-hit regions of Rajasthan, serving over 2000 families.",
-    image:
-      "/images/Volunteers2.jpg",
+    id: "sahara",
+    eyebrow: "Sahara · Elderly Care",
+    title: "Caring For Our Elders,",
+    accent: "With Love & Dignity.",
+    sub: "Supporting elderly individuals with care, dignity, and companionship for a better quality of life.",
+    cta: { label: "Explore Sahara", to: "/programs/old-age-home" },
+    cta2: { label: "Donate Now", to: "/donate" },
+    bg: "/images/Sahara/Sahara.jpg",
+    subject: "/images/Sahara/img1.jpg",
+    subjectAlt: "Sahara elderly care program",
+    subjectPosition: "center 30%",
+    panelLabel: "Project Sahara",
+    panelTitle: "CARE. LOVE. DIGNITY.",
   },
   {
-    id: 3,
-    tag: "Volunteer Spotlight",
-    date: "Sep 15, 2024",
-    title: "Finding purpose in the golden years of others",
-    description:
-      "Meet our longest-serving volunteer, Arun, who has dedicated his weekends for 5 years to ensuring the residents of Sahara never feel alone.",
-    image:
-      "/images/Volunteers3.jpg",
+    id: "vidhyalay",
+    eyebrow: "Project Vidhyalay · Education",
+    title: "Educating Every Child,",
+    accent: "Building Tomorrow Today.",
+    sub: "Breaking the cycle of illiteracy by ensuring every underprivileged child has access to quality education.",
+    cta: { label: "Explore Vidhyalay", to: "/programs/education" },
+    cta2: { label: "See Our Impact", to: "/gallery" },
+    bg: "/images/education/Educationhome.jpg",
+    subject: "/images/education/img2.JPG",
+    subjectAlt: "Project Vidhyalay education program",
+    subjectPosition: "center 32%",
+    panelLabel: "Project Vidhyalay",
+    panelTitle: "EDUCATE. EMPOWER. ELEVATE.",
   },
 ];
 
-const testimonials = [
-  {
-    id: 1,
-    quote:
-      "The level of transparency and professional dedication seen at AFLF is rare. Every time I visit one of their projects, I am moved by the tangible progress and the genuine love the team has for their work.",
-    name: "Dr. Rajesh Sharma",
-    role: "Corporate Partner, Global Health Ltd",
-    initials: "RS",
-    color: "accent",
-  },
-  {
-    id: 2,
-    quote:
-      "As a monthly donor, I get regular updates that actually show me where my money goes. From a well being dug to an animal being rescued, it makes me feel like I am truly part of the change.",
-    name: "Ananya Patel",
-    role: "Monthly Supporter Since 2018",
-    initials: "AP",
-    color: "primary",
-  },
-  {
-    id: 3,
-    quote:
-      "Volunteering with AFLF has been a life-changing experience. The team's dedication to holistic social service is inspiring, and every moment spent serving the community is deeply fulfilling.",
-    name: "Rohit Verma",
-    role: "Volunteer, Project VIDHYALAY",
-    initials: "RV",
-    color: "accent",
-  },
-  {
-    id: 4,
-    quote:
-      "I have seen firsthand how Project JAL has transformed our village. Clean water has given our children health and our women freedom. AFLF's transparency and commitment are unmatched.",
-    name: "Sunita Devi",
-    role: "Community Leader, Rajasthan",
-    initials: "SD",
-    color: "primary",
-  },
+const DEFAULT_STATS = [
+  { icon: "group", value: "10,000+", label: "Lives Impacted" },
+  { icon: "volunteer_activism", value: "15+", label: "Active Projects" },
+  { icon: "currency_rupee", value: "₹50L+", label: "Funds Raised" },
+  { icon: "event_available", value: "2+ Years", label: "of Service" },
 ];
 
-const allProjects = [
+const DEFAULT_PROJECTS = [
   {
-    id: 1,
-    title: "Project Vidhyalay",
-    desc: "Education initiatives for underprivileged children.",
-    tag: "Education",
-    image: "/images/education/Education1.jpg",
-  },
-  {
-    id: 2,
-    title: "Zero Hunger Drive",
-    desc: "Eradicating hunger through food distribution and nutrition programs.",
-    tag: "Food & Nutrition",
-    image: "/images/ZeroHunger/Hunger5.jpg",
-  },
-  {
-    id: 3,
-    title: "Project JAL",
-    desc: "Clean water access for rural communities through conservation and filtration.",
-    tag: "Clean Water",
-    image: "/images/jal/jal2.jpg",
-  },
-  {
-    id: 4,
-    title: "Project Nari Tarang",
-    desc: "Empowering women with education, skills, and self-reliance opportunities.",
-    tag: "Women Empowerment",
-    image: "/images/NariTarang/img1.jpg",
-  },
-  {
-    id: 5,
-    title: "Project Ashray ka Aashra",
-    desc: "Ashray Ka Aashra - comprehensive care for orphaned children.",
-    tag: "Orphan Care",
-    image: "/images/Ashray/img1.jpg",
-  },
-  {
-    id: 6,
-    title: "Project Sahara",
-    desc: "Creating opportunities for self-reliance.",
-    tag: "Disability Support",
-    image: "/images/medical/img4.jpg",
-  },
-  {
-    id: 7,
-    title: "Project Ashray ka Aashram",
-    desc: "Dignified support and homes for the elderly.",
-    tag: "Elderly Care",
+    title: "Nutritious Meals",
+    tag: "Nutrition",
+    description:
+      "Providing healthy daily meals to elderly citizens in need, ensuring they receive the sustenance and care they deserve.",
     image: "/images/oldage/img1.jpg",
+    to: "/programs/old-age-home",
+    position: "0% 50%",
   },
-
-   {
-    id: 8,
-    title: "Project Pashu Premi",
-    desc: "Providing care, rescue, and protection for stray and vulnerable animals.",
-    tag: "Animal Welfare",
-    image: "/images/Pashu/img1.jpg",
+  {
+    title: "Healthcare Support",
+    tag: "Healthcare",
+    description:
+      "Specialized checkups and medical aid for disabled individuals, improving their quality of life and well-being.",
+    image: "/images/medical/img4.jpg",
+    to: "/programs/medical",
+    position: "50% 50%",
+  },
+  {
+    title: "Empowering Education",
+    tag: "Education",
+    description:
+      "Supporting the dreams of underprivileged children with resources, tuition, and essential school supplies.",
+    image: "/images/education/Educationhome.jpg",
+    to: "/programs/education",
+    position: "100% 50%",
   },
 ];
 
-function Home() {
-  const [showAll, setShowAll] = useState(false);
-  const projects = showAll ? allProjects : allProjects.slice(0, 4);
+const DEFAULT_IMPACT_IMAGES = [
+  "/images/Ashray/img2.jpg",
+  "/images/Sahara/Sahara.jpg",
+  "/images/education/Educationhome.jpg",
+  "/images/medical/img4.jpg",
+  "/images/oldage/img1.jpg",
+  "/images/Ashray/img1.jpg",
+  "/images/gallery/vidhyalay1.jpg",
+  "/images/gallery/nari1.jpg",
+  "/images/gallery/hunger1.jpg",
+  "/images/gallery/jal1.jpg",
+  "/images/gallery/pashu1.jpg",
+  "/images/gallery/img5.jpg",
+];
+
+const DEFAULT_CTA = {
+  heading:
+    "Your contribution provides meals, shelter, and care. Join us in making a difference today.",
+  buttonLabel: "Donate Now",
+  buttonUrl: "/donate",
+};
+
+const fillStyle = { fontVariationSettings: "'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24" };
+
+const heroBadges = ["Regd. No. E-37237", "80G Certified", "10,000+ Lives Impacted"];
+
+function normalizeHeroSlides(section) {
+  const slides = section?.content?.slides;
+  if (!Array.isArray(slides) || slides.length === 0) return DEFAULT_HERO_SLIDES;
+  const mapped = slides.map((s) => ({
+    id: s.id || s.title || s.altText || "slide",
+    eyebrow: s.eyebrow || "",
+    title: s.title || "",
+    accent: s.accent || "",
+    sub: s.subtitle || "",
+    cta: { label: s.ctaLabel || "Donate Now", to: s.ctaUrl || "/donate" },
+    cta2:
+      s.cta2Label && s.cta2Url
+        ? { label: s.cta2Label, to: s.cta2Url }
+        : null,
+    bg: s.imageUrl || "",
+    subject: s.subjectImageUrl || "",
+    subjectAlt: s.subjectAlt || s.altText || "",
+    subjectPosition: s.subjectPosition || "center 45%",
+    panelLabel: s.panelLabel || "",
+    panelTitle: s.panelTitle || "",
+  }));
+  return mapped.filter((s) => s.bg && s.title).length > 0
+    ? mapped.filter((s) => s.bg && s.title)
+    : DEFAULT_HERO_SLIDES;
+}
+
+function normalizeStats(section) {
+  const items = section?.content?.items;
+  if (!Array.isArray(items) || items.length === 0) return DEFAULT_STATS;
+  return items.map((it, i) => ({
+    icon: it.icon || DEFAULT_STATS[i % DEFAULT_STATS.length].icon || "group",
+    value: it.value,
+    label: it.label,
+  }));
+}
+
+function normalizeProjects(section) {
+  const list = section?.content?.projects;
+  if (Array.isArray(list) && list.length > 0) {
+    const mapped = list
+      .map((p) => ({
+        title: p.title,
+        tag: p.tag || "",
+        description: p.description || p.summary || "",
+        image: p.image || p.imageUrl || "",
+        to: p.url || p.to || "/programs",
+        position: p.position || "50% 50%",
+      }))
+      .filter((p) => p.title && p.image);
+    if (mapped.length > 0) return mapped;
+  }
+  return DEFAULT_PROJECTS;
+}
+
+function normalizeMarqueeImages(section) {
+  const images = section?.content?.images;
+  if (Array.isArray(images) && images.length > 0) {
+    const filtered = images.filter((img) => typeof img === "string" && img.trim());
+    if (filtered.length > 0) return filtered;
+  }
+  return DEFAULT_IMPACT_IMAGES;
+}
+
+// ---------- HERO CAROUSEL ----------
+function HeroCarousel({ slides = DEFAULT_HERO_SLIDES }) {
+  const [active, setActive] = useState(0);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry, i) => {
-          if (entry.isIntersecting) {
-            if (entry.target.classList.contains("reveal")) {
-              setTimeout(() => entry.target.classList.add("visible"), i * 100);
-            } else {
-              entry.target.classList.add("animate-in");
-            }
-          }
+    if (slides.length === 0) return undefined;
+    const t = setInterval(() => setActive((a) => (a + 1) % slides.length), 7000);
+    return () => clearInterval(t);
+  }, [active, slides.length]);
+
+  const go = (i) => setActive((i + slides.length) % slides.length);
+
+  useEffect(() => {
+    const gsap = window.gsap;
+    const SplitText = window.SplitText;
+    if (!gsap || !SplitText) return undefined;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return undefined;
+
+    gsap.registerPlugin(SplitText);
+
+    const title = document.querySelector(".ashray-hero__slide.is-active .ashray-hero__title");
+    if (!title) return undefined;
+
+    let cancelled = false;
+    let anim = null;
+
+    const split = SplitText.create(title, {
+      type: "words,lines",
+      linesClass: "line",
+      autoSplit: true,
+      mask: "lines",
+      onSplit: (self) => {
+        if (cancelled) return;
+        anim = gsap.from(self.lines, {
+          duration: 0.6,
+          yPercent: 100,
+          opacity: 0,
+          stagger: 0.1,
+          ease: "expo.out",
         });
       },
-      { threshold: 0.15 }
-    );
+    });
 
-    document.querySelectorAll(".observe-fade, .reveal").forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
-  }, []);
+    return () => {
+      cancelled = true;
+      if (anim) anim.kill();
+      if (split) split.revert();
+    };
+  }, [active]);
+
+  // Cinematic entrance only (crossfade handled in CSS).
+  useEffect(() => {
+    const gsap = window.gsap;
+    const SplitText = window.SplitText;
+    if (!gsap || !SplitText) return undefined;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return undefined;
+
+    gsap.registerPlugin(SplitText);
+
+    const title = document.querySelector(".ashray-hero__slide.is-active .ashray-hero__title");
+    if (!title) return undefined;
+
+    let cancelled = false;
+    let anim = null;
+
+    const split = SplitText.create(title, {
+      type: "words,lines",
+      linesClass: "line",
+      autoSplit: true,
+      mask: "lines",
+      onSplit: (self) => {
+        if (cancelled) return;
+        anim = gsap.from(self.lines, {
+          duration: 0.6,
+          yPercent: 100,
+          opacity: 0,
+          stagger: 0.1,
+          ease: "expo.out",
+        });
+      },
+    });
+
+    return () => {
+      cancelled = true;
+      if (anim) anim.kill();
+      if (split) split.revert();
+    };
+  }, [active]);
 
   return (
-    <>
+    <section className="ashray-hero" aria-label="Highlights carousel">
+      <div className="ashray-hero__track">
+        {slides.map((s, i) => (
+          <div className={`ashray-hero__slide ${i === active ? "is-active" : ""}`} key={s.id}>
+            <div className="ashray-hero__bg">
+              <img src={s.bg} alt={s.subjectAlt || s.title} loading={i === 0 ? "eager" : "lazy"} />
+            </div>
+            <div className="ashray-hero__shade" />
 
-<section className="bsct-home-hero-section">
-  <picture>
-    <source
-      media="(max-width: 768px)"
-      srcSet="/images/banner-mobile.jpeg"
-    />
-    <img
-      src="/images/banner.jpg" 
-      alt="BSCT Banner"
-    />
-  </picture>
-</section>
+            <div className="ashray-hero__inner">
+              <div className="ashray-hero__content">
+                <span className="ashray-hero__eyebrow ashray-hero__anim">{s.eyebrow}</span>
+                <h1 className="ashray-hero__title split">
+                  {s.title}
+                  <span className="ashray-hero__title-accent">{s.accent}</span>
+                </h1>
+                <p className="ashray-hero__sub ashray-hero__anim ashray-hero__anim-3">{s.sub}</p>
+                <div className="ashray-hero__ctas ashray-hero__anim ashray-hero__anim-4">
+                  <Link to={s.cta.to} className="btn-3d">
+                    {s.cta.label}
+                    <span className="material-symbols-outlined btn-3d__icon">favorite</span>
+                  </Link>
+                  {s.cta2 && (
+                    <Link to={s.cta2.to} className="ashray-hero__ghost">
+                      {s.cta2.label}
+                      <span className="material-symbols-outlined">arrow_forward</span>
+                    </Link>
+                  )}
+                </div>
+                <ul className="ashray-hero__badges ashray-hero__anim ashray-hero__anim-5">
+                  {heroBadges.map((b) => (
+                    <li key={b}>
+                      <span className="material-symbols-outlined ashray-hero__badge-check">check_circle</span>
+                      {b}
+                    </li>
+                  ))}
+                </ul>
+              </div>
 
-      {/* ===== HERO ===== */}
-      <section className="home-hero">
-        <div className="hero-shape hero-shape--1" />
-        <div className="hero-shape hero-shape--2" />
-        <div className="hero-container">
-          <div className="hero-text-col">
-            <span className="hero-badge">Empowering Lives Since 2022</span>
-            <h1 className="hero-title">
-              Creating A Better <span className="hero-title-accent">Future Together</span>
-            </h1>
-            <p className="hero-desc">
-              We are dedicated to providing sustainable support for those in need, bridging the gap between hope and reality through community-driven initiatives.
-            </p>
-            <div className="hero-btns">
-              <Link to="/donate" className="btn-primary-glass">
-                <span className="material-symbol">volunteer_activism</span>
-                Donate Now
-              </Link>
-              <Link to="/about" className="btn-secondary-glass">
-                Learn Our Story
-              </Link>
+              <div className="ashray-hero__panel">
+                <h2 className="ashray-hero__panel-name">{s.panelLabel}</h2>
+                <p className="ashray-hero__panel-tagline">{s.panelTitle}</p>
+                <div className="ashray-hero__panel-logo">
+                  <img
+                    src="/images/Ashray Foundation logo.png"
+                    alt="Ashray for Life Foundation"
+                    loading="lazy"
+                  />
+                  <span className="ashray-hero__panel-logo-text">
+                    <strong>Regd.No.E-37237</strong>
+                    <span>Ashray</span>
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
-          <div className="hero-image-col">
-            <div className="hero-image-frame">
-              <img
-                src="/images/banner1.jpg"
-                alt="Children smiling"
-              />
-            </div>
-            <div className="hero-decor" />
+        ))}
+      </div>
+
+      <div className="ashray-hero__controls">
+        <button className="ashray-hero__arrow" onClick={() => go(active - 1)} aria-label="Previous slide">
+          <span className="material-symbols-outlined">chevron_left</span>
+        </button>
+        <div className="ashray-hero__dots">
+          {slides.map((_, i) => (
+            <button
+              key={i}
+              className={`ashray-hero__dot ${i === active ? "is-active" : ""}`}
+              onClick={() => go(i)}
+              aria-label={`Go to slide ${i + 1}`}
+            />
+          ))}
+        </div>
+        <button className="ashray-hero__arrow" onClick={() => go(active + 1)} aria-label="Next slide">
+          <span className="material-symbols-outlined">chevron_right</span>
+        </button>
+      </div>
+    </section>
+  );
+}
+
+// ---------- HOME ----------
+function Home() {
+  const mainRef = useRef(null);
+  const { site } = useSite();
+
+  const heroSlides = normalizeHeroSlides(getSection(site, "hero-slider"));
+  const stats = normalizeStats(getSection(site, "stats"));
+  const projects = normalizeProjects(getSection(site, "projects-grid"));
+  const impactImages = normalizeMarqueeImages(getSection(site, "gallery"));
+  const ctaSection = getSection(site, "cta")?.content ?? DEFAULT_CTA;
+  const ctaHeading =
+    getSetting(site, "cta.heading", ctaSection.heading) || DEFAULT_CTA.heading;
+  const ctaLabel = ctaSection.buttonLabel || DEFAULT_CTA.buttonLabel;
+  const ctaUrl = ctaSection.buttonUrl || DEFAULT_CTA.buttonUrl;
+
+  useBatchReveal(mainRef, ".app-reveal");
+
+  return (
+    <div ref={mainRef} className="bg-surface text-on-surface font-body-md antialiased">
+      <HeroCarousel slides={heroSlides} />
+
+      {/* ===== IMPACT STATS ===== */}
+      <section className="bg-surface-container-low py-16">
+        <div className="px-gutter max-w-container-max mx-auto">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            {stats.map((stat, i) => (
+              <div
+                key={stat.label}
+                className="app-reveal flex flex-col items-center text-center p-6 bg-surface-container-lowest rounded-2xl shadow-sm border border-outline-variant/20 hover:-translate-y-1 transition-transform h-full"
+                style={{ transitionDelay: `${i * 30}ms` }}
+              >
+                <span
+                  className="material-symbols-outlined text-4xl text-secondary-container mb-4"
+                  style={fillStyle}
+                >
+                  {stat.icon}
+                </span>
+                <h3 className="font-headline-sm text-headline-sm text-primary-container mb-2">
+                  <CountUp value={stat.value} />
+                </h3>
+                <p className="font-label-bold text-label-bold text-on-surface-variant uppercase">
+                  {stat.label}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* ===== STATS & INTRO ===== */}
-      <section className="stats-section">
-        <div className="section-container">
-          <div className="stats-grid">
-            <div className="stats-text-col">
-              <h2 className="stats-title">Who We Are<br /></h2>
-              <p className="stats-desc">
-                Ashray for Life Foundation (AFLF), established in 2022 by Mr. Naresh Bhanushali in Vadodara, Gujarat, is a non-profit organization (NGO) dedicated to making a lasting impact on society. We focus on seven key sectors: Education, Zero Hunger Drive, Water Conservation, Women Empowerment, Orphanage, Medical Aid, and Old-Age Homes.
-              </p>
-              <div className="stats-numbers">
-                <div className="stat-card glass">
-                  <span className="stat-value">15k+</span>
-                  <span className="stat-label">Impacted</span>
-                </div>
-                <div className="stat-card glass">
-                  <span className="stat-value">50+</span>
-                  <span className="stat-label">Projects</span>
-                </div>
-                <div className="stat-card glass">
-                  <span className="stat-value">12</span>
-                  <span className="stat-label">Cities</span>
+      {/* ===== OUR PROJECTS ===== */}
+      <section className="py-section-gap px-gutter max-w-container-max mx-auto">
+        <div className="app-reveal text-center mb-12">
+          <span className="font-label-bold text-label-bold text-secondary uppercase tracking-widest mb-2 block">
+            Our Initiatives
+          </span>
+          <h2 className="font-headline-md text-[32px] leading-10 text-primary-container">
+            Our Projects
+          </h2>
+          <div className="w-16 h-1 bg-secondary-container mx-auto mt-4 rounded-full" />
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {projects.map((project) => (
+            <Link
+              key={project.title}
+              to={project.to}
+              className="app-reveal bg-surface-container-lowest rounded-[1.5rem] overflow-hidden shadow-md hover:shadow-xl transition-shadow border border-outline-variant/20 flex flex-col group h-full"
+            >
+              <div className="relative h-56 overflow-hidden">
+                <img
+                  alt={project.title}
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  src={project.image}
+                  style={{ objectPosition: project.position }}
+                />
+                <div className="absolute top-4 left-4 bg-surface-container-lowest/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-primary-container shadow-sm">
+                  {project.tag}
                 </div>
               </div>
-            </div>
-            <div className="stats-cards-col">
-              <div className="stats-bg-glow" />
-              <div className="stat-feature-card glass-dark">
-                <h3>Our Institutional Trust</h3>
-                <p>Partnered with over 30 corporate entities to ensure transparency and high-impact delivery of every single rupee donated.</p>
+              <div className="p-8 flex flex-col flex-grow">
+                <h3 className="font-headline-sm text-headline-sm text-primary-container mb-3">
+                  {project.title}
+                </h3>
+                <p className="font-body-md text-body-md text-on-surface-variant mb-6 flex-grow">
+                  {project.description}
+                </p>
+                <span className="font-button-text text-button-text text-primary-container hover:text-secondary-container inline-flex items-center gap-1 group-hover:gap-2 transition-all mt-auto">
+                  Learn More <span className="material-symbols-outlined text-sm">arrow_forward</span>
+                </span>
               </div>
-              <div className="stat-feature-card glass">
-                <div className="feature-icon">
-                  <span className="material-symbol">verified</span>
-                </div>
-                <h4>Transparency</h4>
-                <p>100% auditable funds allocation across all sectors.</p>
-              </div>
-              <div className="stat-feature-card glass">
-                <div className="feature-icon">
-                  <span className="material-symbol">groups</span>
-                </div>
-                <h4>Community</h4>
-                <p>Driven by 500+ dedicated volunteers nationwide.</p>
-              </div>
-              <div className="stat-feature-card glass">
-                <div className="feature-icon">
-                  <span className="material-symbol">monitoring</span>
-                </div>
-                <h4>Impact</h4>
-                <p>Measurable outcomes across 7 sectors with 100+ grassroots projects delivered.</p>
-              </div>
-            </div>
-          </div>
+            </Link>
+          ))}
         </div>
       </section>
 
-      {/* ===== PROJECTS ===== */}
-      <section className="projects-section">
-        <div className="section-container">
-          <div className="projects-header">
-            <div>
-              <h2 className="projects-title">Our Projects</h2>
-              <p className="projects-subtitle">Focusing our efforts where they are needed the most.</p>
-            </div>
-            {/* <button onClick={() => setShowAll(!showAll)} className="projects-view-btn glass">
-              {showAll ? "Show Less" : "View All Projects"}
-              <span className="material-symbol">{showAll ? "expand_less" : "arrow_forward"}</span>
-            </button> */}
-          </div>
-          <div className="projects-grid">
-            <div className="projects-track">
-              {[...projects, ...projects].map((project, i) => (
-                <div key={`${project.id}-${i}`} className="project-card-wrapper">
-                  <div className="project-card glass">
-                    <div className="project-card-image">
-                      <img src={project.image} alt={project.title} />
-                    </div>
-                    <h3 className="project-card-title">{project.title}</h3>
-                    <p className="project-card-desc">{project.desc}</p>
-                    <span className="project-card-tag">{project.tag}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ===== MISSION & VISION ===== */}
-      <section className="mv-section-new">
-        <div className="mv-bg-new"></div>
-        <div className="mv-overlay-new"></div>
-        <div className="mv-glow-new mv-glow-new-1"></div>
-        <div className="mv-glow-new mv-glow-new-2"></div>
-        <div className="mv-container-new">
-          <div>
-            <h2 className="mv-heading-new">
-              <span className="mv-heading-white">Our Mission &amp; </span>
-              <span className="mv-heading-sun">Our Vision</span>
+      {/* ===== IMPACT IN ACTION (auto-scroll marquee) ===== */}
+      <section className="py-20 px-gutter bg-surface-container-low overflow-hidden marquee-container">
+        <div className="max-w-container-max mx-auto mb-12">
+          <div className="app-reveal text-center">
+            <span className="font-label-bold text-label-bold text-secondary uppercase tracking-widest block">
+              Our Impact
+            </span>
+            <h2 className="font-headline-md text-[32px] md:text-5xl md:leading-tight text-primary-container mt-2">
+              IMPACT IN <span className="italic text-secondary-container">ACTION.</span>
             </h2>
-            <div className="mv-blocks-new">
-              <div className="reveal">
-                <div className="mv-icon-new">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M9 12l2 2 4-4M12 21a9 9 0 110-18 9 9 0 010 18z" />
-                  </svg>
-                </div>
-                <h3 className="mv-block-title-new">Our Mission</h3>
-                <p className="mv-block-text-new">
-                  To create a Just, Equitable and Humane Society through holistic and sustainable interventions in the seven key sectors of social development.
-                </p>
-              </div>
-              <div className="reveal">
-                <div className="mv-icon-new">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M9 12l2 2 4-4M12 21a9 9 0 110-18 9 9 0 010 18z" />
-                  </svg>
-                </div>
-                <h3 className="mv-block-title-new">Our Vision</h3>
-                <p className="mv-block-text-new">
-                  To build a self-reliant society where every individual, regardless of their socio-economic status, has access to basic necessities and opportunities for a dignified life.
-                </p>
-              </div>
-            </div>
           </div>
-          <div className="reveal mv-image-wrap-new">
-            <img src="/images/mission-bg.jpg" alt="Our mission in action" />
+        </div>
+        <div className="marquee-track-left">
+          <div className="flex gap-8 px-4">
+            {impactImages.map((img, i) => (
+              <div key={i} className="impact-card">
+                <img src={img} alt="" loading="lazy" />
+              </div>
+            ))}
+          </div>
+          <div aria-hidden="true" className="flex gap-8 px-4">
+            {impactImages.map((img, i) => (
+              <div key={`dup-${i}`} className="impact-card">
+                <img src={img} alt="" loading="lazy" />
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* =====  GET INVOLVED ===== */}
-      <section className="involved-section">
-        <div className="section-container">
-          <div className="involved-grid">
-            <div className="involved-image-col">
-              <div className="involved-card glass">
-                <h3>Get Involved</h3>
-                <p>Lend your skills and time to make a tangible difference in the lives of many. We have opportunities in field work, administration, and digital support.</p>
-                <Link to="/volunteer" className="btn-primary-glass">
-                  Become a Volunteer
-                  <span className="material-symbol">person_add</span>
-                </Link>
-              </div>
-              <img
-                src="/images/Volunteers.jpg"
-                alt="Volunteers"
-                className="involved-img-back"
+      {/* ===== CTA ===== */}
+      <section className="py-20 px-gutter mx-auto max-w-container-max mb-12">
+        <div className="app-reveal relative overflow-hidden rounded-[2rem] p-8 sm:p-12 md:p-20 text-center shadow-xl border border-white/10 bg-gradient-to-br from-[#00236f] via-[#12307f] to-[#1e3a8a]">
+          <div
+            className="absolute inset-0 opacity-20"
+            aria-hidden="true"
+            style={{
+              backgroundImage: "radial-gradient(rgba(255,255,255,0.55) 1.5px, transparent 1.5px)",
+              backgroundSize: "26px 26px",
+            }}
+          />
+          <div
+            className="absolute -top-28 -right-24 w-80 h-80 rounded-full bg-secondary-container/20 blur-3xl pointer-events-none"
+            aria-hidden="true"
+          />
+          <div
+            className="absolute -bottom-32 -left-24 w-96 h-96 rounded-full bg-white/10 blur-3xl pointer-events-none"
+            aria-hidden="true"
+          />
+          <div className="relative z-10 max-w-3xl mx-auto flex flex-col items-center">
+            <span className="relative inline-flex items-center justify-center w-24 h-24 rounded-full bg-white/10 ring-1 ring-white/25 mb-8">
+              <span
+                className="absolute inset-2 rounded-full bg-secondary-container/30 blur-md"
+                aria-hidden="true"
               />
-            </div>
-            <div className="involved-form-col">
-              <div className="involved-form-card glass">
-                <div className="involved-form-glow" />
-                <h3>Support Our Mission</h3>
-                <p>Your support helps us drive our largest projects and create lasting change in communities. Join us in making a difference.</p>
-                <Link to="/volunteer" className="btn-primary-glass">
-                  Join Us Today
-                  <span className="material-symbol">handshake</span>
-                </Link>
-              </div>
-            </div>
+              <span
+                className="material-symbols-outlined text-secondary-container text-5xl relative"
+                style={fillStyle}
+              >
+                volunteer_activism
+              </span>
+            </span>
+            <h2 className="text-display-lg-mobile md:text-[32px] md:leading-10 text-on-primary mb-6">
+              {ctaHeading}
+            </h2>
+            <Link to={ctaUrl} className="btn-3d btn-3d--gold mt-4">
+              {ctaLabel}
+            </Link>
           </div>
         </div>
       </section>
-
-      {/* ===== STORIES ===== */}
-      <section className="stories-section">
-        <div className="section-container">
-          <h2 className="stories-main-title">Stories of Change</h2>
-          <div className="stories-grid-new">
-            {stories.map((story, i) => (
-              <article key={story.id} className="story-article">
-                <div className="story-image-wrap asymmetric-card">
-                  <img src={story.image} alt={story.title} />
-                  <div className="story-image-overlay" />
-                </div>
-                <div className="story-content">
-                  <div className="story-meta">
-                    <span className="story-tag">{story.tag}</span>
-                    <span className="story-date">{story.date}</span>
-                  </div>
-                  <h3 className="story-title">{story.title}</h3>
-                  <p className="story-desc">{story.description}</p>
-                </div>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ===== TESTIMONIALS ===== */}
-
-
-{/* ===== TESTIMONIALS ===== */}
-<section className="tm-section">
-  {/* ambient glows */}
-  <div className="tm-glow tm-glow--1" />
-  <div className="tm-glow tm-glow--2" />
-
-  <div className="section-container">
-    <div className="tm-header">
-      <span className="tm-eyebrow">Stories of impact</span>
-      <h2 className="tm-title">Voices of Hope</h2>
-      <p className="tm-subtitle">
-        Real people, real change — words from the community we serve and the
-        hands that help us grow.
-      </p>
     </div>
-
-    <div className="tm-grid">
-      {testimonials.map((t, i) => (
-        <article
-          key={t.id}
-          className={`tm-card tm-card--${t.color}`}
-          style={{ "--i": i }}
-        >
-          <div className="tm-quote-mark" aria-hidden="true">"</div>
-
-          <p className="tm-quote">{t.quote}</p>
-
-          <div className="tm-author">
-            <div className="tm-avatar">{t.initials}</div>
-            <div className="tm-author-info">
-              <h4 className="tm-name">{t.name}</h4>
-              <p className="tm-role">{t.role}</p>
-            </div>
-          </div>
-        </article>
-      ))}
-    </div>
-  </div>
-</section>
-
-
-
-
-
-
-      {/* <section className="testimonials-section">
-        <div className="testimonials-glow" />
-        <div className="section-container">
-          <div className="testimonials-header">
-            <h2 className="testimonials-title">Voices of Hope</h2>
-            <div className="testimonials-dots">
-              <span className="dot dot--sm" />
-              <span className="dot dot--lg" />
-              <span className="dot dot--sm" />
-            </div>
-          </div>
-          <div className="testimonials-grid">
-            {testimonials.map((t) => (
-              <div key={t.id} className={`testimonial-card glass border-${t.color}`}>
-                <span className="testimonial-quote-icon">"</span>
-                <p className="testimonial-quote">{t.quote}</p>
-                <div className="testimonial-author">
-                  <div className="testimonial-avatar">{t.initials}</div>
-                  <div>
-                    <h4 className="testimonial-name">{t.name}</h4>
-                    <p className="testimonial-role">{t.role}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section> */}
-
-      {/* ===== NEWSLETTER ===== */}
-      <section className="newsletter glass">
-        <div className="section-container">
-          <h3>Sign up for newsletter</h3>
-          <form className="newsletter-form" onSubmit={(e) => { e.preventDefault(); const i = e.target.querySelector("input"); const b = e.target.querySelector("button"); if (i.value.trim()) { b.textContent = "Subscribed!"; b.style.background = "#2e7d32"; i.value = ""; setTimeout(() => { b.textContent = "Sign Up"; b.style.background = ""; }, 3000); } }}>
-            <input type="email" placeholder="Your email" required />
-            <button type="submit">Sign Up</button>
-          </form>
-        </div>
-      </section>
-
-      <Partners />
-    </>
   );
 }
 

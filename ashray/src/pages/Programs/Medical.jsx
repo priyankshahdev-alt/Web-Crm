@@ -1,6 +1,4 @@
-import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import "./Medical.css";
 
 const galleryImages = [
   { id: 1, src: "/images/Sahara/img1.jpg", alt: "Medical care" },
@@ -27,159 +25,132 @@ const missions = [
 ];
 
 export default function Medical() {
-  const sectionRefs = useRef([]);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("visible");
-          }
-        });
-      },
-      { threshold: 0.15 }
-    );
-
-    sectionRefs.current.forEach((el) => {
-      if (el) observer.observe(el);
-    });
-
-    return () => observer.disconnect();
-  }, []);
-
   return (
-    <div className="medical-page" style={{ '--hero-img': 'url(/images/Sahara/Sahara.jpg)' }}>
-      {/* HERO */}
-      <section className="detail-hero">
-        <picture>
-          <source media="(max-width: 768px)" srcSet="/images/banner-mobile4.png" />
-          <img src="/images/Sahara/Sahara.jpg" alt="Project Life-Line" />
-        </picture>
-        <div className="detail-hero-shape detail-hero-shape--1" />
-        <div className="detail-hero-shape detail-hero-shape--2" />
-        <div className="section-container">
-          <div className="detail-hero-content">
-            <span className="detail-hero-badge glass" ref={(el) => (sectionRefs.current[0] = el)}>PROJECT LIFE-LINE</span>
-            <h1 ref={(el) => (sectionRefs.current[1] = el)}>Saving Lives,<br />One Surgery at a Time</h1>
-            <p ref={(el) => (sectionRefs.current[2] = el)}>
-              Every heartbeat counts. Project Lifeline is our unwavering commitment to providing
-              a lifeline of hope to the poorest and most vulnerable among us.
-            </p>
-          </div>
+    <main className="bg-background text-on-surface font-body-md">
+      {/* ===== HERO ===== */}
+      <section className="relative min-h-[420px] md:min-h-[520px] flex items-end overflow-hidden">
+        <img src="/images/Sahara/Sahara.jpg" alt="Project Life-Line" className="absolute inset-0 w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/70 to-primary/30" />
+        <div className="relative z-10 w-full max-w-container-max mx-auto px-5 md:px-margin-desktop pb-16 md:pb-20">
+          <span className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-secondary-container font-label-sm uppercase tracking-widest font-bold">PROJECT LIFE-LINE</span>
+          <h1 className="font-headline-xl text-white mt-8 mb-6">Saving Lives,<br />One Surgery at a Time</h1>
+          <p className="font-body-lg text-white/85 max-w-2xl">
+            Every heartbeat counts. Project Lifeline is our unwavering commitment to providing
+            a lifeline of hope to the poorest and most vulnerable among us.
+          </p>
         </div>
       </section>
 
-      {/* INTRO */}
-      <section className="detail-intro" ref={(el) => (sectionRefs.current[3] = el)}>
-        <div className="section-container">
-          <div className="detail-intro-grid">
-            <div className="detail-intro-text">
-              <span className="detail-section-tag">WELCOME TO</span>
-              <h2>Project Sahara</h2>
-                <p>
-                At <strong>AFLF (Ashray For Life Foundation)</strong>, we believe that every
-                individual deserves the opportunity to live with dignity, independence, and
-                self-confidence. <strong>Project SAHARA</strong> is dedicated to empowering
-                disabled and specially-abled individuals by providing essential resources that
-                help them lead self-reliant and fulfilling lives.
-              </p>
-              <p>
-                Through this initiative, we provide livelihood and mobility support such as
-                sewing machines, flour mills, and wheelchairs. These resources
-                enable beneficiaries to earn a sustainable income, improve their mobility, and
-                actively participate in society with greater confidence and independence.
-              </p>
-             <p className="detail-quote">
+      {/* ===== INTRO ===== */}
+      <section className="py-20 md:py-28 bg-white">
+        <div className="max-w-container-max mx-auto px-5 md:px-margin-desktop grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <div>
+            <span className="font-label-md text-primary uppercase tracking-[0.2em] font-bold mb-4 inline-block">WELCOME TO</span>
+            <h2 className="font-headline-lg text-primary mb-6">Project Sahara</h2>
+            <p className="font-body-lg text-on-surface-variant mb-6 leading-relaxed">
+              At <strong className="text-primary">AFLF (Ashray For Life Foundation)</strong>, we believe that every
+              individual deserves the opportunity to live with dignity, independence, and
+              self-confidence. <strong className="text-primary">Project SAHARA</strong> is dedicated to empowering
+              disabled and specially-abled individuals by providing essential resources that
+              help them lead self-reliant and fulfilling lives.
+            </p>
+            <p className="font-body-lg text-on-surface-variant mb-6 leading-relaxed">
+              Through this initiative, we provide livelihood and mobility support such as
+              sewing machines, flour mills, and wheelchairs. These resources
+              enable beneficiaries to earn a sustainable income, improve their mobility, and
+              actively participate in society with greater confidence and independence.
+            </p>
+            <p className="font-body-lg italic text-primary border-l-4 border-secondary-container pl-6 mb-6">
               "Empowering abilities, restoring dignity, and creating pathways to
               independence for a brighter tomorrow."
             </p>
-            </div>
-            <div className="detail-intro-image">
-              <div className="detail-image-frame glass">
-                <img
-                  src="/images/Sahara/img4.jpg"
-                  alt="Medical care"
-                />
-              </div>
-            </div>
+          </div>
+          <div className="relative">
+            <div className="absolute -top-10 -right-10 w-48 h-48 bg-secondary-fixed/30 rounded-full blur-3xl -z-10" />
+            <img
+              src="/images/Sahara/img4.jpg"
+              alt="Medical care"
+              className="rounded-3xl shadow-2xl w-full aspect-[4/3] object-cover"
+            />
           </div>
         </div>
       </section>
 
-      {/* MISSION */}
-      <section className="detail-mission" ref={(el) => (sectionRefs.current[4] = el)}>
-        <div className="section-container">
-          <h2>Our Mission</h2>
-          <p className="detail-section-subtitle">
-             Enabling independence and dignity for disabled and specially-abled individuals.
-          </p>
-          <div className="detail-mission-grid">
+      {/* ===== MISSION ===== */}
+      <section className="py-20 md:py-28 bg-background">
+        <div className="max-w-container-max mx-auto px-5 md:px-margin-desktop">
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <h2 className="font-headline-lg text-primary mb-4">Our Mission</h2>
+            <p className="font-body-lg text-on-surface-variant">Enabling independence and dignity for disabled and specially-abled individuals.</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-gutter">
             {missions.map((m, i) => (
-              <div key={i} className="detail-mission-card glass">
-                <div className="detail-mission-num">{String(i + 1).padStart(2, "0")}</div>
-                <h3>{m.title}</h3>
-                <p>{m.desc}</p>
+              <div key={i} className="bg-surface-container rounded-3xl border border-outline-variant subtle-shadow p-8 hover:-translate-y-1 transition-all">
+                <div className="font-headline-lg text-primary/20 font-black mb-4">{String(i + 1).padStart(2, "0")}</div>
+                <h3 className="font-headline-md text-xl text-primary mb-3">{m.title}</h3>
+                <p className="font-body-md text-on-surface-variant">{m.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* IMPACT */}
-      <section className="detail-impact" ref={(el) => (sectionRefs.current[5] = el)}>
-        <div className="section-container">
-          <div className="detail-impact-content">
-            <span className="detail-section-tag">OUR IMPACT</span>
-            <h2>Transforming Lives Through Independence</h2>
-           <p>
-            Through Project SAHARA, disabled and specially-abled individuals have gained
-            greater mobility, confidence, and opportunities for self-reliance. Access to
-            livelihood resources has helped beneficiaries support themselves and their
-            families with dignity.
-          </p>
-           <p>
-            Every wheelchair delivered, every tricycle provided, and every livelihood tool
-            distributed represents a step toward empowerment. Together, we are building a
-            more inclusive society where abilities are strengthened and lives are transformed.
-          </p>
+      {/* ===== IMPACT ===== */}
+      <section className="py-20 md:py-28 bg-white">
+        <div className="max-w-container-max mx-auto px-5 md:px-margin-desktop">
+          <div className="max-w-3xl">
+            <span className="font-label-md text-primary uppercase tracking-[0.2em] font-bold mb-4 inline-block">OUR IMPACT</span>
+            <h2 className="font-headline-lg text-primary mb-6">Transforming Lives Through Independence</h2>
+            <p className="font-body-lg text-on-surface-variant mb-6 leading-relaxed">
+              Through Project SAHARA, disabled and specially-abled individuals have gained
+              greater mobility, confidence, and opportunities for self-reliance. Access to
+              livelihood resources has helped beneficiaries support themselves and their
+              families with dignity.
+            </p>
+            <p className="font-body-lg text-on-surface-variant mb-6 leading-relaxed">
+              Every wheelchair delivered, every tricycle provided, and every livelihood tool
+              distributed represents a step toward empowerment. Together, we are building a
+              more inclusive society where abilities are strengthened and lives are transformed.
+            </p>
           </div>
         </div>
       </section>
 
-      {/* STATS */}
-      <section className="detail-stats" ref={(el) => (sectionRefs.current[6] = el)}>
-        <div className="detail-stats-grid">
-          <div className="detail-stat glass">
-            <span className="detail-stat-number">500+</span>
-            <span className="detail-stat-label">Lives Empowered</span>
+      {/* ===== STATS ===== */}
+      <section className="bg-primary py-16 md:py-20">
+        <div className="max-w-container-max mx-auto px-5 md:px-margin-desktop grid grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="bg-white/[0.06] backdrop-blur-md border border-white/15 rounded-3xl p-8 text-center">
+            <div className="font-headline-lg text-secondary-container mb-2">500+</div>
+            <div className="font-label-sm text-white/70 uppercase tracking-widest">Lives Empowered</div>
           </div>
-          <div className="detail-stat glass">
-            <span className="detail-stat-number">100+</span>
-            <span className="detail-stat-label">Mobility Aids Provided</span>
+          <div className="bg-white/[0.06] backdrop-blur-md border border-white/15 rounded-3xl p-8 text-center">
+            <div className="font-headline-lg text-secondary-container mb-2">100+</div>
+            <div className="font-label-sm text-white/70 uppercase tracking-widest">Mobility Aids Provided</div>
           </div>
-          <div className="detail-stat glass">
-            <span className="detail-stat-number">200+</span>
-            <span className="detail-stat-label">Livelihood Tools Distributed</span>
+          <div className="bg-white/[0.06] backdrop-blur-md border border-white/15 rounded-3xl p-8 text-center">
+            <div className="font-headline-lg text-secondary-container mb-2">200+</div>
+            <div className="font-label-sm text-white/70 uppercase tracking-widest">Livelihood Tools Distributed</div>
           </div>
-          <div className="detail-stat glass">
-            <span className="detail-stat-number">24/7</span>
-            <span className="detail-stat-label">Families Supported</span>
+          <div className="bg-white/[0.06] backdrop-blur-md border border-white/15 rounded-3xl p-8 text-center">
+            <div className="font-headline-lg text-secondary-container mb-2">24/7</div>
+            <div className="font-label-sm text-white/70 uppercase tracking-widest">Families Supported</div>
           </div>
         </div>
       </section>
 
-      {/* GALLERY */}
-      <section className="detail-gallery" ref={(el) => (sectionRefs.current[7] = el)}>
-        <div className="section-container">
-          <h2>Moments of Healing</h2>
-          <p className="detail-section-subtitle">Every life saved is a testament to the power of compassion</p>
-          <div className="detail-gallery-grid">
+      {/* ===== GALLERY ===== */}
+      <section className="py-20 md:py-28 bg-background">
+        <div className="max-w-container-max mx-auto px-5 md:px-margin-desktop">
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <h2 className="font-headline-lg text-primary mb-4">Moments of Healing</h2>
+            <p className="font-body-lg text-on-surface-variant">Every life saved is a testament to the power of compassion</p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-gutter">
             {galleryImages.map((img) => (
-              <div key={img.id} className="detail-gallery-item glass">
-                <img src={img.src} alt={img.alt} />
-                <div className="detail-gallery-overlay">
-                  <span>{img.alt}</span>
+              <div key={img.id} className="group relative overflow-hidden rounded-3xl aspect-[4/3] subtle-shadow">
+                <img src={img.src} alt={img.alt} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                <div className="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent opacity-0 group-hover:opacity-100 flex items-end p-6">
+                  <span className="text-white font-label-md font-bold">{img.alt}</span>
                 </div>
               </div>
             ))}
@@ -187,17 +158,22 @@ export default function Medical() {
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="detail-cta">
-        <div className="section-container">
-          <h2>Support Our Mission</h2>
-          <p>  Your support can help empower disabled and specially-abled individuals with mobility, livelihood opportunities, and a life of dignity..</p>
-          <div className="detail-cta-btns">
-            <Link to="/donate" className="btn-primary-glass">Donate Now</Link>
-            <Link to="/volunteer" className="btn-secondary-glass">Become a Volunteer</Link>
+      {/* ===== CTA ===== */}
+      <section className="pb-20 md:pb-28 bg-background">
+        <div className="max-w-container-max mx-auto px-5 md:px-margin-desktop">
+          <div className="relative bg-primary rounded-3xl px-8 py-16 md:p-20 text-center overflow-hidden">
+            <div className="absolute -top-24 -right-24 w-80 h-80 rounded-full bg-secondary-container opacity-20 blur-3xl" />
+            <div className="relative z-10">
+              <h2 className="font-headline-lg text-white mb-4">Support Our Mission</h2>
+              <p className="font-body-lg text-white/85 max-w-2xl mx-auto mb-10">Your support can help empower disabled and specially-abled individuals with mobility, livelihood opportunities, and a life of dignity..</p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Link to="/donate" className="bg-secondary-container text-on-secondary-container px-10 py-4 rounded-full font-label-md font-bold shadow-xl hover:-translate-y-0.5 transition-all">Donate Now</Link>
+                <Link to="/volunteer" className="bg-white/10 text-white border border-white/25 px-10 py-4 rounded-full font-label-md font-bold hover:bg-white hover:text-primary transition-all">Become a Volunteer</Link>
+              </div>
+            </div>
           </div>
         </div>
       </section>
-    </div>
+    </main>
   );
 }

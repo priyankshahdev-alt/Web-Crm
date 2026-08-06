@@ -1,6 +1,6 @@
 /* ===== ABOUT PAGE ===== */
 .page-about {
-  background: #eff3ff;
+  background: #f7f9fb;
   overflow-x: hidden;
 }
 
@@ -9,7 +9,7 @@
   position: relative;
   padding: 140px 24px 80px;
   overflow: hidden;
-  background: #eff3ff;
+  background: #f7f9fb;
 }
 
 .about-hero-shape {
@@ -26,7 +26,7 @@
   right: -80px;
   width: 400px;
   height: 400px;
-  background: #4a6fa5;
+  background: #4059aa;
 }
 
 .about-hero-shape--2 {
@@ -34,7 +34,7 @@
   left: -80px;
   width: 300px;
   height: 300px;
-  background: #2e2c8a;
+  background: #00236f;
   opacity: 0.15;
 }
 
@@ -50,7 +50,7 @@
   display: inline-block;
   padding: 10px 24px;
   border-radius: 9999px;
-  color: #2e2c8a;
+  color: #00236f;
   font-weight: 700;
   font-size: 13px;
   margin-bottom: 24px;
@@ -62,7 +62,7 @@
   font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
   font-size: 56px;
   line-height: 1.1;
-  color: #2e2c8a;
+  color: #00236f;
   margin-bottom: 20px;
   letter-spacing: -0.02em;
 }
@@ -70,7 +70,7 @@
 .about-hero-content p {
   font-family: "Work Sans", "Segoe UI", sans-serif;
   font-size: 18px;
-  color: #464651;
+  color: #444651;
   line-height: 1.7;
   max-width: 580px;
   margin: 0 auto;
@@ -90,14 +90,14 @@
 .about-mission-content h2 {
   font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
   font-size: 42px;
-  color: #2e2c8a;
+  color: #00236f;
   margin-bottom: 20px;
 }
 
 .about-mission-content p {
   font-size: 16px;
   line-height: 1.9;
-  color: #464651;
+  color: #444651;
 }
 
 /* ===== TEAM ===== */
@@ -108,7 +108,7 @@
 .about-team h2 {
   font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
   font-size: 42px;
-  color: #2e2c8a;
+  color: #00236f;
   text-align: center;
   margin-bottom: 48px;
 }
@@ -136,35 +136,35 @@
   width: 72px;
   height: 72px;
   border-radius: 50%;
-  background: rgba(46, 44, 138, 0.08);
+  background: rgba(0, 35, 111, 0.08);
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
   font-size: 28px;
   font-weight: 700;
-  color: #2e2c8a;
+  color: #00236f;
   margin: 0 auto 20px;
 }
 
 .about-team-card h3 {
   font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
   font-size: 18px;
-  color: #2e2c8a;
+  color: #00236f;
   margin-bottom: 4px;
 }
 
 .about-team-role {
   display: block;
   font-size: 13px;
-  color: #4a6fa5;
+  color: #4059aa;
   font-weight: 600;
   margin-bottom: 12px;
 }
 
 .about-team-card p {
   font-size: 14px;
-  color: #464651;
+  color: #444651;
   line-height: 1.7;
 }
 
@@ -182,7 +182,7 @@
 .about-intro-content p {
   font-size: 17px;
   line-height: 1.8;
-  color: #464651;
+  color: #444651;
   margin-bottom: 20px;
 }
 
@@ -195,7 +195,7 @@
 .about-sectors h2 {
   font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
   font-size: 42px;
-  color: #2e2c8a;
+  color: #00236f;
   text-align: center;
   margin-bottom: 12px;
 }
@@ -203,7 +203,7 @@
 .about-sectors-subtitle {
   text-align: center;
   font-size: 16px;
-  color: #464651;
+  color: #444651;
   margin-bottom: 48px;
 }
 
@@ -228,13 +228,13 @@
 
 .about-sector-card .material-symbol {
   font-size: 40px;
-  color: #2e2c8a;
+  color: #00236f;
   margin-bottom: 16px;
 }
 
 .about-sector-card h3 {
   font-size: 14px;
-  color: #2e2c8a;
+  color: #00236f;
   font-weight: 700;
 }
 
@@ -312,7 +312,7 @@
 }
 
 .about-founder-tag {
-  color: #4a6fa5;
+  color: #4059aa;
   font-weight: 700;
   font-size: 12px;
   text-transform: uppercase;
@@ -324,14 +324,14 @@
 .about-founder-text h2 {
   font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
   font-size: 38px;
-  color: #2e2c8a;
+  color: #00236f;
   margin-bottom: 24px;
 }
 
 .about-founder-text p {
   font-size: 16px;
   line-height: 1.8;
-  color: #464651;
+  color: #444651;
   margin-bottom: 20px;
 }
 

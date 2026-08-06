@@ -19,6 +19,7 @@ const contentItem = z
 
 const statItem = z
   .object({
+    icon: z.string().max(120).optional(),
     value: z.string().max(60),
     label: z.string().max(200),
   })
@@ -49,12 +50,22 @@ export const sectionSchemas = {
         .array(
           z
             .object({
+              id: z.string().max(120).optional(),
+              eyebrow: z.string().max(200).optional(),
               title: z.string().max(300),
+              accent: z.string().max(300).optional(),
               subtitle: z.string().max(1000).optional(),
               imageUrl: z.string().max(1000),
               mobileImageUrl: z.string().max(1000).optional(),
+              subjectImageUrl: z.string().max(1000).optional(),
+              subjectAlt: z.string().max(300).optional(),
+              subjectPosition: z.string().max(120).optional(),
               ctaLabel: z.string().max(120).optional(),
               ctaUrl: z.string().max(500).optional(),
+              cta2Label: z.string().max(120).optional(),
+              cta2Url: z.string().max(500).optional(),
+              panelLabel: z.string().max(200).optional(),
+              panelTitle: z.string().max(200).optional(),
               altText: z.string().max(300).optional(),
             })
             .strict(),
@@ -143,6 +154,21 @@ export const sectionSchemas = {
       showAll: z.boolean().optional(),
       layout: z.string().max(60).optional(),
       cta,
+      projects: z
+        .array(
+          z
+            .object({
+              title: z.string().max(300),
+              tag: z.string().max(120).optional(),
+              description: z.string().max(2000).optional(),
+              image: z.string().max(1000).optional(),
+              url: z.string().max(500).optional(),
+              position: z.string().max(60).optional(),
+            })
+            .strict(),
+        )
+        .max(30)
+        .optional(),
     })
     .strict(),
 
@@ -228,6 +254,7 @@ export const sectionSchemas = {
       heading: z.string().max(300).optional(),
       galleryId: uuid.optional(),
       layout: z.string().max(60).optional(),
+      images: z.array(z.string().max(1000)).max(200).optional(),
     })
     .strict(),
 

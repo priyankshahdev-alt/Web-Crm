@@ -1,11 +1,8 @@
 import { useRef, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import gsap from "gsap";
-import MorphSVGPlugin from "gsap/MorphSVGPlugin";
+import "./PageTransition.css";
 
-gsap.registerPlugin(MorphSVGPlugin);
-
-// ============ GSAP CURVE SWIPE PAGE TRANSITION ============
+// ============ GSAP CURVE SWIPE PAGE TRANSITION (Mann style) ============
 // On any internal link click we play the cover sweep over the CURRENT page,
 // then navigate, then reveal the new page (no flash of the next page).
 const HIDDEN = "M 0 100 V 100 Q 50 100 100 100 V 100 z";
@@ -14,33 +11,29 @@ const FULL = "M 0 100 V 0 Q 50 0 100 0 V 100 z";
 
 // Route path -> word shown in the transition
 const ROUTE_LABELS = {
-  "/": "MANN CARE.",
-  "/about/our-story": "Our Story",
-  "/about/our-team": "Our Team",
-  "/about/legal-certificate": "Legal Certificate",
-  "/projects/poshan": "Project Poshan",
-  "/projects/gyaan": "Project Gyaan",
-  "/projects/sakhi": "Project Sakhi",
-  "/projects/swasth": "Project Swasth",
-  "/projects/pashu": "Project Pashu",
-  "/projects/paryavaran": "Project Paryavaran",
-  "/get-involved/individual-support": "Individual Support",
-  "/get-involved/corporate-partnership": "Corporate Partnership",
-  "/get-involved/donate-online": "Donate Online",
-  "/get-involved/career": "Career",
-  "/media": "Media",
-  "/contact/get-in-touch": "Get In Touch",
-  "/contact/privacy-policy": "Privacy Policy",
-  "/payment-success": "Payment Success",
+  "/": "ASHRAY.",
+  "/about": "About Us",
+  "/about/management-team": "Our Team",
+  "/about/legal-documents": "Legal Docs",
+  "/programs": "Our Projects",
+  "/programs/medical": "Life-Line",
+  "/programs/education": "Vidhyalay",
+  "/programs/women-empowerment": "Nari Tarang",
+  "/programs/zero-hunger-drive": "Hunger Drive",
+  "/programs/jal-project": "Project JAL",
+  "/programs/orphanage": "Ashray Ka Aashra",
+  "/programs/old-age-home": "Sahara",
+  "/programs/pashu-premi": "Pashupremi",
+  "/Appeals/Medical": "Medical Appeal",
+  "/gallery": "Gallery",
+  "/donate": "Donate",
+  "/volunteer": "Get Involved",
+  "/ContactUs": "Contact Us",
+  "/contact": "Contact Us",
 };
 
 function routeLabel(pathname) {
-  if (ROUTE_LABELS[pathname]) return ROUTE_LABELS[pathname];
-  const slug = pathname.replace(/^\/projects\//, "");
-  if (slug !== pathname) {
-    return "Project " + slug.replace(/^./, (c) => c.toUpperCase());
-  }
-  return "MANN CARE.";
+  return ROUTE_LABELS[pathname] || "ASHRAY.";
 }
 
 export default function PageTransition() {
@@ -51,6 +44,7 @@ export default function PageTransition() {
 
   const cover = useCallback((to) => {
     return new Promise((resolve) => {
+      const gsap = window.gsap;
       const path = pathRef.current;
       const word = wordRef.current;
       word.textContent = routeLabel(to);
@@ -65,6 +59,7 @@ export default function PageTransition() {
 
   const reveal = useCallback(() => {
     return new Promise((resolve) => {
+      const gsap = window.gsap;
       const path = pathRef.current;
       const word = wordRef.current;
       const tl = gsap.timeline({ onComplete: resolve });
@@ -74,6 +69,9 @@ export default function PageTransition() {
   }, []);
 
   useEffect(() => {
+    if (!window.gsap || !window.MorphSVGPlugin) return undefined;
+    window.gsap.registerPlugin(window.MorphSVGPlugin);
+
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     const onClick = (e) => {
@@ -124,8 +122,8 @@ export default function PageTransition() {
             y2="99"
             gradientUnits="userSpaceOnUse"
           >
-            <stop offset="0.2" stopColor="#8a0048" />
-            <stop offset="0.7" stopColor="#b50061" />
+            <stop offset="0.2" stopColor="#00236f" />
+            <stop offset="0.7" stopColor="#4059aa" />
           </linearGradient>
         </defs>
         <path
@@ -139,7 +137,7 @@ export default function PageTransition() {
         />
       </svg>
       <span ref={wordRef} className="page-transition-word">
-        MANN CARE.
+        ASHRAY.
       </span>
     </div>
   );

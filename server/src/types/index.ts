@@ -12,6 +12,7 @@ export interface AuthUser {
   isMaster: boolean;
   roles: string[];
   permissions: string[];
+  websiteId?: string | null;
 }
 
 export interface Pagination {

@@ -73,7 +73,7 @@ export default function Navbar() {
         <Logo />
 
         {/* Desktop menu */}
-        <div className="hidden md:flex items-center gap-6 lg:gap-8">
+        <div className="hidden lg:flex items-center gap-5 xl:gap-8">
           {navMenu.map((item) => (
             <div key={item.label} className="relative group">
               {item.children ? (
@@ -122,7 +122,7 @@ export default function Navbar() {
 
         {/* Burger */}
         <button
-          className="md:hidden text-primary"
+          className="lg:hidden text-primary"
           onClick={() => setMobileOpen(!mobileOpen)}
           aria-label="Menu"
         >
@@ -132,7 +132,7 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       <div
-        className={`md:hidden overflow-hidden transition-all duration-300 bg-white ${
+        className={`lg:hidden overflow-hidden transition-all duration-300 bg-white ${
           mobileOpen ? "max-h-[80vh] overflow-y-auto border-t border-primary/10 shadow-xl" : "max-h-0"
         }`}
       >

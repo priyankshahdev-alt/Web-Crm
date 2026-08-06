@@ -1,7 +1,7 @@
 .hero {
   position: relative;
   min-height: 560px;
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 40%, #0f3460 70%, #2d4a6b 100%);
+  background: linear-gradient(135deg, #00236f 0%, #1e3a8a 40%, #1e3a8a 70%, #264191 100%);
   display: flex;
   align-items: center;
   overflow: hidden;

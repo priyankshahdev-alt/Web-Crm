@@ -1,21 +1,12 @@
 import { useRef, useEffect, Children } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
+import "./PinnedSections.css";
 
 // ============================================================
-// PINNED SLIDES – full-screen sections pinned with ScrollTrigger
-// Inspired by: https://codepen.io/BrianCross/pen/qBJoLxJ
-//
-// Each section pins as it fills the viewport. Sections taller than
-// the viewport "fake scroll" internally first, then the whole panel
-// shrinks & fades as the next section slides in. The last section is
-// left in normal flow so the page ends naturally (footer visible).
-//
-// REMOVAL: flip PINNED_HOME to false in Home.jsx (the page then
-// renders as a normal scrolling page), or delete this component,
-// its CSS and the <PinnedSections> wrapper in Home.jsx.
+// PINNED SLIDES (Mann style) – full-screen sections pinned with
+// ScrollTrigger. Each section pins as it fills the viewport.
+// Sections taller than the viewport "fake scroll" internally first,
+// then the whole panel shrinks & fades as the next section slides in.
+// The last section is left in normal flow so the page ends naturally.
 // ============================================================
 
 function isReducedMotion() {
@@ -26,13 +17,18 @@ export default function PinnedSections({ children }) {
   const rootRef = useRef(null);
 
   useEffect(() => {
-    if (isReducedMotion()) return;
+    const gsap = window.gsap;
+    const ScrollTrigger = window.ScrollTrigger;
+    if (!gsap || !ScrollTrigger) return undefined;
+    if (isReducedMotion()) return undefined;
+
+    gsap.registerPlugin(ScrollTrigger);
 
     const root = rootRef.current;
-    if (!root) return;
+    if (!root) return undefined;
 
     const panels = gsap.utils.toArray(".pinned-section", root);
-    if (!panels.length) return;
+    if (!panels.length) return undefined;
 
     panels.forEach((panel) => {
       const inner = panel.querySelector(".pinned-inner");
@@ -42,10 +38,8 @@ export default function PinnedSections({ children }) {
       const windowHeight = window.innerHeight;
       const difference = panelHeight - windowHeight;
 
-      // 0..1 fraction of the animation devoted to fake-scrolling
       const fakeScrollRatio = difference > 0 ? difference / (difference + windowHeight) : 0;
 
-      // give the tall panel room so the next section arrives at the right time
       if (fakeScrollRatio) {
         panel.style.marginBottom = panelHeight * fakeScrollRatio + "px";
       }
@@ -61,7 +55,6 @@ export default function PinnedSections({ children }) {
         },
       });
 
-      // fake-scroll the content up by the overflow before shrinking the panel
       if (fakeScrollRatio) {
         tl.to(inner, {
           yPercent: -100,
@@ -76,26 +69,29 @@ export default function PinnedSections({ children }) {
       );
     });
 
-    // re-measure once everything (fonts/images) has settled
     const refresh = () => ScrollTrigger.refresh();
     window.addEventListener("load", refresh);
+    const timer = window.setTimeout(refresh, 500);
 
     return () => {
       window.removeEventListener("load", refresh);
+      window.clearTimeout(timer);
       ScrollTrigger.getAll().forEach((st) => st.kill());
     };
   }, []);
 
-  // Reduced-motion users get a plain scrolling page
   if (isReducedMotion()) return <>{children}</>;
 
   const total = Children.count(children);
   return (
     <div ref={rootRef} className="pinned-sections">
       {Children.map(children, (child, i) => {
-        // last section stays in normal flow (page end + footer)
         if (i === total - 1) {
-          return <div key={i} className="pinned-last">{child}</div>;
+          return (
+            <div key={i} className="pinned-last">
+              {child}
+            </div>
+          );
         }
         return (
           <section key={i} className="pinned-section" data-index={i}>

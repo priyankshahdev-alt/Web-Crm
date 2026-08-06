@@ -1,0 +1,12 @@
+.pinned-section {
+  position: relative;
+  overflow: hidden;
+}
+.pinned-inner {
+  overflow: hidden;
+  will-change: transform;
+}
+@media (prefers-reduced-motion: reduce) {
+  .pinned-section { overflow: visible; }
+  .pinned-inner { overflow: visible; }
+}

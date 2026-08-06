@@ -122,7 +122,7 @@
 //                   cursor: "pointer",
 //                   transition: "background 0.2s",
 //                 }}
-//                 onMouseOver={e => (e.target.style.background = "#005aa3")}
+//                 onMouseOver={e => (e.target.style.background = "#4059aa")}
 //                 onMouseOut={e => (e.target.style.background = card.btnColor)}
 //               >
 //                 {card.btn}
@@ -255,7 +255,7 @@ const getInvolvedCards = [
     title: "Become a Volunteer",
     desc: "Become a volunteer and make a meaningful difference in the lives of those in need.",
     btn: " Join Now",
-    btnColor: "#2e2c8a",
+    btnColor: "#00236f",
   },
   {
     type: "circle",
@@ -263,13 +263,13 @@ const getInvolvedCards = [
     title: " Support Our Mission",
     desc: " Help us bring hope, support, and opportunities to communities in need",
     btn: " Donate Today",
-    btnColor: "#2e2c8a",
+    btnColor: "#00236f",
   },
 ];
 
 const bannerCards = [
   {
-    bg: "#4a6fa5",
+    bg: "#4059aa",
     img: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=100&h=100&fit=crop&crop=face",
       title: "Sunil Khedekar",
     desc: "Supporting Ashray For Life Foundation has been a truly rewarding experience. Their commitment to helping vulnerable communities is inspiring.",
@@ -295,7 +295,7 @@ const bannerCards = [
     dark: true,
   },
   {
-    bg: "#4a6fa5",
+    bg: "#4059aa",
     img: "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=100&h=100&fit=crop&crop=face",
         title: "Kalpesh Parmar",
     desc: "Ashray For Life Foundation is transforming lives with compassion and care. I am honored to be one of its supporters.",
@@ -361,7 +361,7 @@ export default function PlanCanadaSection() {
     <div
       style={{
         fontFamily: "'Segoe UI', Arial, sans-serif",
-        background: "#eff3ff",
+        background: "#f7f9fb",
         padding: "40px 0",
       }}
     >
@@ -387,7 +387,7 @@ export default function PlanCanadaSection() {
                     height: 210,
                     borderRadius: "50%",
                     objectFit: "cover",
-                    border: "5px solid #4a6fa5",
+                    border: "5px solid #4059aa",
                     marginBottom: 14,
                   }}
                 />
@@ -496,7 +496,7 @@ export default function PlanCanadaSection() {
                     <div className="blog-card__link">
                       <a href={post.link}>
                         <span className="blog-card__link-icon">
-                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#4a6fa5" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#4059aa" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
                         </span>
                         Read More
                       </a>

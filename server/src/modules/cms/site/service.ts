@@ -1,5 +1,6 @@
 import { ApiError } from '../../../utils/ApiError';
 import { siteRepository } from './repository';
+import { siteCache } from './cache';
 
 function entityIds(content: Record<string, unknown> | null | undefined): string[] | undefined {
   const ids = content?.entityIds;
@@ -24,6 +25,9 @@ interface SectionDto {
 
 export const siteService = {
   async getSiteBySlug(slug: string) {
+    const cached = siteCache.get(slug);
+    if (cached !== undefined) return cached;
+
     const org = await siteRepository.findBySlug(slug);
     if (!org) throw ApiError.notFound('Organization not found');
 
@@ -36,36 +40,38 @@ export const siteService = {
       siteRepository.getLocations(org.id),
     ]);
 
-    const pageTree = [];
-    for (const page of pages) {
-      const sections: SectionDto[] = [];
-      for (const section of page.sections) {
-        const content = (section.content as Record<string, unknown> | null) ?? {};
-        const dto: SectionDto = {
-          id: section.id,
-          type: section.type,
-          name: section.name,
-          sortOrder: section.sortOrder,
-          isActive: section.isActive,
-          settings: section.settings,
-          content: section.content,
+    const pageTree = await Promise.all(
+      pages.map(async (page) => {
+        const sections = await Promise.all(
+          page.sections.map(async (section) => {
+            const content = (section.content as Record<string, unknown> | null) ?? {};
+            const dto: SectionDto = {
+              id: section.id,
+              type: section.type,
+              name: section.name,
+              sortOrder: section.sortOrder,
+              isActive: section.isActive,
+              settings: section.settings,
+              content: section.content,
+            };
+            dto.entities = await this.resolveEntities(org.id, section.type, content);
+            return dto;
+          }),
+        );
+        return {
+          id: page.id,
+          slug: page.slug,
+          title: page.title,
+          metaTitle: page.metaTitle,
+          metaDescription: page.metaDescription,
+          template: page.template,
+          isHome: page.isHome,
+          sections,
         };
-        dto.entities = await this.resolveEntities(org.id, section.type, content);
-        sections.push(dto);
-      }
-      pageTree.push({
-        id: page.id,
-        slug: page.slug,
-        title: page.title,
-        metaTitle: page.metaTitle,
-        metaDescription: page.metaDescription,
-        template: page.template,
-        isHome: page.isHome,
-        sections,
-      });
-    }
+      }),
+    );
 
-    return {
+    const result = {
       organization: org,
       settings,
       menus,
@@ -74,6 +80,9 @@ export const siteService = {
       locations,
       pages: pageTree,
     };
+
+    siteCache.set(slug, result);
+    return result;
   },
 
   async resolveEntities(
