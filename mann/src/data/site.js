@@ -184,6 +184,9 @@ export const navMenu = [
 ];
 
 // ---------- FOOTER ----------
+export const footerTagline = "Compassion. Dignity. Action. Working since 2018 for a better tomorrow.";
+export const footerCopyright = "© 2026 MANN CARE FOUNDATION. ALL RIGHTS RESERVED.";
+
 export const footerPrograms = [
   { label: "POSHAN", to: "/projects/poshan" },
   { label: "GYAAN", to: "/projects/gyaan" },
@@ -197,3 +200,10 @@ export const footerLegal = [
   { label: "Privacy Policy", to: "/contact/privacy-policy" },
   { label: "Terms of Service", to: "/contact/privacy-policy" },
 ];
+
+export const footer = {
+  tagline: footerTagline,
+  copyright: footerCopyright,
+  programs: footerPrograms,
+  legal: footerLegal,
+};

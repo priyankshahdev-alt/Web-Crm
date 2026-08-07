@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { footerPrograms, footerLegal } from "../data/site";
 import { useSiteData } from "../api/useSiteData";
 import { img } from "../utils/images";
 
@@ -7,6 +6,9 @@ import { img } from "../utils/images";
 export default function Footer() {
   const { data } = useSiteData();
   const contact = data.contact;
+  const footer = data.footer;
+  const footerPrograms = footer.programs;
+  const footerLegal = footer.legal;
   return (
     <footer className="bg-on-surface text-white py-24">
       <div className="max-w-container-max mx-auto px-8">
@@ -18,7 +20,7 @@ export default function Footer() {
               FOUNDATION.
             </div>
             <p className="text-2xl font-body-lg max-w-xl border-l-2 border-primary pl-8 leading-relaxed opacity-80">
-              Compassion. Dignity. Action. Working since 2018 for a better tomorrow.
+              {footer.tagline}
             </p>
           </div>
 
@@ -71,7 +73,7 @@ export default function Footer() {
 
         <div className="pt-12 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-8">
           <p className="font-label-bold text-[10px] tracking-widest uppercase opacity-50">
-            © 2026 MANN CARE FOUNDATION. ALL RIGHTS RESERVED.
+            {footer.copyright}
           </p>
           <div className="flex flex-wrap gap-x-10 gap-y-4 justify-center">
             {footerLegal.map((l) => (

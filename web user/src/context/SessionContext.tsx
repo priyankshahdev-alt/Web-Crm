@@ -9,6 +9,7 @@ interface SessionContextValue {
   liveMode: boolean
   signIn: (session: WebUserSession) => void
   signOut: () => void
+  switchWebsite: (organizationId: string) => Promise<void>
 }
 
 const SessionContext = createContext<SessionContextValue | null>(null)
@@ -37,6 +38,10 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
         void authService.logout()
         clearSession()
         setSession(null)
+      },
+      switchWebsite: async (organizationId) => {
+        const next = await authService.switchOrganization(organizationId)
+        setSession(next)
       },
     }),
     [session, ready, liveMode],

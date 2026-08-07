@@ -5,6 +5,7 @@ import { recordAudit } from '../../../utils/audit';
 import { mediaService } from '../../media/service';
 import { websiteRepository } from './repository';
 import { getDefaultSections, genericDefaultSections } from './defaults';
+import { siteCache } from '../site/cache';
 import type { PatchSectionInput, PutSectionInput } from './schema';
 
 const IMAGE_EXT = /\.(jpe?g|png|webp|gif|svg|avif|bmp)(\?.*)?$/i;
@@ -306,6 +307,7 @@ export const websiteService = {
     }
 
     await websiteRepository.setPagePublished(org.id, page.id);
+    siteCache.invalidate(slug);
 
     await recordAudit({
       userId: req.user?.id,
@@ -348,6 +350,7 @@ export const websiteService = {
     });
 
     await websiteRepository.setPagePublished(org.id, page.id);
+    siteCache.invalidate(slug);
 
     await recordAudit({
       userId: req.user?.id,
@@ -371,6 +374,7 @@ export const websiteService = {
     if (!section) throw ApiError.notFound(`Section not found: ${sectionType}`);
 
     await websiteRepository.deleteSection(section.id);
+    siteCache.invalidate(slug);
 
     await recordAudit({
       userId: req.user?.id,
@@ -398,6 +402,7 @@ export const websiteService = {
 
     await websiteRepository.reorderSectionsByType(page.id, order);
     await websiteRepository.setPagePublished(org.id, page.id);
+    siteCache.invalidate(slug);
 
     await recordAudit({
       userId: req.user?.id,
@@ -416,6 +421,7 @@ export const websiteService = {
     const org = await websiteRepository.findBySlug(slug);
     if (!org) throw ApiError.notFound('Website not found');
     const result = await websiteRepository.publishAll(org.id, PublishStatus.PUBLISHED);
+    siteCache.invalidate(slug);
 
     await recordAudit({
       userId: req.user?.id,
