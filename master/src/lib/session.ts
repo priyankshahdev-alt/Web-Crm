@@ -1,4 +1,4 @@
-import { clearSession, getUser } from './tokenStorage'
+import { clearSession, getAccessToken, getRefreshToken, getUser } from './tokenStorage'
 
 export interface MasterSession {
   accessToken: string
@@ -12,7 +12,12 @@ export interface MasterSession {
 export function getCurrentMaster(): MasterSession | null {
   const user = getUser()
   if (!user) return null
+  const accessToken = getAccessToken()
+  const refreshToken = getRefreshToken()
+  if (!accessToken || !refreshToken) return null
   return {
+    accessToken,
+    refreshToken,
     username: user.email,
     email: user.email,
     isMaster: user.isMaster,
