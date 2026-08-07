@@ -1,0 +1,344 @@
+{
+  "slug": "home",
+  "title": "Home",
+  "metaTitle": "Being Sevak Foundation | Being the Change, Serving Humanity",
+  "metaDescription": "Being Sevak Charitable Trust is a national non-profit organization serving society through healthcare, education, women empowerment, vocational training and child development.",
+  "template": "default",
+  "sortOrder": 0,
+  "isHome": true,
+  "sections": [
+    {
+      "type": "home-about",
+      "name": "About Section",
+      "sortOrder": 1,
+      "isActive": true,
+      "content": {
+        "heading": "ABOUT BEING SEVAK CHARITABLE TRUST",
+        "visionTitle": "Our Vision",
+        "visionText": "To create a world where visually impaired, underprivileged children and education",
+        "missionTitle": "Our Mission",
+        "missionText": "To empower and uplift the lives of visually impaired individuals livelihood",
+        "readMoreLabel": "Read More",
+        "image": "images/about1.png",
+        "imageAlt": "Being Sevak"
+      }
+    },
+    {
+      "type": "home-marquee",
+      "name": "Circle Marquee",
+      "sortOrder": 2,
+      "isActive": true,
+      "content": {
+        "items": [
+          { "value": "180000+", "label": "Mid-Day Meal", "image": "images/09.png" },
+          { "value": "2500+", "label": "Medical Relief", "image": "images/03.png" },
+          { "value": "40000+", "label": "Eye Care", "image": "images/02.png" },
+          { "value": "375000+", "label": "Sevak Meal", "image": "images/09.png" },
+          { "value": "2500+", "label": "Medical Relief", "image": "images/03.png" },
+          { "value": "650000+", "label": "Annapurna Kit", "image": "images/04.png" },
+          { "value": "195000+", "label": "Vidhya Kit", "image": "images/05.png" },
+          { "value": "125000+", "label": "Mission Aurat", "image": "images/06.png" },
+          { "value": "3500+", "label": "Mission Bezubaan", "image": "images/07.png" },
+          { "value": "1200+", "label": "Digital Education Centre", "image": "images/08.png" }
+        ]
+      }
+    },
+    {
+      "type": "home-impact-stories",
+      "name": "Impact Stories Slider",
+      "sortOrder": 3,
+      "isActive": true,
+      "content": {
+        "heading": "Impact Stories",
+        "description": "Real Change Through Our Work",
+        "items": [
+          { "title": "Rozgaar Booth", "image": "images/i8.jpg", "alt": "Rozgaar Booth", "link": "/impact/rozgaar-booth" },
+          { "title": "Baby Feeding Centre", "image": "images/i6.jpg", "alt": "Baby Feeding Centre", "link": "/impact/baby-feeding" },
+          { "title": "Tricycle To Lifecycle", "image": "images/i7.jpg", "alt": "Tricycle To Lifecycle", "link": "/impact/tricycle" },
+          { "title": "Sewing Machine", "image": "images/i9.png", "alt": "Sewing Machine", "link": "/impact/sewing-machine" },
+          { "title": "Flour Mill distribution", "image": "images/floormill.png", "alt": "Flour Mill distribution", "link": "/impact/flour-mill" },
+          { "title": "Medical Support", "image": "images/i5.jpg", "alt": "Medical Support", "link": "/impact/emergency-medical" },
+          { "title": "Health To Hygiene(H2)", "image": "images/i4.jpg", "alt": "Health To Hygiene(H2)", "link": "/impact/health-to-hygiene" },
+          { "title": "Sanitary Pad Vending Machine", "image": "images/i1.jpg", "alt": "Sanitary Pad Vending Machine", "link": "/impact/sanitary-pad" },
+          { "title": "Dialysis Center", "image": "images/dialysis.png", "alt": "Dialysis Center", "link": "/impact/dialysis-center" },
+          { "title": "Bottle crusher Machine", "image": "images/i2.jpg", "alt": "Bottle crusher Machine", "link": "/impact/bottle-crusher" }
+        ]
+      }
+    },
+    {
+      "type": "home-most-needed",
+      "name": "Most Needed Causes",
+      "sortOrder": 4,
+      "isActive": true,
+      "content": {
+        "heading": "Most Needed",
+        "description": "Every moment matters—people are struggling without basic needs",
+        "items": [
+          { "title": "Mission Bezubaan", "description": "Animal feeding support, paw care services, and Pedigree distribution.", "imageClass": "cause-img-5", "progress": "78%", "funded": "78% Funded", "raised": "₹2,34,000 raised", "link": "/mission-bezubaan" },
+          { "title": "Project H2", "description": "Clean water and washroom facilities for schools.", "imageClass": "cause-img-6", "progress": "55%", "funded": "55% Funded", "raised": "₹1,12,000 raised", "link": "/mission-wellness" },
+          { "title": "Baby Feeding Booth", "description": "Safe and hygienic baby feeding booths for mothers and child care in government hospitals.", "imageClass": "cause-img-7", "progress": "91%", "funded": "91% Funded", "raised": "₹3,08,000 raised", "link": "/mission-aurat" },
+          { "title": "Sevak Niwas", "description": "provides housing, care and dignity to visually impaired individuals and families in need.", "imageClass": "cause-img-8", "progress": "63%", "funded": "63% Funded", "raised": "₹1,74,000 raised", "link": "/sevak-nivash" }
+        ]
+      }
+    },
+    {
+      "type": "home-support-education",
+      "name": "Support Education",
+      "sortOrder": 5,
+      "isActive": true,
+      "content": {
+        "title": "Support Education",
+        "subtitle": "Help Us Transform A Child's Life",
+        "description": "Your support can give education, hope and a brighter future to a needy child.",
+        "price": "For only Rs.1250/- per month, you can keep a child in school.",
+        "buttonLabel": "Give Now",
+        "buttonUrl": "#",
+        "image": "images/supportedu.png"
+      }
+    },
+    {
+      "type": "home-eye-health",
+      "name": "Eye Health Programme",
+      "sortOrder": 6,
+      "isActive": true,
+      "content": {
+        "tag": "Sevak Eye Health Programme",
+        "heading": "Protecting Vision With Compassion",
+        "description": "Being Sevak Charitable Trust believes prevention is better than cure. Through eye screenings, spectacles and cataract surgeries, we help thousands restore better eyesight.",
+        "image": "images/eye.jpeg",
+        "items": [
+          { "value": "9225+", "label": "Eye Screenings" },
+          { "value": "5156+", "label": "People Refracted" },
+          { "value": "4389+", "label": "Spectacles Dispensed" },
+          { "value": "767+", "label": "Cataract Surgeries" }
+        ],
+        "buttonLabel": "Donate Now",
+        "buttonUrl": "/donate"
+      }
+    },
+    {
+      "type": "home-celebrity",
+      "name": "Celebrity Notes",
+      "sortOrder": 7,
+      "isActive": true,
+      "content": {
+        "heading": "Celebrity Notes",
+        "description": "Recognitions and appreciation from notable personalities",
+        "images": [
+          "images/celebritynote/1.jpg",
+          "images/celebritynote/2.jpg",
+          "images/celebritynote/3.jpg",
+          "images/celebritynote/4.jpg"
+        ]
+      }
+    },
+    {
+      "type": "home-metro",
+      "name": "Metro Station Initiative",
+      "sortOrder": 8,
+      "isActive": true,
+      "content": {
+        "heading": "Transforming Metro Stations with Care & Community",
+        "paragraphs": [
+          "In partnership with metro authorities, Being Sevak Charitable Trust is dedicated Is to transformed metro stations into cleaner, safer, and more compassionate public spaces for every commuter. With a vision rooted in social responsibility and community well-being, we strive to make everyday travel more dignified, sustainable, and accessible for all.",
+          "Through impactful urban welfare initiatives, we have installed Bottle Crusher Machines at metro stations to encourage responsible plastic disposal and promote environmental awareness among thousands of daily passengers. By turning waste management into a community movement, we aim to inspire cleaner habits and contribute towards a greener future.",
+          "Understanding the importance of women's health, dignity, and hygiene, we have also introduced Digital Sanitary Pad Vending Machines to provide easy and reliable access to essential hygiene products within metro premises. This initiative supports women commuters with convenience, care, and confidence during their daily journeys.",
+          "Every initiative we undertake is a step towards creating people-centric infrastructure that not only serves commuters but also nurtures social awareness, environmental responsibility, and inclusive urban development. Through compassion-driven action, we continue working towards a future where public spaces reflect care, humanity, and sustainability for every citizen."
+        ],
+        "items": [
+          { "image": "images/bottle.JPG", "label": "Bottle Crusher Machine", "price": "₹1,80,000", "buttonLabel": "DONATE NOW", "link": "/donate" },
+          { "image": "images/sanitary.JPG", "label": "Sanitary Pad Vending Machine", "price": "₹7,000", "buttonLabel": "DONATE NOW", "link": "/donate" }
+        ],
+        "image": "images/bottelmetro.jpeg"
+      }
+    },
+    {
+      "type": "home-promise",
+      "name": "Our Promise",
+      "sortOrder": 9,
+      "isActive": true,
+      "content": {
+        "heading": "OUR PROMISE TO YOU :",
+        "paragraphs": [
+          "Every donation you make helps us serve people with dignity, compassion, and transparency. Our mission is to bring hope, support, and positive change to communities in need through food distribution, healthcare, education, and humanitarian aid.",
+          "We believe in creating impact with honesty and care. Together, we can build a better future and spread kindness to every life we touch."
+        ],
+        "image": "logo11.png"
+      }
+    },
+    {
+      "type": "home-activities",
+      "name": "Our Activities",
+      "sortOrder": 10,
+      "isActive": true,
+      "content": {
+        "heading": "Our Activities",
+        "description": "Your donation reaches those who need it most",
+        "items": [
+          { "image": "images/Hospitalization&HealthCareIMG.jpg", "title": "Hospitalization & Health Care", "description": "Due to the low financial condition, no proper health care" },
+          { "image": "images/NewClothingDistribution.jpg", "title": "New Clothing Distribution", "description": "For someone who cannot even afford daily meals, even a" },
+          { "image": "images/CelebrationofNationalPrograms.jpg", "title": "Celebration of National Program", "description": "To keep the fire of patriotism burning in the hearts" },
+          { "image": "images/ReliefforDialysisPatients.jpg", "title": "Relief for Dialysis Patients", "description": "To add happiness to the lives of dialysis patients, we" },
+          { "image": "images/SwachhBharatAwarenessCampaign.jpg", "title": "Awareness for Swatch Bharat", "description": "In this program we try to motivate people by organizing" },
+          { "image": "images/BLIND.jpg", "title": "Blind Widow Care", "description": "Our organization takes special care for the widow as they" },
+          { "image": "images/AwarenessCampaign.jpg", "title": "Public Awareness", "description": "Road Safety Awareness Campaign - Our main motto of this" },
+          { "image": "images/EducationFacilitiesforBlind&UnderprivilegedChildren.jpg", "title": "Education Facilities for Blind & Underprivileged Children", "description": "Education at grass-root level is the need of the hour!" },
+          { "image": "images/SevakGameswithMembers.jpg", "title": "Sevak Games with Members", "description": "Our organization celebrates \"SEVAK GAMES\" every year for specially abled" },
+          { "image": "images/sevakMemCard.jpg", "title": "Sevak Membership Card", "description": "At present our organization has many registered members. To provide" },
+          { "image": "images/Matrimonial.jpeg", "title": "Matrimonial Program", "description": "As we all know couples are made in heaven and" },
+          { "image": "images/houserepair.jpg", "title": "House Repairing Activity", "description": "Sevak team arranged house repairing activities for our Blind and" },
+          { "image": "images/EyeCamp.jpg", "title": "Eye Camp", "description": "The reality is that most of the blind people in" },
+          { "image": "images/Pandemic-1.jpg", "title": "Pandemic relief support for Covid-19", "description": "Starting April 2020, Being Sevak Charitable Trust has organized programs" },
+          { "image": "images/DryRationKitDistribution.jpg", "title": "Dry Ration Kit", "description": "Providing essential food supplies to needy families." },
+          { "image": "images/Mid-DayMealProgram.jpg", "title": "Mid-Day Meal", "description": "Nutritious meals for underprivileged and visually impaired individuals." },
+          { "image": "images/SNACKSKit.jpg", "title": "Snacks Kit", "description": "Distributing healthy snack kits to underserved communities." },
+          { "image": "images/D.E.C2.jpg", "title": "Digital Education Centre", "description": "Empowering children through free digital learning access." },
+          { "image": "images/stationarykit.jpg", "title": "Stationery Kit Distribution", "description": "Providing school stationery kits to needy students." },
+          { "image": "images/Rozgharnew.jpeg", "title": "Rozgaar Booth", "description": "Creating employment opportunities for financially struggling families." },
+          { "image": "images/activity1.jpg", "title": "Wheelchair & Tricycle Distribution", "description": "Restoring mobility and independence for specially-abled individuals." },
+          { "image": "images/SewingMachineDistribution.jpg", "title": "Sewing Machine Distribution", "description": "Empowering women through self-employment and skill support." },
+          { "image": "images/FlourMillDistribution.jpg", "title": "Floor Mill Distribution", "description": "Supporting sustainable income generation for needy families." },
+          { "image": "images/SchoolRenovationProject.jpg", "title": "School Renovation", "description": "Improving school infrastructure for better student learning." },
+          { "image": "images/FinancialAssistanceProgram.jpg", "title": "Financial assistance Program", "description": "Supporting sustainable income generation for needy families." },
+          { "image": "images/HandwashingStationInstallation.jpg", "title": "Handwashing Station", "description": "Promoting hygiene and cleanliness among school children." },
+          { "image": "images/TreePlantationDrive.jpg", "title": "Tree Plantation", "description": "Creating a greener and healthier environment for future generations." },
+          { "image": "images/bloodDonation.jpg", "title": "Blood Donation camp", "description": "Saving lives through voluntary blood donation and promoting community health awareness." },
+          { "image": "images/BottleCrusherMachineInitiative.jpg", "title": "Bottle Crusher Machine", "description": "Encouraging plastic recycling and environmental sustainability." },
+          { "image": "images/AnimalFeedingCenter.jpg", "title": "Animal Feeding Center", "description": "Providing food and care for stray and abandoned animals." },
+          { "image": "images/sanitarypadkit.jpg", "title": "Sanitary Pad Distribution", "description": "Promoting menstrual hygiene awareness among women and girls." },
+          { "image": "images/HygieneKitDistribution.jpg", "title": "Hygiene Kit Distribution", "description": "Providing essential hygiene kits to underprivileged communities." },
+          { "image": "images/BabyCare.jpg", "title": "Baby Care Center", "description": "Supporting mothers and newborns with safe care facilities." },
+          { "image": "images/Dialysis Centre.png", "title": "Dialysis Centre", "description": "Providing affordable dialysis treatment for needy patients." },
+          { "image": "images/BEACHcleaning.png", "title": "Beach Cleaning Drives", "description": "Organizing cleanliness drives to protect marine environments." }
+        ]
+      }
+    },
+    {
+      "type": "home-latest-updates",
+      "name": "Latest Updates Month Data",
+      "sortOrder": 11,
+      "isActive": true,
+      "content": {
+        "heading": "Latest Updates",
+        "description": "Stay informed with our recent activities and announcements",
+        "items": [
+          { "id": "month-jan", "label": "Jan 2026", "img": "latesUpdates/JAN 2026.jpg" },
+          { "id": "month-feb", "label": "Feb 2026", "img": "latesUpdates/FEB 2026.jpg" },
+          { "id": "month-mar", "label": "Mar 2026", "img": "latesUpdates/MARCH 2026.jpg" },
+          { "id": "month-apr", "label": "Apr 2026", "img": "latesUpdates/APRIL 2026.jpg" },
+          { "id": "month-may", "label": "May 2026", "img": "" }
+        ]
+      }
+    },
+    {
+      "type": "home-basket-missions",
+      "name": "Donation Basket Missions",
+      "sortOrder": 12,
+      "isActive": true,
+      "content": {
+        "items": [
+          { "key": "annapurna", "icon": "🌾", "name": "Mission Annapurna", "desc": "Dry Ration Kits & Mid-Day Meals for Visually Impaired & Underprivileged Individuals", "price": 500 },
+          { "key": "vidhya", "icon": "📚", "name": "Mission Vidhya", "desc": "D.E.C – Digital Education Centre, Free digital education, Writing Pad & Stationery Kit Distribution", "price": 400 },
+          { "key": "aurat", "icon": "👩", "name": "Mission Aurat", "desc": "Sanitary Pad Distribution & Hygiene Kit Distribution for underprivileged women", "price": 300 },
+          { "key": "atma", "icon": "💪", "name": "Mission Atma Nirbhar", "desc": "Rozgaar Booth, Wheelchair & Tricycle Distribution, Sewing Machine & Flour Mill Distribution", "price": 600 },
+          { "key": "bezubaan", "icon": "🐾", "name": "Mission Bezubaan", "desc": "Animal Feeding Center, Biscuit, Milk & Pedigree Distribution for stray animals", "price": 200 }
+        ]
+      }
+    },
+    {
+      "type": "home-featured-projects",
+      "name": "Featured Projects",
+      "sortOrder": 13,
+      "isActive": true,
+      "content": {
+        "heading": "Featured Projects",
+        "description": "Make a direct impact with these urgent campaigns",
+        "items": [
+          {
+            "cards": [
+              { "image": "images/Matrimonial.jpeg", "tag": "EMPOWERMENT", "title": "Blind Vivah", "description": "Empowering visually impaired individuals through skill development and independent living.", "link": "/donate", "button": "Give Now" },
+              { "image": "images/rasaoighar.jpeg", "tag": "FOOD", "title": "Rasoi Ghar", "description": "Providing nutritious meals to underprivileged communities with dignity and care.", "link": "/donate", "button": "Give Now" }
+            ]
+          },
+          {
+            "cards": [
+              { "image": "images/D.E.C.jpg", "tag": "EDUCATION", "title": "Digital Education Centre", "description": "Bridging the digital divide with free computer literacy and online learning access.", "link": "/donate", "button": "Give Now" },
+              { "image": "images/physiotherepy.jpeg", "tag": "HEALTH", "title": "Physiotherapy Centre", "description": "Providing free physiotherapy and rehabilitation services for those in need.", "link": "/donate", "button": "Give Now" }
+            ]
+          },
+          {
+            "cards": [
+              { "image": "images/library.jpeg", "tag": "EDUCATION", "title": "Library Centre", "description": "Establishing community libraries to promote reading and self-learning among underprivileged students.", "link": "/donate", "button": "Give Now" },
+              { "image": "images/womenempoerment.jpeg", "tag": "EMPOWERMENT", "title": "Women Empowerment & Self Employment Unit", "description": "Providing skill training and livelihood opportunities for women to achieve financial independence.", "link": "/donate", "button": "Give Now" }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "type": "home-urgent-appeals",
+      "name": "Urgent Appeals",
+      "sortOrder": 14,
+      "isActive": true,
+      "content": {
+        "heading": "Urgent Appeals",
+        "description": "Every moment matters—people are struggling without basic needs",
+        "items": [
+          { "title": "Mission Annapurna", "description": "Dry Ration Kit , Mid-Day Meal , Snacks kit. Meals With Care.", "imageClass": "cause-img-1", "progress": "78%", "funded": "78% Funded", "raised": "₹2,34,000 raised", "link": "/mission-annapurna" },
+          { "title": "Mission Vidhya", "description": "Digital Education Center, Writing Pad Distribution, and Stationery Kit Distribution.", "imageClass": "cause-img-2", "progress": "55%", "funded": "55% Funded", "raised": "₹1,12,000 raised", "link": "/mission-vidhya" },
+          { "title": "Medical Emergency", "description": "Financial aid for critical treatments, surgeries, and emergency care.", "imageClass": "cause-img-3", "progress": "91%", "funded": "91% Funded", "raised": "₹3,08,000 raised", "link": "/mission-wellness" },
+          { "title": "Mission Atmanirbhar", "description": "Empowering lives through livelihood support and essential assistive tools.", "imageClass": "cause-img-4", "progress": "63%", "funded": "63% Funded", "raised": "₹1,74,000 raised", "link": "/mission-atmanirbhar" }
+        ]
+      }
+    },
+    {
+      "type": "home-partners",
+      "name": "Our Partners",
+      "sortOrder": 15,
+      "isActive": true,
+      "content": {
+        "heading": "OUR PARTNERS",
+        "description": "Together with our partners, we work to bring hope, care, and support to those in need",
+        "images": [
+          "1.jpg", "2.jpg", "3.jpg", "4.jpg", "5.jpg", "6.jpg", "7.jpg", "8.jpg", "9.jpg", "10.jpg",
+          "11.png", "12.png", "13.png", "14.png", "15.png", "16.png", "17.png", "18.png", "19.png", "20.png",
+          "21.png", "22.png", "23.png", "24.png", "25.png"
+        ]
+      }
+    },
+    {
+      "type": "stats",
+      "name": "Impact Stats",
+      "sortOrder": 16,
+      "isActive": true,
+      "content": {
+        "heading": "11 Years of Impact",
+        "description": "Since 2015, Being Sevak has been serving communities across India",
+        "items": [
+          { "value": "20000", "label": "Women Supported" },
+          { "value": "12", "label": "States Connected" },
+          { "value": "4500", "label": "Support Programs" },
+          { "value": "300000", "label": "Supported Children" },
+          { "value": "1000000", "label": "Beneficiaries Reached" }
+        ]
+      }
+    },
+    {
+      "type": "home-testimonials",
+      "name": "Donor Testimonials",
+      "sortOrder": 17,
+      "isActive": true,
+      "content": {
+        "heading": "What Our Donors Says",
+        "description": "Voices of kindness that inspire our mission",
+        "items": [
+          { "quote": "Supporting this NGO has been one of the most meaningful decisions of my life. Seeing smiles on children's faces and families getting support gives real happiness.", "name": "Riya Sharma", "role": "Supportive Donor" },
+          { "quote": "This organization is truly changing lives with honesty and dedication. Every donation reaches people who genuinely need help and care.", "name": "Rahul Mehta", "role": "Monthly Contributor" },
+          { "quote": "I feel proud to be connected with such a beautiful cause. The impact they create in education, food distribution, and healthcare is inspiring.", "name": "Neha Patel", "role": "Kind Heart Donor" },
+          { "quote": "Being part of this mission has been a blessing. The transparency and dedication of Being Sevak is remarkable.", "name": "Amit Verma", "role": "Proud Donor" },
+          { "quote": "I have seen the ground work they do. Every rupee is used wisely for those who truly need it.", "name": "Priya Singh", "role": "Regular Contributor" }
+        ]
+      }
+    }
+  ]
+}

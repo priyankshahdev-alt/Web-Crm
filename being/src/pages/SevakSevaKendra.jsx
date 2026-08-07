@@ -1,6 +1,129 @@
 import { Link } from 'react-router-dom';
+import { usePageContent } from '../hooks/usePageContent';
 
 export default function SevakSevaKendra() {
+  const content = usePageContent('sevak-seva-kendra');
+
+  const taxTitle = content('sevak-seva-kendra-tax', 'title') ?? 'Sevak Seva Kendra';
+
+  const heroTag = content('sevak-seva-kendra-hero', 'tag') ?? 'Sevak Seva Kendra';
+  const heroLine1 = content('sevak-seva-kendra-hero', 'headingLine1') ?? 'Building A Better';
+  const heroHighlight = content('sevak-seva-kendra-hero', 'headingHighlight') ?? 'Community';
+  const heroLine2 = content('sevak-seva-kendra-hero', 'headingLine2') ?? 'Through Care & Development';
+  const heroText =
+    content('sevak-seva-kendra-hero', 'description') ??
+    'Sevak Niwas Kendra by Being Sevak Charitable Trust provides education, digital learning, healthcare, women empowerment and skill development initiatives for building a stronger and self-reliant society.';
+  const heroImage = content('sevak-seva-kendra-hero', 'image') ?? '/images/sevak1.jpeg';
+  const heroStats =
+    content('seva-kendra-hero-stats', 'items') ?? [
+      { value: '5000+', label: 'Lives Empowered' },
+      { value: '50+', label: 'Community Programs' },
+    ];
+
+  const libraryTag = content('seva-kendra-library', 'tag') ?? 'Library';
+  const libraryLine1 = content('seva-kendra-library', 'headingLine1') ?? 'Knowledge & Learning';
+  const libraryHighlight = content('seva-kendra-library', 'headingHighlight') ?? 'For Everyone';
+  const libraryText =
+    content('seva-kendra-library', 'text') ??
+    'Our library provides books, study material and peaceful learning spaces for children, students and community members to encourage education and growth.';
+  const libraryFeatures =
+    content('seva-kendra-library', 'features') ?? [
+      { icon: '📚', title: 'Study Resources', description: 'Books and learning material for students.' },
+      { icon: '📖', title: 'Reading Space', description: 'Quiet and comfortable learning environment.' },
+    ];
+  const libraryImage = content('seva-kendra-library', 'image') ?? '/images/library.jpeg';
+
+  const computerTag = content('seva-kendra-computer-centre', 'tag') ?? 'Sevak Computer Centre';
+  const computerHeading = content('seva-kendra-computer-centre', 'heading') ?? 'Digital Skills For The Future';
+  const computerStats =
+    content('seva-kendra-computer-centre', 'stats') ?? [
+      { value: '3000+', label: 'Students Trained' },
+      { value: '100+', label: 'Computer Workshops' },
+      { value: '50+', label: 'Digital Courses' },
+      { value: '24/7', label: 'Learning Support' },
+    ];
+
+  const aiMiniTitle = content('seva-kendra-ai-centre', 'miniTitle') ?? 'AI & Digital Innovation Centre';
+  const aiHeading = content('seva-kendra-ai-centre', 'heading') ?? 'Technology Driven Learning & Innovation';
+  const aiText1 =
+    content('seva-kendra-ai-centre', 'text1') ??
+    'Our AI & Digital Innovation Centre is focused on empowering students and youth with future-ready technology skills. Through practical learning, workshops, and digital exposure, we help individuals explore the world of Artificial Intelligence, coding, robotics, and innovation.';
+  const aiText2 =
+    content('seva-kendra-ai-centre', 'text2') ??
+    'The centre creates opportunities for creative thinking, digital transformation, and modern skill development while building confidence among young learners for tomorrow\'s technology-driven world.';
+  const aiImage = content('seva-kendra-ai-centre', 'image') ?? '/images/ai2.jpg';
+  const aiFeatures =
+    content('seva-kendra-ai-centre', 'features') ?? [
+      { title: 'AI Learning', description: 'Hands-on practical training' },
+      { title: 'Digital Skills', description: 'Modern technology education' },
+      { title: 'Innovation Lab', description: 'Creative project development' },
+    ];
+
+  const physioTag = content('seva-kendra-physiotherapy', 'tag') ?? 'Physiotherapy Centre';
+  const physioLine1 = content('seva-kendra-physiotherapy', 'headingLine1') ?? 'Care & Recovery Through';
+  const physioHighlight = content('seva-kendra-physiotherapy', 'headingHighlight') ?? 'Therapy Support';
+  const physioText =
+    content('seva-kendra-physiotherapy', 'text') ??
+    'Our Physiotherapy Centre provides rehabilitation and physical therapy support for elderly people, patients and individuals recovering from injuries.';
+  const physioFeatures =
+    content('seva-kendra-physiotherapy', 'features') ?? [
+      { icon: '🧑‍⚕️', title: 'Therapy Sessions', description: 'Professional physiotherapy and rehabilitation support.' },
+      { icon: '❤️', title: 'Patient Care', description: 'Helping patients recover with proper guidance.' },
+      { icon: '💪', title: 'Rehabilitation', description: 'Guided recovery exercises for injury patients.' },
+      { icon: '🏥', title: 'Elderly Care', description: 'Special therapy sessions for senior citizens.' },
+    ];
+  const physioImage = content('seva-kendra-physiotherapy', 'image') ?? '/images/physio.jpeg';
+
+  const womenTag = content('seva-kendra-women-empowerment', 'tag') ?? 'Women Empowerment';
+  const womenHeading = content('seva-kendra-women-empowerment', 'heading') ?? 'Empowering Women Towards Independence';
+  const womenStats =
+    content('seva-kendra-women-empowerment', 'stats') ?? [
+      { value: '2000+', label: 'Women Supported' },
+      { value: '150+', label: 'Skill Workshops' },
+      { value: '100+', label: 'Employment Support' },
+      { value: '50+', label: 'Self Help Groups' },
+    ];
+
+  const rasoiMiniTitle = content('seva-kendra-rasoi-ghar', 'miniTitle') ?? 'Rasoi Ghar';
+  const rasoiHeading = content('seva-kendra-rasoi-ghar', 'heading') ?? 'Serving Nutritious Meals With Love & Care';
+  const rasoiText1 =
+    content('seva-kendra-rasoi-ghar', 'text1') ??
+    'Our Rasoi Ghar initiative is dedicated to providing fresh, hygienic, and nutritious meals to underprivileged families, homeless individuals, senior citizens, and daily wage workers. Through this initiative, we aim to fight hunger and spread humanity across communities.';
+  const rasoiText2 =
+    content('seva-kendra-rasoi-ghar', 'text2') ??
+    'Every meal served represents compassion, dignity, and hope for those in need. With the support of volunteers and donors, we continue creating a positive social impact by ensuring that no one sleeps hungry.';
+  const rasoiImage = content('seva-kendra-rasoi-ghar', 'image') ?? '/images/rasoi.jpeg';
+  const rasoiFeatures =
+    content('seva-kendra-rasoi-ghar', 'features') ?? [
+      { title: '1000+', description: 'Meals Served Every Month' },
+      { title: 'Daily Support', description: 'Helping Families & Workers' },
+      { title: 'Community Care', description: 'Driven By Humanity & Kindness' },
+    ];
+
+  const youthTag = content('seva-kendra-youth-skill', 'tag') ?? 'Youth Skill Development';
+  const youthHeading = content('seva-kendra-youth-skill', 'heading') ?? 'Training & Career Development Programmes';
+  const youthStats =
+    content('seva-kendra-youth-skill', 'stats') ?? [
+      { value: '500+', label: 'Youth Trained' },
+      { value: '80+', label: 'Skill Workshops' },
+      { value: '40+', label: 'Training Sessions' },
+      { value: '100+', label: 'Career Opportunities' },
+    ];
+
+  const donationTag = content('seva-kendra-donation', 'tag') ?? 'Mission Sevak Niwas';
+  const donationTitle = content('seva-kendra-donation', 'title') ?? 'Providing Shelter & Support';
+  const donationText =
+    content('seva-kendra-donation', 'description') ??
+    'Your donation provides housing, care and dignity to visually impaired individuals and families in need.';
+
+  const testimonialHeading = content('seva-kendra-testimonials', 'heading') ?? 'What Our Donors Say';
+  const testimonials =
+    content('seva-kendra-testimonials', 'items') ?? [
+      { quote: 'Being Sevak is doing incredible work for visually impaired and needy families. Proud to support this mission.', name: 'Riya Sharma' },
+      { quote: 'Transparent work, genuine impact, and a wonderful team dedicated to helping people with dignity.', name: 'Rahul Mehta' },
+      { quote: 'Every donation creates real change. Their food distribution drives truly touch lives.', name: 'Anjali Verma' },
+    ];
+
   return (
     <>
       <style>{`
@@ -220,20 +343,18 @@ export default function SevakSevaKendra() {
 
       <div className="sevak-seva-kendra">
         <section className="tax-box">
-          <h1>Sevak Seva Kendra</h1>
+          <h1>{taxTitle}</h1>
         </section>
 
         <section className="hero-section">
           <div className="hero-left">
-            <span className="tag">Sevak Seva Kendra</span>
+            <span className="tag">{heroTag}</span>
             <h1>
-              Building A Better <span>Community</span><br />
-              Through Care & Development
+              {heroLine1} <span>{heroHighlight}</span><br />
+              {heroLine2}
             </h1>
             <p>
-              Sevak Niwas Kendra by Being Sevak Charitable Trust provides education,
-              digital learning, healthcare, women empowerment and skill development
-              initiatives for building a stronger and self-reliant society.
+              {heroText}
             </p>
             <div className="hero-buttons">
               <a href="#donate" className="primary-btn">Support Sevak Niwas</a>
@@ -241,55 +362,48 @@ export default function SevakSevaKendra() {
           </div>
           <div className="hero-right">
             <div className="main-image-card">
-              <img src="/images/sevak1.jpeg" alt="Sevak Niwas Kendra" />
-              <div className="floating-card card1">
-                <h3>5000+</h3>
-                <p>Lives Empowered</p>
-              </div>
-              <div className="floating-card card2">
-                <h3>50+</h3>
-                <p>Community Programs</p>
-              </div>
+              <img src={heroImage} alt="Sevak Niwas Kendra" />
+              {heroStats.map((stat, i) => (
+                <div className={`floating-card card${i + 1}`} key={i}>
+                  <h3>{stat.value}</h3>
+                  <p>{stat.label}</p>
+                </div>
+              ))}
             </div>
           </div>
         </section>
 
         <section className="about-section" id="about">
           <div className="about-image">
-            <img src="/images/library.jpeg" alt="Library" />
+            <img src={libraryImage} alt="Library" />
           </div>
           <div className="about-content">
-            <span className="mini-title">Library</span>
-            <h2>Knowledge & Learning <span>For Everyone</span></h2>
+            <span className="mini-title">{libraryTag}</span>
+            <h2>{libraryLine1} <span>{libraryHighlight}</span></h2>
             <p>
-              Our library provides books, study material and peaceful learning spaces
-              for children, students and community members to encourage education and growth.
+              {libraryText}
             </p>
             <div className="feature-boxes">
-              <div className="feature-card">
-                <div className="icon">📚</div>
-                <h4>Study Resources</h4>
-                <p>Books and learning material for students.</p>
-              </div>
-              <div className="feature-card">
-                <div className="icon">📖</div>
-                <h4>Reading Space</h4>
-                <p>Quiet and comfortable learning environment.</p>
-              </div>
+              {libraryFeatures.map((f, i) => (
+                <div className="feature-card" key={i}>
+                  <div className="icon">{f.icon}</div>
+                  <h4>{f.title}</h4>
+                  <p>{f.description}</p>
+                </div>
+              ))}
             </div>
           </div>
         </section>
 
         <section className="impact-section" id="impact">
           <div className="section-heading">
-            <span>Sevak Computer Centre</span>
-            <h2>Digital Skills For The Future</h2>
+            <span>{computerTag}</span>
+            <h2>{computerHeading}</h2>
           </div>
           <div className="impact-grid">
-            <div className="impact-card"><h3>3000+</h3><p>Students Trained</p></div>
-            <div className="impact-card"><h3>100+</h3><p>Computer Workshops</p></div>
-            <div className="impact-card"><h3>50+</h3><p>Digital Courses</p></div>
-            <div className="impact-card"><h3>24/7</h3><p>Learning Support</p></div>
+            {computerStats.map((s, i) => (
+              <div className="impact-card" key={i}><h3>{s.value}</h3><p>{s.label}</p></div>
+            ))}
           </div>
         </section>
 
@@ -297,25 +411,22 @@ export default function SevakSevaKendra() {
           <div className="techvision-container">
             <div className="techvision-image-side">
               <div className="techvision-image-box">
-                <img src="/images/ai2.jpg" alt="AI Digital Centre" />
+                <img src={aiImage} alt="AI Digital Centre" />
               </div>
             </div>
             <div className="techvision-content-side">
-              <span className="techvision-mini-title">AI & Digital Innovation Centre</span>
-              <h3>Technology Driven Learning & Innovation</h3>
+              <span className="techvision-mini-title">{aiMiniTitle}</span>
+              <h3>{aiHeading}</h3>
               <p>
-                Our AI & Digital Innovation Centre is focused on empowering students and youth with future-ready technology
-                skills. Through practical learning, workshops, and digital exposure, we help individuals explore the world of
-                Artificial Intelligence, coding, robotics, and innovation.
+                {aiText1}
               </p>
               <p>
-                The centre creates opportunities for creative thinking, digital transformation, and modern skill development
-                while building confidence among young learners for tomorrow's technology-driven world.
+                {aiText2}
               </p>
               <div className="techvision-feature-grid">
-                <div className="techvision-feature-card"><h3>AI Learning</h3><span>Hands-on practical training</span></div>
-                <div className="techvision-feature-card"><h3>Digital Skills</h3><span>Modern technology education</span></div>
-                <div className="techvision-feature-card"><h3>Innovation Lab</h3><span>Creative project development</span></div>
+                {aiFeatures.map((f, i) => (
+                  <div className="techvision-feature-card" key={i}><h3>{f.title}</h3><span>{f.description}</span></div>
+                ))}
               </div>
             </div>
           </div>
@@ -323,50 +434,35 @@ export default function SevakSevaKendra() {
 
         <section className="about-section">
           <div className="about-content">
-            <span className="mini-title">Physiotherapy Centre</span>
-            <h2>Care & Recovery Through <span>Therapy Support</span></h2>
+            <span className="mini-title">{physioTag}</span>
+            <h2>{physioLine1} <span>{physioHighlight}</span></h2>
             <p>
-              Our Physiotherapy Centre provides rehabilitation and physical therapy
-              support for elderly people, patients and individuals recovering from injuries.
+              {physioText}
             </p>
             <div className="feature-boxes">
-              <div className="feature-card">
-                <div className="icon">🧑‍⚕️</div>
-                <h4>Therapy Sessions</h4>
-                <p>Professional physiotherapy and rehabilitation support.</p>
-              </div>
-              <div className="feature-card">
-                <div className="icon">❤️</div>
-                <h4>Patient Care</h4>
-                <p>Helping patients recover with proper guidance.</p>
-              </div>
-              <div className="feature-card">
-                <div className="icon">💪</div>
-                <h4>Rehabilitation</h4>
-                <p>Guided recovery exercises for injury patients.</p>
-              </div>
-              <div className="feature-card">
-                <div className="icon">🏥</div>
-                <h4>Elderly Care</h4>
-                <p>Special therapy sessions for senior citizens.</p>
-              </div>
+              {physioFeatures.map((f, i) => (
+                <div className="feature-card" key={i}>
+                  <div className="icon">{f.icon}</div>
+                  <h4>{f.title}</h4>
+                  <p>{f.description}</p>
+                </div>
+              ))}
             </div>
           </div>
           <div className="about-image">
-            <img src="/images/physio.jpeg" alt="Physiotherapy" />
+            <img src={physioImage} alt="Physiotherapy" />
           </div>
         </section>
 
         <section className="impact-section">
           <div className="section-heading">
-            <span>Women Empowerment</span>
-            <h2>Empowering Women Towards Independence</h2>
+            <span>{womenTag}</span>
+            <h2>{womenHeading}</h2>
           </div>
           <div className="impact-grid">
-            <div className="impact-card"><h3>2000+</h3><p>Women Supported</p></div>
-            <div className="impact-card"><h3>150+</h3><p>Skill Workshops</p></div>
-            <div className="impact-card"><h3>100+</h3><p>Employment Support</p></div>
-            <div className="impact-card"><h3>50+</h3><p>Self Help Groups</p></div>
+            {womenStats.map((s, i) => (
+              <div className="impact-card" key={i}><h3>{s.value}</h3><p>{s.label}</p></div>
+            ))}
           </div>
         </section>
 
@@ -374,25 +470,22 @@ export default function SevakSevaKendra() {
           <div className="techvision-container">
             <div className="techvision-image-side">
               <div className="techvision-image-box">
-                <img src="/images/rasoi.jpeg" alt="Rasoi Ghar" />
+                <img src={rasoiImage} alt="Rasoi Ghar" />
               </div>
             </div>
             <div className="techvision-content-side">
-              <span className="techvision-mini-title">Rasoi Ghar</span>
-              <h3>Serving Nutritious Meals With Love & Care</h3>
+              <span className="techvision-mini-title">{rasoiMiniTitle}</span>
+              <h3>{rasoiHeading}</h3>
               <p>
-                Our Rasoi Ghar initiative is dedicated to providing fresh, hygienic, and nutritious meals to underprivileged
-                families, homeless individuals, senior citizens, and daily wage workers. Through this initiative, we aim to
-                fight hunger and spread humanity across communities.
+                {rasoiText1}
               </p>
               <p>
-                Every meal served represents compassion, dignity, and hope for those in need. With the support of volunteers
-                and donors, we continue creating a positive social impact by ensuring that no one sleeps hungry.
+                {rasoiText2}
               </p>
               <div className="techvision-feature-grid">
-                <div className="techvision-feature-card"><h3>1000+</h3><span>Meals Served Every Month</span></div>
-                <div className="techvision-feature-card"><h3>Daily Support</h3><span>Helping Families & Workers</span></div>
-                <div className="techvision-feature-card"><h3>Community Care</h3><span>Driven By Humanity & Kindness</span></div>
+                {rasoiFeatures.map((f, i) => (
+                  <div className="techvision-feature-card" key={i}><h3>{f.title}</h3><span>{f.description}</span></div>
+                ))}
               </div>
               <Link to="/donate" className="techvision-btn">Support The Mission</Link>
             </div>
@@ -401,24 +494,23 @@ export default function SevakSevaKendra() {
 
         <section className="impact-section">
           <div className="section-heading">
-            <span>Youth Skill Development</span>
-            <h2>Training & Career Development Programmes</h2>
+            <span>{youthTag}</span>
+            <h2>{youthHeading}</h2>
           </div>
           <div className="impact-grid">
-            <div className="impact-card"><h3>500+</h3><p>Youth Trained</p></div>
-            <div className="impact-card"><h3>80+</h3><p>Skill Workshops</p></div>
-            <div className="impact-card"><h3>40+</h3><p>Training Sessions</p></div>
-            <div className="impact-card"><h3>100+</h3><p>Career Opportunities</p></div>
+            {youthStats.map((s, i) => (
+              <div className="impact-card" key={i}><h3>{s.value}</h3><p>{s.label}</p></div>
+            ))}
           </div>
         </section>
 
         <section className="sevak-donation" id="donate">
           <div className="sevak-donation-content">
             <div className="sevak-left">
-              <span className="sevak-tag">Mission Sevak Niwas</span>
-              <h2 className="sevak-title">Providing Shelter & Support</h2>
+              <span className="sevak-tag">{donationTag}</span>
+              <h2 className="sevak-title">{donationTitle}</h2>
               <p className="sevak-desc">
-                Your donation provides housing, care and dignity to visually impaired individuals and families in need.
+                {donationText}
               </p>
             </div>
             <div className="sevak-right">
@@ -429,21 +521,15 @@ export default function SevakSevaKendra() {
 
         <section className="testimonial-section">
           <div className="section-header">
-            <h2>What Our Donors Say</h2>
+            <h2>{testimonialHeading}</h2>
           </div>
           <div className="testimonial-grid">
-            <div className="testimonial-card">
-              <p>Being Sevak is doing incredible work for visually impaired and needy families. Proud to support this mission.</p>
-              <h4>Riya Sharma</h4>
-            </div>
-            <div className="testimonial-card">
-              <p>Transparent work, genuine impact, and a wonderful team dedicated to helping people with dignity.</p>
-              <h4>Rahul Mehta</h4>
-            </div>
-            <div className="testimonial-card">
-              <p>Every donation creates real change. Their food distribution drives truly touch lives.</p>
-              <h4>Anjali Verma</h4>
-            </div>
+            {testimonials.map((t, i) => (
+              <div className="testimonial-card" key={i}>
+                <p>{t.quote}</p>
+                <h4>{t.name}</h4>
+              </div>
+            ))}
           </div>
         </section>
 

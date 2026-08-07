@@ -1,0 +1,89 @@
+{
+  "slug": "management",
+  "title": "Our Management",
+  "metaTitle": "Our Management | Being Sevak Foundation",
+  "metaDescription": "Meet the management team of Being Sevak Charitable Trust including the founder chairman and dedicated leaders working towards social welfare and inclusive growth.",
+  "template": "default",
+  "sortOrder": 2,
+  "isHome": false,
+  "sections": [
+    {
+      "type": "management-title",
+      "name": "Page Title",
+      "sortOrder": 1,
+      "isActive": true,
+      "content": {
+        "heading": "Our Management"
+      }
+    },
+    {
+      "type": "management-founder",
+      "name": "Founder Section",
+      "sortOrder": 2,
+      "isActive": true,
+      "content": {
+        "name": "Priyank Shah",
+        "role": "Founder Chairman – BEING SEVAK CHARITABLE TRUST",
+        "image": "/images/managesir.png",
+        "left": [
+          { "icon": "🏅", "text": "Being Sevak Charitable Trust (BSCT) is driven by a vision of creating meaningful social impact through healthcare, education, environmental sustainability, women empowerment, and community welfare initiatives across India." },
+          { "icon": "❝", "text": "Our mission is to serve humanity with compassion, dignity, and purpose, ensuring that no individual is left behind." }
+        ],
+        "right": [
+          { "icon": "👁️", "text": "Guided by compassion and social responsibility, BSCT envisions an inclusive future where every individual can thrive with dignity, equal opportunities, and access to essential resources." },
+          { "icon": "🏆", "text": "Through impactful projects in healthcare, education, women empowerment, environmental conservation, and humanitarian assistance, Being Sevak Charitable Trust continues to drive meaningful change and inspire communities nationwide." }
+        ]
+      }
+    },
+    {
+      "type": "management-team",
+      "name": "Management Team",
+      "sortOrder": 3,
+      "isActive": true,
+      "content": {
+        "heading": "Management Team",
+        "subtitle": "Meet the dedicated leaders of Being Sevak Charitable Trust who are passionately working towards social welfare, empowerment, and inclusive growth for society.",
+        "members": [
+          { "image": "/images/priyank shah.jpeg", "name": "Priyank Shah", "role": "Founder & Chairperson" },
+          { "image": "/images/swethashah.jpeg", "name": "Shweta Shah", "role": "President" },
+          { "image": "/images/riddhi.jpg", "name": "Riddhi Patel", "role": "Treasurer" },
+          { "image": "/images/Mahendrapal.jpeg", "name": "Mahendra Pal", "role": "Core Team Member" },
+          { "image": "/images/ashutoshpawar.jpeg", "name": "Ashutosh Pawar", "role": "Core Team Member" },
+          { "image": "/images/vaishalisawant.jpeg", "name": "Vaishali Sawant", "role": "Core Team Member" },
+          { "image": "/images/SakshiSingh.jpeg", "name": "Sakshi Singh", "role": "Core Team Member" }
+        ]
+      }
+    },
+    {
+      "type": "management-leadership",
+      "name": "Leadership Values",
+      "sortOrder": 4,
+      "isActive": true,
+      "content": {
+        "tag": "OUR LEADERSHIP",
+        "heading": "Meet Our Guiding Force",
+        "items": [
+          { "icon": "fa-users", "title": "Visionary Leadership", "desc": "Guided by experienced trustees with decades of social welfare expertise." },
+          { "icon": "fa-handshake", "title": "Integrity", "desc": "Transparent governance and ethical practices in all our operations." },
+          { "icon": "fa-lightbulb", "title": "Innovation", "desc": "Modern approaches to age-old social challenges for maximum impact." },
+          { "icon": "fa-heart", "title": "Dedication", "desc": "Passionate team committed to uplifting communities across India." }
+        ]
+      }
+    },
+    {
+      "type": "management-testimonials",
+      "name": "Testimonials",
+      "sortOrder": 5,
+      "isActive": true,
+      "content": {
+        "tag": "TESTIMONIALS",
+        "heading": "What Partners Say",
+        "items": [
+          { "quote": "Under the leadership of Priyank Shah and Shweta Shah, BSCT has grown into a trusted organization serving thousands across India.", "name": "Rahul Verma", "role": "NGO Partner" },
+          { "quote": "The management team's transparency and dedication inspire confidence in every donor and volunteer.", "name": "Dr. Meera Kulkarni", "role": "Social Worker" },
+          { "quote": "What sets BSCT apart is the genuine compassion its leaders bring to every initiative.", "name": "Vikram Joshi", "role": "Corporate Sponsor" }
+        ]
+      }
+    }
+  ]
+}

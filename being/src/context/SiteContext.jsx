@@ -26,8 +26,12 @@ export function SiteProvider({ children }) {
   const value = useMemo(() => {
     const settings = site?.settings ?? null;
     const pages = site?.pages ?? [];
+    const menus = site?.menus ?? [];
 
     const getPage = (slug) => pages.find((p) => p.slug === slug) || null;
+
+    const getMenu = (location) =>
+      menus.find((m) => m.location === location && (m.items || []).length > 0) || null;
 
     const getSection = (pageSlug, type) => {
       const page = getPage(pageSlug);
@@ -69,6 +73,7 @@ export function SiteProvider({ children }) {
         settings && settings[key] != null ? settings[key] : fallback,
       getPage,
       getSection,
+      getMenu,
       getSlides,
       getStats,
       getLocations,

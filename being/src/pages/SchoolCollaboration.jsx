@@ -1,6 +1,46 @@
 import { Link } from 'react-router-dom';
+import { usePageContent } from '../hooks/usePageContent';
 
 export default function SchoolCollaboration() {
+  const content = usePageContent('school-collaboration');
+
+  const heading = content('school-heading', 'heading') ?? 'School & Institute';
+  const headingSpan = content('school-heading', 'headingSpan') ?? 'Collaboration';
+  const text1 =
+    content('school-heading', 'text1') ??
+    'At Being Sevak Charitable Trust, we believe that children are not only the future of our nation but also powerful agents of positive change within society.';
+  const text2 =
+    content('school-heading', 'text2') ??
+    'Instilling compassion, empathy, and social responsibility at an early age helps shape responsible individuals and future leaders.';
+  const jogTitle = content('school-jog', 'title') ?? 'Joy Of Giving (JOG) Program';
+  const jogText =
+    content('school-jog', 'text') ??
+    'Launched in 2022, the JOG Program is a unique student engagement initiative designed to create awareness about social inequalities and encourage kindness, gratitude, and community participation among students.';
+  const text3 =
+    content('school-engagement', 'text1') ??
+    'Through interactive sessions, awareness activities, and meaningful engagements conducted in schools and educational institutions, the JOG Program helps students understand the realities faced by underprivileged communities.';
+  const text4 =
+    content('school-engagement', 'text2') ??
+    'The initiative encourages children to value their privileges, develop empathy for others, and contribute positively towards society.';
+  const points =
+    content('school-points', 'items') ?? [
+      { number: '01', title: 'Empathy Building', description: 'Helping students understand social realities and humanity.' },
+      { number: '02', title: 'Community Participation', description: 'Encouraging kindness, gratitude, and the spirit of giving.' },
+      { number: '03', title: 'Future Leaders', description: 'Nurturing socially conscious and responsible citizens.' },
+    ];
+  const bottomText =
+    content('school-bottom', 'text') ??
+    'BSCT collaborates with schools, colleges, and educational institutes to conduct impactful sessions and activities that inspire students to embrace humanity, kindness, and social responsibility.';
+  const bottomHeading =
+    content('school-bottom', 'heading') ??
+    'Together, let us inspire the next generation to become compassionate and socially aware citizens.';
+  const cards =
+    content('school-cards', 'items') ?? [
+      { title: 'Awareness Sessions', description: 'Interactive activities that create awareness about social inequalities and community welfare.' },
+      { title: 'Student Engagement', description: 'Meaningful participation programs that encourage kindness and empathy among students.' },
+      { title: 'Social Responsibility', description: 'Inspiring children to become responsible citizens dedicated to building a better society.' },
+    ];
+
   return (
     <>
       <style>{`
@@ -185,83 +225,71 @@ export default function SchoolCollaboration() {
         <div className="school-collab-container">
           <div className="school-collab-left">
             <h2>
-              School & Institute <span>Collaboration</span>
+              {heading} <span>{headingSpan}</span>
             </h2>
 
             <p>
-              At Being Sevak Charitable Trust, we believe that children are not only the future of our nation but also powerful agents of positive change within society.
+              {text1}
             </p>
 
             <p>
-              Instilling compassion, empathy, and social responsibility at an early age helps shape responsible individuals and future leaders.
+              {text2}
             </p>
 
             <div className="school-highlight-box">
-              <h3>Joy Of Giving (JOG) Program</h3>
+              <h3>{jogTitle}</h3>
               <p>
-                Launched in 2022, the JOG Program is a unique student engagement initiative designed to create awareness about social inequalities and encourage kindness, gratitude, and community participation among students.
+                {jogText}
               </p>
             </div>
 
             <p>
-              Through interactive sessions, awareness activities, and meaningful engagements conducted in schools and educational institutions, the JOG Program helps students understand the realities faced by underprivileged communities.
+              {text3}
             </p>
 
             <p>
-              The initiative encourages children to value their privileges, develop empathy for others, and contribute positively towards society.
+              {text4}
             </p>
 
             <div className="school-points">
-              <div className="school-point">
-                <div className="school-icon">01</div>
-                <div>
-                  <h4>Empathy Building</h4>
-                  <p>Helping students understand social realities and humanity.</p>
+              {points.map((point, i) => (
+                <div className="school-point" key={i}>
+                  <div className="school-icon">{point.number}</div>
+                  <div>
+                    <h4>{point.title}</h4>
+                    <p>{point.description}</p>
+                  </div>
                 </div>
-              </div>
-              <div className="school-point">
-                <div className="school-icon">02</div>
-                <div>
-                  <h4>Community Participation</h4>
-                  <p>Encouraging kindness, gratitude, and the spirit of giving.</p>
-                </div>
-              </div>
-              <div className="school-point">
-                <div className="school-icon">03</div>
-                <div>
-                  <h4>Future Leaders</h4>
-                  <p>Nurturing socially conscious and responsible citizens.</p>
-                </div>
-              </div>
+              ))}
             </div>
 
             <div className="school-bottom-box">
               <p>
-                BSCT collaborates with schools, colleges, and educational institutes to conduct impactful sessions and activities that inspire students to embrace humanity, kindness, and social responsibility.
+                {bottomText}
               </p>
               <h4>
-                Together, let us inspire the next generation to become compassionate and socially aware citizens.
+                {bottomHeading}
               </h4>
             </div>
           </div>
 
           <div className="school-collab-right">
             <div className="school-card school-card-one">
-              <h3>Awareness Sessions</h3>
+              <h3>{cards[0].title}</h3>
               <p>
-                Interactive activities that create awareness about social inequalities and community welfare.
+                {cards[0].description}
               </p>
             </div>
             <div className="school-card school-card-two">
-              <h3>Student Engagement</h3>
+              <h3>{cards[1].title}</h3>
               <p>
-                Meaningful participation programs that encourage kindness and empathy among students.
+                {cards[1].description}
               </p>
             </div>
             <div className="school-card school-card-three">
-              <h3>Social Responsibility</h3>
+              <h3>{cards[2].title}</h3>
               <p>
-                Inspiring children to become responsible citizens dedicated to building a better society.
+                {cards[2].description}
               </p>
             </div>
           </div>

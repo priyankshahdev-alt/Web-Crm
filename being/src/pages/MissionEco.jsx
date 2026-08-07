@@ -1,8 +1,96 @@
 import { Link } from 'react-router-dom';
 import { useRef, useEffect } from 'react';
+import { usePageContent } from '../hooks/usePageContent';
 
 export default function MissionEco() {
   const iframeRef = useRef(null);
+
+  const content = usePageContent('mission-eco');
+
+  const taxTitle = content('mission-eco-tax', 'title') ?? 'Mission Eco-Warriors';
+
+  const heroTag = content('mission-eco-hero', 'tag') ?? 'Mission Eco Warriors';
+  const heroHeading = content('mission-eco-hero', 'heading') ?? 'Turning Plastic Bottles Into A Cleaner Future';
+  const heroText =
+    content('mission-eco-hero', 'description') ??
+    'Mission Eco Warriors by Being Sevak promotes cleanliness and recycling by installing Bottle Crusher Machines at metro stations and public places to reduce plastic waste and protect the environment.';
+  const heroImage = content('mission-eco-hero', 'image') ?? '/images/eco main..jpg';
+
+  const impactStats =
+    content('eco-impact', 'stats') ?? [
+      { value: '25+', label: 'Machines Installed' },
+      { value: '10K+', label: 'Bottles Recycled' },
+      { value: '15+', label: 'Metro Stations' },
+    ];
+
+  const workHeading = content('eco-activities', 'heading') ?? 'Our Activities';
+  const workImages =
+    content('eco-activities', 'images') ?? [
+      { src: '/images/eco5.jpeg', alt: '' },
+      { src: '/images/eco3.jpeg', alt: '' },
+      { src: '/images/eco2.jpeg', alt: '' },
+      { src: '/images/eco7.jpeg', alt: '' },
+      { src: '/images/eco6.jpeg', alt: '' },
+      { src: '/images/eco4.jpeg', alt: '' },
+    ];
+
+  const treeHeading = content('eco-tree-plantation', 'heading') ?? 'Tree Plantation';
+  const treeText1 =
+    content('eco-tree-plantation', 'text1') ??
+    'Our Tree Plantation initiative is dedicated to creating a greener, healthier, and more sustainable future for communities. Through collective efforts, we plant trees in schools, public spaces, villages, and urban areas to improve air quality and protect nature.';
+  const treeText2 =
+    content('eco-tree-plantation', 'text2') ??
+    'Every tree planted is a step toward reducing pollution, conserving biodiversity, and spreading environmental awareness among people. Together, we aim to inspire communities to care for the planet and build a cleaner tomorrow.';
+  const treeMainImage = content('eco-tree-plantation', 'image') ?? '/images/tree1.jpg';
+  const treeSmallImages =
+    content('eco-tree-plantation', 'images') ?? [
+      { src: '/images/tree2.jpg', alt: '' },
+      { src: '/images/tree3.jpg', alt: '' },
+      { src: '/images/tree4.jpg', alt: '' },
+    ];
+  const treeStats =
+    content('eco-tree-plantation', 'stats') ?? [
+      { value: '500+', label: 'Trees Planted' },
+      { value: '20+', label: 'Volunteer Teams' },
+      { value: '15+', label: 'Communities Reached' },
+    ];
+
+  const beachTag = content('eco-beach-sevak', 'tag') ?? 'Beach Sevak Initiative';
+  const beachHeading = content('eco-beach-sevak', 'heading') ?? 'Clean Beaches, Safe Oceans, Better Future';
+  const beachText =
+    content('eco-beach-sevak', 'description') ??
+    'Beach Sevak by Being Sevak focuses on cleaning coastal areas, protecting marine life and spreading awareness about ocean waste.';
+  const beachImage = content('eco-beach-sevak', 'image') ?? '/images/beach1.png';
+
+  const beachImpactStats =
+    content('eco-beach-impact', 'stats') ?? [
+      { value: '120+', label: 'Clean Drives' },
+      { value: '5T+', label: 'Waste Removed' },
+      { value: '500+', label: 'Volunteers' },
+    ];
+
+  const beachWorkHeading = content('eco-beach-activities', 'heading') ?? 'Our Activities';
+  const beachWorkImages =
+    content('eco-beach-activities', 'images') ?? [
+      { src: '/images/beach2.jpeg', alt: '' },
+      { src: '/images/beach3.jpeg', alt: '' },
+      { src: '/images/beach4.jpeg', alt: '' },
+    ];
+
+  const donationTag = content('eco-donation', 'tag') ?? 'Mission Eco Warriors';
+  const donationUrl = content('eco-donation', 'donationUrl') ?? '/donations/donation-ecowarriors.html';
+  const donationTitle = content('eco-donation', 'title') ?? 'Fight Today for a Greener Tomorrow';
+  const donationText =
+    content('eco-donation', 'description') ??
+    'Join our Eco Warriors movement to protect nature through tree plantation, waste management, recycling awareness, and climate action for a sustainable future.';
+
+  const testimonialHeading = content('eco-testimonials', 'heading') ?? 'What Our Donors Say';
+  const testimonials =
+    content('eco-testimonials', 'items') ?? [
+      { quote: '"Being Sevak is doing incredible work for visually impaired and needy families. Proud to support this mission."', name: 'Riya Sharma' },
+      { quote: '"Transparent work, genuine impact, and a wonderful team dedicated to helping people with dignity."', name: 'Rahul Mehta' },
+      { quote: '"Every donation creates real change. Their food distribution drives truly touch lives."', name: 'Anjali Verma' },
+    ];
 
   useEffect(() => {
     function handleMessage(e) {
@@ -181,25 +269,23 @@ export default function MissionEco() {
 
       <div className="mission-eco">
         <section className="tax-box">
-          <h1>Mission Eco-Warriors</h1>
+          <h1>{taxTitle}</h1>
         </section>
 
         <section className="hero">
           <div className="hero-content">
             <div className="hero-left">
-              <span className="tag">Mission Eco Warriors</span>
-              <h1><b>Turning Plastic Bottles Into A Cleaner Future</b></h1>
+              <span className="tag">{heroTag}</span>
+              <h1><b>{heroHeading}</b></h1>
               <p>
-                Mission Eco Warriors by Being Sevak promotes cleanliness and recycling
-                by installing Bottle Crusher Machines at metro stations and public places
-                to reduce plastic waste and protect the environment.
+                {heroText}
               </p>
               <div className="btns">
                 <a href="#donate" className="btn primary">Support Mission</a>
               </div>
             </div>
             <div className="hero-right">
-              <img src="/images/eco main..jpg" alt="Eco Warriors" />
+              <img src={heroImage} alt="Eco Warriors" />
             </div>
           </div>
         </section>
@@ -207,7 +293,7 @@ export default function MissionEco() {
         <div id="donate" style={{ width: '100%', background: '#f4f7fb', padding: '0', overflow: 'hidden', marginBottom: '0', position: 'relative', zIndex: 10, isolation: 'isolate' }}>
           <iframe
             ref={iframeRef}
-            src="/donations/donation-ecowarriors.html"
+            src={donationUrl}
             style={{ width: '100%', height: '650px', border: 'none', display: 'block', marginBottom: '-1px' }}
             title="Donate to Mission Eco Warriors"
           />
@@ -215,21 +301,18 @@ export default function MissionEco() {
 
         <section className="impact">
           <div className="box">
-            <div className="card"><h2>25+</h2><p>Machines Installed</p></div>
-            <div className="card"><h2>10K+</h2><p>Bottles Recycled</p></div>
-            <div className="card"><h2>15+</h2><p>Metro Stations</p></div>
+            {impactStats.map((s, i) => (
+              <div className="card" key={i}><h2>{s.value}</h2><p>{s.label}</p></div>
+            ))}
           </div>
         </section>
 
         <section className="work">
-          <h2>Our Activities</h2>
+          <h2>{workHeading}</h2>
           <div className="grid">
-            <div className="item"><img src="/images/eco5.jpeg" alt="" /></div>
-            <div className="item"><img src="/images/eco3.jpeg" alt="" /></div>
-            <div className="item"><img src="/images/eco2.jpeg" alt="" /></div>
-            <div className="item"><img src="/images/eco7.jpeg" alt="" /></div>
-            <div className="item"><img src="/images/eco6.jpeg" alt="" /></div>
-            <div className="item"><img src="/images/eco4.jpeg" alt="" /></div>
+            {workImages.map((img, i) => (
+              <div className="item" key={i}><img src={img.src} alt={img.alt} /></div>
+            ))}
           </div>
         </section>
 
@@ -237,29 +320,26 @@ export default function MissionEco() {
           <div className="green-earth-container">
             <div className="green-earth-gallery">
               <div className="green-earth-main-img">
-                <img src="/images/tree1.jpg" alt="" />
+                <img src={treeMainImage} alt="" />
               </div>
               <div className="green-earth-bottom-grid">
-                <div className="green-earth-small-card"><img src="/images/tree2.jpg" alt="" /></div>
-                <div className="green-earth-small-card"><img src="/images/tree3.jpg" alt="" /></div>
-                <div className="green-earth-small-card"><img src="/images/tree4.jpg" alt="" /></div>
+                {treeSmallImages.map((img, i) => (
+                  <div className="green-earth-small-card" key={i}><img src={img.src} alt={img.alt} /></div>
+                ))}
               </div>
             </div>
             <div className="green-earth-content">
-              <h2>Tree Plantation</h2>
+              <h2>{treeHeading}</h2>
               <p>
-                Our Tree Plantation initiative is dedicated to creating a greener, healthier, and more sustainable future for
-                communities. Through collective efforts, we plant trees in schools, public spaces, villages, and urban areas
-                to improve air quality and protect nature.
+                {treeText1}
               </p>
               <p>
-                Every tree planted is a step toward reducing pollution, conserving biodiversity, and spreading environmental
-                awareness among people. Together, we aim to inspire communities to care for the planet and build a cleaner tomorrow.
+                {treeText2}
               </p>
               <div className="green-earth-points">
-                <div className="green-earth-box"><h3>500+</h3><span>Trees Planted</span></div>
-                <div className="green-earth-box"><h3>20+</h3><span>Volunteer Teams</span></div>
-                <div className="green-earth-box"><h3>15+</h3><span>Communities Reached</span></div>
+                {treeStats.map((s, i) => (
+                  <div className="green-earth-box" key={i}><h3>{s.value}</h3><span>{s.label}</span></div>
+                ))}
               </div>
               <Link to="/donate" className="green-earth-btn">Join The Mission</Link>
             </div>
@@ -269,47 +349,45 @@ export default function MissionEco() {
         <section className="hero">
           <div className="hero-content">
             <div className="hero-left">
-              <span className="tag">Beach Sevak Initiative</span>
-              <h1>Clean Beaches, Safe Oceans, Better Future</h1>
+              <span className="tag">{beachTag}</span>
+              <h1>{beachHeading}</h1>
               <p>
-                Beach Sevak by Being Sevak focuses on cleaning coastal areas,
-                protecting marine life and spreading awareness about ocean waste.
+                {beachText}
               </p>
               <div className="btns">
                 <a href="#impact" className="btn primary">Join Mission</a>
               </div>
             </div>
             <div className="hero-right">
-              <img src="/images/beach1.png" alt="Beach Sevak" />
+              <img src={beachImage} alt="Beach Sevak" />
             </div>
           </div>
         </section>
 
         <section className="impact">
           <div className="box">
-            <div className="card"><h2>120+</h2><p>Clean Drives</p></div>
-            <div className="card"><h2>5T+</h2><p>Waste Removed</p></div>
-            <div className="card"><h2>500+</h2><p>Volunteers</p></div>
+            {beachImpactStats.map((s, i) => (
+              <div className="card" key={i}><h2>{s.value}</h2><p>{s.label}</p></div>
+            ))}
           </div>
         </section>
 
         <section className="work">
-          <h2>Our Activities</h2>
+          <h2>{beachWorkHeading}</h2>
           <div className="grid">
-            <div className="item"><img src="/images/beach2.jpeg" alt="" /></div>
-            <div className="item"><img src="/images/beach3.jpeg" alt="" /></div>
-            <div className="item"><img src="/images/beach4.jpeg" alt="" /></div>
+            {beachWorkImages.map((img, i) => (
+              <div className="item" key={i}><img src={img.src} alt={img.alt} /></div>
+            ))}
           </div>
         </section>
 
         <section className="sevak-donation" id="donate">
           <div className="sevak-donation-content">
             <div className="sevak-left">
-              <span className="sevak-tag">Mission Eco Warriors</span>
-              <h2 className="sevak-title">Fight Today for a Greener Tomorrow</h2>
+              <span className="sevak-tag">{donationTag}</span>
+              <h2 className="sevak-title">{donationTitle}</h2>
               <p className="sevak-desc">
-                Join our Eco Warriors movement to protect nature through tree plantation,
-                waste management, recycling awareness, and climate action for a sustainable future.
+                {donationText}
               </p>
             </div>
             <div className="sevak-right">
@@ -322,21 +400,15 @@ export default function MissionEco() {
 
         <section className="testimonial-section">
           <div className="section-header">
-            <h2>What Our Donors Say</h2>
+            <h2>{testimonialHeading}</h2>
           </div>
           <div className="testimonial-grid">
-            <div className="testimonial-card">
-              <p>"Being Sevak is doing incredible work for visually impaired and needy families. Proud to support this mission."</p>
-              <h4>Riya Sharma</h4>
-            </div>
-            <div className="testimonial-card">
-              <p>"Transparent work, genuine impact, and a wonderful team dedicated to helping people with dignity."</p>
-              <h4>Rahul Mehta</h4>
-            </div>
-            <div className="testimonial-card">
-              <p>"Every donation creates real change. Their food distribution drives truly touch lives."</p>
-              <h4>Anjali Verma</h4>
-            </div>
+            {testimonials.map((t, i) => (
+              <div className="testimonial-card" key={i}>
+                <p>{t.quote}</p>
+                <h4>{t.name}</h4>
+              </div>
+            ))}
           </div>
         </section>
 

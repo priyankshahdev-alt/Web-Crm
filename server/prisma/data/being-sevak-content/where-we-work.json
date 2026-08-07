@@ -1,0 +1,111 @@
+{
+  "slug": "where-we-work",
+  "title": "Where We Work",
+  "metaTitle": "Where We Work | Being Sevak Foundation",
+  "metaDescription": "Being Sevak Charitable Trust works across 12 states in India through education, healthcare, empowerment, sustainability, and humanitarian initiatives.",
+  "template": "default",
+  "sortOrder": 5,
+  "isHome": false,
+  "sections": [
+    {
+      "type": "www-title",
+      "name": "Page Title",
+      "sortOrder": 1,
+      "isActive": true,
+      "content": {
+        "heading": "Where We Work"
+      }
+    },
+    {
+      "type": "www-hero",
+      "name": "Hero Section",
+      "sortOrder": 2,
+      "isActive": true,
+      "content": {
+        "tag": "BEING SEVAK CHARITABLE TRUST",
+        "heading": "Where We",
+        "highlight": "Work",
+        "description": "Actively working across multiple states in India through initiatives focused on education, nourishment, healthcare, empowerment and social welfare.",
+        "card1Value": "12",
+        "card1Label": "States",
+        "card2Value": "5,000+",
+        "card2Label": "Volunteers Connected",
+        "image": "/images/Where We Work1.jpeg"
+      }
+    },
+    {
+      "type": "www-map",
+      "name": "Impact Map",
+      "sortOrder": 3,
+      "isActive": true,
+      "content": {
+        "title": "Where We",
+        "highlight": "Work",
+        "subtitle": "Serving communities across India through education, healthcare, empowerment, sustainability and humanitarian initiatives.",
+        "counter1Num": "12",
+        "counter1Label": "States",
+        "counter2Num": "100",
+        "counter2Label": "Projects",
+        "counter3Num": "1",
+        "counter3Suffix": "M",
+        "counter3Label": "Lives Impacted",
+        "mapImage": "/images/Map2.jpeg",
+        "legendTitle": "Focus Areas",
+        "legendItems": [
+          { "icon": "fa-book-open", "color": "#00a3da", "label": "Education" },
+          { "icon": "fa-heartbeat", "color": "#ff6b00", "label": "Healthcare" },
+          { "icon": "fa-female", "color": "#e91e63", "label": "Women Empower" },
+          { "icon": "fa-leaf", "color": "#4caf50", "label": "Sustainability" }
+        ],
+        "listHeading": "Our",
+        "listHighlight": "States",
+        "listSubtitle": "Hover a location to see its impact",
+        "locations": [
+          { "loc": "maharashtra", "top": "58%", "left": "20%", "name": "Maharashtra", "projects": 12, "beneficiaries": "2.5L+", "desc": "Education, food distribution & health camps", "icon": "fas fa-city" },
+          { "loc": "gujarat", "top": "47%", "left": "12%", "name": "Gujarat", "projects": 8, "beneficiaries": "1.2L+", "desc": "Women empowerment & hygiene programs", "icon": "fas fa-building" },
+          { "loc": "uttarakhand", "top": "26%", "left": "35%", "name": "Uttarakhand", "projects": 10, "beneficiaries": "1.8L+", "desc": "Digital education & skill development", "icon": "fas fa-graduation-cap" },
+          { "loc": "west-bengal", "top": "47%", "left": "67%", "name": "West Bengal", "projects": 6, "beneficiaries": "80K+", "desc": "Rural development & livelihood support", "icon": "fas fa-tractor" },
+          { "loc": "delhi", "top": "27%", "left": "30%", "name": "Delhi", "projects": 7, "beneficiaries": "1L+", "desc": "Vocational training & self-reliance", "icon": "fas fa-industry" },
+          { "loc": "rajasthan", "top": "35%", "left": "20%", "name": "Rajasthan", "projects": 9, "beneficiaries": "1.5L+", "desc": "Mid-day meals & child nutrition", "icon": "fas fa-sun" },
+          { "loc": "punjab", "top": "22%", "left": "25%", "name": "Punjab", "projects": 4, "beneficiaries": "50K+", "desc": "Food distribution & community kitchens", "icon": "fas fa-wheat-awn" },
+          { "loc": "haryana", "top": "28%", "left": "27%", "name": "Haryana", "projects": 6, "beneficiaries": "90K+", "desc": "School renovation & education drives", "icon": "fas fa-school" },
+          { "loc": "uttar-pradesh", "top": "36%", "left": "41%", "name": "Uttar Pradesh", "projects": 11, "beneficiaries": "2L+", "desc": "Healthcare camps & hygiene kits", "icon": "fas fa-mosque" },
+          { "loc": "madhya-pradesh", "top": "46%", "left": "32%", "name": "Madhya Pradesh", "projects": 8, "beneficiaries": "1.3L+", "desc": "Environment & animal welfare programs", "icon": "fas fa-tree" },
+          { "loc": "odisha", "top": "54%", "left": "58%", "name": "Odisha", "projects": 7, "beneficiaries": "1.1L+", "desc": "Disaster relief & community support", "icon": "fas fa-fish" },
+          { "loc": "tamil-nadu", "top": "78%", "left": "34%", "name": "Tamil Nadu", "projects": 10, "beneficiaries": "1.6L+", "desc": "Multi-focus community outreach", "icon": "fas fa-praying-hands" }
+        ]
+      }
+    },
+    {
+      "type": "www-reach",
+      "name": "Our Reach",
+      "sortOrder": 4,
+      "isActive": true,
+      "content": {
+        "tag": "OUR REACH",
+        "heading": "Where We Serve",
+        "items": [
+          { "icon": "fa-map-location-dot", "title": "Pan-India Reach", "desc": "Active across Maharashtra, Gujarat, West Bengal, Tamil Nadu, and Odisha." },
+          { "icon": "fa-city", "title": "Urban Outreach", "desc": "Working in major cities including Mumbai, Pune, Kolkata, and Rajkot." },
+          { "icon": "fa-tree", "title": "Rural Development", "desc": "Extending support to rural communities in Dwarka, Narmada, and Jalgaon." },
+          { "icon": "fa-people-group", "title": "10+ Locations", "desc": "Establishing presence in multiple states to maximize community impact." }
+        ]
+      }
+    },
+    {
+      "type": "www-testimonials",
+      "name": "Testimonials",
+      "sortOrder": 5,
+      "isActive": true,
+      "content": {
+        "tag": "TESTIMONIALS",
+        "heading": "Voices from the Field",
+        "items": [
+          { "quote": "BSCT's work in our village has brought education and healthcare to children who had no access before.", "name": "Suresh Patil", "role": "Village Head, Jalgaon" },
+          { "quote": "The impact of their midday meal program in Mumbai slums is remarkable. No child goes hungry.", "name": "Asha Devi", "role": "Community Volunteer" },
+          { "quote": "From Gujarat to Tamil Nadu, BSCT's reach is expanding every year. A truly national NGO.", "name": "Dr. Karthik Rao", "role": "Social Researcher" }
+        ]
+      }
+    }
+  ]
+}

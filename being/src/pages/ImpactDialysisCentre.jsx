@@ -1,8 +1,43 @@
 import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
+import { usePageContent } from '../hooks/usePageContent';
 
 export default function ImpactDialysisCentre() {
   useEffect(() => { window.scrollTo(0, 0); }, []);
+
+  const content = usePageContent('impact-dialysis-centre');
+
+  const headingTag = content('impact-dialysis-centre-heading', 'tag') ?? 'HEALTHCARE SUPPORT PROGRAM';
+  const headingTitle = content('impact-dialysis-centre-heading', 'heading') ?? 'Dialysis Centre Support';
+  const headingText =
+    content('impact-dialysis-centre-heading', 'description') ??
+    'Chronic kidney disease requires ongoing dialysis, often placing a heavy financial burden on low-income families. Through our Dialysis Centre Support initiative, Being Sevak Charitable Trust provides subsidized or free dialysis sessions, medical assistance, and compassionate care to patients who would otherwise be unable to afford life-sustaining treatment.';
+  const mainImage = content('impact-dialysis-centre-heading', 'image') ?? '/images/g61.png';
+  const cards =
+    content('impact-dialysis-centre-cards', 'items') ?? [
+      { title: 'Affordable Dialysis Sessions', description: 'Providing free or subsidized dialysis treatments for underprivileged patients.' },
+      { title: 'Expert Medical Staff', description: 'Experienced doctors and nephrologists oversee every session for safety and quality care.' },
+      { title: 'Emotional Support', description: 'Compassionate assistance and counseling to help patients through their treatment journey.' },
+      { title: 'Saving Lives Every Day', description: 'Ensuring that no kidney patient is denied treatment because of financial hardship.' },
+    ];
+  const storyTag = content('impact-dialysis-centre-impact', 'tag') ?? 'IMPACT STORY';
+  const storyTitle = content('impact-dialysis-centre-impact', 'heading') ?? 'A Second Chance at Life';
+  const storyText =
+    content('impact-dialysis-centre-impact', 'text') ??
+    'Priya, a young working woman from an underprivileged family, was diagnosed with chronic kidney disease and needed regular dialysis that her family could barely afford. Through the Dialysis Centre Support of Being Sevak Charitable Trust, she received life-saving treatment and the support she needed to continue fighting for her life and her dreams.';
+  const stats =
+    content('impact-dialysis-centre-impact', 'stats') ?? [
+      { value: '1000+', label: 'Patients Treated' },
+      { value: '24/7', label: 'Care Available' },
+      { value: '100%', label: 'Life Saving Focus' },
+    ];
+  const galleryTag = content('impact-dialysis-centre-gallery', 'tag') ?? 'PROJECT GALLERY';
+  const galleryTitle = content('impact-dialysis-centre-gallery', 'heading') ?? 'Moments of Impact';
+  const galleryText =
+    content('impact-dialysis-centre-gallery', 'description') ??
+    'Explore glimpses of our initiatives, community outreach programs, and the positive impact created through collective efforts.';
+  const galleryImages =
+    content('impact-dialysis-centre-gallery', 'images') ?? ['/images/g58.png', '/images/g59.png', '/images/g60.png'];
 
   const css = `
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -64,68 +99,38 @@ export default function ImpactDialysisCentre() {
       <section className="dialysis-support-section">
         <div className="dialysis-container">
           <div className="dialysis-heading">
-            <span className="dialysis-tag">HEALTHCARE SUPPORT PROGRAM</span>
-            <h2>Dialysis Centre Support</h2>
-            <p>
-              Chronic kidney disease requires ongoing dialysis, often placing
-              a heavy financial burden on low-income families. Through our
-              Dialysis Centre Support initiative, Being Sevak Charitable Trust
-              provides subsidized or free dialysis sessions, medical
-              assistance, and compassionate care to patients who would
-              otherwise be unable to afford life-sustaining treatment.
-            </p>
+            <span className="dialysis-tag">{headingTag}</span>
+            <h2>{headingTitle}</h2>
+            <p>{headingText}</p>
           </div>
 
           <div className="dialysis-grid">
             <div className="dialysis-image">
-              <img src="/images/g61.png" alt="Dialysis Centre Support" />
+              <img src={mainImage} alt="Dialysis Centre Support" />
             </div>
             <div className="dialysis-content">
-              <div className="dialysis-card">
-                <h3>Affordable Dialysis Sessions</h3>
-                <p>Providing free or subsidized dialysis treatments for underprivileged patients.</p>
-              </div>
-              <div className="dialysis-card">
-                <h3>Expert Medical Staff</h3>
-                <p>Experienced doctors and nephrologists oversee every session for safety and quality care.</p>
-              </div>
-              <div className="dialysis-card">
-                <h3>Emotional Support</h3>
-                <p>Compassionate assistance and counseling to help patients through their treatment journey.</p>
-              </div>
-              <div className="dialysis-card">
-                <h3>Saving Lives Every Day</h3>
-                <p>Ensuring that no kidney patient is denied treatment because of financial hardship.</p>
-              </div>
+              {cards.map((card, i) => (
+                <div className="dialysis-card" key={i}>
+                  <h3>{card.title}</h3>
+                  <p>{card.description}</p>
+                </div>
+              ))}
             </div>
           </div>
 
           <div className="dialysis-impact">
             <div className="dialysis-story">
-              <span>IMPACT STORY</span>
-              <h3>A Second Chance at Life</h3>
-              <p>
-                Priya, a young working woman from an underprivileged family,
-                was diagnosed with chronic kidney disease and needed regular
-                dialysis that her family could barely afford. Through the
-                Dialysis Centre Support of Being Sevak Charitable Trust,
-                she received life-saving treatment and the support she
-                needed to continue fighting for her life and her dreams.
-              </p>
+              <span>{storyTag}</span>
+              <h3>{storyTitle}</h3>
+              <p>{storyText}</p>
             </div>
             <div className="dialysis-stats">
-              <div className="dialysis-box">
-                <h2>1000+</h2>
-                <span>Patients Treated</span>
-              </div>
-              <div className="dialysis-box">
-                <h2>24/7</h2>
-                <span>Care Available</span>
-              </div>
-              <div className="dialysis-box">
-                <h2>100%</h2>
-                <span>Life Saving Focus</span>
-              </div>
+              {stats.map((s, i) => (
+                <div className="dialysis-box" key={i}>
+                  <h2>{s.value}</h2>
+                  <span>{s.label}</span>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -133,14 +138,14 @@ export default function ImpactDialysisCentre() {
 
       <section className="shital-gallery-section">
         <div className="shital-gallery-heading">
-          <span>PROJECT GALLERY</span>
-          <h2>Moments of Impact</h2>
-          <p>Explore glimpses of our initiatives, community outreach programs, and the positive impact created through collective efforts.</p>
+          <span>{galleryTag}</span>
+          <h2>{galleryTitle}</h2>
+          <p>{galleryText}</p>
         </div>
         <div className="shital-gallery">
-          <div className="shital-gallery-item"><img src="/images/g58.png" alt="" /></div>
-          <div className="shital-gallery-item"><img src="/images/g59.png" alt="" /></div>
-          <div className="shital-gallery-item"><img src="/images/g60.png" alt="" /></div>
+          {galleryImages.map((src, i) => (
+            <div className="shital-gallery-item" key={i}><img src={src} alt="" /></div>
+          ))}
         </div>
       </section>
     </>

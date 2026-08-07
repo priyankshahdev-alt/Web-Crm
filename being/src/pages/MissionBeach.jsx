@@ -1,6 +1,47 @@
 import { Link } from 'react-router-dom';
+import { usePageContent } from '../hooks/usePageContent';
 
 export default function MissionBeach() {
+  const content = usePageContent('mission-beach');
+
+  const taxTitle = content('mission-beach-tax', 'title') ?? 'Mission Beach Sevak';
+
+  const heroTag = content('mission-beach-hero', 'tag') ?? 'Beach Sevak Initiative';
+  const heroHeading = content('mission-beach-hero', 'heading') ?? 'Clean Beaches, Safe Oceans, Better Future';
+  const heroText =
+    content('mission-beach-hero', 'description') ??
+    'Beach Sevak by Being Sevak focuses on cleaning coastal areas, protecting marine life and spreading awareness about ocean waste.';
+  const heroImage = content('mission-beach-hero', 'image') ?? '/images/beach1.png';
+
+  const impactStats =
+    content('beach-impact', 'stats') ?? [
+      { value: '120+', label: 'Clean Drives' },
+      { value: '5T+', label: 'Waste Removed' },
+      { value: '500+', label: 'Volunteers' },
+    ];
+
+  const workHeading = content('beach-activities', 'heading') ?? 'Our Activities';
+  const workImages =
+    content('beach-activities', 'images') ?? [
+      { src: '/images/beach2.jpg', alt: '' },
+      { src: '/images/beach3.jpeg', alt: '' },
+      { src: '/images/beach4.jpeg', alt: '' },
+    ];
+
+  const donationTag = content('beach-donation', 'tag') ?? 'Beach Sevak';
+  const donationTitle = content('beach-donation', 'title') ?? 'Protect Our Beaches, Protect Our Future';
+  const donationText =
+    content('beach-donation', 'description') ??
+    'Join our mission to keep beaches clean by removing plastic waste, protecting marine life, and spreading awareness for a cleaner and healthier coastal environment.';
+
+  const testimonialHeading = content('beach-testimonials', 'heading') ?? 'What Our Donors Say';
+  const testimonials =
+    content('beach-testimonials', 'items') ?? [
+      { quote: '"Being Sevak is doing incredible work for visually impaired and needy families. Proud to support this mission."', name: 'Riya Sharma' },
+      { quote: '"Transparent work, genuine impact, and a wonderful team dedicated to helping people with dignity."', name: 'Rahul Mehta' },
+      { quote: '"Every donation creates real change. Their food distribution drives truly touch lives."', name: 'Anjali Verma' },
+    ];
+
   return (
     <>
       <style>{`
@@ -122,54 +163,51 @@ export default function MissionBeach() {
 
       <div className="mission-beach">
         <section className="tax-box">
-          <h1>Mission Beach Sevak</h1>
+          <h1>{taxTitle}</h1>
         </section>
 
         <section className="hero">
           <div className="hero-content">
             <div className="hero-left">
-              <span className="tag">Beach Sevak Initiative</span>
-              <h1>Clean Beaches, Safe Oceans, Better Future</h1>
+              <span className="tag">{heroTag}</span>
+              <h1>{heroHeading}</h1>
               <p>
-                Beach Sevak by Being Sevak focuses on cleaning coastal areas,
-                protecting marine life and spreading awareness about ocean waste.
+                {heroText}
               </p>
               <div className="btns">
                 <a href="#impact" className="btn primary">Join Mission</a>
               </div>
             </div>
             <div className="hero-right">
-              <img src="/images/beach1.png" alt="Beach Sevak" />
+              <img src={heroImage} alt="Beach Sevak" />
             </div>
           </div>
         </section>
 
         <section className="impact" id="impact">
           <div className="box">
-            <div className="card"><h2>120+</h2><p>Clean Drives</p></div>
-            <div className="card"><h2>5T+</h2><p>Waste Removed</p></div>
-            <div className="card"><h2>500+</h2><p>Volunteers</p></div>
+            {impactStats.map((s, i) => (
+              <div className="card" key={i}><h2>{s.value}</h2><p>{s.label}</p></div>
+            ))}
           </div>
         </section>
 
         <section className="work">
-          <h2>Our Activities</h2>
+          <h2>{workHeading}</h2>
           <div className="grid">
-            <div className="item"><img src="/images/beach2.jpg" alt="" /></div>
-            <div className="item"><img src="/images/beach3.jpeg" alt="" /></div>
-            <div className="item"><img src="/images/beach4.jpeg" alt="" /></div>
+            {workImages.map((img, i) => (
+              <div className="item" key={i}><img src={img.src} alt={img.alt} /></div>
+            ))}
           </div>
         </section>
 
         <section className="sevak-donation">
           <div className="sevak-donation-content">
             <div className="sevak-left">
-              <span className="sevak-tag">Beach Sevak</span>
-              <h2 className="sevak-title">Protect Our Beaches, Protect Our Future</h2>
+              <span className="sevak-tag">{donationTag}</span>
+              <h2 className="sevak-title">{donationTitle}</h2>
               <p className="sevak-desc">
-                Join our mission to keep beaches clean by removing plastic waste,
-                protecting marine life, and spreading awareness for a cleaner
-                and healthier coastal environment.
+                {donationText}
               </p>
             </div>
             <div className="sevak-right">
@@ -182,21 +220,15 @@ export default function MissionBeach() {
 
         <section className="testimonial-section">
           <div className="section-header">
-            <h2>What Our Donors Say</h2>
+            <h2>{testimonialHeading}</h2>
           </div>
           <div className="testimonial-grid">
-            <div className="testimonial-card">
-              <p>"Being Sevak is doing incredible work for visually impaired and needy families. Proud to support this mission."</p>
-              <h4>Riya Sharma</h4>
-            </div>
-            <div className="testimonial-card">
-              <p>"Transparent work, genuine impact, and a wonderful team dedicated to helping people with dignity."</p>
-              <h4>Rahul Mehta</h4>
-            </div>
-            <div className="testimonial-card">
-              <p>"Every donation creates real change. Their food distribution drives truly touch lives."</p>
-              <h4>Anjali Verma</h4>
-            </div>
+            {testimonials.map((t, i) => (
+              <div className="testimonial-card" key={i}>
+                <p>{t.quote}</p>
+                <h4>{t.name}</h4>
+              </div>
+            ))}
           </div>
         </section>
 

@@ -1,8 +1,43 @@
 import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
+import { usePageContent } from '../hooks/usePageContent';
 
 export default function ImpactFlourMill() {
   useEffect(() => { window.scrollTo(0, 0); }, []);
+
+  const content = usePageContent('impact-flour-mill');
+
+  const headingTag = content('impact-flour-mill-heading', 'tag') ?? 'MISSION ATMANIRBHAR';
+  const headingTitle = content('impact-flour-mill-heading', 'heading') ?? 'Flour Mill Support Program';
+  const headingText =
+    content('impact-flour-mill-heading', 'description') ??
+    'Through the Flour Mill Support Program, Being Sevak Charitable Trust empowers visually impaired and economically weaker families by providing flour milling machines as a source of sustainable livelihood. This initiative helps beneficiaries generate income, become self-reliant, and support their families with dignity.';
+  const mainImage = content('impact-flour-mill-heading', 'image') ?? '/images/g41.webp';
+  const cards =
+    content('impact-flour-mill-cards', 'items') ?? [
+      { title: 'Income Generation', description: 'Flour mills create a reliable source of income for beneficiaries and their families.' },
+      { title: 'Self-Reliance', description: 'Supporting individuals to become financially independent through small-scale business opportunities.' },
+      { title: 'Community Service', description: 'Local residents benefit from easy access to grain grinding facilities within their communities.' },
+      { title: 'Sustainable Livelihood', description: 'A one-time support that creates long-term earning opportunities and financial stability.' },
+    ];
+  const storyTag = content('impact-flour-mill-impact', 'tag') ?? 'SUCCESS STORY';
+  const storyTitle = content('impact-flour-mill-impact', 'heading') ?? 'From Support to Self-Sufficiency';
+  const storyText =
+    content('impact-flour-mill-impact', 'text') ??
+    'For many families, a flour mill is more than a machine — it is a pathway to financial independence. Through this initiative, beneficiaries can operate their own small business, earn a steady income, and build a brighter future for their families while contributing to their local communities.';
+  const stats =
+    content('impact-flour-mill-impact', 'stats') ?? [
+      { value: '500+', label: 'Families Empowered' },
+      { value: '100%', label: 'Livelihood Focused' },
+      { value: '24/7', label: 'Income Opportunity' },
+    ];
+  const galleryTag = content('impact-flour-mill-gallery', 'tag') ?? 'PROJECT GALLERY';
+  const galleryTitle = content('impact-flour-mill-gallery', 'heading') ?? 'Moments of Impact';
+  const galleryText =
+    content('impact-flour-mill-gallery', 'description') ??
+    'Explore glimpses of our initiatives, community outreach programs, and the positive impact created through collective efforts.';
+  const galleryImages =
+    content('impact-flour-mill-gallery', 'images') ?? ['/images/g42.webp', '/images/g43.webp', '/images/g44.webp'];
 
   const css = `
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -64,67 +99,38 @@ export default function ImpactFlourMill() {
       <section className="flourmill-section">
         <div className="flourmill-container">
           <div className="flourmill-heading">
-            <span className="flourmill-tag">MISSION ATMANIRBHAR</span>
-            <h2>Flour Mill Support Program</h2>
-            <p>
-              Through the Flour Mill Support Program, Being Sevak Charitable
-              Trust empowers visually impaired and economically weaker families
-              by providing flour milling machines as a source of sustainable
-              livelihood. This initiative helps beneficiaries generate income,
-              become self-reliant, and support their families with dignity.
-            </p>
+            <span className="flourmill-tag">{headingTag}</span>
+            <h2>{headingTitle}</h2>
+            <p>{headingText}</p>
           </div>
 
           <div className="flourmill-grid">
             <div className="flourmill-image">
-              <img src="/images/g41.webp" alt="Flour Mill Support" />
+              <img src={mainImage} alt="Flour Mill Support" />
             </div>
             <div className="flourmill-content">
-              <div className="flourmill-card">
-                <h3>Income Generation</h3>
-                <p>Flour mills create a reliable source of income for beneficiaries and their families.</p>
-              </div>
-              <div className="flourmill-card">
-                <h3>Self-Reliance</h3>
-                <p>Supporting individuals to become financially independent through small-scale business opportunities.</p>
-              </div>
-              <div className="flourmill-card">
-                <h3>Community Service</h3>
-                <p>Local residents benefit from easy access to grain grinding facilities within their communities.</p>
-              </div>
-              <div className="flourmill-card">
-                <h3>Sustainable Livelihood</h3>
-                <p>A one-time support that creates long-term earning opportunities and financial stability.</p>
-              </div>
+              {cards.map((card, i) => (
+                <div className="flourmill-card" key={i}>
+                  <h3>{card.title}</h3>
+                  <p>{card.description}</p>
+                </div>
+              ))}
             </div>
           </div>
 
           <div className="flourmill-impact">
             <div className="flourmill-story">
-              <span>SUCCESS STORY</span>
-              <h3>From Support to Self-Sufficiency</h3>
-              <p>
-                For many families, a flour mill is more than a machine —
-                it is a pathway to financial independence. Through this
-                initiative, beneficiaries can operate their own small
-                business, earn a steady income, and build a brighter future
-                for their families while contributing to their local
-                communities.
-              </p>
+              <span>{storyTag}</span>
+              <h3>{storyTitle}</h3>
+              <p>{storyText}</p>
             </div>
             <div className="flourmill-stats">
-              <div className="flourmill-box">
-                <h2>500+</h2>
-                <span>Families Empowered</span>
-              </div>
-              <div className="flourmill-box">
-                <h2>100%</h2>
-                <span>Livelihood Focused</span>
-              </div>
-              <div className="flourmill-box">
-                <h2>24/7</h2>
-                <span>Income Opportunity</span>
-              </div>
+              {stats.map((s, i) => (
+                <div className="flourmill-box" key={i}>
+                  <h2>{s.value}</h2>
+                  <span>{s.label}</span>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -132,14 +138,14 @@ export default function ImpactFlourMill() {
 
       <section className="shital-gallery-section">
         <div className="shital-gallery-heading">
-          <span>PROJECT GALLERY</span>
-          <h2>Moments of Impact</h2>
-          <p>Explore glimpses of our initiatives, community outreach programs, and the positive impact created through collective efforts.</p>
+          <span>{galleryTag}</span>
+          <h2>{galleryTitle}</h2>
+          <p>{galleryText}</p>
         </div>
         <div className="shital-gallery">
-          <div className="shital-gallery-item"><img src="/images/g42.webp" alt="" /></div>
-          <div className="shital-gallery-item"><img src="/images/g43.webp" alt="" /></div>
-          <div className="shital-gallery-item"><img src="/images/g44.webp" alt="" /></div>
+          {galleryImages.map((src, i) => (
+            <div className="shital-gallery-item" key={i}><img src={src} alt="" /></div>
+          ))}
         </div>
       </section>
     </>

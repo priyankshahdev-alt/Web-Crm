@@ -1,8 +1,71 @@
 import { Link } from 'react-router-dom';
 import { useRef, useEffect } from 'react';
+import { usePageContent } from '../hooks/usePageContent';
 
 const MissionAnnapurna = () => {
   const iframeRef = useRef(null);
+
+  const content = usePageContent('mission-annapurna');
+
+  const taxTitle = content('mission-annapurna-tax', 'title') ?? 'Mission Annapurna';
+
+  const heroTag = content('mission-annapurna-hero', 'tag') ?? 'Fight Against Hunger';
+  const heroLine1 = content('mission-annapurna-hero', 'headingLine1') ?? 'Nourishing Lives';
+  const heroLine2 = content('mission-annapurna-hero', 'headingLine2') ?? 'With';
+  const heroHighlight = content('mission-annapurna-hero', 'headingHighlight') ?? 'Hope & Humanity';
+  const heroText =
+    content('mission-annapurna-hero', 'description') ??
+    'Being Sevak Charitable Trust presents the Annapurna Mission: Fight against Hunger, a humanitarian initiative dedicated to addressing hunger and malnutrition among underprivileged children, visually impaired individuals, and low-income families across India.';
+  const heroImage = content('mission-annapurna-hero', 'image') ?? '/images/a1.jpeg';
+  const heroStats =
+    content('annapurna-hero-stats', 'items') ?? [
+      { value: '102K+', label: 'Annapurna Kits' },
+      { value: '12K+', label: 'Meals Distributed' },
+    ];
+
+  const aboutTag = content('annapurna-about', 'tag') ?? 'ABOUT THE MISSION';
+  const aboutHeading = content('annapurna-about', 'heading') ?? 'Feeding Families. Empowering Communities.';
+  const aboutImage = content('annapurna-about', 'image') ?? '/images/a2.jpg';
+  const aboutCards =
+    content('annapurna-about', 'items') ?? [
+      { title: 'Annapurna Kit Distribution', description: 'Helping families with essential ration kits for survival.' },
+      { title: 'Snack Distribution for Underprivileged Children', description: 'Bringing smiles through snacks for needy children.' },
+      { title: 'Meals for Persons with Disabilities', description: 'Serving fresh meals to fight hunger every day.' },
+      { title: 'Roti Drive for all Underprivileged Children', description: 'No one sleeps hungry, sharing fresh rotis daily.' },
+    ];
+
+  const programsTag = content('annapurna-programs', 'tag') ?? 'OUR PROGRAMS';
+  const programsText1 =
+    content('annapurna-programs', 'text1') ??
+    'Mission Annapurna (Fight Against Hunger) by Being Sevak Charitable Trust is a humanitarian initiative focused on reducing hunger and malnutrition among underprivileged children, visually impaired individuals, and low-income families across India.';
+  const programsText2 =
+    content('annapurna-programs', 'text2') ??
+    'With the support of CSR partners, donors, and volunteers, the mission provides nutritious meals and essential food supplies to build a hunger-free and dignified society.';
+  const programs =
+    content('annapurna-programs', 'items') ?? [
+      { number: '01', title: 'Cooked Meal Distribution', description: 'Providing freshly cooked nutritious meals to underprivileged children to support healthy growth, education, and overall well-being.' },
+      { number: '02', title: 'Dry Ration Kits', description: 'Distributing easy-to-use ration kits to visually impaired individuals to ensure dignity, independence, and food security.' },
+      { number: '03', title: 'Nutrition Meal Support', description: 'Serving balanced and hygienic meals to children and vulnerable individuals to fight malnutrition and improve health outcomes.' },
+      { number: '04', title: 'Family Food-Grain Kits', description: 'Providing essential food-grain kits in small, medium, and large sizes to support struggling families based on their needs.' },
+    ];
+
+  const galleryImages =
+    content('annapurna-gallery', 'images') ?? ['/images/a3.jpg', '/images/a6.jpg', '/images/snackKit.jpeg', '/images/rotidrive.jpeg'];
+
+  const donationTag = content('annapurna-donation', 'tag') ?? 'Mission Annapurna';
+  const donationUrl = content('annapurna-donation', 'donationUrl') ?? '/donations/donation-inline.html';
+  const donationTitle = content('annapurna-donation', 'title') ?? 'Nourishing Lives, Spreading Hope';
+  const donationText =
+    content('annapurna-donation', 'description') ??
+    'Support food distribution initiatives to ensure that no family sleeps hungry and everyone receives nutritious meals.';
+
+  const testimonialHeading = content('annapurna-testimonials', 'heading') ?? 'What Our Donors Say';
+  const testimonials =
+    content('annapurna-testimonials', 'items') ?? [
+      { quote: 'Being Sevak is doing incredible work for visually impaired and needy families. Proud to support this mission.', name: 'Riya Sharma' },
+      { quote: 'Transparent work, genuine impact, and a wonderful team dedicated to helping people with dignity.', name: 'Rahul Mehta' },
+      { quote: 'Every donation creates real change. Their food distribution drives truly touch lives.', name: 'Anjali Verma' },
+    ];
 
   useEffect(() => {
     function handleMessage(e) {
@@ -237,30 +300,26 @@ const MissionAnnapurna = () => {
 
       <div className="mission-annapurna">
         <section className="tax-box">
-          <h1>Mission Annapurna</h1>
+          <h1>{taxTitle}</h1>
         </section>
 
         <section className="hero">
           <div className="hero-content">
-            <span className="tag">Fight Against Hunger</span>
-            <h1>Nourishing Lives <br />With <span>Hope & Humanity</span></h1>
-            <p>
-              Being Sevak Charitable Trust presents the Annapurna Mission: Fight against Hunger, a humanitarian initiative dedicated to addressing hunger and malnutrition among underprivileged children, visually impaired individuals, and low-income families across India.
-            </p>
+            <span className="tag">{heroTag}</span>
+            <h1>{heroLine1} <br />{heroLine2} <span>{heroHighlight}</span></h1>
+            <p>{heroText}</p>
             <div className="hero-buttons">
               <a href="#donate" className="donate-btn-hero">Support The Mission</a>
             </div>
           </div>
           <div className="hero-image">
-            <div className="floating-card card1">
-              <h3>102K+</h3>
-              <p>Annapurna Kits</p>
-            </div>
-            <div className="floating-card card2">
-              <h3>12K+</h3>
-              <p>Meals Distributed</p>
-            </div>
-            <img src="/images/a1.jpeg" alt="ngo" />
+            {heroStats.map((stat, i) => (
+              <div className={`floating-card card${i + 1}`} key={i}>
+                <h3>{stat.value}</h3>
+                <p>{stat.label}</p>
+              </div>
+            ))}
+            <img src={heroImage} alt="ngo" />
           </div>
           <div className="blur blur1"></div>
           <div className="blur blur2"></div>
@@ -269,7 +328,7 @@ const MissionAnnapurna = () => {
         <div id="donate" style={{ width: '100%', background: '#f4f7fb', padding: '0', overflow: 'hidden', marginBottom: '0', position: 'relative', zIndex: 10, isolation: 'isolate' }}>
           <iframe
             ref={iframeRef}
-            src="/donations/donation-inline.html"
+            src={donationUrl}
             style={{ width: '100%', height: '650px', border: 'none', display: 'block' }}
             title="Donate to Mission Annapurna"
           />
@@ -277,81 +336,53 @@ const MissionAnnapurna = () => {
 
         <section className="about-section" id="about">
           <div className="about-image">
-            <img src="/images/a2.jpg" alt="food distribution" />
+            <img src={aboutImage} alt="food distribution" />
           </div>
           <div className="about-content">
-            <span className="small-title">ABOUT THE MISSION</span>
-            <h2>Feeding Families. Empowering Communities.</h2>
+            <span className="small-title">{aboutTag}</span>
+            <h2>{aboutHeading}</h2>
             <div className="about-grid">
-              <div className="about-card">
-                <h3>Annapurna Kit Distribution</h3>
-                <p>Helping families with essential ration kits for survival.</p>
-              </div>
-              <div className="about-card">
-                <h3>Snack Distribution for Underprivileged Children</h3>
-                <p>Bringing smiles through snacks for needy children.</p>
-              </div>
-              <div className="about-card">
-                <h3>Meals for Persons with Disabilities</h3>
-                <p>Serving fresh meals to fight hunger every day.</p>
-              </div>
-              <div className="about-card">
-                <h3>Roti Drive for all Underprivileged Children</h3>
-                <p>No one sleeps hungry, sharing fresh rotis daily.</p>
-              </div>
+              {aboutCards.map((card, i) => (
+                <div className="about-card" key={i}>
+                  <h3>{card.title}</h3>
+                  <p>{card.description}</p>
+                </div>
+              ))}
             </div>
           </div>
         </section>
 
         <section className="highlight-section" id="highlights">
           <div className="section-header">
-            <span>OUR PROGRAMS</span>
-            <p>
-              Mission Annapurna (Fight Against Hunger) by Being Sevak Charitable Trust is a humanitarian initiative focused on reducing hunger and malnutrition among underprivileged children, visually impaired individuals, and low-income families across India.
-            </p>
-            <p>
-              With the support of CSR partners, donors, and volunteers, the mission provides nutritious meals and essential food supplies to build a hunger-free and dignified society.
-            </p>
+            <span>{programsTag}</span>
+            <p>{programsText1}</p>
+            <p>{programsText2}</p>
           </div>
           <div className="highlight-grid">
-            <div className="highlight-card">
-              <div className="number">01</div>
-              <h3>Cooked Meal Distribution</h3>
-              <p>Providing freshly cooked nutritious meals to underprivileged children to support healthy growth, education, and overall well-being.</p>
-            </div>
-            <div className="highlight-card">
-              <div className="number">02</div>
-              <h3>Dry Ration Kits</h3>
-              <p>Distributing easy-to-use ration kits to visually impaired individuals to ensure dignity, independence, and food security.</p>
-            </div>
-            <div className="highlight-card">
-              <div className="number">03</div>
-              <h3>Nutrition Meal Support</h3>
-              <p>Serving balanced and hygienic meals to children and vulnerable individuals to fight malnutrition and improve health outcomes.</p>
-            </div>
-            <div className="highlight-card">
-              <div className="number">04</div>
-              <h3>Family Food-Grain Kits</h3>
-              <p>Providing essential food-grain kits in small, medium, and large sizes to support struggling families based on their needs.</p>
-            </div>
+            {programs.map((program, i) => (
+              <div className="highlight-card" key={i}>
+                <div className="number">{program.number}</div>
+                <h3>{program.title}</h3>
+                <p>{program.description}</p>
+              </div>
+            ))}
           </div>
         </section>
 
         <section className="gallery-section">
           <div className="gallery-grid">
-            <div className="gallery-card"><img src="/images/a3.jpg" alt="gallery" /></div>
-            <div className="gallery-card"><img src="/images/a6.jpg" alt="gallery" /></div>
-            <div className="gallery-card"><img src="/images/snackKit.jpeg" alt="gallery" /></div>
-            <div className="gallery-card"><img src="/images/rotidrive.jpeg" alt="gallery" /></div>
+            {galleryImages.map((src, i) => (
+              <div className="gallery-card" key={i}><img src={src} alt="gallery" /></div>
+            ))}
           </div>
         </section>
 
         <section className="sevak-donation">
           <div className="sevak-donation-content">
             <div className="sevak-left">
-              <span className="sevak-tag">Mission Annapurna</span>
-              <h2 className="sevak-title">Nourishing Lives, Spreading Hope</h2>
-              <p className="sevak-desc">Support food distribution initiatives to ensure that no family sleeps hungry and everyone receives nutritious meals.</p>
+              <span className="sevak-tag">{donationTag}</span>
+              <h2 className="sevak-title">{donationTitle}</h2>
+              <p className="sevak-desc">{donationText}</p>
             </div>
             <div className="sevak-right">
               <a href="#" className="sevak-btn">Donate Now</a>
@@ -361,21 +392,15 @@ const MissionAnnapurna = () => {
 
         <section className="testimonial-section">
           <div className="section-header">
-            <h2>What Our Donors Say</h2>
+            <h2>{testimonialHeading}</h2>
           </div>
           <div className="testimonial-grid">
-            <div className="testimonial-card">
-              <p>Being Sevak is doing incredible work for visually impaired and needy families. Proud to support this mission.</p>
-              <h4>Riya Sharma</h4>
-            </div>
-            <div className="testimonial-card">
-              <p>Transparent work, genuine impact, and a wonderful team dedicated to helping people with dignity.</p>
-              <h4>Rahul Mehta</h4>
-            </div>
-            <div className="testimonial-card">
-              <p>Every donation creates real change. Their food distribution drives truly touch lives.</p>
-              <h4>Anjali Verma</h4>
-            </div>
+            {testimonials.map((t, i) => (
+              <div className="testimonial-card" key={i}>
+                <p>{t.quote}</p>
+                <h4>{t.name}</h4>
+              </div>
+            ))}
           </div>
         </section>
 

@@ -1,7 +1,60 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { useSite } from '../context/SiteContext';
+
+const DEFAULT_NAV = [
+  {
+    id: 'about',
+    label: 'ABOUT US',
+    children: [
+      { label: 'About BSCT', url: '/about' },
+      { label: 'Management', url: '/management' },
+      { label: 'Trust Documents', url: '/trust-documents' },
+      { label: 'Where We Work', url: '/where-we-work' },
+    ],
+  },
+  {
+    id: 'what',
+    label: 'WHAT WE DO',
+    children: [
+      { label: 'Mission Annapurna', url: '/mission-annapurna' },
+      { label: 'Mission Vidhya', url: '/mission-vidhya' },
+      { label: 'Mission Aurat', url: '/mission-aurat' },
+      { label: 'Mission Bezubaan', url: '/mission-bezubaan' },
+      { label: 'Mission Atmanirbhar', url: '/mission-atmanirbhar' },
+      { label: 'Mission Arogya', url: '/mission-wellness' },
+      { label: 'Sevak Seva Kendra', url: '/sevak-seva-kendra' },
+      { label: 'Mission Eco-Warriors', url: '/mission-eco' },
+    ],
+  },
+  {
+    id: 'news',
+    label: 'NEWS & STORIES',
+    children: [
+      { label: 'Awards/Achievements', url: '/awards' },
+      { label: 'Press Release', url: '/press' },
+      { label: 'In News Paper', url: '/newspaper' },
+    ],
+  },
+  { id: 'contact', label: 'CONTACT US', url: '/contact' },
+  {
+    id: 'involved',
+    label: 'GET INVOLVED',
+    children: [
+      { label: 'Individual Donation', url: '/individual-donation' },
+      { label: 'Volunteers(SEVAK BANO)', url: '/careers' },
+      { label: 'CSR', url: '/csr' },
+      { label: 'School/Institute Collaboration', url: '/school-collaboration' },
+      { label: 'NGO Collaboration', url: '/ngo-collaboration' },
+    ],
+  },
+];
 
 export default function Navbar() {
+  const { getMenu } = useSite();
+  const menu = getMenu('main-nav');
+  const navItems = menu?.items && menu.items.length > 0 ? menu.items : DEFAULT_NAV;
+
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(null);
@@ -51,6 +104,14 @@ export default function Navbar() {
   };
   const closeDesktopDropdown = () => { setDesktopDropdown(null); };
 
+  const renderNavLink = (item) => {
+    if (!item.url) return null;
+    if (item.url.startsWith('/')) {
+      return <Link to={item.url} onClick={closeAll}>{item.label}</Link>;
+    }
+    return <a href={item.url} onClick={closeAll} target={item.url.startsWith('http') ? '_blank' : undefined} rel="noopener noreferrer">{item.label}</a>;
+  };
+
   return (
     <>
       <header className="navbar" style={{ background: isAnnapurna ? 'linear-gradient(to right, #009BD4 0%, #0285C3 25%, #046FB1 50%, #074D97 75%, #083D8B 100%)' : undefined, boxShadow: scrolled ? '0 4px 20px rgba(0,0,0,0.3)' : '0 2px 12px rgba(0,0,0,0.3)' }}>
@@ -89,58 +150,29 @@ export default function Navbar() {
           </div>
 
           <nav className="nav-links">
-            <div className={`nav-item dropdown ${desktopDropdown === 'about' ? 'open' : ''}`}
-              onMouseEnter={() => setDesktopDropdown('about')}
-              onMouseLeave={closeDesktopDropdown}>
-              <a href="#" onClick={e => { e.preventDefault(); setDesktopDropdown(desktopDropdown === 'about' ? null : 'about'); }}>ABOUT US <i className="fas fa-chevron-down"></i></a>
-              <div className="dropdown-menu">
-                <Link to="/about" onClick={closeAll}>About BSCT</Link>
-                <Link to="/management" onClick={closeAll}>Management</Link>
-                <Link to="/trust-documents" onClick={closeAll}>Trust Documents</Link>
-                <Link to="/where-we-work" onClick={closeAll}>Where We Work</Link>
-              </div>
-            </div>
-            <div className={`nav-item dropdown ${desktopDropdown === 'what' ? 'open' : ''}`}
-              onMouseEnter={() => setDesktopDropdown('what')}
-              onMouseLeave={closeDesktopDropdown}>
-              <a href="#" onClick={e => { e.preventDefault(); setDesktopDropdown(desktopDropdown === 'what' ? null : 'what'); }}>WHAT WE DO <i className="fas fa-chevron-down"></i></a>
-              <div className="dropdown-menu">
-                <Link to="/mission-annapurna" onClick={closeAll}>Mission Annapurna</Link>
-                <Link to="/mission-vidhya" onClick={closeAll}>Mission Vidhya</Link>
-                <Link to="/mission-aurat" onClick={closeAll}>Mission Aurat</Link>
-                <Link to="/mission-bezubaan" onClick={closeAll}>Mission Bezubaan</Link>
-                <Link to="/mission-atmanirbhar" onClick={closeAll}>Mission Atmanirbhar</Link>
-                <Link to="/mission-wellness" onClick={closeAll}>Mission Arogya</Link>
-                <Link to="/sevak-seva-kendra" onClick={closeAll}>Sevak Seva Kendra</Link>
-                {/* <Link to="/mission-beach" onClick={closeAll}>Mission Beach Sevak</Link> */}
-                <Link to="/mission-eco" onClick={closeAll}>Mission Eco-Warriors</Link>
-              </div>
-            </div>
-            <div className={`nav-item dropdown ${desktopDropdown === 'news' ? 'open' : ''}`}
-              onMouseEnter={() => setDesktopDropdown('news')}
-              onMouseLeave={closeDesktopDropdown}>
-              <a href="#" onClick={e => { e.preventDefault(); setDesktopDropdown(desktopDropdown === 'news' ? null : 'news'); }}>NEWS & STORIES<i className="fas fa-chevron-down"></i></a>
-              <div className="dropdown-menu">
-                <Link to="/awards" onClick={closeAll}>Awards/Achievements</Link>
-                <Link to="/press" onClick={closeAll}>Press Release</Link>
-                <Link to="/newspaper" onClick={closeAll}>In News Paper</Link>
-              </div>
-            </div>
-            <div className="nav-item">
-              <Link to="/contact">CONTACT US</Link>
-            </div>
-            <div className={`nav-item dropdown ${desktopDropdown === 'involved' ? 'open' : ''}`}
-              onMouseEnter={() => setDesktopDropdown('involved')}
-              onMouseLeave={closeDesktopDropdown}>
-              <a href="#" onClick={e => { e.preventDefault(); setDesktopDropdown(desktopDropdown === 'involved' ? null : 'involved'); }}>GET INVOLVED<i className="fas fa-chevron-down"></i></a>
-              <div className="dropdown-menu">
-                <Link to="/individual-donation" onClick={closeAll}>Individual Donation</Link>
-                <Link to="/careers" onClick={closeAll}>Volunteers(SEVAK BANO)</Link>
-                <Link to="/csr" onClick={closeAll}>CSR</Link>
-                <Link to="/school-collaboration" onClick={closeAll}>School/Institute Collaboration</Link>
-                <Link to="/ngo-collaboration" onClick={closeAll}>NGO Collaboration</Link>
-              </div>
-            </div>
+            {navItems.map((item) => {
+              const key = item.id || item.label;
+              const hasChildren = item.children && item.children.length > 0;
+              if (hasChildren) {
+                return (
+                  <div key={key} className={`nav-item dropdown ${desktopDropdown === key ? 'open' : ''}`}
+                    onMouseEnter={() => setDesktopDropdown(key)}
+                    onMouseLeave={closeDesktopDropdown}>
+                    <a href="#" onClick={e => { e.preventDefault(); setDesktopDropdown(desktopDropdown === key ? null : key); }}>{item.label} <i className="fas fa-chevron-down"></i></a>
+                    <div className="dropdown-menu">
+                      {item.children.map((child) => (
+                        <span key={child.id || child.url || child.label}>{renderNavLink(child)}</span>
+                      ))}
+                    </div>
+                  </div>
+                );
+              }
+              return (
+                <div key={key} className="nav-item">
+                  {renderNavLink(item)}
+                </div>
+              );
+            })}
           </nav>
 
           <div className="nav-right">
@@ -166,50 +198,27 @@ export default function Navbar() {
       <div className={`mobile-menu ${mobileOpen ? 'open' : ''}`} id="mobileMenu">
         <button className="close-menu" onClick={closeMobile}><i className="fas fa-times"></i></button>
         <nav className="mobile-nav">
-          <div className={`mnav-item has-sub ${openDropdown === 'about' ? 'open' : ''}`}>
-            <a href="#" className="mnav-link" onClick={e => { e.preventDefault(); toggleDropdown('about'); }}>ABOUT US <i className="fas fa-chevron-down"></i></a>
-            <div className="mnav-sub">
-              <Link to="/about" onClick={closeAll}>About BSCT</Link>
-              <Link to="/management" onClick={closeAll}>Management</Link>
-              <Link to="/trust-documents" onClick={closeAll}>Trust Documents</Link>
-              <Link to="/where-we-work" onClick={closeAll}>Where We Work</Link>
-            </div>
-          </div>
-          <div className={`mnav-item has-sub ${openDropdown === 'what' ? 'open' : ''}`}>
-            <a href="#" className="mnav-link" onClick={e => { e.preventDefault(); toggleDropdown('what'); }}>WHAT WE DO <i className="fas fa-chevron-down"></i></a>
-            <div className="mnav-sub">
-              <Link to="/mission-annapurna" onClick={closeAll}>Mission Annapurna</Link>
-              <Link to="/mission-vidhya" onClick={closeAll}>Mission Vidhya</Link>
-              <Link to="/mission-aurat" onClick={closeAll}>Mission Aurat</Link>
-              <Link to="/mission-bezubaan" onClick={closeAll}>Mission Bezubaan</Link>
-              <Link to="/mission-atmanirbhar" onClick={closeAll}>Mission Atmanirbhar</Link>
-              <Link to="/mission-wellness" onClick={closeAll}>Mission Arogya</Link>
-              <Link to="/sevak-seva-kendra" onClick={closeAll}>Sevak Seva Kendra</Link>
-              {/* <Link to="/mission-beach" onClick={closeAll}>Mission Beach Sevak</Link> */}
-              <Link to="/mission-eco" onClick={closeAll}>Mission Eco-Warriors</Link>
-            </div>
-          </div>
-          <div className={`mnav-item has-sub ${openDropdown === 'news' ? 'open' : ''}`}>
-            <a href="#" className="mnav-link" onClick={e => { e.preventDefault(); toggleDropdown('news'); }}>NEWS & STORIES <i className="fas fa-chevron-down"></i></a>
-            <div className="mnav-sub">
-              <Link to="/awards" onClick={closeAll}>Awards/Achievements</Link>
-              <Link to="/press" onClick={closeAll}>Press Release</Link>
-              <Link to="/newspaper" onClick={closeAll}>In News Paper</Link>
-            </div>
-          </div>
-          <div className="mnav-item">
-            <Link to="/contact" className="mnav-link">CONTACT US</Link>
-          </div>
-          <div className={`mnav-item has-sub ${openDropdown === 'involved' ? 'open' : ''}`}>
-            <a href="#" className="mnav-link" onClick={e => { e.preventDefault(); toggleDropdown('involved'); }}>GET INVOLVED <i className="fas fa-chevron-down"></i></a>
-            <div className="mnav-sub">
-              <Link to="/individual-donation" onClick={closeAll}>Individual Donation</Link>
-              <Link to="/careers" onClick={closeAll}>Volunteers(SEVAK BANO)</Link>
-              <Link to="/csr" onClick={closeAll}>CSR</Link>
-              <Link to="/school-collaboration" onClick={closeAll}>School/Institute Collaboration</Link>
-              <Link to="/ngo-collaboration" onClick={closeAll}>NGO Collaboration</Link>
-            </div>
-          </div>
+          {navItems.map((item) => {
+            const key = item.id || item.label;
+            const hasChildren = item.children && item.children.length > 0;
+            if (hasChildren) {
+              return (
+                <div key={key} className={`mnav-item has-sub ${openDropdown === key ? 'open' : ''}`}>
+                  <a href="#" className="mnav-link" onClick={e => { e.preventDefault(); toggleDropdown(key); }}>{item.label} <i className="fas fa-chevron-down"></i></a>
+                  <div className="mnav-sub">
+                    {item.children.map((child) => (
+                      <span key={child.id || child.url || child.label}>{renderNavLink(child)}</span>
+                    ))}
+                  </div>
+                </div>
+              );
+            }
+            return (
+              <div key={key} className="mnav-item">
+                <Link to={item.url} className="mnav-link" onClick={closeAll}>{item.label}</Link>
+              </div>
+            );
+          })}
           <Link to="/donate" className="mobile-donate-btn">DONATE</Link>
         </nav>
       </div>

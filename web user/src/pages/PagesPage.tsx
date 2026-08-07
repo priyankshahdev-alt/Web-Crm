@@ -1,7 +1,11 @@
 import { useCallback, useEffect, useState } from 'react'
 import { cmsService } from '../services/cms'
+import { isLiveMode } from '../services/api'
+import { settingsService } from '../services/settings'
 import type { CmsPage, PublishStatus } from '../types'
+import { PageSectionsEditor } from '../components/website/PageSectionsEditor'
 import { slugify, formatDate } from '../utils/format'
+import { uuid } from '../utils/uuid'
 import { useToast } from '../context/ToastContext'
 import { PageHeader } from '../components/ui/PageHeader'
 import { Button } from '../components/ui/Button'
@@ -23,6 +27,7 @@ import {
   PublishIcon,
   ExternalLinkIcon,
   HomeIcon,
+  LayersIcon,
 } from '../components/icons'
 
 const PAGE_SIZE = 8
@@ -68,6 +73,24 @@ export function PagesPage() {
 
   const [deleteTarget, setDeleteTarget] = useState<CmsPage | null>(null)
   const [deleting, setDeleting] = useState(false)
+  const [contentTarget, setContentTarget] = useState<{ slug: string; title: string } | null>(null)
+  const [siteBase, setSiteBase] = useState('')
+
+  const siteUrl = (siteBase || 'http://localhost:5174').replace(/\/+$/, '')
+  const pageUrl = (item: CmsPage) =>
+    `${siteUrl}${item.isHome ? '' : `/${item.slug.replace(/^\/+/, '')}`}`
+
+  useEffect(() => {
+    let active = true
+    void settingsService.get().then((settings) => {
+      if (!active) return
+      const raw = settings.connectedSite?.url?.trim() ?? ''
+      setSiteBase(/^https?:\/\//i.test(raw) ? raw : raw ? `https://${raw}` : '')
+    })
+    return () => {
+      active = false
+    }
+  }, [])
 
   const load = useCallback(async () => {
     setLoading(true)
@@ -145,25 +168,53 @@ export function PagesPage() {
   }
 
   const handleDuplicate = async (item: CmsPage) => {
+    const source = (await cmsService.getPage(item.id)) ?? item
     await cmsService.createPage({
       title: `${item.title} (copy)`,
       slug: `${item.slug}-copy`,
-      metaTitle: item.metaTitle,
-      metaDescription: item.metaDescription,
+      metaTitle: source.metaTitle,
+      metaDescription: source.metaDescription,
       status: 'DRAFT',
       template: item.template,
       sortOrder: item.sortOrder + 1,
       author: item.author,
-      sections: item.sections,
+      sections: (source.sections ?? []).map((section) => ({
+        id: uuid(),
+        pageId: item.id,
+        type: section.type,
+        name: section.name,
+        sortOrder: section.sortOrder,
+        isActive: section.isActive,
+        settings: section.settings,
+        content: section.content,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      })),
     })
     toast('Page duplicated as draft', { variant: 'info' })
     await load()
   }
 
-  const handlePublish = async (item: CmsPage) => {
-    await cmsService.updatePage(item.id, { status: 'PUBLISHED' })
-    toast(`"${item.title}" is now live`, { variant: 'success' })
+  const handlePublish = async (item: CmsPage, status: PublishStatus) => {
+    await cmsService.updatePage(item.id, { status })
+    toast(
+      status === 'PUBLISHED'
+        ? `"${item.title}" is now live`
+        : `"${item.title}" is now a draft`,
+      { variant: 'success' },
+    )
     await load()
+  }
+
+  const openContentEditor = (item: CmsPage) => {
+    if (!isLiveMode()) {
+      toast('Live backend not connected', {
+        variant: 'info',
+        description: 'Start the server to edit the live page content.',
+      })
+      return
+    }
+    setContentTarget({ slug: item.slug, title: item.title })
   }
 
   const columns: Column<CmsPage>[] = [
@@ -227,7 +278,7 @@ export function PagesPage() {
             <button
               type="button"
               title="Publish"
-              onClick={() => void handlePublish(item)}
+              onClick={() => void handlePublish(item, 'PUBLISHED')}
               className="flex h-8 w-8 items-center justify-center rounded-full text-muted transition hover:bg-success/10 hover:text-success"
             >
               <PublishIcon className="h-4 w-4" />
@@ -239,19 +290,25 @@ export function PagesPage() {
               { label: 'Edit', icon: <PencilIcon />, onClick: () => openEdit(item) },
               { label: 'Duplicate', icon: <CopyIcon />, onClick: () => void handleDuplicate(item) },
               {
+                label: 'Edit content',
+                icon: <LayersIcon />,
+                onClick: () => openContentEditor(item),
+              },
+              {
                 label: item.status === 'PUBLISHED' ? 'Unpublish (draft)' : 'Publish',
                 icon: <PublishIcon />,
-                onClick: () => void handlePublish(item),
+                onClick: () =>
+                  void handlePublish(item, item.status === 'PUBLISHED' ? 'DRAFT' : 'PUBLISHED'),
               },
               {
                 label: 'Preview',
                 icon: <EyeIcon />,
-                onClick: () => toast(`Previewing /${item.slug}`, { variant: 'info' }),
+                onClick: () => window.open(pageUrl(item), '_blank', 'noopener,noreferrer'),
               },
               {
                 label: 'Open live site',
                 icon: <ExternalLinkIcon />,
-                onClick: () => toast('Live site opens in a new tab', { variant: 'info' }),
+                onClick: () => window.open(siteUrl, '_blank', 'noopener,noreferrer'),
               },
               {
                 label: 'Delete',
@@ -416,6 +473,13 @@ export function PagesPage() {
         loading={deleting}
         onConfirm={() => void handleDelete()}
         onClose={() => setDeleteTarget(null)}
+      />
+
+      <PageSectionsEditor
+        open={contentTarget !== null}
+        pageSlug={contentTarget?.slug ?? ''}
+        pageTitle={contentTarget?.title ?? ''}
+        onClose={() => setContentTarget(null)}
       />
     </div>
   )

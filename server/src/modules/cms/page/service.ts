@@ -79,6 +79,14 @@ export const pageService = {
       isHome: input.isHome ?? false,
     });
 
+    if (input.sections && input.sections.length > 0) {
+      await pageRepository.replaceSections(
+        page.id,
+        organizationId,
+        input.sections,
+      );
+    }
+
     await recordAudit({
       userId: req.user?.id,
       organizationId,

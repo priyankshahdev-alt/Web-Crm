@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { usePageContent } from '../hooks/usePageContent';
 
 const pressData = [
   { title: "Paryavaran Mitra", date: "11 September 2021", year: 2021, description: "Governor presents 'Paryavaran Mitra Samman' on National Forest Martyrs' Day", image: "/images/logos/rajbhawan.jpeg", source: "Raj Bhavan", link: "https://rajbhavan-maharashtra.gov.in/en/11-09-2021-governor-presents-paryavaran-mitra-samman-on-national-forest-martyrs-day/" },
@@ -19,10 +20,30 @@ const pressData = [
 ];
 
 const Press = () => {
+  const content = usePageContent('press');
+
+  const bannerTitle = content('press-banner', 'title') ?? 'Press Release';
+
+  const heroTag = content('press-hero', 'tag') ?? 'BEING SEVAK CHARITABLE TRUST';
+  const heroTitlePrefix = content('press-hero', 'titlePrefix') ?? 'In The';
+  const heroTitleHighlight = content('press-hero', 'titleHighlight') ?? 'Press';
+  const heroDescription =
+    content('press-hero', 'description') ??
+    'Discover the stories, milestones, and impact of Being Sevak Charitable Trust as featured in leading national and international media outlets.';
+  const heroImage = content('press-hero', 'image') ?? '/images/logos/press.jpg';
+  const stat1Value = content('press-hero', 'stat1Value') ?? '14+';
+  const stat1Label = content('press-hero', 'stat1Label') ?? 'Media Features';
+  const stat2Value = content('press-hero', 'stat2Value') ?? '10+';
+  const stat2Label = content('press-hero', 'stat2Label') ?? 'News Outlets';
+
+  const mediaHeading = content('press-media', 'heading') ?? 'Media Coverage';
+
+  const pressItems = content('press-releases', 'items') ?? pressData;
+
   const [search, setSearch] = useState('');
   const [yearFilter, setYearFilter] = useState('all');
 
-  const filtered = pressData.filter(item => {
+  const filtered = pressItems.filter(item => {
     if (yearFilter !== 'all' && item.year !== parseInt(yearFilter)) return false;
     if (search) {
       const s = search.toLowerCase();
@@ -103,28 +124,28 @@ const Press = () => {
       `}</style>
 
       <section className="tax-box">
-        <h1>Press Release</h1>
+        <h1>{bannerTitle}</h1>
       </section>
 
       <section className="hero" id="home">
         <div className="hero-content">
-          <span className="tag">BEING SEVAK CHARITABLE TRUST</span>
-          <h1>In The <span>Press</span></h1>
-          <p>Discover the stories, milestones, and impact of Being Sevak Charitable Trust as featured in leading national and international media outlets.</p>
+          <span className="tag">{heroTag}</span>
+          <h1>{heroTitlePrefix} <span>{heroTitleHighlight}</span></h1>
+          <p>{heroDescription}</p>
           <div className="hero-buttons">
             <a href="#press-grid" className="donate-btn">Explore Coverage</a>
           </div>
         </div>
         <div className="hero-image">
           <div className="floating-card card1">
-            <h3>14+</h3>
-            <p>Media Features</p>
+            <h3>{stat1Value}</h3>
+            <p>{stat1Label}</p>
           </div>
           <div className="floating-card card2">
-            <h3>10+</h3>
-            <p>News Outlets</p>
+            <h3>{stat2Value}</h3>
+            <p>{stat2Label}</p>
           </div>
-          <img src="/images/logos/press.jpg" alt="Press" />
+          <img src={heroImage} alt="Press" />
         </div>
         <div className="blur blur1"></div>
         <div className="blur blur2"></div>
@@ -132,7 +153,7 @@ const Press = () => {
 
       <section id="press-grid" className="press-section">
         <div className="press-header">
-          <h2 className="section-title">Media Coverage</h2>
+          <h2 className="section-title">{mediaHeading}</h2>
           <div className="press-controls">
             <div className="press-search">
               <i className="fas fa-search"></i>

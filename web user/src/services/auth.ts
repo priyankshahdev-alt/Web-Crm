@@ -13,6 +13,7 @@ const DEMO_USER: WebUserSession = {
   accessToken: 'demo-token',
   refreshToken: 'demo-refresh',
   currentOrgId: 'being-sevak',
+  currentOrgSlug: 'being-sevak',
   user: {
     id: 'u1',
     email: 'rahul@beingsevak.org',
@@ -36,6 +37,7 @@ export const authService = {
         accessToken: payload.accessToken,
         refreshToken: payload.refreshToken,
         currentOrgId: membership?.id ?? 'being-sevak',
+        currentOrgSlug: membership?.slug,
         user: {
           id: payload.user.id,
           email: payload.user.email,

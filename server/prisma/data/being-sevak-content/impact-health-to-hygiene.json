@@ -1,0 +1,65 @@
+{
+  "slug": "impact-health-to-hygiene",
+  "title": "Health to Hygiene",
+  "metaTitle": "Health to Hygiene | Being Sevak Foundation",
+  "metaDescription": "The Health to Hygiene initiative supports the repair and renovation of school toilets, handwashing stations, kitchens, and sanitation infrastructure for clean and healthy learning environments.",
+  "template": "default",
+  "sortOrder": 46,
+  "isHome": false,
+  "sections": [
+    {
+      "type": "impact-health-to-hygiene-heading",
+      "name": "Health to Hygiene Header",
+      "sortOrder": 1,
+      "isActive": true,
+      "content": {
+        "tag": "SCHOOL INFRASTRUCTURE DEVELOPMENT",
+        "heading": "Health to Hygiene",
+        "description": "Through the Health to Hygiene initiative, Being Sevak Charitable Trust works towards creating clean, safe, and healthy learning environments for children. We support the repair and renovation of school toilets, handwashing stations, kitchens, drinking water facilities, and sanitation infrastructure, ensuring that every child has access to a hygienic and dignified educational environment.",
+        "image": "/images/g31.png"
+      }
+    },
+    {
+      "type": "impact-health-to-hygiene-cards",
+      "name": "Program Highlights",
+      "sortOrder": 2,
+      "isActive": true,
+      "content": {
+        "items": [
+          { "title": "Toilet Renovation", "description": "Repairing and upgrading school toilets to provide clean, safe, and usable sanitation facilities." },
+          { "title": "Handwashing Stations", "description": "Installing and repairing wash basins to promote healthy hygiene practices among students." },
+          { "title": "Kitchen Improvement", "description": "Renovating school kitchens to support safe meal preparation and nutrition programs." },
+          { "title": "Healthy Learning Spaces", "description": "Creating hygienic school environments that improve student health, attendance, and well-being." }
+        ]
+      }
+    },
+    {
+      "type": "impact-health-to-hygiene-impact",
+      "name": "Success Story & Stats",
+      "sortOrder": 3,
+      "isActive": true,
+      "content": {
+        "tag": "COMMUNITY IMPACT",
+        "heading": "Building Healthier Schools for Every Child",
+        "text": "A clean school environment directly impacts student health, confidence, and academic performance. Through repairs and renovations of sanitation facilities, kitchens, wash areas, and hygiene infrastructure, Being Sevak Charitable Trust is helping schools provide safer and healthier spaces where children can learn, grow, and thrive with dignity.",
+        "stats": [
+          { "value": "100+", "label": "Schools Supported" },
+          { "value": "500+", "label": "Facilities Renovated" },
+          { "value": "50K+", "label": "Students Benefited" }
+        ]
+      }
+    },
+    {
+      "type": "impact-health-to-hygiene-gallery",
+      "name": "Project Gallery",
+      "sortOrder": 4,
+      "isActive": true,
+      "content": {
+        "tag": "PROJECT GALLERY",
+        "heading": "Moments of Impact",
+        "description": "Explore glimpses of our initiatives, community outreach programs, and the positive impact created through collective efforts.",
+        "images": ["/images/g32.png", "/images/g33.png", "/images/g34.png"]
+      }
+    }
+  ]
+}

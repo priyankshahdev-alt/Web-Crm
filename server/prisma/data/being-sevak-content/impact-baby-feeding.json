@@ -1,0 +1,65 @@
+{
+  "slug": "impact-baby-feeding",
+  "title": "Baby Feeding Kit Support",
+  "metaTitle": "Baby Feeding Kit Support | Being Sevak Foundation",
+  "metaDescription": "Baby Feeding Kit Support program by Being Sevak Charitable Trust provides feeding kits, infant nutrition supplies and baby care essentials to underprivileged families.",
+  "template": "default",
+  "sortOrder": 41,
+  "isHome": false,
+  "sections": [
+    {
+      "type": "baby-feeding-heading",
+      "name": "Baby Feeding Header",
+      "sortOrder": 1,
+      "isActive": true,
+      "content": {
+        "tag": "NUTRITION & CARE PROGRAM",
+        "heading": "Baby Feeding Kit Support",
+        "description": "Proper nutrition is essential for every child's growth and development. Through our Baby Feeding Kit Support program, Being Sevak Charitable Trust provides essential feeding kits, infant nutrition supplies, and baby care essentials to underprivileged families. This initiative ensures that newborns and infants receive the care and nourishment they need for a healthy start in life.",
+        "image": "/images/g1.jpeg"
+      }
+    },
+    {
+      "type": "baby-feeding-cards",
+      "name": "Program Highlights",
+      "sortOrder": 2,
+      "isActive": true,
+      "content": {
+        "items": [
+          { "title": "Nutrition Essentials", "description": "Providing quality feeding bottles, formula, and nutrition supplies for infants." },
+          { "title": "Baby Care Kits", "description": "Complete feeding and hygiene kits to ensure proper care for newborns and infants." },
+          { "title": "Maternal Support", "description": "Helping new mothers with the resources they need to care for their babies properly." },
+          { "title": "Healthy Beginnings", "description": "Ensuring every child gets the nutritional foundation they need for healthy growth." }
+        ]
+      }
+    },
+    {
+      "type": "baby-feeding-impact",
+      "name": "Success Story & Stats",
+      "sortOrder": 3,
+      "isActive": true,
+      "content": {
+        "tag": "SUCCESS STORY",
+        "heading": "A Healthier Start for Every Child",
+        "text": "For families struggling to make ends meet, providing proper nutrition for their newborns can be a challenge. Through the Baby Feeding Kit Support program, Being Sevak Charitable Trust ensures that infants from underprivileged families receive essential feeding supplies and nutrition, giving them a healthy and hopeful start to life.",
+        "stats": [
+          { "value": "3000+", "label": "Kits Distributed" },
+          { "value": "100%", "label": "Quality Products" },
+          { "value": "1000+", "label": "Families Helped" }
+        ]
+      }
+    },
+    {
+      "type": "baby-feeding-gallery",
+      "name": "Project Gallery",
+      "sortOrder": 4,
+      "isActive": true,
+      "content": {
+        "tag": "PROJECT GALLERY",
+        "heading": "Moments of Impact",
+        "description": "Explore glimpses of our initiatives, community outreach programs, and the positive impact created through collective efforts.",
+        "images": ["/images/g2.webp", "/images/g3.webp", "/images/g4.webp"]
+      }
+    }
+  ]
+}

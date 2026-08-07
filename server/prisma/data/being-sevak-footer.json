@@ -1,0 +1,36 @@
+[
+  {
+    "label": "About Us",
+    "children": [
+      { "label": "About BSCT", "url": "/about" },
+      { "label": "Management", "url": "/management" },
+      { "label": "Mission / Vision", "url": "/mission-vision" },
+      { "label": "Trust Documents", "url": "/trust-documents" },
+      { "label": "Where We Work", "url": "/where-we-work" },
+      { "label": "Awards / Achievements", "url": "/awards" }
+    ]
+  },
+  {
+    "label": "Our Projects",
+    "children": [
+      { "label": "Mission Annapurna", "url": "/mission-annapurna" },
+      { "label": "Mission Vidhya", "url": "/mission-vidhya" },
+      { "label": "Mission Aurat", "url": "/mission-aurat" },
+      { "label": "Mission Bezubaan", "url": "/mission-bezubaan" },
+      { "label": "Mission Atmanirbhar", "url": "/mission-atmanirbhar" },
+      { "label": "Mission Arogya", "url": "/mission-wellness" },
+      { "label": "Sevak Seva Kendra", "url": "/sevak-seva-kendra" },
+      { "label": "Mission Beach Sevak", "url": "/mission-beach" }
+    ]
+  },
+  {
+    "label": "GET INVOLVED",
+    "children": [
+      { "label": "Individual Donation", "url": "/individual-donation" },
+      { "label": "Volunteers(SEVAK BANO)", "url": "/careers" },
+      { "label": "CSR", "url": "/csr" },
+      { "label": "School/Institute Collaboration", "url": "/school-collaboration" },
+      { "label": "NGO Collaboration", "url": "/ngo-collaboration" }
+    ]
+  }
+]

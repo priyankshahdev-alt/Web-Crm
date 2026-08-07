@@ -1,0 +1,65 @@
+{
+  "slug": "impact-bottle-crusher",
+  "title": "Bottle Crusher Initiative",
+  "metaTitle": "Bottle Crusher Initiative | Being Sevak Foundation",
+  "metaDescription": "The Bottle Crusher Initiative provides bottle crushing machines that reduce plastic waste, promote recycling, and create livelihood opportunities while contributing to a cleaner, greener future.",
+  "template": "default",
+  "sortOrder": 51,
+  "isHome": false,
+  "sections": [
+    {
+      "type": "impact-bottle-crusher-heading",
+      "name": "Bottle Crusher Header",
+      "sortOrder": 1,
+      "isActive": true,
+      "content": {
+        "tag": "ENVIRONMENTAL PROGRAM",
+        "heading": "Bottle Crusher Initiative",
+        "description": "Plastic pollution is one of the most pressing environmental challenges of our time. Through the Bottle Crusher Initiative, Being Sevak Charitable Trust provides bottle crushing machines that reduce plastic waste volume, promote recycling, and create livelihood opportunities for the underprivileged while contributing to a cleaner, greener future.",
+        "image": "/images/g66.png"
+      }
+    },
+    {
+      "type": "impact-bottle-crusher-cards",
+      "name": "Program Highlights",
+      "sortOrder": 2,
+      "isActive": true,
+      "content": {
+        "items": [
+          { "title": "Waste Reduction", "description": "Reducing plastic waste volume by up to 90% for easier recycling and disposal." },
+          { "title": "Livelihood Generation", "description": "Creating income opportunities for beneficiaries through plastic collection and recycling." },
+          { "title": "Environmental Impact", "description": "Contributing to cleaner surroundings and a healthier environment for communities." },
+          { "title": "Community Awareness", "description": "Educating communities about the importance of waste management and recycling." }
+        ]
+      }
+    },
+    {
+      "type": "impact-bottle-crusher-impact",
+      "name": "Success Story & Stats",
+      "sortOrder": 3,
+      "isActive": true,
+      "content": {
+        "tag": "SUCCESS STORY",
+        "heading": "Turning Waste into Opportunity",
+        "text": "Plastic bottles that would otherwise pollute our streets and waterways are now being crushed, recycled, and converted into valuable resources. Through this initiative, beneficiaries have found a sustainable livelihood while contributing to environmental conservation, proving that social impact and environmental responsibility can go hand in hand.",
+        "stats": [
+          { "value": "500+", "label": "Tons Recycled" },
+          { "value": "100+", "label": "Beneficiaries" },
+          { "value": "100%", "label": "Eco-Friendly" }
+        ]
+      }
+    },
+    {
+      "type": "impact-bottle-crusher-gallery",
+      "name": "Project Gallery",
+      "sortOrder": 4,
+      "isActive": true,
+      "content": {
+        "tag": "PROJECT GALLERY",
+        "heading": "Moments of Impact",
+        "description": "Explore glimpses of our initiatives, community outreach programs, and the positive impact created through collective efforts.",
+        "images": ["/images/g67.png", "/images/g68.png", "/images/g69.png"]
+      }
+    }
+  ]
+}

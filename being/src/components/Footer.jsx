@@ -1,8 +1,52 @@
 import { Link } from 'react-router-dom';
 import { useSite } from '../context/SiteContext';
 
+const DEFAULT_FOOTER_COLUMNS = [
+  {
+    title: 'About Us',
+    links: [
+      { label: 'About BSCT', url: '/about' },
+      { label: 'Management', url: '/management' },
+      { label: 'Mission / Vision', url: '/mission-vision' },
+      { label: 'Trust Documents', url: '/trust-documents' },
+      { label: 'Where We Work', url: '/where-we-work' },
+      { label: 'Awards / Achievements', url: '/awards' },
+    ],
+  },
+  {
+    title: 'Our Projects',
+    links: [
+      { label: 'Mission Annapurna', url: '/mission-annapurna' },
+      { label: 'Mission Vidhya', url: '/mission-vidhya' },
+      { label: 'Mission Aurat', url: '/mission-aurat' },
+      { label: 'Mission Bezubaan', url: '/mission-bezubaan' },
+      { label: 'Mission Atmanirbhar', url: '/mission-atmanirbhar' },
+      { label: 'Mission Arogya', url: '/mission-wellness' },
+      { label: 'Sevak Seva Kendra', url: '/sevak-seva-kendra' },
+      { label: 'Mission Beach Sevak', url: '/mission-beach' },
+    ],
+  },
+  {
+    title: 'GET INVOLVED',
+    links: [
+      { label: 'Individual Donation', url: '/individual-donation' },
+      { label: 'Volunteers(SEVAK BANO)', url: '/careers' },
+      { label: 'CSR', url: '/csr' },
+      { label: 'School/Institute Collaboration', url: '/school-collaboration' },
+      { label: 'NGO Collaboration', url: '/ngo-collaboration' },
+    ],
+  },
+];
+
 export default function Footer() {
-  const { getSetting } = useSite();
+  const { getSetting, getMenu } = useSite();
+  const footerMenu = getMenu('footer-nav');
+  const linkColumns = footerMenu?.items && footerMenu.items.length > 0
+    ? footerMenu.items.map((col) => ({
+        title: col.label,
+        links: (col.children || []).map((link) => ({ label: link.label, url: link.url })),
+      }))
+    : DEFAULT_FOOTER_COLUMNS;
   const phone = getSetting('contact.phone', '+91 8879035035');
   const email = getSetting('contact.email', 'being.sevak@gmail.com');
   const address = getSetting('contact.address', 'MUMBAI, INDIA');
@@ -28,55 +72,37 @@ export default function Footer() {
           </div>
           <p className="footer-desc"> {tagline}</p>
         </div>
-        <div className="footer-col">
-          <h4>About Us</h4>
-          <ul>
-            <li><Link to="/about">About BSCT</Link></li>
-            <li><Link to="/management">Management</Link></li>
-            <li><Link to="/mission-vision">Mission / Vision</Link></li>
-            <li><Link to="/trust-documents">Trust Documents</Link></li>
-            <li><Link to="/where-we-work">Where We Work</Link></li>
-            <li><Link to="/awards">Awards / Achievements</Link></li>
-          </ul>
-        </div>
-        <div className="footer-col">
-          <h4>Our Projects</h4>
-          <ul>
-            <li><Link to="/mission-annapurna">Mission Annapurna</Link></li>
-            <li><Link to="/mission-vidhya">Mission Vidhya</Link></li>
-            <li><Link to="/mission-aurat">Mission Aurat</Link></li>
-            <li><Link to="/mission-bezubaan">Mission Bezubaan</Link></li>
-            <li><Link to="/mission-atmanirbhar">Mission Atmanirbhar</Link></li>
-            <li><Link to="/mission-wellness">Mission Arogya</Link></li>
-            <li><Link to="/sevak-seva-kendra">Sevak Seva Kendra</Link></li>
-            <li><Link to="/mission-beach">Mission Beach Sevak</Link></li>
-            {/* <li><Link to="/mission-eco">Mission Eco-Warriors</Link></li> */}
-          </ul>
-        </div>
-        <div className="footer-col">
-          <h4>GET INVOLVED</h4>
-          <ul>
-            <li><Link to="/individual-donation">Individual Donation</Link></li>
-            <li><Link to="/careers">Volunteers(SEVAK BANO)</Link></li>
-            <li><Link to="/csr">CSR</Link></li>
-            <li><Link to="/school-collaboration">School/Institute Collaboration</Link></li>
-            <li><Link to="/ngo-collaboration">NGO Collaboration</Link></li>
-          </ul>
-          <div className="social-icons">
-            <a href={socialFb ? `https://www.facebook.com/${socialFb}` : 'https://www.facebook.com/share/1P33YzE6HM/?mibextid=wwXIfr'} target="_blank" rel="noopener noreferrer">
-              <i className="fab fa-facebook-f"></i>
-            </a>
-            <a href={socialIg ? `https://www.instagram.com/${socialIg}` : 'https://www.instagram.com/beingsevak?igsh=MTRjam5nNjU4a2w1Mw=='} target="_blank" rel="noopener noreferrer">
-              <i className="fab fa-instagram"></i>
-            </a>
-            <a href={socialYt ? `https://www.youtube.com/@${socialYt}` : 'https://youtube.com/@beingsevak?si=T_qcPUg699KmS8_2'} target="_blank" rel="noopener noreferrer">
-              <i className="fab fa-youtube"></i>
-            </a>
-            <a href={socialLi ? `https://www.linkedin.com/company/${socialLi}` : 'https://www.linkedin.com/company/www-linkedin-cominshwetashah2658ba102/'} target="_blank" rel="noopener noreferrer">
-              <i className="fab fa-linkedin-in"></i>
-            </a>
-          </div>
-        </div>
+        {linkColumns.map((col, i) => {
+          const isLast = i === linkColumns.length - 1;
+          return (
+            <div className="footer-col" key={col.title || i}>
+              <h4>{col.title}</h4>
+              <ul>
+                {col.links.map((link) => (
+                  <li key={link.url || link.label}>
+                    <Link to={link.url}>{link.label}</Link>
+                  </li>
+                ))}
+              </ul>
+              {isLast && (
+                <div className="social-icons">
+                  <a href={socialFb ? `https://www.facebook.com/${socialFb}` : 'https://www.facebook.com/share/1P33YzE6HM/?mibextid=wwXIfr'} target="_blank" rel="noopener noreferrer">
+                    <i className="fab fa-facebook-f"></i>
+                  </a>
+                  <a href={socialIg ? `https://www.instagram.com/${socialIg}` : 'https://www.instagram.com/beingsevak?igsh=MTRjam5nNjU4a2w1Mw=='} target="_blank" rel="noopener noreferrer">
+                    <i className="fab fa-instagram"></i>
+                  </a>
+                  <a href={socialYt ? `https://www.youtube.com/@${socialYt}` : 'https://youtube.com/@beingsevak?si=T_qcPUg699KmS8_2'} target="_blank" rel="noopener noreferrer">
+                    <i className="fab fa-youtube"></i>
+                  </a>
+                  <a href={socialLi ? `https://www.linkedin.com/company/${socialLi}` : 'https://www.linkedin.com/company/www-linkedin-cominshwetashah2658ba102/'} target="_blank" rel="noopener noreferrer">
+                    <i className="fab fa-linkedin-in"></i>
+                  </a>
+                </div>
+              )}
+            </div>
+          );
+        })}
         <div className="footer-col">
           <h4>Contact</h4>
           <a href={`tel:${phone.replace(/\s+/g, '')}`} className="footer-contact-link"><i className="fas fa-phone"></i>{phone}</a>

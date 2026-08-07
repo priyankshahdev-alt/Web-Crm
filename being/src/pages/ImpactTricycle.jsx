@@ -1,10 +1,40 @@
 import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
+import { usePageContent } from '../hooks/usePageContent';
 
 export default function ImpactTricycle() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  const content = usePageContent('impact-tricycle');
+
+  const headingTag = content('impact-tricycle-heading', 'tag') ?? 'MOBILITY SUPPORT PROGRAM';
+  const headingTitle = content('impact-tricycle-heading', 'heading') ?? 'Tricycle to Lifecycle';
+  const headingText =
+    content('impact-tricycle-heading', 'description') ??
+    'Empowering visually impaired and differently-abled individuals with specially designed tricycles that provide independence, dignity, and a better quality of life. Through this initiative, Being Sevak Charitable Trust helps beneficiaries travel safely, access opportunities, and become more self-reliant in their daily lives.';
+  const mainImage = content('impact-tricycle-heading', 'image') ?? '/images/g64.webp';
+  const cards =
+    content('impact-tricycle-cards', 'items') ?? [
+      { title: 'Freedom of Movement', description: 'Tricycles provide safe and independent mobility for visually impaired and differently-abled individuals.' },
+      { title: 'Improved Daily Life', description: 'Beneficiaries can travel to work, education centers, markets, and social activities with confidence.' },
+      { title: 'Building Self-Reliance', description: 'Access to mobility creates opportunities for financial independence and social inclusion.' },
+      { title: 'Community Impact', description: 'Every tricycle gifted becomes a step toward dignity, empowerment, and a more inclusive society.' },
+    ];
+  const stats =
+    content('impact-tricycle-impact', 'stats') ?? [
+      { value: '500+', label: 'Lives Empowered' },
+      { value: '100%', label: 'Mobility Support' },
+      { value: '50+', label: 'Distribution Drives' },
+    ];
+  const galleryTag = content('impact-tricycle-gallery', 'tag') ?? 'PROJECT GALLERY';
+  const galleryTitle = content('impact-tricycle-gallery', 'heading') ?? 'Moments of Impact';
+  const galleryText =
+    content('impact-tricycle-gallery', 'description') ??
+    'Explore glimpses of our initiatives, community outreach programs, and the positive impact created through collective efforts.';
+  const galleryImages =
+    content('impact-tricycle-gallery', 'images') ?? ['/images/g61.webp', '/images/g62.webp', '/images/g63.webp'];
 
   return (
     <>
@@ -222,90 +252,46 @@ export default function ImpactTricycle() {
       <section className="tricycle-lifecycle-section">
         <div className="tricycle-container">
           <div className="tricycle-heading">
-            <span className="tricycle-tag">MOBILITY SUPPORT PROGRAM</span>
-            <h2>Tricycle to Lifecycle</h2>
-            <p>
-              Empowering visually impaired and differently-abled individuals
-              with specially designed tricycles that provide independence,
-              dignity, and a better quality of life. Through this initiative,
-              Being Sevak Charitable Trust helps beneficiaries travel safely,
-              access opportunities, and become more self-reliant in their
-              daily lives.
-            </p>
+            <span className="tricycle-tag">{headingTag}</span>
+            <h2>{headingTitle}</h2>
+            <p>{headingText}</p>
           </div>
 
           <div className="tricycle-grid">
             <div className="tricycle-image">
-              <img src="/images/g64.webp" alt="Tricycle Distribution" />
+              <img src={mainImage} alt="Tricycle Distribution" />
             </div>
             <div className="tricycle-content">
-              <div className="tricycle-card">
-                <h3>Freedom of Movement</h3>
-                <p>
-                  Tricycles provide safe and independent mobility for
-                  visually impaired and differently-abled individuals.
-                </p>
-              </div>
-              <div className="tricycle-card">
-                <h3>Improved Daily Life</h3>
-                <p>
-                  Beneficiaries can travel to work, education centers,
-                  markets, and social activities with confidence.
-                </p>
-              </div>
-              <div className="tricycle-card">
-                <h3>Building Self-Reliance</h3>
-                <p>
-                  Access to mobility creates opportunities for financial
-                  independence and social inclusion.
-                </p>
-              </div>
-              <div className="tricycle-card">
-                <h3>Community Impact</h3>
-                <p>
-                  Every tricycle gifted becomes a step toward dignity,
-                  empowerment, and a more inclusive society.
-                </p>
-              </div>
+              {cards.map((card, i) => (
+                <div className="tricycle-card" key={i}>
+                  <h3>{card.title}</h3>
+                  <p>{card.description}</p>
+                </div>
+              ))}
             </div>
           </div>
 
           <div className="tricycle-stats">
-            <div className="tricycle-stat-box">
-              <h3>500+</h3>
-              <span>Lives Empowered</span>
-            </div>
-            <div className="tricycle-stat-box">
-              <h3>100%</h3>
-              <span>Mobility Support</span>
-            </div>
-            <div className="tricycle-stat-box">
-              <h3>50+</h3>
-              <span>Distribution Drives</span>
-            </div>
+            {stats.map((s, i) => (
+              <div className="tricycle-stat-box" key={i}>
+                <h3>{s.value}</h3>
+                <span>{s.label}</span>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       <section className="shital-gallery-section">
         <div className="shital-gallery-heading">
-          <span>PROJECT GALLERY</span>
-          <h2>Moments of Impact</h2>
-          <p>
-            Explore glimpses of our initiatives, community outreach programs,
-            and the positive impact created through collective efforts.
-          </p>
+          <span>{galleryTag}</span>
+          <h2>{galleryTitle}</h2>
+          <p>{galleryText}</p>
         </div>
         <div className="shital-gallery">
-          <div className="shital-gallery-item">
-            <img src="/images/g61.webp" alt="" />
-          </div>
-          <div className="shital-gallery-item">
-            <img src="/images/g62.webp" alt="" />
-          </div>
-          <div className="shital-gallery-item">
-            <img src="/images/g63.webp" alt="" />
-          </div>
+          {galleryImages.map((src, i) => (
+            <div className="shital-gallery-item" key={i}><img src={src} alt="" /></div>
+          ))}
         </div>
       </section>
     </>

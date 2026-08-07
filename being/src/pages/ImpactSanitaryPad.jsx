@@ -1,10 +1,45 @@
 import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
+import { usePageContent } from '../hooks/usePageContent';
 
 export default function ImpactSanitaryPad() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  const content = usePageContent('impact-sanitary-pad');
+
+  const headingTag = content('impact-sanitary-pad-heading', 'tag') ?? 'WOMEN HEALTH & HYGIENE INITIATIVE';
+  const headingTitle = content('impact-sanitary-pad-heading', 'heading') ?? 'Sanitary Pad Vending Machine';
+  const headingText =
+    content('impact-sanitary-pad-heading', 'description') ??
+    'Being Sevak Charitable Trust has installed Sanitary Pad Vending Machines at metro stations to promote menstrual hygiene, dignity, and accessibility for women commuters. These machines ensure that sanitary pads are available when needed, helping women manage their health safely and confidently while travelling. Through this initiative, we are creating cleaner, healthier, and more inclusive public spaces.';
+  const mainImage = content('impact-sanitary-pad-heading', 'image') ?? '/images/g24.webp';
+  const cards =
+    content('impact-sanitary-pad-cards', 'items') ?? [
+      { title: 'Menstrual Hygiene', description: 'Providing easy access to sanitary pads helps women maintain hygiene and health during emergencies.' },
+      { title: 'Metro Station Access', description: 'Strategically installed at metro stations for maximum convenience and public benefit.' },
+      { title: 'Women Empowerment', description: 'Supporting dignity, confidence, and comfort for women in public spaces.' },
+      { title: 'Health Awareness', description: 'Encouraging awareness about menstrual health and breaking social stigma through accessibility.' },
+    ];
+  const storyTag = content('impact-sanitary-pad-impact', 'tag') ?? 'COMMUNITY IMPACT';
+  const storyTitle = content('impact-sanitary-pad-impact', 'heading') ?? 'Supporting Women Every Day';
+  const storyText =
+    content('impact-sanitary-pad-impact', 'text') ??
+    'Thousands of women travel through metro stations daily. Access to sanitary pads during unexpected situations can make a significant difference. By installing Sanitary Pad Vending Machines, Being Sevak Charitable Trust ensures that essential hygiene products are available whenever required, creating a safer and more supportive environment for women.';
+  const stats =
+    content('impact-sanitary-pad-impact', 'stats') ?? [
+      { value: '10+', label: 'Machines Installed' },
+      { value: '50K+', label: 'Women Benefited' },
+      { value: '100%', label: 'Hygiene Focused' },
+    ];
+  const galleryTag = content('impact-sanitary-pad-gallery', 'tag') ?? 'PROJECT GALLERY';
+  const galleryTitle = content('impact-sanitary-pad-gallery', 'heading') ?? 'Moments of Impact';
+  const galleryText =
+    content('impact-sanitary-pad-gallery', 'description') ??
+    'Explore glimpses of our initiatives, community outreach programs, and the positive impact created through collective efforts.';
+  const galleryImages =
+    content('impact-sanitary-pad-gallery', 'images') ?? ['/images/g21.webp', '/images/g22.webp', '/images/g23.jpg'];
 
   const css = `
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -66,69 +101,38 @@ export default function ImpactSanitaryPad() {
       <section className="sanitary-section">
         <div className="sanitary-container">
           <div className="sanitary-heading">
-            <span className="sanitary-tag">WOMEN HEALTH & HYGIENE INITIATIVE</span>
-            <h2>Sanitary Pad Vending Machine</h2>
-            <p>
-              Being Sevak Charitable Trust has installed Sanitary Pad Vending
-              Machines at metro stations to promote menstrual hygiene,
-              dignity, and accessibility for women commuters. These machines
-              ensure that sanitary pads are available when needed, helping
-              women manage their health safely and confidently while
-              travelling. Through this initiative, we are creating cleaner,
-              healthier, and more inclusive public spaces.
-            </p>
+            <span className="sanitary-tag">{headingTag}</span>
+            <h2>{headingTitle}</h2>
+            <p>{headingText}</p>
           </div>
 
           <div className="sanitary-grid">
             <div className="sanitary-image">
-              <img src="/images/g24.webp" alt="Sanitary Pad Vending Machine" />
+              <img src={mainImage} alt="Sanitary Pad Vending Machine" />
             </div>
             <div className="sanitary-content">
-              <div className="sanitary-card">
-                <h3>Menstrual Hygiene</h3>
-                <p>Providing easy access to sanitary pads helps women maintain hygiene and health during emergencies.</p>
-              </div>
-              <div className="sanitary-card">
-                <h3>Metro Station Access</h3>
-                <p>Strategically installed at metro stations for maximum convenience and public benefit.</p>
-              </div>
-              <div className="sanitary-card">
-                <h3>Women Empowerment</h3>
-                <p>Supporting dignity, confidence, and comfort for women in public spaces.</p>
-              </div>
-              <div className="sanitary-card">
-                <h3>Health Awareness</h3>
-                <p>Encouraging awareness about menstrual health and breaking social stigma through accessibility.</p>
-              </div>
+              {cards.map((card, i) => (
+                <div className="sanitary-card" key={i}>
+                  <h3>{card.title}</h3>
+                  <p>{card.description}</p>
+                </div>
+              ))}
             </div>
           </div>
 
           <div className="sanitary-impact">
             <div className="sanitary-story">
-              <span>COMMUNITY IMPACT</span>
-              <h3>Supporting Women Every Day</h3>
-              <p>
-                Thousands of women travel through metro stations daily.
-                Access to sanitary pads during unexpected situations can
-                make a significant difference. By installing Sanitary Pad
-                Vending Machines, Being Sevak Charitable Trust ensures that
-                essential hygiene products are available whenever required,
-                creating a safer and more supportive environment for women.
-              </p>
+              <span>{storyTag}</span>
+              <h3>{storyTitle}</h3>
+              <p>{storyText}</p>
             </div>
             <div className="sanitary-stats">
-              <div className="sanitary-box">
-                <h2>10+</h2>
-                <span>Machines Installed</span>
-              </div>
-              <div className="sanitary-box">
-                <h2>50K+</h2>
-                <span>Women Benefited</span>
-              </div>
-              <div className="sanitary-box">
-                <h2>100%</h2>
-                <span>Hygiene Focused</span>
-              </div>
+              {stats.map((s, i) => (
+                <div className="sanitary-box" key={i}>
+                  <h2>{s.value}</h2>
+                  <span>{s.label}</span>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -136,14 +140,14 @@ export default function ImpactSanitaryPad() {
 
       <section className="shital-gallery-section">
         <div className="shital-gallery-heading">
-          <span>PROJECT GALLERY</span>
-          <h2>Moments of Impact</h2>
-          <p>Explore glimpses of our initiatives, community outreach programs, and the positive impact created through collective efforts.</p>
+          <span>{galleryTag}</span>
+          <h2>{galleryTitle}</h2>
+          <p>{galleryText}</p>
         </div>
         <div className="shital-gallery">
-          <div className="shital-gallery-item"><img src="/images/g21.webp" alt="" /></div>
-          <div className="shital-gallery-item"><img src="/images/g22.webp" alt="" /></div>
-          <div className="shital-gallery-item"><img src="/images/g23.jpg" alt="" /></div>
+          {galleryImages.map((src, i) => (
+            <div className="shital-gallery-item" key={i}><img src={src} alt="" /></div>
+          ))}
         </div>
       </section>
     </>

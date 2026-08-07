@@ -1,7 +1,60 @@
 import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
+import { usePageContent } from '../hooks/usePageContent';
 
 const Management = () => {
+  const content = usePageContent('management');
+
+  const pageTitle = content('management-title', 'heading') ?? 'Our Management';
+
+  const founderName = content('management-founder', 'name') ?? 'Priyank Shah';
+  const founderRole = content('management-founder', 'role') ?? 'Founder Chairman – BEING SEVAK CHARITABLE TRUST';
+  const founderImage = content('management-founder', 'image') ?? '/images/managesir.png';
+  const founderLeft =
+    content('management-founder', 'left') ?? [
+      { icon: '🏅', text: 'Being Sevak Charitable Trust (BSCT) is driven by a vision of creating meaningful social impact through healthcare, education, environmental sustainability, women empowerment, and community welfare initiatives across India.' },
+      { icon: '❝', text: 'Our mission is to serve humanity with compassion, dignity, and purpose, ensuring that no individual is left behind.' },
+    ];
+  const founderRight =
+    content('management-founder', 'right') ?? [
+      { icon: '👁️', text: 'Guided by compassion and social responsibility, BSCT envisions an inclusive future where every individual can thrive with dignity, equal opportunities, and access to essential resources.' },
+      { icon: '🏆', text: 'Through impactful projects in healthcare, education, women empowerment, environmental conservation, and humanitarian assistance, Being Sevak Charitable Trust continues to drive meaningful change and inspire communities nationwide.' },
+    ];
+
+  const teamHeading = content('management-team', 'heading') ?? 'Management Team';
+  const teamSubtitle =
+    content('management-team', 'subtitle') ??
+    'Meet the dedicated leaders of Being Sevak Charitable Trust who are passionately working towards social welfare, empowerment, and inclusive growth for society.';
+  const team =
+    content('management-team', 'members') ?? [
+      { image: '/images/priyank shah.jpeg', name: 'Priyank Shah', role: 'Founder & Chairperson' },
+      { image: '/images/swethashah.jpeg', name: 'Shweta Shah', role: 'President' },
+      { image: '/images/riddhi.jpg', name: 'Riddhi Patel', role: 'Treasurer' },
+      { image: '/images/Mahendrapal.jpeg', name: 'Mahendra Pal', role: 'Core Team Member' },
+      { image: '/images/ashutoshpawar.jpeg', name: 'Ashutosh Pawar', role: 'Core Team Member' },
+      { image: '/images/vaishalisawant.jpeg', name: 'Vaishali Sawant', role: 'Core Team Member' },
+      { image: '/images/SakshiSingh.jpeg', name: 'Sakshi Singh', role: 'Core Team Member' },
+    ];
+
+  const leadershipTag = content('management-leadership', 'tag') ?? 'OUR LEADERSHIP';
+  const leadershipHeading = content('management-leadership', 'heading') ?? 'Meet Our Guiding Force';
+  const leadership =
+    content('management-leadership', 'items') ?? [
+      { icon: 'fa-users', title: 'Visionary Leadership', desc: 'Guided by experienced trustees with decades of social welfare expertise.' },
+      { icon: 'fa-handshake', title: 'Integrity', desc: 'Transparent governance and ethical practices in all our operations.' },
+      { icon: 'fa-lightbulb', title: 'Innovation', desc: 'Modern approaches to age-old social challenges for maximum impact.' },
+      { icon: 'fa-heart', title: 'Dedication', desc: 'Passionate team committed to uplifting communities across India.' },
+    ];
+
+  const testimonialsTag = content('management-testimonials', 'tag') ?? 'TESTIMONIALS';
+  const testimonialsHeading = content('management-testimonials', 'heading') ?? 'What Partners Say';
+  const testimonials =
+    content('management-testimonials', 'items') ?? [
+      { quote: 'Under the leadership of Priyank Shah and Shweta Shah, BSCT has grown into a trusted organization serving thousands across India.', name: 'Rahul Verma', role: 'NGO Partner' },
+      { quote: "The management team's transparency and dedication inspire confidence in every donor and volunteer.", name: 'Dr. Meera Kulkarni', role: 'Social Worker' },
+      { quote: 'What sets BSCT apart is the genuine compassion its leaders bring to every initiative.', name: 'Vikram Joshi', role: 'Corporate Sponsor' },
+    ];
+
   useEffect(() => {
     const items = document.querySelectorAll(".animate-up, .animate-zoom");
     const observer = new IntersectionObserver(function (entries) {
@@ -99,49 +152,46 @@ const Management = () => {
         @media(max-width:768px){.values-grid{grid-template-columns:1fr}.testimonial-grid{grid-template-columns:1fr}}
       `}</style>
 
-      <section className="tax-box"><h1>Our Management</h1></section>
+      <section className="tax-box"><h1>{pageTitle}</h1></section>
 
       <section className="founder-section">
-        <div className="founder-heading"><span className="heading-line"></span><h2>Priyank Shah</h2></div>
-        <p className="founder-subtitle">Founder Chairman – BEING SEVAK CHARITABLE TRUST</p>
+        <div className="founder-heading"><span className="heading-line"></span><h2>{founderName}</h2></div>
+        <p className="founder-subtitle">{founderRole}</p>
         <div className="founder-grid">
           <div className="founder-col left">
-            <div className="founder-item animate-up"><div className="founder-icon">🏅</div><p>Being Sevak Charitable Trust (BSCT) is driven by a vision of creating meaningful social impact through healthcare, education, environmental sustainability, women empowerment, and community welfare initiatives across India.</p></div>
-            <div className="founder-item animate-up"><div className="founder-icon">❝</div><p>Our mission is to serve humanity with compassion, dignity, and purpose, ensuring that no individual is left behind.</p></div>
+            {founderLeft.map((item, i) => (
+              <div className="founder-item animate-up" key={i}><div className="founder-icon">{item.icon}</div><p>{item.text}</p></div>
+            ))}
           </div>
-          <div className="founder-image animate-zoom"><img src="/images/managesir.png" alt="Priyank Shah"/></div>
+          <div className="founder-image animate-zoom"><img src={founderImage} alt={founderName}/></div>
           <div className="founder-col right">
-            <div className="founder-item animate-up"><div className="founder-icon">👁️</div><p>Guided by compassion and social responsibility, BSCT envisions an inclusive future where every individual can thrive with dignity, equal opportunities, and access to essential resources.</p></div>
-            <div className="founder-item animate-up"><div className="founder-icon">🏆</div><p>Through impactful projects in healthcare, education, women empowerment, environmental conservation, and humanitarian assistance, Being Sevak Charitable Trust continues to drive meaningful change and inspire communities nationwide.</p></div>
+            {founderRight.map((item, i) => (
+              <div className="founder-item animate-up" key={i}><div className="founder-icon">{item.icon}</div><p>{item.text}</p></div>
+            ))}
           </div>
         </div>
       </section>
 
       <section className="leadership-section">
-        <h2 className="section-title">Management Team</h2>
-        <p className="section-subtitle">Meet the dedicated leaders of Being Sevak Charitable Trust who are passionately working towards social welfare, empowerment, and inclusive growth for society.</p>
+        <h2 className="section-title">{teamHeading}</h2>
+        <p className="section-subtitle">{teamSubtitle}</p>
         <div className="team-circles">
-          <div className="team-member"><img src="/images/priyank shah.jpeg" alt="Priyank Shah" className="team-member-img"/><div className="team-member-name">Priyank Shah</div><div className="team-member-role">Founder &amp; Chairperson</div><div className="team-member-divider"></div></div>
-          <div className="team-member"><img src="/images/swethashah.jpeg" alt="Shweta Shah" className="team-member-img"/><div className="team-member-name">Shweta Shah</div><div className="team-member-role">President</div><div className="team-member-divider"></div></div>
-          <div className="team-member"><img src="/images/riddhi.jpg" alt="Riddhi Patel" className="team-member-img"/><div className="team-member-name">Riddhi Patel</div><div className="team-member-role">Treasurer</div><div className="team-member-divider"></div></div>
-          <div className="team-member"><img src="/images/Mahendrapal.jpeg" alt="Mahendra Pal" className="team-member-img"/><div className="team-member-name">Mahendra Pal</div><div className="team-member-role">Core Team Member</div><div className="team-member-divider"></div></div>
-          <div className="team-member"><img src="/images/ashutoshpawar.jpeg" alt="Ashutosh Pawar" className="team-member-img"/><div className="team-member-name">Ashutosh Pawar</div><div className="team-member-role">Core Team Member</div><div className="team-member-divider"></div></div>
-          <div className="team-member"><img src="/images/vaishalisawant.jpeg" alt="Vaishali Sawant" className="team-member-img"/><div className="team-member-name">Vaishali Sawant</div><div className="team-member-role">Core Team Member</div><div className="team-member-divider"></div></div>
-          <div className="team-member"><img src="/images/SakshiSingh.jpeg" alt="Sakshi Singh" className="team-member-img"/><div className="team-member-name">Sakshi Singh</div><div className="team-member-role">Core Team Member</div><div className="team-member-divider"></div></div>
+          {team.map((m, i) => (
+            <div className="team-member" key={i}><img src={m.image} alt={m.name} className="team-member-img"/><div className="team-member-name">{m.name}</div><div className="team-member-role">{m.role}</div><div className="team-member-divider"></div></div>
+          ))}
         </div>
       </section>
 
       <section className="values-section">
         <div className="values-inner">
           <div className="section-header" style={{textAlign:'center'}}>
-            <span style={{color:'var(--cyan)',fontWeight:700,fontSize:'1.5rem',letterSpacing:1,display:'block',marginBottom:8}}>OUR LEADERSHIP</span>
-            <h2 style={{fontFamily:'Montserrat, sans-serif',fontSize:'2rem',color:'var(--navy)'}}>Meet Our Guiding Force</h2>
+            <span style={{color:'var(--cyan)',fontWeight:700,fontSize:'1.5rem',letterSpacing:1,display:'block',marginBottom:8}}>{leadershipTag}</span>
+            <h2 style={{fontFamily:'Montserrat, sans-serif',fontSize:'2rem',color:'var(--navy)'}}>{leadershipHeading}</h2>
           </div>
           <div className="values-grid">
-            <div className="value-card reveal"><div className="val-icon"><i className="fas fa-users"></i></div><h3>Visionary Leadership</h3><p>Guided by experienced trustees with decades of social welfare expertise.</p></div>
-            <div className="value-card reveal"><div className="val-icon"><i className="fas fa-handshake"></i></div><h3>Integrity</h3><p>Transparent governance and ethical practices in all our operations.</p></div>
-            <div className="value-card reveal"><div className="val-icon"><i className="fas fa-lightbulb"></i></div><h3>Innovation</h3><p>Modern approaches to age-old social challenges for maximum impact.</p></div>
-            <div className="value-card reveal"><div className="val-icon"><i className="fas fa-heart"></i></div><h3>Dedication</h3><p>Passionate team committed to uplifting communities across India.</p></div>
+            {leadership.map((v, i) => (
+              <div className="value-card reveal" key={i}><div className="val-icon"><i className={`fas ${v.icon}`}></i></div><h3>{v.title}</h3><p>{v.desc}</p></div>
+            ))}
           </div>
         </div>
       </section>
@@ -149,13 +199,13 @@ const Management = () => {
       <section className="testimonials-section">
         <div className="testimonials-inner">
           <div className="section-header" style={{textAlign:'center'}}>
-            <span style={{color:'var(--cyan)',fontWeight:700,fontSize:'1.5rem',letterSpacing:1,display:'block',marginBottom:8}}>TESTIMONIALS</span>
-            <h2 style={{fontFamily:'Montserrat, sans-serif',fontSize:'2rem',color:'var(--navy)'}}>What Partners Say</h2>
+            <span style={{color:'var(--cyan)',fontWeight:700,fontSize:'1.5rem',letterSpacing:1,display:'block',marginBottom:8}}>{testimonialsTag}</span>
+            <h2 style={{fontFamily:'Montserrat, sans-serif',fontSize:'2rem',color:'var(--navy)'}}>{testimonialsHeading}</h2>
           </div>
           <div className="testimonial-grid">
-            <div className="testimonial-card reveal"><div><div className="quote-icon"><i className="fas fa-quote-left"></i></div><p>Under the leadership of Priyank Shah and Shweta Shah, BSCT has grown into a trusted organization serving thousands across India.</p></div><div><h4>Rahul Verma</h4><span>NGO Partner</span></div></div>
-            <div className="testimonial-card reveal"><div><div className="quote-icon"><i className="fas fa-quote-left"></i></div><p>The management team's transparency and dedication inspire confidence in every donor and volunteer.</p></div><div><h4>Dr. Meera Kulkarni</h4><span>Social Worker</span></div></div>
-            <div className="testimonial-card reveal"><div><div className="quote-icon"><i className="fas fa-quote-left"></i></div><p>What sets BSCT apart is the genuine compassion its leaders bring to every initiative.</p></div><div><h4>Vikram Joshi</h4><span>Corporate Sponsor</span></div></div>
+            {testimonials.map((t, i) => (
+              <div className="testimonial-card reveal" key={i}><div><div className="quote-icon"><i className="fas fa-quote-left"></i></div><p>{t.quote}</p></div><div><h4>{t.name}</h4><span>{t.role}</span></div></div>
+            ))}
           </div>
         </div>
       </section>

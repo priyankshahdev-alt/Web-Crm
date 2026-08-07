@@ -1,8 +1,43 @@
 import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
+import { usePageContent } from '../hooks/usePageContent';
 
 export default function ImpactHealthToHygiene() {
   useEffect(() => { window.scrollTo(0, 0); }, []);
+
+  const content = usePageContent('impact-health-to-hygiene');
+
+  const headingTag = content('impact-health-to-hygiene-heading', 'tag') ?? 'SCHOOL INFRASTRUCTURE DEVELOPMENT';
+  const headingTitle = content('impact-health-to-hygiene-heading', 'heading') ?? 'Health to Hygiene';
+  const headingText =
+    content('impact-health-to-hygiene-heading', 'description') ??
+    'Through the Health to Hygiene initiative, Being Sevak Charitable Trust works towards creating clean, safe, and healthy learning environments for children. We support the repair and renovation of school toilets, handwashing stations, kitchens, drinking water facilities, and sanitation infrastructure, ensuring that every child has access to a hygienic and dignified educational environment.';
+  const mainImage = content('impact-health-to-hygiene-heading', 'image') ?? '/images/g31.png';
+  const cards =
+    content('impact-health-to-hygiene-cards', 'items') ?? [
+      { title: 'Toilet Renovation', description: 'Repairing and upgrading school toilets to provide clean, safe, and usable sanitation facilities.' },
+      { title: 'Handwashing Stations', description: 'Installing and repairing wash basins to promote healthy hygiene practices among students.' },
+      { title: 'Kitchen Improvement', description: 'Renovating school kitchens to support safe meal preparation and nutrition programs.' },
+      { title: 'Healthy Learning Spaces', description: 'Creating hygienic school environments that improve student health, attendance, and well-being.' },
+    ];
+  const storyTag = content('impact-health-to-hygiene-impact', 'tag') ?? 'COMMUNITY IMPACT';
+  const storyTitle = content('impact-health-to-hygiene-impact', 'heading') ?? 'Building Healthier Schools for Every Child';
+  const storyText =
+    content('impact-health-to-hygiene-impact', 'text') ??
+    'A clean school environment directly impacts student health, confidence, and academic performance. Through repairs and renovations of sanitation facilities, kitchens, wash areas, and hygiene infrastructure, Being Sevak Charitable Trust is helping schools provide safer and healthier spaces where children can learn, grow, and thrive with dignity.';
+  const stats =
+    content('impact-health-to-hygiene-impact', 'stats') ?? [
+      { value: '100+', label: 'Schools Supported' },
+      { value: '500+', label: 'Facilities Renovated' },
+      { value: '50K+', label: 'Students Benefited' },
+    ];
+  const galleryTag = content('impact-health-to-hygiene-gallery', 'tag') ?? 'PROJECT GALLERY';
+  const galleryTitle = content('impact-health-to-hygiene-gallery', 'heading') ?? 'Moments of Impact';
+  const galleryText =
+    content('impact-health-to-hygiene-gallery', 'description') ??
+    'Explore glimpses of our initiatives, community outreach programs, and the positive impact created through collective efforts.';
+  const galleryImages =
+    content('impact-health-to-hygiene-gallery', 'images') ?? ['/images/g32.png', '/images/g33.png', '/images/g34.png'];
 
   const css = `
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -64,69 +99,38 @@ export default function ImpactHealthToHygiene() {
       <section className="hygiene-section">
         <div className="hygiene-container">
           <div className="hygiene-heading">
-            <span className="hygiene-tag">SCHOOL INFRASTRUCTURE DEVELOPMENT</span>
-            <h2>Health to Hygiene</h2>
-            <p>
-              Through the Health to Hygiene initiative, Being Sevak Charitable
-              Trust works towards creating clean, safe, and healthy learning
-              environments for children. We support the repair and renovation
-              of school toilets, handwashing stations, kitchens, drinking
-              water facilities, and sanitation infrastructure, ensuring that
-              every child has access to a hygienic and dignified educational
-              environment.
-            </p>
+            <span className="hygiene-tag">{headingTag}</span>
+            <h2>{headingTitle}</h2>
+            <p>{headingText}</p>
           </div>
 
           <div className="hygiene-grid">
             <div className="hygiene-image">
-              <img src="/images/g31.png" alt="Health to Hygiene" />
+              <img src={mainImage} alt="Health to Hygiene" />
             </div>
             <div className="hygiene-content">
-              <div className="hygiene-card">
-                <h3>Toilet Renovation</h3>
-                <p>Repairing and upgrading school toilets to provide clean, safe, and usable sanitation facilities.</p>
-              </div>
-              <div className="hygiene-card">
-                <h3>Handwashing Stations</h3>
-                <p>Installing and repairing wash basins to promote healthy hygiene practices among students.</p>
-              </div>
-              <div className="hygiene-card">
-                <h3>Kitchen Improvement</h3>
-                <p>Renovating school kitchens to support safe meal preparation and nutrition programs.</p>
-              </div>
-              <div className="hygiene-card">
-                <h3>Healthy Learning Spaces</h3>
-                <p>Creating hygienic school environments that improve student health, attendance, and well-being.</p>
-              </div>
+              {cards.map((card, i) => (
+                <div className="hygiene-card" key={i}>
+                  <h3>{card.title}</h3>
+                  <p>{card.description}</p>
+                </div>
+              ))}
             </div>
           </div>
 
           <div className="hygiene-impact">
             <div className="hygiene-story">
-              <span>COMMUNITY IMPACT</span>
-              <h3>Building Healthier Schools for Every Child</h3>
-              <p>
-                A clean school environment directly impacts student health,
-                confidence, and academic performance. Through repairs and
-                renovations of sanitation facilities, kitchens, wash areas,
-                and hygiene infrastructure, Being Sevak Charitable Trust is
-                helping schools provide safer and healthier spaces where
-                children can learn, grow, and thrive with dignity.
-              </p>
+              <span>{storyTag}</span>
+              <h3>{storyTitle}</h3>
+              <p>{storyText}</p>
             </div>
             <div className="hygiene-stats">
-              <div className="hygiene-box">
-                <h2>100+</h2>
-                <span>Schools Supported</span>
-              </div>
-              <div className="hygiene-box">
-                <h2>500+</h2>
-                <span>Facilities Renovated</span>
-              </div>
-              <div className="hygiene-box">
-                <h2>50K+</h2>
-                <span>Students Benefited</span>
-              </div>
+              {stats.map((s, i) => (
+                <div className="hygiene-box" key={i}>
+                  <h2>{s.value}</h2>
+                  <span>{s.label}</span>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -134,14 +138,14 @@ export default function ImpactHealthToHygiene() {
 
       <section className="shital-gallery-section">
         <div className="shital-gallery-heading">
-          <span>PROJECT GALLERY</span>
-          <h2>Moments of Impact</h2>
-          <p>Explore glimpses of our initiatives, community outreach programs, and the positive impact created through collective efforts.</p>
+          <span>{galleryTag}</span>
+          <h2>{galleryTitle}</h2>
+          <p>{galleryText}</p>
         </div>
         <div className="shital-gallery">
-          <div className="shital-gallery-item"><img src="/images/g32.png" alt="" /></div>
-          <div className="shital-gallery-item"><img src="/images/g33.png" alt="" /></div>
-          <div className="shital-gallery-item"><img src="/images/g34.png" alt="" /></div>
+          {galleryImages.map((src, i) => (
+            <div className="shital-gallery-item" key={i}><img src={src} alt="" /></div>
+          ))}
         </div>
       </section>
     </>

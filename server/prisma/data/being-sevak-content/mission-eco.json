@@ -1,0 +1,149 @@
+{
+  "slug": "mission-eco",
+  "title": "Mission Eco-Warriors",
+  "metaTitle": "Mission Eco-Warriors | Being Sevak Foundation",
+  "metaDescription": "Mission Eco Warriors by Being Sevak promotes cleanliness, recycling and environment protection through Bottle Crusher Machines, tree plantation, beach cleaning and waste management drives.",
+  "template": "default",
+  "sortOrder": 14,
+  "isHome": false,
+  "sections": [
+    {
+      "type": "mission-eco-tax",
+      "name": "Page Title",
+      "sortOrder": 1,
+      "isActive": true,
+      "content": {
+        "title": "Mission Eco-Warriors"
+      }
+    },
+    {
+      "type": "mission-eco-hero",
+      "name": "Hero Section",
+      "sortOrder": 2,
+      "isActive": true,
+      "content": {
+        "tag": "Mission Eco Warriors",
+        "heading": "Turning Plastic Bottles Into A Cleaner Future",
+        "description": "Mission Eco Warriors by Being Sevak promotes cleanliness and recycling by installing Bottle Crusher Machines at metro stations and public places to reduce plastic waste and protect the environment.",
+        "image": "/images/eco main..jpg"
+      }
+    },
+    {
+      "type": "eco-impact",
+      "name": "Bottle Crusher Impact",
+      "sortOrder": 3,
+      "isActive": true,
+      "content": {
+        "stats": [
+          { "value": "25+", "label": "Machines Installed" },
+          { "value": "10K+", "label": "Bottles Recycled" },
+          { "value": "15+", "label": "Metro Stations" }
+        ]
+      }
+    },
+    {
+      "type": "eco-activities",
+      "name": "Our Activities",
+      "sortOrder": 4,
+      "isActive": true,
+      "content": {
+        "heading": "Our Activities",
+        "images": [
+          { "src": "/images/eco5.jpeg", "alt": "" },
+          { "src": "/images/eco3.jpeg", "alt": "" },
+          { "src": "/images/eco2.jpeg", "alt": "" },
+          { "src": "/images/eco7.jpeg", "alt": "" },
+          { "src": "/images/eco6.jpeg", "alt": "" },
+          { "src": "/images/eco4.jpeg", "alt": "" }
+        ]
+      }
+    },
+    {
+      "type": "eco-tree-plantation",
+      "name": "Tree Plantation",
+      "sortOrder": 5,
+      "isActive": true,
+      "content": {
+        "heading": "Tree Plantation",
+        "text1": "Our Tree Plantation initiative is dedicated to creating a greener, healthier, and more sustainable future for communities. Through collective efforts, we plant trees in schools, public spaces, villages, and urban areas to improve air quality and protect nature.",
+        "text2": "Every tree planted is a step toward reducing pollution, conserving biodiversity, and spreading environmental awareness among people. Together, we aim to inspire communities to care for the planet and build a cleaner tomorrow.",
+        "image": "/images/tree1.jpg",
+        "images": [
+          { "src": "/images/tree2.jpg", "alt": "" },
+          { "src": "/images/tree3.jpg", "alt": "" },
+          { "src": "/images/tree4.jpg", "alt": "" }
+        ],
+        "stats": [
+          { "value": "500+", "label": "Trees Planted" },
+          { "value": "20+", "label": "Volunteer Teams" },
+          { "value": "15+", "label": "Communities Reached" }
+        ]
+      }
+    },
+    {
+      "type": "eco-beach-sevak",
+      "name": "Beach Sevak Initiative",
+      "sortOrder": 6,
+      "isActive": true,
+      "content": {
+        "tag": "Beach Sevak Initiative",
+        "heading": "Clean Beaches, Safe Oceans, Better Future",
+        "description": "Beach Sevak by Being Sevak focuses on cleaning coastal areas, protecting marine life and spreading awareness about ocean waste.",
+        "image": "/images/beach1.png"
+      }
+    },
+    {
+      "type": "eco-beach-impact",
+      "name": "Beach Impact",
+      "sortOrder": 7,
+      "isActive": true,
+      "content": {
+        "stats": [
+          { "value": "120+", "label": "Clean Drives" },
+          { "value": "5T+", "label": "Waste Removed" },
+          { "value": "500+", "label": "Volunteers" }
+        ]
+      }
+    },
+    {
+      "type": "eco-beach-activities",
+      "name": "Beach Activities",
+      "sortOrder": 8,
+      "isActive": true,
+      "content": {
+        "heading": "Our Activities",
+        "images": [
+          { "src": "/images/beach2.jpeg", "alt": "" },
+          { "src": "/images/beach3.jpeg", "alt": "" },
+          { "src": "/images/beach4.jpeg", "alt": "" }
+        ]
+      }
+    },
+    {
+      "type": "eco-donation",
+      "name": "Donation CTA",
+      "sortOrder": 9,
+      "isActive": true,
+      "content": {
+        "tag": "Mission Eco Warriors",
+        "title": "Fight Today for a Greener Tomorrow",
+        "description": "Join our Eco Warriors movement to protect nature through tree plantation, waste management, recycling awareness, and climate action for a sustainable future.",
+        "donationUrl": "/donations/donation-ecowarriors.html"
+      }
+    },
+    {
+      "type": "eco-testimonials",
+      "name": "Testimonials",
+      "sortOrder": 10,
+      "isActive": true,
+      "content": {
+        "heading": "What Our Donors Say",
+        "items": [
+          { "quote": "\"Being Sevak is doing incredible work for visually impaired and needy families. Proud to support this mission.\"", "name": "Riya Sharma" },
+          { "quote": "\"Transparent work, genuine impact, and a wonderful team dedicated to helping people with dignity.\"", "name": "Rahul Mehta" },
+          { "quote": "\"Every donation creates real change. Their food distribution drives truly touch lives.\"", "name": "Anjali Verma" }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "slug": "impact-tricycle",
+  "title": "Tricycle to Lifecycle",
+  "metaTitle": "Tricycle to Lifecycle | Being Sevak Foundation",
+  "metaDescription": "Being Sevak Charitable Trust provides specially designed tricycles that give visually impaired and differently-abled individuals independence, dignity, and a better quality of life.",
+  "template": "default",
+  "sortOrder": 42,
+  "isHome": false,
+  "sections": [
+    {
+      "type": "impact-tricycle-heading",
+      "name": "Tricycle Header",
+      "sortOrder": 1,
+      "isActive": true,
+      "content": {
+        "tag": "MOBILITY SUPPORT PROGRAM",
+        "heading": "Tricycle to Lifecycle",
+        "description": "Empowering visually impaired and differently-abled individuals with specially designed tricycles that provide independence, dignity, and a better quality of life. Through this initiative, Being Sevak Charitable Trust helps beneficiaries travel safely, access opportunities, and become more self-reliant in their daily lives.",
+        "image": "/images/g64.webp"
+      }
+    },
+    {
+      "type": "impact-tricycle-cards",
+      "name": "Program Highlights",
+      "sortOrder": 2,
+      "isActive": true,
+      "content": {
+        "items": [
+          { "title": "Freedom of Movement", "description": "Tricycles provide safe and independent mobility for visually impaired and differently-abled individuals." },
+          { "title": "Improved Daily Life", "description": "Beneficiaries can travel to work, education centers, markets, and social activities with confidence." },
+          { "title": "Building Self-Reliance", "description": "Access to mobility creates opportunities for financial independence and social inclusion." },
+          { "title": "Community Impact", "description": "Every tricycle gifted becomes a step toward dignity, empowerment, and a more inclusive society." }
+        ]
+      }
+    },
+    {
+      "type": "impact-tricycle-impact",
+      "name": "Program Stats",
+      "sortOrder": 3,
+      "isActive": true,
+      "content": {
+        "stats": [
+          { "value": "500+", "label": "Lives Empowered" },
+          { "value": "100%", "label": "Mobility Support" },
+          { "value": "50+", "label": "Distribution Drives" }
+        ]
+      }
+    },
+    {
+      "type": "impact-tricycle-gallery",
+      "name": "Project Gallery",
+      "sortOrder": 4,
+      "isActive": true,
+      "content": {
+        "tag": "PROJECT GALLERY",
+        "heading": "Moments of Impact",
+        "description": "Explore glimpses of our initiatives, community outreach programs, and the positive impact created through collective efforts.",
+        "images": ["/images/g61.webp", "/images/g62.webp", "/images/g63.webp"]
+      }
+    }
+  ]
+}

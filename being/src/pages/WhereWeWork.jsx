@@ -1,23 +1,83 @@
 import { useEffect, useRef, useCallback } from 'react';
-
-const locations = [
-  { loc: 'maharashtra', top: '58%', left: '20%', name: 'Maharashtra', projects: 12, beneficiaries: '2.5L+', desc: 'Education, food distribution & health camps', icon: 'fas fa-city' },
-  { loc: 'gujarat', top: '47%', left: '12%', name: 'Gujarat', projects: 8, beneficiaries: '1.2L+', desc: 'Women empowerment & hygiene programs', icon: 'fas fa-building' },
-  { loc: 'uttarakhand', top: '26%', left: '35%', name: 'Uttarakhand', projects: 10, beneficiaries: '1.8L+', desc: 'Digital education & skill development', icon: 'fas fa-graduation-cap' },
-  { loc: 'west-bengal', top: '47%', left: '67%', name: 'West Bengal', projects: 6, beneficiaries: '80K+', desc: 'Rural development & livelihood support', icon: 'fas fa-tractor' },
-  { loc: 'delhi', top: '27%', left: '30%', name: 'Delhi', projects: 7, beneficiaries: '1L+', desc: 'Vocational training & self-reliance', icon: 'fas fa-industry' },
-  { loc: 'rajasthan', top: '35%', left: '20%', name: 'Rajasthan', projects: 9, beneficiaries: '1.5L+', desc: 'Mid-day meals & child nutrition', icon: 'fas fa-sun' },
-  { loc: 'punjab', top: '22%', left: '25%', name: 'Punjab', projects: 4, beneficiaries: '50K+', desc: 'Food distribution & community kitchens', icon: 'fas fa-wheat-awn' },
-  { loc: 'haryana', top: '28%', left: '27%', name: 'Haryana', projects: 6, beneficiaries: '90K+', desc: 'School renovation & education drives', icon: 'fas fa-school' },
-  { loc: 'uttar-pradesh', top: '36%', left: '41%', name: 'Uttar Pradesh', projects: 11, beneficiaries: '2L+', desc: 'Healthcare camps & hygiene kits', icon: 'fas fa-mosque' },
-  { loc: 'madhya-pradesh', top: '46%', left: '32%', name: 'Madhya Pradesh', projects: 8, beneficiaries: '1.3L+', desc: 'Environment & animal welfare programs', icon: 'fas fa-tree' },
-  { loc: 'odisha', top: '54%', left: '58%', name: 'Odisha', projects: 7, beneficiaries: '1.1L+', desc: 'Disaster relief & community support', icon: 'fas fa-fish' },
-  { loc: 'tamil-nadu', top: '78%', left: '34%', name: 'Tamil Nadu', projects: 10, beneficiaries: '1.6L+', desc: 'Multi-focus community outreach', icon: 'fas fa-praying-hands' },
-];
+import { usePageContent } from '../hooks/usePageContent';
 
 const WhereWeWork = () => {
+  const content = usePageContent('where-we-work');
   const activeLocRef = useRef(null);
   const countersStarted = useRef(false);
+
+  const pageTitle = content('www-title', 'heading') ?? 'Where We Work';
+
+  const heroTag = content('www-hero', 'tag') ?? 'BEING SEVAK CHARITABLE TRUST';
+  const heroHeading = content('www-hero', 'heading') ?? 'Where We';
+  const heroHighlight = content('www-hero', 'highlight') ?? 'Work';
+  const heroDescription =
+    content('www-hero', 'description') ??
+    'Actively working across multiple states in India through initiatives focused on education, nourishment, healthcare, empowerment and social welfare.';
+  const heroCard1Value = content('www-hero', 'card1Value') ?? '12';
+  const heroCard1Label = content('www-hero', 'card1Label') ?? 'States';
+  const heroCard2Value = content('www-hero', 'card2Value') ?? '5,000+';
+  const heroCard2Label = content('www-hero', 'card2Label') ?? 'Volunteers Connected';
+  const heroImage = content('www-hero', 'image') ?? '/images/Where We Work1.jpeg';
+
+  const mapTitle = content('www-map', 'title') ?? 'Where We';
+  const mapHighlight = content('www-map', 'highlight') ?? 'Work';
+  const mapSubtitle =
+    content('www-map', 'subtitle') ??
+    'Serving communities across India through education, healthcare, empowerment, sustainability and humanitarian initiatives.';
+  const counter1Num = content('www-map', 'counter1Num') ?? '12';
+  const counter1Label = content('www-map', 'counter1Label') ?? 'States';
+  const counter2Num = content('www-map', 'counter2Num') ?? '100';
+  const counter2Label = content('www-map', 'counter2Label') ?? 'Projects';
+  const counter3Num = content('www-map', 'counter3Num') ?? '1';
+  const counter3Suffix = content('www-map', 'counter3Suffix') ?? 'M';
+  const counter3Label = content('www-map', 'counter3Label') ?? 'Lives Impacted';
+  const mapImage = content('www-map', 'mapImage') ?? '/images/Map2.jpeg';
+  const legendTitle = content('www-map', 'legendTitle') ?? 'Focus Areas';
+  const legendItems =
+    content('www-map', 'legendItems') ?? [
+      { icon: 'fa-book-open', color: '#00a3da', label: 'Education' },
+      { icon: 'fa-heartbeat', color: '#ff6b00', label: 'Healthcare' },
+      { icon: 'fa-female', color: '#e91e63', label: 'Women Empower' },
+      { icon: 'fa-leaf', color: '#4caf50', label: 'Sustainability' },
+    ];
+  const listHeading = content('www-map', 'listHeading') ?? 'Our';
+  const listHighlight = content('www-map', 'listHighlight') ?? 'States';
+  const listSubtitle = content('www-map', 'listSubtitle') ?? 'Hover a location to see its impact';
+  const locations =
+    content('www-map', 'locations') ?? [
+      { loc: 'maharashtra', top: '58%', left: '20%', name: 'Maharashtra', projects: 12, beneficiaries: '2.5L+', desc: 'Education, food distribution & health camps', icon: 'fas fa-city' },
+      { loc: 'gujarat', top: '47%', left: '12%', name: 'Gujarat', projects: 8, beneficiaries: '1.2L+', desc: 'Women empowerment & hygiene programs', icon: 'fas fa-building' },
+      { loc: 'uttarakhand', top: '26%', left: '35%', name: 'Uttarakhand', projects: 10, beneficiaries: '1.8L+', desc: 'Digital education & skill development', icon: 'fas fa-graduation-cap' },
+      { loc: 'west-bengal', top: '47%', left: '67%', name: 'West Bengal', projects: 6, beneficiaries: '80K+', desc: 'Rural development & livelihood support', icon: 'fas fa-tractor' },
+      { loc: 'delhi', top: '27%', left: '30%', name: 'Delhi', projects: 7, beneficiaries: '1L+', desc: 'Vocational training & self-reliance', icon: 'fas fa-industry' },
+      { loc: 'rajasthan', top: '35%', left: '20%', name: 'Rajasthan', projects: 9, beneficiaries: '1.5L+', desc: 'Mid-day meals & child nutrition', icon: 'fas fa-sun' },
+      { loc: 'punjab', top: '22%', left: '25%', name: 'Punjab', projects: 4, beneficiaries: '50K+', desc: 'Food distribution & community kitchens', icon: 'fas fa-wheat-awn' },
+      { loc: 'haryana', top: '28%', left: '27%', name: 'Haryana', projects: 6, beneficiaries: '90K+', desc: 'School renovation & education drives', icon: 'fas fa-school' },
+      { loc: 'uttar-pradesh', top: '36%', left: '41%', name: 'Uttar Pradesh', projects: 11, beneficiaries: '2L+', desc: 'Healthcare camps & hygiene kits', icon: 'fas fa-mosque' },
+      { loc: 'madhya-pradesh', top: '46%', left: '32%', name: 'Madhya Pradesh', projects: 8, beneficiaries: '1.3L+', desc: 'Environment & animal welfare programs', icon: 'fas fa-tree' },
+      { loc: 'odisha', top: '54%', left: '58%', name: 'Odisha', projects: 7, beneficiaries: '1.1L+', desc: 'Disaster relief & community support', icon: 'fas fa-fish' },
+      { loc: 'tamil-nadu', top: '78%', left: '34%', name: 'Tamil Nadu', projects: 10, beneficiaries: '1.6L+', desc: 'Multi-focus community outreach', icon: 'fas fa-praying-hands' },
+    ];
+
+  const reachTag = content('www-reach', 'tag') ?? 'OUR REACH';
+  const reachHeading = content('www-reach', 'heading') ?? 'Where We Serve';
+  const reachValues =
+    content('www-reach', 'items') ?? [
+      { icon: 'fa-map-location-dot', title: 'Pan-India Reach', desc: 'Active across Maharashtra, Gujarat, West Bengal, Tamil Nadu, and Odisha.' },
+      { icon: 'fa-city', title: 'Urban Outreach', desc: 'Working in major cities including Mumbai, Pune, Kolkata, and Rajkot.' },
+      { icon: 'fa-tree', title: 'Rural Development', desc: 'Extending support to rural communities in Dwarka, Narmada, and Jalgaon.' },
+      { icon: 'fa-people-group', title: '10+ Locations', desc: 'Establishing presence in multiple states to maximize community impact.' },
+    ];
+
+  const testimonialsTag = content('www-testimonials', 'tag') ?? 'TESTIMONIALS';
+  const testimonialsHeading = content('www-testimonials', 'heading') ?? 'Voices from the Field';
+  const testimonials =
+    content('www-testimonials', 'items') ?? [
+      { quote: "BSCT's work in our village has brought education and healthcare to children who had no access before.", name: 'Suresh Patil', role: 'Village Head, Jalgaon' },
+      { quote: 'The impact of their midday meal program in Mumbai slums is remarkable. No child goes hungry.', name: 'Asha Devi', role: 'Community Volunteer' },
+      { quote: "From Gujarat to Tamil Nadu, BSCT's reach is expanding every year. A truly national NGO.", name: 'Dr. Karthik Rao', role: 'Social Researcher' },
+    ];
 
   const activateLocation = useCallback((loc) => {
     const pins = document.querySelectorAll('.www-pin');
@@ -310,37 +370,37 @@ const WhereWeWork = () => {
         @media(max-width:768px){.values-grid{grid-template-columns:1fr}.testimonial-grid{grid-template-columns:1fr}}
       `}</style>
 
-      <section className="tax-box"><h1>Where We Work</h1></section>
+      <section className="tax-box"><h1>{pageTitle}</h1></section>
 
       <section className="hero" id="home">
         <div className="hero-content">
-          <span className="tag">BEING SEVAK CHARITABLE TRUST</span>
-          <h1>Where We <span>Work</span></h1>
-          <p>Actively working across multiple states in India through initiatives focused on education, nourishment, healthcare, empowerment and social welfare.</p>
+          <span className="tag">{heroTag}</span>
+          <h1>{heroHeading} <span>{heroHighlight}</span></h1>
+          <p>{heroDescription}</p>
           <div className="hero-buttons"><a href="#locations" className="donate-btn">Explore Locations</a></div>
           <div className="blur blur1"></div><div className="blur blur2"></div>
         </div>
         <div className="hero-image">
-          <div className="floating-card card1"><h3>12</h3><p>States</p></div>
-          <div className="floating-card card2"><h3>5,000+</h3><p>Volunteers Connected</p></div>
-          <img src="/images/Where We Work1.jpeg" alt="Where We Work" />
+          <div className="floating-card card1"><h3>{heroCard1Value}</h3><p>{heroCard1Label}</p></div>
+          <div className="floating-card card2"><h3>{heroCard2Value}</h3><p>{heroCard2Label}</p></div>
+          <img src={heroImage} alt="Where We Work" />
         </div>
       </section>
 
       <section className="www-section">
         <div className="www-container">
-          <div className="www-header"><h2 className="www-title">Where We <span>Work</span></h2><p className="www-subtitle">Serving communities across India through education, healthcare, empowerment, sustainability and humanitarian initiatives.</p></div>
+          <div className="www-header"><h2 className="www-title">{mapTitle} <span>{mapHighlight}</span></h2><p className="www-subtitle">{mapSubtitle}</p></div>
           <div className="www-counter">
-            <div className="www-counter-item"><span className="www-counter-num" data-target="12">0</span><span className="www-counter-plus">+</span><span className="www-counter-label">States</span></div>
+            <div className="www-counter-item"><span className="www-counter-num" data-target={counter1Num}>0</span><span className="www-counter-plus">+</span><span className="www-counter-label">{counter1Label}</span></div>
             <div className="www-counter-divider"></div>
-            <div className="www-counter-item"><span className="www-counter-num" data-target="100">0</span><span className="www-counter-plus">+</span><span className="www-counter-label">Projects</span></div>
+            <div className="www-counter-item"><span className="www-counter-num" data-target={counter2Num}>0</span><span className="www-counter-plus">+</span><span className="www-counter-label">{counter2Label}</span></div>
             <div className="www-counter-divider"></div>
-            <div className="www-counter-item"><span className="www-counter-num" data-target="1">0</span><span className="www-counter-suffix">M</span><span className="www-counter-plus">+</span><span className="www-counter-label">Lives Impacted</span></div>
+            <div className="www-counter-item"><span className="www-counter-num" data-target={counter3Num}>0</span><span className="www-counter-suffix">{counter3Suffix}</span><span className="www-counter-plus">+</span><span className="www-counter-label">{counter3Label}</span></div>
           </div>
           <div className="www-grid">
             <div className="www-map-col">
               <div className="www-map-wrap">
-                <img src="/images/Map2.jpeg" alt="India Map" className="www-map-img" />
+                <img src={mapImage} alt="India Map" className="www-map-img" />
                 {locations.map(loc => (
                   <div key={loc.loc} className="www-pin" data-loc={loc.loc} style={{ top: loc.top, left: loc.left }}>
                     <div className="www-pin-dot"></div>
@@ -352,11 +412,13 @@ const WhereWeWork = () => {
                     </div>
                   </div>
                 ))}
-                <div className="www-legend"><span className="www-legend-title">Focus Areas</span><div className="www-legend-items"><span className="www-legend-item"><i className="fas fa-book-open" style={{ color: '#00a3da' }}></i> Education</span><span className="www-legend-item"><i className="fas fa-heartbeat" style={{ color: '#ff6b00' }}></i> Healthcare</span><span className="www-legend-item"><i className="fas fa-female" style={{ color: '#e91e63' }}></i> Women Empower</span><span className="www-legend-item"><i className="fas fa-leaf" style={{ color: '#4caf50' }}></i> Sustainability</span></div></div>
+                <div className="www-legend"><span className="www-legend-title">{legendTitle}</span><div className="www-legend-items">{legendItems.map((item, i) => (
+                  <span className="www-legend-item" key={i}><i className={`fas ${item.icon}`} style={{ color: item.color }}></i> {item.label}</span>
+                ))}</div></div>
               </div>
             </div>
             <div className="www-list-col" id="locations">
-              <div className="www-list-header"><h3>Our <span>States</span></h3><p>Hover a location to see its impact</p></div>
+              <div className="www-list-header"><h3>{listHeading} <span>{listHighlight}</span></h3><p>{listSubtitle}</p></div>
               <div className="www-list-scroll">
                 {locations.map(loc => (
                   <div key={loc.loc} className="www-card" data-loc={loc.loc}>
@@ -372,23 +434,22 @@ const WhereWeWork = () => {
 
       <section className="values-section">
         <div className="values-inner">
-          <div style={{ textAlign: 'center' }}><span style={{ color: 'var(--cyan)', fontWeight: 700, fontSize: '1.5rem', letterSpacing: 1, display: 'block', marginBottom: 8 }}>OUR REACH</span><h2 style={{ fontFamily: "'Montserrat', sans-serif", fontSize: '2rem', color: 'var(--navy)' }}>Where We Serve</h2></div>
+          <div style={{ textAlign: 'center' }}><span style={{ color: 'var(--cyan)', fontWeight: 700, fontSize: '1.5rem', letterSpacing: 1, display: 'block', marginBottom: 8 }}>{reachTag}</span><h2 style={{ fontFamily: "'Montserrat', sans-serif", fontSize: '2rem', color: 'var(--navy)' }}>{reachHeading}</h2></div>
           <div className="values-grid">
-            <div className="value-card reveal"><div className="val-icon"><i className="fas fa-map-location-dot"></i></div><h3>Pan-India Reach</h3><p>Active across Maharashtra, Gujarat, West Bengal, Tamil Nadu, and Odisha.</p></div>
-            <div className="value-card reveal"><div className="val-icon"><i className="fas fa-city"></i></div><h3>Urban Outreach</h3><p>Working in major cities including Mumbai, Pune, Kolkata, and Rajkot.</p></div>
-            <div className="value-card reveal"><div className="val-icon"><i className="fas fa-tree"></i></div><h3>Rural Development</h3><p>Extending support to rural communities in Dwarka, Narmada, and Jalgaon.</p></div>
-            <div className="value-card reveal"><div className="val-icon"><i className="fas fa-people-group"></i></div><h3>10+ Locations</h3><p>Establishing presence in multiple states to maximize community impact.</p></div>
+            {reachValues.map((v, i) => (
+              <div className="value-card reveal" key={i}><div className="val-icon"><i className={`fas ${v.icon}`}></i></div><h3>{v.title}</h3><p>{v.desc}</p></div>
+            ))}
           </div>
         </div>
       </section>
 
       <section className="testimonials-section">
         <div className="testimonials-inner">
-          <div style={{ textAlign: 'center' }}><span style={{ color: 'var(--cyan)', fontWeight: 700, fontSize: '1.5rem', letterSpacing: 1, display: 'block', marginBottom: 8 }}>TESTIMONIALS</span><h2 style={{ fontFamily: "'Montserrat', sans-serif", fontSize: '2rem', color: 'var(--navy)' }}>Voices from the Field</h2></div>
+          <div style={{ textAlign: 'center' }}><span style={{ color: 'var(--cyan)', fontWeight: 700, fontSize: '1.5rem', letterSpacing: 1, display: 'block', marginBottom: 8 }}>{testimonialsTag}</span><h2 style={{ fontFamily: "'Montserrat', sans-serif", fontSize: '2rem', color: 'var(--navy)' }}>{testimonialsHeading}</h2></div>
           <div className="testimonial-grid">
-            <div className="testimonial-card reveal"><div><div className="quote-icon"><i className="fas fa-quote-left"></i></div><p>BSCT's work in our village has brought education and healthcare to children who had no access before.</p></div><div><h4>Suresh Patil</h4><span>Village Head, Jalgaon</span></div></div>
-            <div className="testimonial-card reveal"><div><div className="quote-icon"><i className="fas fa-quote-left"></i></div><p>The impact of their midday meal program in Mumbai slums is remarkable. No child goes hungry.</p></div><div><h4>Asha Devi</h4><span>Community Volunteer</span></div></div>
-            <div className="testimonial-card reveal"><div><div className="quote-icon"><i className="fas fa-quote-left"></i></div><p>From Gujarat to Tamil Nadu, BSCT's reach is expanding every year. A truly national NGO.</p></div><div><h4>Dr. Karthik Rao</h4><span>Social Researcher</span></div></div>
+            {testimonials.map((t, i) => (
+              <div className="testimonial-card reveal" key={i}><div><div className="quote-icon"><i className="fas fa-quote-left"></i></div><p>{t.quote}</p></div><div><h4>{t.name}</h4><span>{t.role}</span></div></div>
+            ))}
           </div>
         </div>
       </section>

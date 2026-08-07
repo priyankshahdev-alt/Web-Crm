@@ -1,6 +1,22 @@
 import { z } from 'zod';
 import { PublishStatus } from '@prisma/client';
 
+export const sectionPatchSchema = z
+  .object({
+    id: z.string().uuid(),
+    pageId: z.string().uuid().optional(),
+    organizationId: z.string().optional(),
+    type: z.string().min(1).max(100),
+    name: z.string().max(300).nullable().optional(),
+    sortOrder: z.coerce.number().int().min(0).optional(),
+    isActive: z.boolean().optional(),
+    settings: z.record(z.string(), z.unknown()).nullable().optional(),
+    content: z.record(z.string(), z.unknown()).nullable().optional(),
+    createdAt: z.string().optional(),
+    updatedAt: z.string().optional(),
+  })
+  .strict();
+
 export const createPageSchema = z
   .object({
     slug: z
@@ -15,22 +31,8 @@ export const createPageSchema = z
     template: z.string().max(100).optional(),
     sortOrder: z.coerce.number().int().min(0).optional(),
     isHome: z.boolean().optional(),
-  })
-  .strict();
-
-export const sectionPatchSchema = z
-  .object({
-    id: z.string().uuid(),
-    pageId: z.string().uuid().optional(),
-    organizationId: z.string().optional(),
-    type: z.string().min(1).max(100),
-    name: z.string().max(300).nullable().optional(),
-    sortOrder: z.coerce.number().int().min(0).optional(),
-    isActive: z.boolean().optional(),
-    settings: z.record(z.string(), z.unknown()).nullable().optional(),
-    content: z.record(z.string(), z.unknown()).nullable().optional(),
-    createdAt: z.string().optional(),
-    updatedAt: z.string().optional(),
+    author: z.string().max(120).optional(),
+    sections: z.array(sectionPatchSchema).max(200).optional(),
   })
   .strict();
 

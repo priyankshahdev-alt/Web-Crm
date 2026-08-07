@@ -1,8 +1,43 @@
 import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
+import { usePageContent } from '../hooks/usePageContent';
 
 export default function ImpactRozgaarBooth() {
   useEffect(() => { window.scrollTo(0, 0); }, []);
+
+  const content = usePageContent('impact-rozgaar-booth');
+
+  const headingTag = content('impact-rozgaar-booth-heading', 'tag') ?? 'MISSION ATMANIRBHAR';
+  const headingTitle = content('impact-rozgaar-booth-heading', 'heading') ?? 'Rozgaar Booth ';
+  const headingText =
+    content('impact-rozgaar-booth-heading', 'description') ??
+    'Through the Rozgaar Booth Repairing initiative, Being Sevak Charitable Trust helps visually impaired and specially-abled individuals restore and renovate their livelihood booths. These booths serve as a primary source of income, enabling beneficiaries to run small businesses independently and live with dignity and self-reliance.';
+  const mainImage = content('impact-rozgaar-booth-heading', 'image') ?? '/images/g15.webp';
+  const cards =
+    content('impact-rozgaar-booth-cards', 'items') ?? [
+      { title: 'Livelihood Restoration', description: 'Repairing damaged booths helps beneficiaries restart their businesses and regain financial stability.' },
+      { title: 'Economic Independence', description: 'A functional booth creates a sustainable source of income for visually impaired individuals and families.' },
+      { title: 'Safe Work Environment', description: 'Renovated structures provide a secure and comfortable workplace for daily business operations.' },
+      { title: 'Empowering Dreams', description: 'Every repaired booth becomes a symbol of hope, confidence, and self-sufficiency.' },
+    ];
+  const storyTag = content('impact-rozgaar-booth-impact', 'tag') ?? 'SUCCESS STORY';
+  const storyTitle = content('impact-rozgaar-booth-impact', 'heading') ?? 'From Struggle to Sustainable Income';
+  const storyText =
+    content('impact-rozgaar-booth-impact', 'text') ??
+    'Geeta Nazre, a visually impaired beneficiary, was allotted a telephone booth in poor condition. Since her family\'s livelihood depended on the booth, urgent repairs and replacement were essential. Through support from Being Sevak Charitable Trust, the booth was restored, helping her continue earning and supporting her family with dignity.';
+  const stats =
+    content('impact-rozgaar-booth-impact', 'stats') ?? [
+      { value: '100+', label: 'Booths Supported' },
+      { value: '500+', label: 'Lives Empowered' },
+      { value: '100%', label: 'Livelihood Focused' },
+    ];
+  const galleryTag = content('impact-rozgaar-booth-gallery', 'tag') ?? 'PROJECT GALLERY';
+  const galleryTitle = content('impact-rozgaar-booth-gallery', 'heading') ?? 'Moments of Impact';
+  const galleryText =
+    content('impact-rozgaar-booth-gallery', 'description') ??
+    'Explore glimpses of our initiatives, community outreach programs, and the positive impact created through collective efforts.';
+  const galleryImages =
+    content('impact-rozgaar-booth-gallery', 'images') ?? ['/images/g11.webp', '/images/g12.webp', '/images/g14.webp'];
 
   const css = `
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -63,68 +98,38 @@ export default function ImpactRozgaarBooth() {
       <section className="rozgaar-booth-section">
         <div className="rozgaar-container">
           <div className="rozgaar-heading">
-            <span className="rozgaar-tag">MISSION ATMANIRBHAR</span>
-            <h2>Rozgaar Booth </h2>
-            <p>
-              Through the Rozgaar Booth Repairing initiative, Being Sevak
-              Charitable Trust helps visually impaired and specially-abled
-              individuals restore and renovate their livelihood booths.
-              These booths serve as a primary source of income, enabling
-              beneficiaries to run small businesses independently and live
-              with dignity and self-reliance.
-            </p>
+            <span className="rozgaar-tag">{headingTag}</span>
+            <h2>{headingTitle}</h2>
+            <p>{headingText}</p>
           </div>
 
           <div className="rozgaar-grid">
             <div className="rozgaar-image">
-              <img src="/images/g15.webp" alt="Rozgaar Booth Repairing" />
+              <img src={mainImage} alt="Rozgaar Booth Repairing" />
             </div>
             <div className="rozgaar-content">
-              <div className="rozgaar-card">
-                <h3>Livelihood Restoration</h3>
-                <p>Repairing damaged booths helps beneficiaries restart their businesses and regain financial stability.</p>
-              </div>
-              <div className="rozgaar-card">
-                <h3>Economic Independence</h3>
-                <p>A functional booth creates a sustainable source of income for visually impaired individuals and families.</p>
-              </div>
-              <div className="rozgaar-card">
-                <h3>Safe Work Environment</h3>
-                <p>Renovated structures provide a secure and comfortable workplace for daily business operations.</p>
-              </div>
-              <div className="rozgaar-card">
-                <h3>Empowering Dreams</h3>
-                <p>Every repaired booth becomes a symbol of hope, confidence, and self-sufficiency.</p>
-              </div>
+              {cards.map((card, i) => (
+                <div className="rozgaar-card" key={i}>
+                  <h3>{card.title}</h3>
+                  <p>{card.description}</p>
+                </div>
+              ))}
             </div>
           </div>
 
           <div className="rozgaar-impact">
             <div className="impact-content">
-              <span>SUCCESS STORY</span>
-              <h3>From Struggle to Sustainable Income</h3>
-              <p>
-                Geeta Nazre, a visually impaired beneficiary, was allotted
-                a telephone booth in poor condition. Since her family's
-                livelihood depended on the booth, urgent repairs and
-                replacement were essential. Through support from Being
-                Sevak Charitable Trust, the booth was restored, helping
-                her continue earning and supporting her family with dignity.
-              </p>
+              <span>{storyTag}</span>
+              <h3>{storyTitle}</h3>
+              <p>{storyText}</p>
             </div>
             <div className="impact-stats">
-              <div className="impact-box">
-                <h2>100+</h2>
-                <span>Booths Supported</span>
-              </div>
-              <div className="impact-box">
-                <h2>500+</h2>
-                <span>Lives Empowered</span>
-              </div>
-              <div className="impact-box">
-                <h2>100%</h2>
-                <span>Livelihood Focused</span>
-              </div>
+              {stats.map((s, i) => (
+                <div className="impact-box" key={i}>
+                  <h2>{s.value}</h2>
+                  <span>{s.label}</span>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -132,14 +137,14 @@ export default function ImpactRozgaarBooth() {
 
       <section className="shital-gallery-section">
         <div className="shital-gallery-heading">
-          <span>PROJECT GALLERY</span>
-          <h2>Moments of Impact</h2>
-          <p>Explore glimpses of our initiatives, community outreach programs, and the positive impact created through collective efforts.</p>
+          <span>{galleryTag}</span>
+          <h2>{galleryTitle}</h2>
+          <p>{galleryText}</p>
         </div>
         <div className="shital-gallery">
-          <div className="shital-gallery-item"><img src="/images/g11.webp" alt="" /></div>
-          <div className="shital-gallery-item"><img src="/images/g12.webp" alt="" /></div>
-          <div className="shital-gallery-item"><img src="/images/g14.webp" alt="" /></div>
+          {galleryImages.map((src, i) => (
+            <div className="shital-gallery-item" key={i}><img src={src} alt="" /></div>
+          ))}
         </div>
       </section>
     </>

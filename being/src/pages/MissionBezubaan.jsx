@@ -1,8 +1,122 @@
 import { Link } from 'react-router-dom';
 import { useRef, useEffect } from 'react';
+import { usePageContent } from '../hooks/usePageContent';
 
 const MissionBezubaan = () => {
   const iframeRef = useRef(null);
+
+  const content = usePageContent('mission-bezubaan');
+
+  const taxTitle = content('mission-bezubaan-tax', 'title') ?? 'Mission Bezubaan';
+
+  const heroTag = content('mission-bezubaan-hero', 'tag') ?? 'Mission Bezubaan';
+  const heroLine1 = content('mission-bezubaan-hero', 'headingLine1') ?? 'Be Their';
+  const heroHighlight = content('mission-bezubaan-hero', 'headingHighlight') ?? 'Voice';
+  const heroLine2 = content('mission-bezubaan-hero', 'headingLine2') ?? 'Feed & Protect Street Animals';
+  const heroText =
+    content('mission-bezubaan-hero', 'description') ??
+    'Mission Bezubaan by Being Sevak Charitable Trust supports stray animals with food, care, shelter and compassion. Every paw deserves love, safety and a better tomorrow.';
+  const heroImage = content('mission-bezubaan-hero', 'image') ?? '/images/b1.png';
+  const heroStats =
+    content('bezubaan-hero-stats', 'items') ?? [
+      { value: '5000+', label: 'Animals Fed' },
+      { value: '24/7', label: 'Care Support' },
+    ];
+
+  const aboutTag = content('bezubaan-about', 'tag') ?? 'About Bezubaan';
+  const aboutLine1 = content('bezubaan-about', 'headingLine1') ?? 'Compassion For Every';
+  const aboutHighlight = content('bezubaan-about', 'headingHighlight') ?? 'Silent Soul';
+  const aboutText =
+    content('bezubaan-about', 'text') ??
+    'Mission Bezubaan works to provide nutrition, safety and medical support for stray animals living on streets. Our goal is to create a kinder and more caring world for voiceless companions.';
+  const aboutImage = content('bezubaan-about', 'image') ?? '/images/b2.jpg';
+  const aboutItems =
+    content('bezubaan-about', 'items') ?? [
+      { title: '🐾 Daily Feeding', description: 'Nutritious meals for hungry street animals.' },
+      { title: '❤️ Medical Care', description: 'Emergency treatment and healthcare support.' },
+      { title: '🚑 Rescue Support', description: 'Helping injured and abandoned animals.' },
+      { title: '🏠 Safe Shelter', description: 'Providing warmth, care and protection.' },
+    ];
+
+  const impactTag = content('bezubaan-impact', 'tag') ?? 'Our Impact';
+  const impactHeading = content('bezubaan-impact', 'heading') ?? 'How We Help Street Animals';
+  const impactText =
+    content('bezubaan-impact', 'text') ??
+    'Through dedicated feeding drives, rescue missions and community awareness, Mission Bezubaan is making a real difference in the lives of thousands of stray animals across India.';
+  const impactStats =
+    content('bezubaan-impact', 'stats') ?? [
+      { value: '10K+', label: 'Meals Served' },
+      { value: '1000+', label: 'Animals Helped' },
+      { value: '50+', label: 'Rescue Drives' },
+      { value: '24/7', label: 'Care Support' },
+    ];
+  const impactImage = content('bezubaan-impact', 'image') ?? '/images/b3.jpg';
+
+  const pawMiniTitle = content('bezubaan-paw-care', 'miniTitle') ?? 'Paw Care Center';
+  const pawHeading = content('bezubaan-paw-care', 'heading') ?? 'We Have Opened A Dedicated Paw Care Center';
+  const pawText1 =
+    content('bezubaan-paw-care', 'text1') ??
+    'We have opened a dedicated Paw Care Center in Goregaon to support and protect stray dogs in need. Our center provides safe shelter, food, and proper care for abandoned and homeless dogs.';
+  const pawText2 =
+    content('bezubaan-paw-care', 'text2') ??
+    'Through this initiative, we aim to create a compassionate space where every stray dog gets love, protection, and a second chance at life.';
+  const pawMainImage = content('bezubaan-paw-care', 'image') ?? '/images/dog1.jpeg';
+  const pawGalleryImages =
+    content('bezubaan-paw-care', 'images') ?? [
+      { src: '/images/b4.jpg', alt: 'Gallery 1' },
+      { src: '/images/b5.jpg', alt: 'Gallery 2' },
+      { src: '/images/b6.jpg', alt: 'Gallery 3' },
+    ];
+  const pawFeatures =
+    content('bezubaan-paw-care', 'features') ?? [
+      { title: 'Shelter Support', description: 'Safe space for stray dogs' },
+      { title: 'Medical Care', description: 'Treatment for injured dogs' },
+      { title: 'Daily Feeding', description: 'Food & regular care support' },
+    ];
+
+  const careTag = content('bezubaan-care-about', 'tag') ?? 'Spreading Care Across The Streets';
+  const careLine1 = content('bezubaan-care-about', 'headingLine1') ?? 'Helping Animals';
+  const careHighlight = content('bezubaan-care-about', 'headingHighlight') ?? 'With Love & Compassion';
+  const careText =
+    content('bezubaan-care-about', 'text') ??
+    'Through continuous feeding drives and rescue efforts, Mission Bezubaan is creating hope and comfort for thousands of stray animals across communities.';
+  const careItems =
+    content('bezubaan-care-about', 'items') ?? [
+      { title: '🐕 Food Distribution', description: 'We regularly distribute food and water to hungry animals.' },
+      { title: '🏥 Rescue Activities', description: 'Our team rescues injured and helpless animals.' },
+      { title: '💕 Care & Awareness', description: 'We encourage kindness towards animals in communities.' },
+      { title: '🏡 Shelter Support', description: 'Providing safe homes for abandoned animals.' },
+    ];
+  const careImage = content('bezubaan-care-about', 'image') ?? '/images/b7.jpeg';
+
+  const galleryTag = content('bezubaan-gallery', 'tag') ?? 'Gallery';
+  const galleryHeading = content('bezubaan-gallery', 'heading') ?? 'Moments Of Love & Care';
+  const galleryImages =
+    content('bezubaan-gallery', 'images') ?? [
+      { src: '/images/b2.jpg', alt: 'Gallery 1' },
+      { src: '/images/b3.jpg', alt: 'Gallery 2' },
+      { src: '/images/b4.jpg', alt: 'Gallery 3' },
+      { src: '/images/b5.jpg', alt: 'Gallery 4' },
+      { src: '/images/b6.jpg', alt: 'Gallery 5' },
+      { src: '/images/b7.jpeg', alt: 'Gallery 6' },
+      { src: '/images/dog1.jpeg', alt: 'Gallery 7' },
+      { src: '/images/b1.png', alt: 'Gallery 8' },
+    ];
+
+  const donationTag = content('bezubaan-donation', 'tag') ?? 'Mission Bezubaan';
+  const donationUrl = content('bezubaan-donation', 'donationUrl') ?? '/donations/donation-inline-bezubaan.html';
+  const donationTitle = content('bezubaan-donation', 'title') ?? 'Speak for Those Who Cannot Speak';
+  const donationText =
+    content('bezubaan-donation', 'description') ??
+    'Our mission is to protect and care for stray and voiceless animals by providing food, medical support, shelter, and love.';
+
+  const testimonialHeading = content('bezubaan-testimonials', 'heading') ?? 'What Our Donors Say';
+  const testimonials =
+    content('bezubaan-testimonials', 'items') ?? [
+      { quote: 'Being Sevak is doing incredible work for visually impaired and needy families. Proud to support this mission.', name: 'Riya Sharma' },
+      { quote: 'Transparent work, genuine impact, and a wonderful team dedicated to helping people with dignity.', name: 'Rahul Mehta' },
+      { quote: 'Every donation creates real change. Their food distribution drives truly touch lives.', name: 'Anjali Verma' },
+    ];
 
   useEffect(() => {
     function handleMessage(e) {
@@ -309,20 +423,19 @@ const MissionBezubaan = () => {
 
       <div className="mission-bezubaan">
         <section className="tax-box">
-          <h1>Mission Bezubaan</h1>
+          <h1>{taxTitle}</h1>
         </section>
 
         <section className="hero-section">
           <div className="hero-content">
             <div className="hero-left">
-              <span className="mini-title">Mission Bezubaan</span>
+              <span className="mini-title">{heroTag}</span>
               <h1>
-                Be Their <span>Voice</span><br />
-                Feed & Protect Street Animals
+                {heroLine1} <span>{heroHighlight}</span><br />
+                {heroLine2}
               </h1>
               <p>
-                Mission Bezubaan by Being Sevak Charitable Trust supports stray animals with food,
-                care, shelter and compassion. Every paw deserves love, safety and a better tomorrow.
+                {heroText}
               </p>
               <div className="hero-buttons">
                 <a href="#donate" className="primary-btn">Donate Now</a>
@@ -330,15 +443,13 @@ const MissionBezubaan = () => {
             </div>
             <div className="hero-right">
               <div className="image-box">
-                <img src="/images/b1.png" alt="Dog" />
-                <div className="floating-card card1">
-                  <h3>5000+</h3>
-                  <p>Animals Fed</p>
-                </div>
-                <div className="floating-card card2">
-                  <h3>24/7</h3>
-                  <p>Care Support</p>
-                </div>
+                <img src={heroImage} alt="Dog" />
+                {heroStats.map((stat, i) => (
+                  <div className={`floating-card card${i + 1}`} key={i}>
+                    <h3>{stat.value}</h3>
+                    <p>{stat.label}</p>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
@@ -347,7 +458,7 @@ const MissionBezubaan = () => {
         <div id="donate" style={{ width: '100%', background: '#f4f7fb', padding: '0', overflow: 'hidden', marginBottom: '0', position: 'relative', zIndex: 10, isolation: 'isolate' }}>
           <iframe
             ref={iframeRef}
-            src="/donations/donation-inline-bezubaan.html"
+            src={donationUrl}
             style={{ width: '100%', height: '650px', border: 'none', display: 'block' }}
             title="Donate to Mission Bezubaan"
           />
@@ -355,32 +466,21 @@ const MissionBezubaan = () => {
 
         <section className="about-section" id="about">
           <div className="about-image">
-            <img src="/images/b2.jpg" alt="Animals" />
+            <img src={aboutImage} alt="Animals" />
           </div>
           <div className="about-content">
-            <span className="mini-title">About Bezubaan</span>
-            <h2>Compassion For Every <span>Silent Soul</span></h2>
+            <span className="mini-title">{aboutTag}</span>
+            <h2>{aboutLine1} <span>{aboutHighlight}</span></h2>
             <p>
-              Mission Bezubaan works to provide nutrition, safety and medical support for stray animals
-              living on streets. Our goal is to create a kinder and more caring world for voiceless companions.
+              {aboutText}
             </p>
             <div className="about-grid">
-              <div className="about-box">
-                <h3>🐾 Daily Feeding</h3>
-                <p>Nutritious meals for hungry street animals.</p>
-              </div>
-              <div className="about-box">
-                <h3>❤️ Medical Care</h3>
-                <p>Emergency treatment and healthcare support.</p>
-              </div>
-              <div className="about-box">
-                <h3>🚑 Rescue Support</h3>
-                <p>Helping injured and abandoned animals.</p>
-              </div>
-              <div className="about-box">
-                <h3>🏠 Safe Shelter</h3>
-                <p>Providing warmth, care and protection.</p>
-              </div>
+              {aboutItems.map((item, i) => (
+                <div className="about-box" key={i}>
+                  <h3>{item.title}</h3>
+                  <p>{item.description}</p>
+                </div>
+              ))}
             </div>
           </div>
         </section>
@@ -388,21 +488,19 @@ const MissionBezubaan = () => {
         <section className="impact-section" id="impact">
           <div className="impact-wrapper">
             <div className="impact-content">
-              <span>Our Impact</span>
-              <h2>How We Help Street Animals</h2>
+              <span>{impactTag}</span>
+              <h2>{impactHeading}</h2>
               <p>
-                Through dedicated feeding drives, rescue missions and community awareness, Mission Bezubaan
-                is making a real difference in the lives of thousands of stray animals across India.
+                {impactText}
               </p>
               <div className="impact-stats">
-                <div><h3>10K+</h3><p>Meals Served</p></div>
-                <div><h3>1000+</h3><p>Animals Helped</p></div>
-                <div><h3>50+</h3><p>Rescue Drives</p></div>
-                <div><h3>24/7</h3><p>Care Support</p></div>
+                {impactStats.map((s, i) => (
+                  <div key={i}><h3>{s.value}</h3><p>{s.label}</p></div>
+                ))}
               </div>
             </div>
             <div className="impact-image">
-              <img src="/images/b3.jpg" alt="Impact" />
+              <img src={impactImage} alt="Impact" />
             </div>
           </div>
         </section>
@@ -411,29 +509,27 @@ const MissionBezubaan = () => {
           <div className="pawzen-container">
             <div className="pawzen-image-side">
               <div className="pawzen-main-image">
-                <img src="/images/dog1.jpeg" alt="Paw Care Center" />
+                <img src={pawMainImage} alt="Paw Care Center" />
               </div>
               <div className="pawzen-gallery-row">
-                <img src="/images/b4.jpg" alt="Gallery 1" />
-                <img src="/images/b5.jpg" alt="Gallery 2" />
-                <img src="/images/b6.jpg" alt="Gallery 3" />
+                {pawGalleryImages.map((g, i) => (
+                  <img key={i} src={g.src} alt={g.alt} />
+                ))}
               </div>
             </div>
             <div className="pawzen-content-side">
-              <span className="pawzen-mini-title">Paw Care Center</span>
-              <h2>We Have Opened A Dedicated Paw Care Center</h2>
+              <span className="pawzen-mini-title">{pawMiniTitle}</span>
+              <h2>{pawHeading}</h2>
               <p>
-                We have opened a dedicated Paw Care Center in Goregaon to support and protect stray dogs in need.
-                Our center provides safe shelter, food, and proper care for abandoned and homeless dogs.
+                {pawText1}
               </p>
               <p>
-                Through this initiative, we aim to create a compassionate space where every stray dog
-                gets love, protection, and a second chance at life.
+                {pawText2}
               </p>
               <div className="pawzen-feature-grid">
-                <div className="pawzen-feature-card"><h3>Shelter Support</h3><span>Safe space for stray dogs</span></div>
-                <div className="pawzen-feature-card"><h3>Medical Care</h3><span>Treatment for injured dogs</span></div>
-                <div className="pawzen-feature-card"><h3>Daily Feeding</h3><span>Food & regular care support</span></div>
+                {pawFeatures.map((f, i) => (
+                  <div className="pawzen-feature-card" key={i}><h3>{f.title}</h3><span>{f.description}</span></div>
+                ))}
               </div>
             </div>
           </div>
@@ -441,61 +537,44 @@ const MissionBezubaan = () => {
 
         <section className="about-section">
           <div className="about-content">
-            <span className="mini-title">Spreading Care Across The Streets</span>
-            <h2>Helping Animals <span>With Love & Compassion</span></h2>
+            <span className="mini-title">{careTag}</span>
+            <h2>{careLine1} <span>{careHighlight}</span></h2>
             <p>
-              Through continuous feeding drives and rescue efforts, Mission Bezubaan is creating hope
-              and comfort for thousands of stray animals across communities.
+              {careText}
             </p>
             <div className="about-grid">
-              <div className="about-box">
-                <h3>🐕 Food Distribution</h3>
-                <p>We regularly distribute food and water to hungry animals.</p>
-              </div>
-              <div className="about-box">
-                <h3>🏥 Rescue Activities</h3>
-                <p>Our team rescues injured and helpless animals.</p>
-              </div>
-              <div className="about-box">
-                <h3>💕 Care & Awareness</h3>
-                <p>We encourage kindness towards animals in communities.</p>
-              </div>
-              <div className="about-box">
-                <h3>🏡 Shelter Support</h3>
-                <p>Providing safe homes for abandoned animals.</p>
-              </div>
+              {careItems.map((item, i) => (
+                <div className="about-box" key={i}>
+                  <h3>{item.title}</h3>
+                  <p>{item.description}</p>
+                </div>
+              ))}
             </div>
           </div>
           <div className="about-image">
-            <img src="/images/b7.jpeg" alt="Impact" />
+            <img src={careImage} alt="Impact" />
           </div>
         </section>
 
         <section className="gallery-section">
           <div className="gallery-title">
-            <span>Gallery</span>
-            <h2>Moments Of Love & Care</h2>
+            <span>{galleryTag}</span>
+            <h2>{galleryHeading}</h2>
           </div>
           <div className="gallery-grid">
-            <div className="gallery-card"><img src="/images/b2.jpg" alt="Gallery 1" /></div>
-            <div className="gallery-card"><img src="/images/b3.jpg" alt="Gallery 2" /></div>
-            <div className="gallery-card"><img src="/images/b4.jpg" alt="Gallery 3" /></div>
-            <div className="gallery-card"><img src="/images/b5.jpg" alt="Gallery 4" /></div>
-            <div className="gallery-card"><img src="/images/b6.jpg" alt="Gallery 5" /></div>
-            <div className="gallery-card"><img src="/images/b7.jpeg" alt="Gallery 6" /></div>
-            <div className="gallery-card"><img src="/images/dog1.jpeg" alt="Gallery 7" /></div>
-            <div className="gallery-card"><img src="/images/b1.png" alt="Gallery 8" /></div>
+            {galleryImages.map((g, i) => (
+              <div className="gallery-card" key={i}><img src={g.src} alt={g.alt} /></div>
+            ))}
           </div>
         </section>
 
         <section className="sevak-donation">
           <div className="sevak-donation-content">
             <div className="sevak-left">
-              <span className="sevak-tag">Mission Bezubaan</span>
-              <h2 className="sevak-title">Speak for Those Who Cannot Speak</h2>
+              <span className="sevak-tag">{donationTag}</span>
+              <h2 className="sevak-title">{donationTitle}</h2>
               <p className="sevak-desc">
-                Our mission is to protect and care for stray and voiceless animals by providing food,
-                medical support, shelter, and love.
+                {donationText}
               </p>
             </div>
             <div className="sevak-right">
@@ -506,21 +585,15 @@ const MissionBezubaan = () => {
 
         <section className="testimonial-section">
           <div className="section-header">
-            <h2>What Our Donors Say</h2>
+            <h2>{testimonialHeading}</h2>
           </div>
           <div className="testimonial-grid">
-            <div className="testimonial-card">
-              <p>Being Sevak is doing incredible work for visually impaired and needy families. Proud to support this mission.</p>
-              <h4>Riya Sharma</h4>
-            </div>
-            <div className="testimonial-card">
-              <p>Transparent work, genuine impact, and a wonderful team dedicated to helping people with dignity.</p>
-              <h4>Rahul Mehta</h4>
-            </div>
-            <div className="testimonial-card">
-              <p>Every donation creates real change. Their food distribution drives truly touch lives.</p>
-              <h4>Anjali Verma</h4>
-            </div>
+            {testimonials.map((t, i) => (
+              <div className="testimonial-card" key={i}>
+                <p>{t.quote}</p>
+                <h4>{t.name}</h4>
+              </div>
+            ))}
           </div>
         </section>
 

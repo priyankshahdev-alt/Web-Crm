@@ -1,6 +1,42 @@
 import { Link } from 'react-router-dom';
+import { usePageContent } from '../hooks/usePageContent';
 
 export default function NGOCollaboration() {
+  const content = usePageContent('ngo-collaboration');
+
+  const headingTag = content('ngo-heading', 'tag') ?? 'BSCT Partnerships';
+  const headingTitle = content('ngo-heading', 'heading') ?? 'NGO Collaboration & Partnerships';
+  const headingText =
+    content('ngo-heading', 'description') ??
+    'Together, we can create stronger communities and lasting change through meaningful partnerships and collective social responsibility.';
+  const sustainableTitle = content('ngo-sustainable', 'heading') ?? 'Creating Sustainable Impact';
+  const sustainableText1 =
+    content('ngo-sustainable', 'text1') ??
+    'In today\'s rapidly evolving world, addressing social, economic, and environmental challenges requires collective efforts and meaningful partnerships.';
+  const sustainableText2 =
+    content('ngo-sustainable', 'text2') ??
+    'Non-Governmental Organizations (NGOs) play a vital role in creating positive change, but the journey of building and sustaining impactful initiatives often comes with significant challenges.';
+  const collaborationTitle = content('ngo-collaboration', 'heading') ?? 'Why Collaboration Matters';
+  const collaborationText1 =
+    content('ngo-collaboration', 'text1') ??
+    'At Being Sevak Charitable Trust, we strongly believe that collaboration is the key to creating long-term and sustainable social impact.';
+  const collaborationText2 =
+    content('ngo-collaboration', 'text2') ??
+    'By partnering with like-minded organizations, institutions, social groups, and changemakers, we can combine resources, expertise, and community reach to serve society more effectively.';
+  const sharedTitle = content('ngo-shared-mission', 'heading') ?? 'Shared Mission';
+  const sharedText =
+    content('ngo-shared-mission', 'text') ??
+    'Collaboration is more than just working together — it is a shared commitment towards common goals, social responsibility, and community empowerment.';
+  const communitiesTitle = content('ngo-communities', 'heading') ?? 'Building Stronger Communities';
+  const communitiesText1 =
+    content('ngo-communities', 'text1') ??
+    'Whether through formal partnerships or informal associations, these relationships help strengthen initiatives, expand outreach, and create greater impact for the communities we serve.';
+  const communitiesText2 =
+    content('ngo-communities', 'text2') ??
+    'BSCT welcomes NGOs, community groups, educational institutions, healthcare organizations, and social leaders to join hands with us in building a compassionate, inclusive, and empowered society.';
+  const communitiesQuote =
+    content('ngo-communities', 'quote') ?? 'Together, We Can Create Stronger Communities and Lasting Change.';
+
   return (
     <>
       <style>{`
@@ -165,54 +201,54 @@ export default function NGOCollaboration() {
       <section className="ngo-collab-section">
         <div className="ngo-collab-container">
           <div className="ngo-top-heading">
-            <span style={{cursor:'pointer'}} onClick={() => document.getElementById('ngo-content').scrollIntoView({ behavior: 'smooth' })}>BSCT Partnerships</span>
-            <h2>NGO Collaboration & Partnerships</h2>
+            <span style={{cursor:'pointer'}} onClick={() => document.getElementById('ngo-content').scrollIntoView({ behavior: 'smooth' })}>{headingTag}</span>
+            <h2>{headingTitle}</h2>
             <p>
-              Together, we can create stronger communities and lasting change through meaningful partnerships and collective social responsibility.
+              {headingText}
             </p>
           </div>
 
           <div className="ngo-content-grid" id="ngo-content">
             <div className="ngo-left-content">
               <div className="ngo-card large-card">
-                <h3>Creating Sustainable Impact</h3>
+                <h3>{sustainableTitle}</h3>
                 <p>
-                  In today's rapidly evolving world, addressing social, economic, and environmental challenges requires collective efforts and meaningful partnerships.
+                  {sustainableText1}
                 </p>
                 <p>
-                  Non-Governmental Organizations (NGOs) play a vital role in creating positive change, but the journey of building and sustaining impactful initiatives often comes with significant challenges.
+                  {sustainableText2}
                 </p>
               </div>
 
               <div className="ngo-card">
-                <h3>Why Collaboration Matters</h3>
+                <h3>{collaborationTitle}</h3>
                 <p>
-                  At Being Sevak Charitable Trust, we strongly believe that collaboration is the key to creating long-term and sustainable social impact.
+                  {collaborationText1}
                 </p>
                 <p>
-                  By partnering with like-minded organizations, institutions, social groups, and changemakers, we can combine resources, expertise, and community reach to serve society more effectively.
+                  {collaborationText2}
                 </p>
               </div>
             </div>
 
             <div className="ngo-right-content">
               <div className="ngo-floating-box">
-                <h3>Shared Mission</h3>
+                <h3>{sharedTitle}</h3>
                 <p>
-                  Collaboration is more than just working together — it is a shared commitment towards common goals, social responsibility, and community empowerment.
+                  {sharedText}
                 </p>
               </div>
 
               <div className="ngo-card dark-card">
-                <h3>Building Stronger Communities</h3>
+                <h3>{communitiesTitle}</h3>
                 <p>
-                  Whether through formal partnerships or informal associations, these relationships help strengthen initiatives, expand outreach, and create greater impact for the communities we serve.
+                  {communitiesText1}
                 </p>
                 <p>
-                  BSCT welcomes NGOs, community groups, educational institutions, healthcare organizations, and social leaders to join hands with us in building a compassionate, inclusive, and empowered society.
+                  {communitiesText2}
                 </p>
                 <div className="ngo-quote">
-                  "Together, We Can Create Stronger Communities and Lasting Change."
+                  {communitiesQuote}
                 </div>
               </div>
             </div>

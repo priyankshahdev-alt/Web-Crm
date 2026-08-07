@@ -1,7 +1,43 @@
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
+import { usePageContent } from '../hooks/usePageContent';
 
 const Careers = () => {
+  const content = usePageContent('careers');
+
+  const bannerHeading = content('careers-banner', 'heading') ?? 'Careers';
+  const sectionHeading = content('careers-heading', 'heading') ?? 'Join Our';
+  const sectionHeadingSpan = content('careers-heading', 'headingSpan') ?? 'Mission';
+  const sectionText =
+    content('careers-heading', 'description') ??
+    'Be part of a team dedicated to selfless service and social change. Explore career opportunities or volunteer with us.';
+  const whyTitle = content('careers-why', 'title') ?? 'Why Join Us?';
+  const whyText =
+    content('careers-why', 'description') ??
+    'Being Sevak Charitable Trust offers a meaningful work environment where you can make a real difference. We value passion, integrity, and a commitment to serving communities.';
+  const openingsTitle = content('careers-openings', 'title') ?? 'Current Openings';
+  const openings =
+    content('careers-openings', 'items') ?? [
+      'Program Manager',
+      'Social Media Coordinator',
+      'Field Volunteer',
+      'Fundraising Associate',
+      'Content Writer',
+    ];
+  const benefitsTitle = content('careers-benefits', 'title') ?? 'Volunteer Benefits';
+  const benefits =
+    content('careers-benefits', 'items') ?? [
+      { icon: 'fas fa-award', title: 'Certificate', description: 'Official recognition for your service' },
+      { icon: 'fas fa-graduation-cap', title: 'Skill Dev', description: 'Learn & grow through real work' },
+      { icon: 'fas fa-users', title: 'Network', description: 'Connect with like-minded people' },
+      { icon: 'fas fa-hand-holding-heart', title: 'Impact', description: 'Directly contribute to social change' },
+    ];
+  const formTitle = content('careers-form', 'title') ?? 'Volunteer Application';
+  const formText = content('careers-form', 'description') ?? 'Fill out the form below and our team will get back to you.';
+  const popupTitle = content('careers-popup', 'title') ?? 'Form Submitted!';
+  const popupText =
+    content('careers-popup', 'description') ?? 'Thank you for your interest. Our team will get back to you soon.';
+
   const [showSuccess, setShowSuccess] = useState(false);
   const [volName, setVolName] = useState('');
   const [volEmail, setVolEmail] = useState('');
@@ -123,64 +159,49 @@ const Careers = () => {
       `}</style>
 
       <section className="tax-box">
-        <h1>Careers</h1>
+        <h1>{bannerHeading}</h1>
       </section>
 
       <section className="careers-section">
         <div className="careers-inner">
           <div className="section-title">
-            <h2>Join Our <span>Mission</span></h2>
-            <p>Be part of a team dedicated to selfless service and social change. Explore career opportunities or volunteer with us.</p>
+            <h2>{sectionHeading} <span>{sectionHeadingSpan}</span></h2>
+            <p>{sectionText}</p>
           </div>
 
           <div className="careers-grid">
             <div>
               <div className="info-card">
-                <h3><i className="fas fa-bullseye"></i> Why Join Us?</h3>
-                <p>Being Sevak Charitable Trust offers a meaningful work environment where you can make a real difference. We value passion, integrity, and a commitment to serving communities.</p>
+                <h3><i className="fas fa-bullseye"></i> {whyTitle}</h3>
+                <p>{whyText}</p>
               </div>
 
               <div className="info-card">
-                <h3><i className="fas fa-check-circle"></i> Current Openings</h3>
+                <h3><i className="fas fa-check-circle"></i> {openingsTitle}</h3>
                 <ul>
-                  <li><i className="fas fa-chevron-right"></i> Program Manager</li>
-                  <li><i className="fas fa-chevron-right"></i> Social Media Coordinator</li>
-                  <li><i className="fas fa-chevron-right"></i> Field Volunteer</li>
-                  <li><i className="fas fa-chevron-right"></i> Fundraising Associate</li>
-                  <li><i className="fas fa-chevron-right"></i> Content Writer</li>
+                  {openings.map((item, i) => (
+                    <li key={i}><i className="fas fa-chevron-right"></i> {item}</li>
+                  ))}
                 </ul>
               </div>
 
               <div className="info-card">
-                <h3><i className="fas fa-heart"></i> Volunteer Benefits</h3>
+                <h3><i className="fas fa-heart"></i> {benefitsTitle}</h3>
                 <div className="volunteer-benefits">
-                  <div className="benefit-item">
-                    <i className="fas fa-award"></i>
-                    <h4>Certificate</h4>
-                    <p>Official recognition for your service</p>
-                  </div>
-                  <div className="benefit-item">
-                    <i className="fas fa-graduation-cap"></i>
-                    <h4>Skill Dev</h4>
-                    <p>Learn &amp; grow through real work</p>
-                  </div>
-                  <div className="benefit-item">
-                    <i className="fas fa-users"></i>
-                    <h4>Network</h4>
-                    <p>Connect with like-minded people</p>
-                  </div>
-                  <div className="benefit-item">
-                    <i className="fas fa-hand-holding-heart"></i>
-                    <h4>Impact</h4>
-                    <p>Directly contribute to social change</p>
-                  </div>
+                  {benefits.map((benefit, i) => (
+                    <div className="benefit-item" key={i}>
+                      <i className={benefit.icon}></i>
+                      <h4>{benefit.title}</h4>
+                      <p>{benefit.description}</p>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
 
             <div className="form-card">
-              <h3>Volunteer Application</h3>
-              <p>Fill out the form below and our team will get back to you.</p>
+              <h3>{formTitle}</h3>
+              <p>{formText}</p>
 
               <form id="volunteerForm" onSubmit={handleSubmit}>
                 <div className="form-row">
@@ -241,8 +262,8 @@ const Careers = () => {
       <div className={`popup-overlay ${showSuccess ? 'show' : ''}`} onClick={() => setShowSuccess(false)}>
         <div className="popup-box">
           <div className="popup-icon"><i className="fas fa-check"></i></div>
-          <h3>Form Submitted!</h3>
-          <p>Thank you for your interest. Our team will get back to you soon.</p>
+          <h3>{popupTitle}</h3>
+          <p>{popupText}</p>
         </div>
       </div>
     </>

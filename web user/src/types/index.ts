@@ -44,12 +44,77 @@ export type SectionType =
 
 export interface PageSection extends IdEntity {
   pageId: string
-  type: SectionType
+  type: string
   name?: string | null
   sortOrder: number
   isActive: boolean
   settings: Record<string, unknown>
   content: Record<string, unknown>
+  fields?: WebsiteSectionField[]
+}
+
+export interface WebsiteSectionField {
+  name: string
+  label: string
+  type: string
+  value: unknown
+  imageUrl: string | null
+  displayOrder: number
+}
+
+export interface WebsiteSection {
+  id: string
+  component: string
+  sectionName: string | null
+  displayOrder: number
+  status: 'ACTIVE' | 'INACTIVE'
+  settings: Record<string, unknown>
+  content: Record<string, unknown>
+  fields: WebsiteSectionField[]
+  createdAt: string
+  updatedAt: string
+}
+
+export interface WebsitePage {
+  id: string
+  slug: string
+  title: string
+  metaTitle: string | null
+  metaDescription: string | null
+  status: string
+  template: string
+  sortOrder: number
+  isHome: boolean
+  createdAt: string
+  updatedAt: string
+  sections: WebsiteSection[]
+}
+
+export interface SiteSettings {
+  site?: {
+    siteName?: string | null
+    siteTitle?: string | null
+    siteLogo?: string | null
+    favicon?: string | null
+    description?: string | null
+    [key: string]: unknown
+  }
+  contact?: Record<string, unknown>
+  [key: string]: unknown
+}
+
+export interface WebsiteContent {
+  website: {
+    id: string
+    name: string
+    slug: string
+    description: string | null
+    logoUrl: string | null
+    status: string
+    updatedAt: string
+  }
+  settings: SiteSettings
+  pages: WebsitePage[]
 }
 
 export interface MenuItem {

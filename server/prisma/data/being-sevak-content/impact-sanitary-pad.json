@@ -1,0 +1,65 @@
+{
+  "slug": "impact-sanitary-pad",
+  "title": "Sanitary Pad Vending Machine",
+  "metaTitle": "Sanitary Pad Vending Machine | Being Sevak Foundation",
+  "metaDescription": "Being Sevak Charitable Trust has installed Sanitary Pad Vending Machines at metro stations to promote menstrual hygiene, dignity, and accessibility for women commuters.",
+  "template": "default",
+  "sortOrder": 44,
+  "isHome": false,
+  "sections": [
+    {
+      "type": "impact-sanitary-pad-heading",
+      "name": "Sanitary Pad Header",
+      "sortOrder": 1,
+      "isActive": true,
+      "content": {
+        "tag": "WOMEN HEALTH & HYGIENE INITIATIVE",
+        "heading": "Sanitary Pad Vending Machine",
+        "description": "Being Sevak Charitable Trust has installed Sanitary Pad Vending Machines at metro stations to promote menstrual hygiene, dignity, and accessibility for women commuters. These machines ensure that sanitary pads are available when needed, helping women manage their health safely and confidently while travelling. Through this initiative, we are creating cleaner, healthier, and more inclusive public spaces.",
+        "image": "/images/g24.webp"
+      }
+    },
+    {
+      "type": "impact-sanitary-pad-cards",
+      "name": "Program Highlights",
+      "sortOrder": 2,
+      "isActive": true,
+      "content": {
+        "items": [
+          { "title": "Menstrual Hygiene", "description": "Providing easy access to sanitary pads helps women maintain hygiene and health during emergencies." },
+          { "title": "Metro Station Access", "description": "Strategically installed at metro stations for maximum convenience and public benefit." },
+          { "title": "Women Empowerment", "description": "Supporting dignity, confidence, and comfort for women in public spaces." },
+          { "title": "Health Awareness", "description": "Encouraging awareness about menstrual health and breaking social stigma through accessibility." }
+        ]
+      }
+    },
+    {
+      "type": "impact-sanitary-pad-impact",
+      "name": "Success Story & Stats",
+      "sortOrder": 3,
+      "isActive": true,
+      "content": {
+        "tag": "COMMUNITY IMPACT",
+        "heading": "Supporting Women Every Day",
+        "text": "Thousands of women travel through metro stations daily. Access to sanitary pads during unexpected situations can make a significant difference. By installing Sanitary Pad Vending Machines, Being Sevak Charitable Trust ensures that essential hygiene products are available whenever required, creating a safer and more supportive environment for women.",
+        "stats": [
+          { "value": "10+", "label": "Machines Installed" },
+          { "value": "50K+", "label": "Women Benefited" },
+          { "value": "100%", "label": "Hygiene Focused" }
+        ]
+      }
+    },
+    {
+      "type": "impact-sanitary-pad-gallery",
+      "name": "Project Gallery",
+      "sortOrder": 4,
+      "isActive": true,
+      "content": {
+        "tag": "PROJECT GALLERY",
+        "heading": "Moments of Impact",
+        "description": "Explore glimpses of our initiatives, community outreach programs, and the positive impact created through collective efforts.",
+        "images": ["/images/g21.webp", "/images/g22.webp", "/images/g23.jpg"]
+      }
+    }
+  ]
+}
