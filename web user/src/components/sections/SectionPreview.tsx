@@ -151,7 +151,9 @@ function GalleryPreview({ section }: { section: PageSection }) {
   return (
     <div>
       <SectionHeading section={section} />
-      <div className="grid gap-3" style={{ gridTemplateColumns: `repeat(${count}, minmax(0, 1fr))` }}>
+      <div
+        className={`grid grid-cols-2 gap-3 ${count === 3 ? 'sm:grid-cols-3' : count === 4 ? 'sm:grid-cols-4' : ''}`}
+      >
         {Array.from({ length: Math.min(count * 2, 6) }, (_, index) => (
           <div key={index} className="aspect-[4/3] overflow-hidden rounded-xl bg-slate-200">
             <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-slate-100 to-slate-200 text-[10px] font-medium text-slate-400">

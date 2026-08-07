@@ -125,6 +125,7 @@ export function HomepageEditorPage() {
   const [saving, setSaving] = useState(false)
   const [pickerOpen, setPickerOpen] = useState(false)
   const [deleteTarget, setDeleteTarget] = useState<PageSection | null>(null)
+  const [previewMode, setPreviewMode] = useState<'desktop' | 'mobile'>('desktop')
 
   const load = useCallback(async () => {
     setLoading(true)
@@ -458,7 +459,12 @@ export function HomepageEditorPage() {
                 <button
                   key={mode}
                   type="button"
-                  className="rounded-full px-2.5 py-1 text-[11px] font-semibold text-muted transition"
+                  onClick={() => setPreviewMode(mode)}
+                  className={`rounded-full px-2.5 py-1 text-[11px] font-semibold capitalize transition ${
+                    previewMode === mode
+                      ? 'bg-white text-ink shadow-sm'
+                      : 'text-muted hover:text-ink'
+                  }`}
                 >
                   {mode}
                 </button>
@@ -466,7 +472,7 @@ export function HomepageEditorPage() {
             </div>
           </div>
           <div className="max-h-[calc(100vh-320px)] overflow-y-auto bg-slate-100">
-            <div className="mx-auto max-w-4xl">
+            <div className={`mx-auto ${previewMode === 'mobile' ? 'max-w-[375px]' : 'max-w-4xl'}`}>
               {sections.filter((section) => section.isActive).length === 0 ? (
                 <div className="flex flex-col items-center justify-center px-6 py-24 text-center">
                   <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-soft text-brand">

@@ -14,6 +14,7 @@ const DEMO_USER: WebUserSession = {
   refreshToken: 'demo-refresh',
   currentOrgId: 'being-sevak',
   currentOrgSlug: 'being-sevak',
+  currentOrgName: 'Being Sevak',
   user: {
     id: 'u1',
     email: 'rahul@beingsevak.org',
@@ -40,6 +41,7 @@ export const authService = {
         refreshToken: payload.refreshToken,
         currentOrgId: membership?.id ?? 'being-sevak',
         currentOrgSlug: membership?.slug,
+        currentOrgName: membership?.name,
         user: {
           id: payload.user.id,
           email: payload.user.email,
@@ -55,15 +57,17 @@ export const authService = {
       if (isAxiosError(error)) {
         // Backend answered with real credentials — surface the error.
         if (error.response) {
-          if (error.response.status >= 500) {
-            throw new Error('Backend is unreachable, please try again')
+          // A 5xx here means the backend is unreachable (the dev proxy also
+          // returns 500 when the target isn't running), so fall through to the
+          // offline demo below instead of blocking the user.
+          if (error.response.status < 500) {
+            throw new Error('Invalid email or password')
           }
-          throw new Error('Invalid email or password')
-        }
-        // Request aborted (client timeout) — the backend answered too slowly.
-        if (error.code === 'ECONNABORTED') {
+        } else if (error.code === 'ECONNABORTED') {
+          // Request aborted (client timeout) — the backend answered too slowly.
           throw new Error('Login timed out. The backend is responding slowly — please try again.')
         }
+        // No response — backend unreachable — fall through to the offline demo.
       }
       // Offline demo: accept the seeded demo account.
       await delay()

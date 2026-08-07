@@ -110,7 +110,7 @@ export function DashboardPage() {
     <div className="p-4 sm:p-6 lg:p-8">
       <PageHeader
         eyebrow="Website CMS"
-        title={`Good ${new Date().getHours() < 12 ? 'morning' : new Date().getHours() < 17 ? 'afternoon' : 'evening'}, ${session?.user.firstName ?? 'there'} 👋`}
+        title={`Good ${new Date().getHours() < 12 ? 'morning' : new Date().getHours() < 17 ? 'afternoon' : 'evening'}, ${session?.currentOrgName ?? 'your website'} 👋`}
         description="Here's what's happening across your public website today."
       />
 
