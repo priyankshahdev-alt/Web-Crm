@@ -1,4 +1,6 @@
 import { Link } from 'react-router-dom';
+import { useSite } from "../../context/SiteContext";
+import { getSection } from "../../lib/site";
 
 const sectors = [
   { name: "Education", icon: "school" },
@@ -10,7 +12,47 @@ const sectors = [
   { name: "Old-Age Homes", icon: "elderly" },
 ];
 
+const DEFAULT_STORY = {
+  tag: "Who We Are",
+  heading: "Sampoorn Samaj Seva",
+  paragraphs: [
+    "Ashray for Life Foundation (AFLF), established in 2022 by Mr. Naresh Bhanushali in Vadodara, Gujarat, is a non-profit organization (NGO) dedicated to making a lasting impact on society. Our foundation focuses on seven key sectors: Education, Zero Hunger Drive, Water Conservation, Women Empowerment, Orphanage, Medical Aid, and Old-Age Homes.",
+    "We believe in taking \"Sampoorn Samaj Seva\" — holistic social service — and aim to bring meaningful change across all sections of society, from children to the elderly. The Foundation proudly operates with 100% transparency, ensuring that every donation and resource is utilized efficiently and ethically for maximum societal benefit.",
+  ],
+};
+
+const DEFAULT_MISSION = {
+  title: "Our Mission",
+  description:
+    "To create a Just, Equitable and Humane Society through holistic and sustainable interventions in the seven key sectors of social development.",
+};
+const DEFAULT_VISION = {
+  title: "Our Vision",
+  description:
+    "To build a self-reliant society where every individual, regardless of their socio-economic status, has access to basic necessities and opportunities for a dignified life.",
+};
+
 function About() {
+  const { site } = useSite();
+
+  const storyC = getSection(site, "story", "about")?.content ?? {};
+  const missionVisionC = getSection(site, "mission-vision", "about")?.content ?? {};
+
+  const storyHeading = storyC.heading || DEFAULT_STORY.heading;
+  const storyParagraphs =
+    Array.isArray(storyC.paragraphs) && storyC.paragraphs.length > 0
+      ? storyC.paragraphs
+      : DEFAULT_STORY.paragraphs;
+
+  const mission =
+    (typeof missionVisionC.mission === "object" && missionVisionC.mission) || {};
+  const vision =
+    (typeof missionVisionC.vision === "object" && missionVisionC.vision) || {};
+  const missionTitle = mission.title || DEFAULT_MISSION.title;
+  const missionDescription = mission.description || DEFAULT_MISSION.description;
+  const visionTitle = vision.title || DEFAULT_VISION.title;
+  const visionDescription = vision.description || DEFAULT_VISION.description;
+
   return (
     <main className="bg-background text-on-surface font-body-md">
       {/* ===== HERO ===== */}
@@ -39,21 +81,17 @@ function About() {
           <div className="reveal-on-scroll">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-1 bg-primary rounded-full" />
-              <span className="font-label-md text-primary uppercase tracking-[0.2em]">Our Story</span>
+              <span className="font-label-md text-primary uppercase tracking-[0.2em]">{storyC.tag || "Our Story"}</span>
             </div>
-            <h2 className="font-headline-lg text-primary mb-8">Sampoorn Samaj Seva</h2>
-            <p className="font-body-lg text-on-surface-variant mb-6 leading-relaxed">
-              <strong className="text-primary">Ashray for Life Foundation (AFLF)</strong>, established in 2022 by Mr. Naresh Bhanushali
-              in Vadodara, Gujarat, is a non-profit organization (NGO) dedicated to making a lasting impact on
-              society. Our foundation focuses on seven key sectors: Education, Zero Hunger Drive, Water
-              Conservation, Women Empowerment, Orphanage, Medical Aid, and Old-Age Homes.
-            </p>
-            <p className="font-body-lg text-on-surface-variant leading-relaxed">
-              We believe in taking <strong className="text-primary">"Sampoorn Samaj Seva"</strong> — holistic social service — and aim to
-              bring meaningful change across all sections of society, from children to the elderly. The foundation
-              proudly operates with <strong className="text-primary">100% transparency</strong>, ensuring that every donation and resource
-              is utilized efficiently and ethically for maximum societal benefit.
-            </p>
+            <h2 className="font-headline-lg text-primary mb-8">{storyHeading}</h2>
+            {storyParagraphs.map((para, i) => (
+              <p
+                key={i}
+                className={`font-body-lg text-on-surface-variant leading-relaxed ${i === 0 ? "mb-6" : ""}`}
+              >
+                {para}
+              </p>
+            ))}
           </div>
           <div className="relative reveal-on-scroll">
             <div className="absolute -top-10 -right-10 w-48 h-48 bg-secondary-fixed/30 rounded-full blur-3xl -z-10" />
@@ -102,18 +140,18 @@ function About() {
               <div className="w-14 h-14 rounded-2xl bg-secondary-container/20 text-secondary-container flex items-center justify-center mb-6">
                 <span className="material-symbols-outlined text-3xl">track_changes</span>
               </div>
-              <h2 className="font-headline-lg text-white mb-4">Our Mission</h2>
+              <h2 className="font-headline-lg text-white mb-4">{missionTitle}</h2>
               <p className="font-body-lg text-white/85 leading-relaxed">
-                To create a Just, Equitable and Humane Society through holistic and sustainable interventions in the seven key sectors of social development.
+                {missionDescription}
               </p>
             </div>
             <div className="bg-white/[0.06] backdrop-blur-md border border-white/15 rounded-3xl p-10 md:p-12 md:translate-y-8 reveal-on-scroll">
               <div className="w-14 h-14 rounded-2xl bg-secondary-fixed/20 text-secondary-fixed flex items-center justify-center mb-6">
                 <span className="material-symbols-outlined text-3xl">visibility</span>
               </div>
-              <h2 className="font-headline-lg text-white mb-4">Our Vision</h2>
+              <h2 className="font-headline-lg text-white mb-4">{visionTitle}</h2>
               <p className="font-body-lg text-white/85 leading-relaxed">
-                To build a self-reliant society where every individual, regardless of their socio-economic status, has access to basic necessities and opportunities for a dignified life.
+                {visionDescription}
               </p>
             </div>
           </div>

@@ -6,14 +6,13 @@ import { authService } from '../services/auth'
 import { Button } from '../components/ui/Button'
 import { Field, Input } from '../components/ui/Input'
 import { DashboardIcon, LockIcon, MailIcon, EyeIcon, EyeOffIcon } from '../components/icons'
-import { CURRENT_WEBSITE } from '../data/seed'
 
 export function LoginPage() {
   const { signIn } = useSession()
   const { toast } = useToast()
   const navigate = useNavigate()
 
-  const [email, setEmail] = useState('rahul@beingsevak.org')
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -54,7 +53,7 @@ export function LoginPage() {
               </span>
               <div>
                 <p className="text-sm font-bold">Website CMS</p>
-                <p className="text-xs text-muted">Powering {CURRENT_WEBSITE.name}</p>
+                <p className="text-xs text-muted">Powering your website</p>
               </div>
             </div>
 

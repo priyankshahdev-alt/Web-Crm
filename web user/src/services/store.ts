@@ -23,6 +23,7 @@ import type {
 } from '../types'
 import { buildSeed } from '../data/seed'
 import { uuid } from '../utils/uuid'
+import { getSession } from '../lib/session'
 
 const STORAGE_PREFIX = 'webcms.'
 const SEED_VERSION = 'v1'
@@ -53,32 +54,18 @@ export interface SeedShape {
 
 export type StoreKey = keyof SeedShape
 
-const COLLECTIONS: StoreKey[] = [
-  'pages',
-  'menus',
-  'projects',
-  'events',
-  'blogs',
-  'blogCategories',
-  'galleries',
-  'team',
-  'testimonials',
-  'partners',
-  'faqs',
-  'media',
-  'folders',
-  'forms',
-  'seo',
-  'settings',
-  'activity',
-  'approvals',
-  'notifications',
-  'stats',
-  'profile',
-]
-
 function keyOf(name: StoreKey): string {
-  return `${STORAGE_PREFIX}${name}.${SEED_VERSION}`
+  return `${STORAGE_PREFIX}${namespaceOf()}.${name}.${SEED_VERSION}`
+}
+
+/**
+ * Namespace the local repo per organization so switching accounts can never
+ * leak or share another website's data. Falls back to a shared key only when
+ * no session exists yet (e.g. pre-login writes).
+ */
+function namespaceOf(): string {
+  const session = getSession()
+  return session?.currentOrgId ?? session?.currentOrgSlug ?? 'anonymous'
 }
 
 function readRaw<T>(name: StoreKey): T {
@@ -233,9 +220,14 @@ export const store = {
   },
 
   reset(): void {
-    for (const name of COLLECTIONS) {
-      localStorage.removeItem(keyOf(name))
+    // Remove every webcms.* key regardless of namespace so switching users or
+    // signing out can never leak a previous organization's cached data.
+    const keys: string[] = []
+    for (let i = 0; i < localStorage.length; i += 1) {
+      const key = localStorage.key(i)
+      if (key && key.startsWith(STORAGE_PREFIX)) keys.push(key)
     }
+    for (const key of keys) localStorage.removeItem(key)
   },
 }
 

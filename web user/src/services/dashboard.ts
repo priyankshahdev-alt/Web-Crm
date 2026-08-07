@@ -1,5 +1,6 @@
 import type { DashboardStats, ProfileUser } from '../types'
 import { store } from './store'
+import { http, isLiveMode } from './api'
 
 const EMPTY_STATS: DashboardStats = {
   visitors: 0,
@@ -18,8 +19,39 @@ const EMPTY_STATS: DashboardStats = {
   topPages: [],
 }
 
+/**
+ * Merge live org-scoped counts from the backend with the local fallback so the
+ * dashboard always reflects the currently logged-in organization, never a
+ * leftover from another account.
+ */
 export const dashboardService = {
   async stats(): Promise<DashboardStats> {
+    if (!isLiveMode()) return this._fromStore()
+    try {
+      const { data } = await http.get('/dashboard/my-website')
+      const body = data?.data
+      const counts = body?.counts ?? {}
+      const orgCount = body?.organization?._count ?? {}
+      const pages = counts.pages ?? orgCount?.pages ?? 0
+      const projects = counts.projects ?? orgCount?.projects ?? 0
+      return {
+        ...EMPTY_STATS,
+        publishedPages: pages + projects,
+        draftPages: 0,
+        pendingApprovals: 0,
+        formsSubmitted: 0,
+        publishedSeries: [
+          { label: 'Pages', value: pages },
+          { label: 'Programs', value: projects },
+          { label: 'Events', value: counts.events ?? 0 },
+        ],
+      }
+    } catch {
+      return this._fromStore()
+    }
+  },
+
+  async _fromStore(): Promise<DashboardStats> {
     const [pages, projects, events, blogs, media] = await Promise.all([
       store.all<{ status: string }>('pages'),
       store.all<{ status: string }>('projects'),
