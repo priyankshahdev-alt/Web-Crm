@@ -1,8 +1,14 @@
 import type { PageSection } from '../../types'
-import { getSession } from '../../lib/session'
+import { CURRENT_WEBSITE } from '../../data/seed'
+import { useSession } from '../../context/SessionContext'
+import { currentOrganization, siteDisplayName } from '../../lib/session'
 import { QuoteIcon } from '../icons'
 
-const siteName = (): string => getSession()?.currentOrgName ?? 'Your Website'
+const useSiteName = (): string => {
+  const { session } = useSession()
+  const org = currentOrganization(session)
+  return siteDisplayName(org?.slug, org?.name ?? CURRENT_WEBSITE.name)
+}
 
 const text = (content: Record<string, unknown>, key: string, fallback = ''): string =>
   typeof content[key] === 'string' ? (content[key] as string) : fallback
@@ -48,6 +54,7 @@ function SectionHeading({
 
 function HeroPreview({ section }: { section: PageSection }) {
   const image = text(section.content, 'image')
+  const siteName = useSiteName()
   const overlay =
     typeof section.settings.overlay === 'number' ? (section.settings.overlay as number) : 0.6
   return (
@@ -64,7 +71,7 @@ function HeroPreview({ section }: { section: PageSection }) {
         style={{ background: image ? `rgba(15,23,42,${overlay})` : '#0f172a' }}
       >
         <p className="rounded-full bg-white/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-widest">
-          {siteName()}
+          {siteName}
         </p>
         <h3 className="mt-3 max-w-xl text-2xl font-bold sm:text-3xl">
           {text(section.content, 'heading', 'Your compelling headline')}
@@ -281,6 +288,7 @@ function ContactPreview({ section }: { section: PageSection }) {
 }
 
 function FooterPreview({ section }: { section: PageSection }) {
+  const siteName = useSiteName()
   return (
     <div className="text-center text-white">
       <h3 className="text-lg font-bold">{text(section.content, 'heading', 'Stay in the loop')}</h3>
@@ -294,7 +302,7 @@ function FooterPreview({ section }: { section: PageSection }) {
         </span>
       </div>
       <p className="mt-6 text-[11px] text-white/50">
-        © {new Date().getFullYear()} {siteName()}. All rights reserved.
+        © {new Date().getFullYear()} {siteName}. All rights reserved.
       </p>
     </div>
   )

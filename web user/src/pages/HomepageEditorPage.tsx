@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { cmsService } from '../services/cms'
 import { websiteService } from '../services/website'
-import { isLiveMode } from '../services/api'
+import { backendAvailable } from '../services/api'
 import type { CmsPage, PageSection, SectionType } from '../types'
 import { SectionFieldEditor } from '../components/website/SectionFieldEditor'
 import { uuid } from '../utils/uuid'
@@ -129,7 +129,7 @@ export function HomepageEditorPage() {
 
   const load = useCallback(async () => {
     setLoading(true)
-    if (isLiveMode()) {
+    if (await backendAvailable()) {
       try {
         const content = await websiteService.getContentTree()
         const webHome =
@@ -215,7 +215,7 @@ export function HomepageEditorPage() {
 
   const removeSection = async (section: PageSection) => {
     setDeleteTarget(null)
-    if (page && isLiveMode()) {
+    if (page && (await backendAvailable())) {
       try {
         await websiteService.deleteSection(page.slug, section.type)
         patchPage(
@@ -277,7 +277,7 @@ export function HomepageEditorPage() {
     if (!page) return
     setSaving(true)
     try {
-      if (isLiveMode()) {
+      if (await backendAvailable()) {
         for (const section of sections) {
           await websiteService.saveSection(page.slug, section.type, {
             name: section.name,

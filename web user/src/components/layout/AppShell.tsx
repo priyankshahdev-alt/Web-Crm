@@ -1,17 +1,84 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { NavLink, Outlet } from 'react-router-dom'
 import { useSession } from '../../context/SessionContext'
+import { useToast } from '../../context/ToastContext'
 import { NotificationDropdown } from '../NotificationDropdown'
 import { ProfileDropdown } from '../ProfileDropdown'
 import { SidebarNav, SidebarFooter } from './Sidebar'
-import { DashboardIcon, MenuIcon, SearchIcon, XIcon, ExternalLinkIcon } from '../icons'
-import { PUBLIC_SITE_ORIGIN } from '../../config/api'
+import {
+  DashboardIcon,
+  MenuIcon,
+  SearchIcon,
+  XIcon,
+  ExternalLinkIcon,
+  GlobeIcon,
+  CheckIcon,
+  ChevronDownIcon,
+} from '../icons'
+import { CURRENT_WEBSITE } from '../../data/seed'
+import { currentOrganization, siteDisplayName, type WebUserSession } from '../../lib/session'
+
+/**
+ * Public URL for the site the user is currently scoped to. Falls back to the
+ * well-known Being Sevak URL so existing behaviour is unchanged; sites without
+ * a known public domain resolve to `null` (no "View site" link shown).
+ */
+function resolveSiteUrl(session: WebUserSession | null): string | null {
+  const org = currentOrganization(session)
+  if (!org) return null
+  if (org.website) return org.website.startsWith('http') ? org.website : `https://${org.website}`
+  if (org.slug === 'being-sevak') return 'https://beingsevak.org'
+  return null
+}
 
 function AppHeader() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const { session } = useSession()
-  const siteName = session?.currentOrgName ?? 'Website CMS'
-  const siteSlug = session?.currentOrgSlug ?? session?.currentOrgId ?? ''
+  const [siteMenuOpen, setSiteMenuOpen] = useState(false)
+  const [switchingId, setSwitchingId] = useState<string | null>(null)
+  const siteMenuRef = useRef<HTMLDivElement>(null)
+  const { session, switchWebsite } = useSession()
+  const { toast } = useToast()
+
+  useEffect(() => {
+    if (!siteMenuOpen) return
+    const onPointerDown = (event: MouseEvent | TouchEvent) => {
+      if (siteMenuRef.current && !siteMenuRef.current.contains(event.target as Node)) {
+        setSiteMenuOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', onPointerDown)
+    document.addEventListener('touchstart', onPointerDown)
+    return () => {
+      document.removeEventListener('mousedown', onPointerDown)
+      document.removeEventListener('touchstart', onPointerDown)
+    }
+  }, [siteMenuOpen])
+
+  const orgs = session?.organizations?.length ? session.organizations : []
+  const current = currentOrganization(session) ?? {
+    id: 'being-sevak',
+    slug: 'being-sevak',
+    name: CURRENT_WEBSITE.name,
+  }
+  const siteName = siteDisplayName(current.slug, current.name || CURRENT_WEBSITE.name)
+  const siteUrl = resolveSiteUrl(session)
+
+  const handleSwitch = async (orgId: string) => {
+    if (orgId === session?.currentOrgId) {
+      setSiteMenuOpen(false)
+      return
+    }
+    setSwitchingId(orgId)
+    try {
+      await switchWebsite(orgId)
+      setSiteMenuOpen(false)
+      window.location.assign('/')
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Could not switch website'
+      toast(message, { variant: 'error' })
+      setSwitchingId(null)
+    }
+  }
 
   return (
     <header className="sticky top-0 z-40 border-b border-line bg-white">
@@ -31,24 +98,85 @@ function AppHeader() {
           <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand text-white shadow-sm shadow-brand/30">
             <DashboardIcon className="h-6 w-6" />
           </span>
-          <div className="min-w-0">
-            <p className="truncate text-sm font-bold text-ink">{siteName}</p>
-            <p className="hidden text-xs text-muted sm:block">
-              Website CMS · {siteSlug}
-            </p>
+          <div className="relative min-w-0" ref={siteMenuRef}>
+            {orgs.length > 1 ? (
+              <>
+                <button
+                  type="button"
+                  aria-expanded={siteMenuOpen}
+                  onClick={() => setSiteMenuOpen((open) => !open)}
+                  className="flex max-w-full items-center gap-2 rounded-full border border-line bg-white px-3.5 py-2 transition hover:bg-soft focus:outline-none focus-visible:ring-2 focus-visible:ring-brand/40"
+                >
+                  <GlobeIcon className="h-4 w-4 shrink-0 text-brand" />
+                  <span className="min-w-0 text-left">
+                    <span className="block truncate text-sm font-bold text-ink">{siteName}</span>
+                    <span className="block text-[11px] font-medium text-muted">Website CMS</span>
+                  </span>
+                  {switchingId ? (
+                    <span className="h-3.5 w-3.5 shrink-0 animate-spin rounded-full border-2 border-brand/40 border-t-brand" />
+                  ) : (
+                    <ChevronDownIcon className="h-3.5 w-3.5 shrink-0 text-muted" />
+                  )}
+                </button>
+                {siteMenuOpen ? (
+                  <div className="animate-fade-in absolute left-0 top-full z-50 mt-2 w-64 overflow-hidden rounded-2xl border border-line bg-white shadow-xl shadow-slate-900/10">
+                    <p className="border-b border-line px-4 py-2.5 text-[11px] font-bold uppercase tracking-wide text-faint">
+                      Switch website
+                    </p>
+                    <ul className="p-1.5">
+                      {orgs.map((org) => {
+                        const isCurrent = org.id === session?.currentOrgId
+                        return (
+                          <li key={org.id}>
+                            <button
+                              type="button"
+                              disabled={switchingId !== null}
+                              onClick={() => void handleSwitch(org.id)}
+                              className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-left transition hover:bg-soft disabled:opacity-60"
+                            >
+                              <span
+                                className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${
+                                  isCurrent ? 'bg-brand text-white' : 'bg-brand-soft text-brand'
+                                }`}
+                              >
+                                <GlobeIcon className="h-4 w-4" />
+                              </span>
+                              <span className="min-w-0 flex-1">
+                                <span className="block truncate text-sm font-semibold text-ink">
+                                  {siteDisplayName(org.slug, org.name)}
+                                </span>
+                                <span className="block truncate text-[11px] text-muted">{org.slug}</span>
+                              </span>
+                              {isCurrent ? <CheckIcon className="h-4 w-4 shrink-0 text-brand" /> : null}
+                            </button>
+                          </li>
+                        )
+                      })}
+                    </ul>
+                  </div>
+                ) : null}
+              </>
+            ) : (
+              <div className="min-w-0">
+                <p className="truncate text-sm font-bold text-ink">{siteName}</p>
+                <p className="hidden text-xs text-muted sm:block">Website CMS</p>
+              </div>
+            )}
           </div>
         </div>
 
         <div className="ml-auto flex shrink-0 items-center gap-2.5">
-          <a
-            href={PUBLIC_SITE_ORIGIN}
-            target="_blank"
-            rel="noreferrer"
-            className="hidden h-9 items-center gap-1.5 rounded-full border border-line px-3.5 text-xs font-semibold text-muted transition hover:bg-soft hover:text-ink md:inline-flex"
-          >
-            <ExternalLinkIcon className="h-3.5 w-3.5" />
-            View site
-          </a>
+          {siteUrl ? (
+            <a
+              href={siteUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="hidden h-9 items-center gap-1.5 rounded-full border border-line px-3.5 text-xs font-semibold text-muted transition hover:bg-soft hover:text-ink md:inline-flex"
+            >
+              <ExternalLinkIcon className="h-3.5 w-3.5" />
+              View site
+            </a>
+          ) : null}
           <div className="relative hidden md:block">
             <SearchIcon className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-faint" />
             <input

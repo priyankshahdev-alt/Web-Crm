@@ -41,7 +41,38 @@ function HeroCarousel({ slides }) {
                 loading={i === 0 ? "eager" : "lazy"}
                 className="hidden md:block w-full h-full object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
+              {(s.eyebrow || s.title || s.accent || s.subtitle) && (
+                <div className="absolute inset-0 flex items-end md:items-center">
+                  <div className="w-full max-w-container-max mx-auto px-8 pb-28 md:pb-0">
+                    <div className="max-w-3xl text-white">
+                      {s.eyebrow && (
+                        <span className="inline-block px-4 py-1.5 bg-white/15 backdrop-blur-md border border-white/25 text-white font-label-bold text-xs uppercase tracking-widest rounded-full mb-6">
+                          {s.eyebrow}
+                        </span>
+                      )}
+                      {(s.title || s.accent) && (
+                        <h1 className="font-display-lg text-5xl md:text-8xl text-white leading-[0.9] tracking-tighter uppercase font-extrabold drop-shadow-lg">
+                          {s.title}{" "}
+                          {s.accent && (
+                            <span className="italic text-secondary-fixed">{s.accent}</span>
+                          )}
+                        </h1>
+                      )}
+                      {s.subtitle && (
+                        <p className="font-body-lg text-lg md:text-2xl text-white/85 leading-snug max-w-xl mt-6">
+                          {s.subtitle}
+                        </p>
+                      )}
+                      {s.ctaLabel && (
+                        <span className="inline-flex items-center gap-3 mt-10 px-8 py-4 bg-secondary-fixed text-primary font-label-bold uppercase tracking-widest text-sm rounded-full hover:gap-5 transition-all">
+                          {s.ctaLabel} <Icon name="arrow_forward" />
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
             </Link>
           </div>
         ))}

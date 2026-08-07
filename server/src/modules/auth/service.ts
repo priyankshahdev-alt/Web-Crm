@@ -131,8 +131,47 @@ export const authService = {
     return { accessToken, refreshToken: newRefresh };
   },
 
-  async logout(refreshToken: string) {
-    if (!refreshToken) throw ApiError.badRequest('refreshToken is required');
+  /**
+   * Re-scope an authenticated user to one of their active organizations.
+   * Persists the selection (isCurrent) so it also survives token refresh and
+   * future logins, then issues a fresh access token carrying the new websiteId.
+   */
+  async switchOrganization(userId: string, organizationId: string) {
+    const memberships = await authRepository.findMemberships(userId);
+    const target = memberships.find((m) => m.organization.id === organizationId);
+    if (!target) {
+      throw ApiError.forbidden('No access to this website');
+    }
+    if (target.organization.status !== 'ACTIVE') {
+      throw ApiError.forbidden('This website is not active');
+    }
+
+    await authRepository.setCurrentMembership(userId, organizationId);
+
+    const authUser = await buildAuthUser(userId);
+    authUser.websiteId = organizationId;
+    const accessToken = signAccessToken(authUser);
+
+    return {
+      accessToken,
+      user: {
+        id: authUser.id,
+        email: authUser.email,
+        firstName: authUser.firstName,
+        lastName: authUser.lastName,
+        isMaster: authUser.isMaster,
+        roles: authUser.roles,
+      },
+      organization: {
+        ...target.organization,
+        role: target.role.key,
+        roleName: target.role.name,
+        isCurrent: true,
+      },
+    };
+  },
+
+  async logout(refreshToken: string) {    if (!refreshToken) throw ApiError.badRequest('refreshToken is required');
     const stored = await authRepository.findRefreshToken(refreshToken);
     if (stored && !stored.revokedAt) {
       await authRepository.revokeRefreshToken(stored.id);

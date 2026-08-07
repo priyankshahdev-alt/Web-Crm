@@ -20,6 +20,13 @@ export const changePasswordSchema = z
   })
   .strict();
 
+export const switchOrganizationSchema = z
+  .object({
+    organizationId: z.string().uuid(),
+  })
+  .strict();
+
 export type LoginInput = z.infer<typeof loginSchema>;
 export type RefreshInput = z.infer<typeof refreshSchema>;
 export type ChangePasswordInput = z.infer<typeof changePasswordSchema>;
+export type SwitchOrganizationInput = z.infer<typeof switchOrganizationSchema>;

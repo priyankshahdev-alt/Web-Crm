@@ -1,6 +1,7 @@
 import { useState, useLayoutEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
-import { navMenu } from "../data/site";
+import { navMenu as staticNav } from "../data/site";
+import { useSiteData } from "../api/useSiteData";
 import Icon from "./Icon";
 import { img } from "../utils/images";
 
@@ -19,6 +20,8 @@ function Logo() {
 }
 
 export default function Navbar() {
+  const { data } = useSiteData();
+  const navMenu = (data && data.navMenu) || staticNav;
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openDrop, setOpenDrop] = useState(null);

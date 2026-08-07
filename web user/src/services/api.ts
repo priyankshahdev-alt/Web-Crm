@@ -77,21 +77,36 @@ export function isAxiosError(error: unknown): error is AxiosError {
 }
 
 let liveProbe: boolean | null = null
+let liveProbePromise: Promise<boolean> | null = null
 
 /**
- * Probe whether the backend is reachable. The result is cached for the page
- * session so every subsequent read takes the fast path.
+ * Probe whether the backend is reachable. The in-flight probe is cached so
+ * every caller shares the same request, and the result is cached for the page
+ * session so subsequent reads take the fast path. Components and services
+ * should await this before deciding whether to use the live backend, because
+ * `isLiveMode()` is only reliable once the probe has finished.
  */
-export async function backendAvailable(): Promise<boolean> {
-  if (liveProbe !== null) return liveProbe
-  try {
-    await http.get('/health', { timeout: 2500 })
-    liveProbe = true
-  } catch {
-    liveProbe = false
+export function backendAvailable(): Promise<boolean> {
+  if (!liveProbePromise) {
+    liveProbePromise = new Promise<boolean>((resolve) => {
+      http
+        .get('/health', { timeout: 2500 })
+        .then(() => {
+          liveProbe = true
+          resolve(true)
+        })
+        .catch(() => {
+          liveProbe = false
+          resolve(false)
+        })
+    })
   }
-  return liveProbe
+  return liveProbePromise
 }
+
+// Kick off the probe as early as possible so the live/offline decision is
+// already resolved before the first data reads on a fresh page load or refresh.
+backendAvailable()
 
 export function isLiveMode(): boolean {
   return liveProbe === true
