@@ -9,7 +9,7 @@ import { DashboardIcon, LockIcon, MailIcon, EyeIcon, EyeOffIcon } from '../compo
 import { CURRENT_WEBSITE } from '../data/seed'
 
 export function LoginPage() {
-  const { signIn, liveMode } = useSession()
+  const { signIn } = useSession()
   const { toast } = useToast()
   const navigate = useNavigate()
 
@@ -109,23 +109,6 @@ export function LoginPage() {
                 Sign in
               </Button>
             </form>
-
-            <div className="mt-6 rounded-2xl bg-slate-50 p-4 text-xs text-muted">
-              <p className="font-semibold text-ink">Demo credentials</p>
-              <p className="mt-1">
-                Email: <span className="font-mono text-brand">rahul@beingsevak.org</span>
-              </p>
-              <p className="mt-0.5">
-                Password: <span className="font-mono text-brand">Rahul@123456</span>
-              </p>
-              {liveMode ? (
-                <p className="mt-2 font-medium text-success">Live backend detected — real data in use.</p>
-              ) : (
-                <p className="mt-2 font-medium text-warning">
-                  Offline mode — demo data runs from your browser.
-                </p>
-              )}
-            </div>
           </div>
         </div>
       </div>
