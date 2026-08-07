@@ -5,10 +5,13 @@ import { NotificationDropdown } from '../NotificationDropdown'
 import { ProfileDropdown } from '../ProfileDropdown'
 import { SidebarNav, SidebarFooter } from './Sidebar'
 import { DashboardIcon, MenuIcon, SearchIcon, XIcon, ExternalLinkIcon } from '../icons'
-import { CURRENT_WEBSITE } from '../../data/seed'
+import { PUBLIC_SITE_ORIGIN } from '../../config/api'
 
 function AppHeader() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const { session } = useSession()
+  const siteName = session?.currentOrgName ?? 'Website CMS'
+  const siteSlug = session?.currentOrgSlug ?? session?.currentOrgId ?? ''
 
   return (
     <header className="sticky top-0 z-40 border-b border-line bg-white">
@@ -29,16 +32,16 @@ function AppHeader() {
             <DashboardIcon className="h-6 w-6" />
           </span>
           <div className="min-w-0">
-            <p className="truncate text-sm font-bold text-ink">{CURRENT_WEBSITE.name}</p>
+            <p className="truncate text-sm font-bold text-ink">{siteName}</p>
             <p className="hidden text-xs text-muted sm:block">
-              Website CMS · {CURRENT_WEBSITE.url}
+              Website CMS · {siteSlug}
             </p>
           </div>
         </div>
 
         <div className="ml-auto flex shrink-0 items-center gap-2.5">
           <a
-            href={`https://${CURRENT_WEBSITE.url}`}
+            href={PUBLIC_SITE_ORIGIN}
             target="_blank"
             rel="noreferrer"
             className="hidden h-9 items-center gap-1.5 rounded-full border border-line px-3.5 text-xs font-semibold text-muted transition hover:bg-soft hover:text-ink md:inline-flex"

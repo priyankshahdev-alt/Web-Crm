@@ -1,6 +1,8 @@
 import type { PageSection } from '../../types'
-import { CURRENT_WEBSITE } from '../../data/seed'
+import { getSession } from '../../lib/session'
 import { QuoteIcon } from '../icons'
+
+const siteName = (): string => getSession()?.currentOrgName ?? 'Your Website'
 
 const text = (content: Record<string, unknown>, key: string, fallback = ''): string =>
   typeof content[key] === 'string' ? (content[key] as string) : fallback
@@ -62,7 +64,7 @@ function HeroPreview({ section }: { section: PageSection }) {
         style={{ background: image ? `rgba(15,23,42,${overlay})` : '#0f172a' }}
       >
         <p className="rounded-full bg-white/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-widest">
-          {CURRENT_WEBSITE.description || CURRENT_WEBSITE.name}
+          {siteName()}
         </p>
         <h3 className="mt-3 max-w-xl text-2xl font-bold sm:text-3xl">
           {text(section.content, 'heading', 'Your compelling headline')}
@@ -292,7 +294,7 @@ function FooterPreview({ section }: { section: PageSection }) {
         </span>
       </div>
       <p className="mt-6 text-[11px] text-white/50">
-        © {new Date().getFullYear()} {CURRENT_WEBSITE.name}. All rights reserved.
+        © {new Date().getFullYear()} {siteName()}. All rights reserved.
       </p>
     </div>
   )

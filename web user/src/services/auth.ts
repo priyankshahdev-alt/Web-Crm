@@ -9,23 +9,6 @@ export interface LoginInput {
 const delay = (ms = 600): Promise<void> =>
   new Promise((resolve) => setTimeout(resolve, ms))
 
-const DEMO_USER: WebUserSession = {
-  accessToken: 'demo-token',
-  refreshToken: 'demo-refresh',
-  currentOrgId: 'being-sevak',
-  currentOrgSlug: 'being-sevak',
-  currentOrgName: 'Being Sevak',
-  user: {
-    id: 'u1',
-    email: 'rahul@beingsevak.org',
-    firstName: 'Rahul',
-    lastName: 'Mehta',
-    role: 'admin',
-    roleName: 'Website Administrator',
-    avatarUrl: null,
-  },
-}
-
 export const authService = {
   async login(input: LoginInput): Promise<WebUserSession> {
     try {
@@ -39,9 +22,9 @@ export const authService = {
       const session: WebUserSession = {
         accessToken: payload.accessToken,
         refreshToken: payload.refreshToken,
-        currentOrgId: membership?.id ?? 'being-sevak',
-        currentOrgSlug: membership?.slug,
-        currentOrgName: membership?.name,
+        currentOrgId: membership?.id ?? payload.organizations?.[0]?.id,
+        currentOrgSlug: membership?.slug ?? payload.organizations?.[0]?.slug,
+        currentOrgName: membership?.name ?? payload.organizations?.[0]?.name,
         user: {
           id: payload.user.id,
           email: payload.user.email,
@@ -71,13 +54,6 @@ export const authService = {
       }
       // Offline demo: accept the seeded demo account.
       await delay()
-      if (
-        input.email.toLowerCase() === 'rahul@beingsevak.org' &&
-        input.password.length >= 8
-      ) {
-        signIn(DEMO_USER)
-        return DEMO_USER
-      }
       throw new Error('Invalid email or password')
     }
   },
