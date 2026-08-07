@@ -1,4 +1,4 @@
-import { http, isAxiosError, isLiveMode } from './api'
+import { http, backendAvailable, isAxiosError } from './api'
 import type { ListParams, Paginated, StoreKey } from './store'
 import { store } from './store'
 
@@ -15,8 +15,8 @@ export interface CrudEntity {
   updatedAt: string
 }
 
-function live(): boolean {
-  return isLiveMode()
+async function live(): Promise<boolean> {
+  return backendAvailable()
 }
 
 export async function listEntities<T extends CrudEntity>(
@@ -24,7 +24,7 @@ export async function listEntities<T extends CrudEntity>(
   storeKey: StoreKey,
   params: ListParams = {},
 ): Promise<Paginated<T>> {
-  if (live()) {
+  if (await live()) {
     try {
       const { data } = await http.get('/' + resource, {
         params: {
@@ -48,7 +48,7 @@ export async function getAllEntities<T extends CrudEntity>(
   resource: string,
   storeKey: StoreKey,
 ): Promise<T[]> {
-  if (live()) {
+  if (await live()) {
     try {
       const { data } = await http.get('/' + resource, { params: { limit: 100 } })
       return (data.data.items as T[]) ?? []
@@ -64,7 +64,7 @@ export async function getEntity<T extends CrudEntity>(
   storeKey: StoreKey,
   id: string,
 ): Promise<T | null> {
-  if (live()) {
+  if (await live()) {
     try {
       const { data } = await http.get(`/${resource}/${id}`)
       return data.data as T
@@ -80,7 +80,7 @@ export async function createEntity<T extends CrudEntity>(
   storeKey: StoreKey,
   payload: Record<string, unknown>,
 ): Promise<T> {
-  if (live()) {
+  if (await live()) {
     try {
       const { data } = await http.post('/' + resource, payload)
       return data.data as T
@@ -97,7 +97,7 @@ export async function updateEntity<T extends CrudEntity>(
   id: string,
   patch: Record<string, unknown>,
 ): Promise<T | null> {
-  if (live()) {
+  if (await live()) {
     try {
       const { data } = await http.patch(`/${resource}/${id}`, patch)
       return data.data as T
@@ -113,7 +113,7 @@ export async function removeEntity(
   storeKey: StoreKey,
   id: string,
 ): Promise<void> {
-  if (live()) {
+  if (await live()) {
     try {
       await http.delete(`/${resource}/${id}`)
       return

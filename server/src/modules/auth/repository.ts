@@ -45,7 +45,7 @@ export const authRepository = {
           select: {
             isCurrent: true,
             isActive: true,
-            organization: { select: { id: true, slug: true, name: true, logoUrl: true } },
+            organization: { select: { id: true, slug: true, name: true, logoUrl: true, website: true, status: true } },
             role: {
               select: {
                 key: true,
@@ -104,7 +104,7 @@ export const authRepository = {
       select: {
         isCurrent: true,
         organization: {
-          select: { id: true, slug: true, name: true, logoUrl: true },
+          select: { id: true, slug: true, name: true, logoUrl: true, website: true, status: true },
         },
         role: { select: { key: true, name: true } },
       },
@@ -156,5 +156,22 @@ export const authRepository = {
       where: { id: userId },
       data: { passwordHash },
     });
+  },
+
+  /**
+   * Mark a single active membership as the user's current organization and
+   * clear the flag on the others, inside one transaction.
+   */
+  async setCurrentMembership(userId: string, organizationId: string) {
+    return prisma.$transaction([
+      prisma.organizationUser.updateMany({
+        where: { userId, isActive: true },
+        data: { isCurrent: false },
+      }),
+      prisma.organizationUser.updateMany({
+        where: { userId, organizationId, isActive: true },
+        data: { isCurrent: true },
+      }),
+    ]);
   },
 };

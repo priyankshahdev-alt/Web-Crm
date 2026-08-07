@@ -1,5 +1,5 @@
 import type { ActivityLog, ApprovalRequest, Notification, SeoMeta, WebsiteSettings } from '../types'
-import { http, isLiveMode } from './api'
+import { http, backendAvailable } from './api'
 import { store } from './store'
 
 function firstItem<T>(rows: T[]): T {
@@ -95,7 +95,7 @@ function fromBackendSettings(record: Record<string, unknown>, base: WebsiteSetti
 }
 
 async function pushToBackend(settings: WebsiteSettings): Promise<void> {
-  if (!isLiveMode()) return
+  if (!(await backendAvailable())) return
   try {
     await http.put('/settings', { settings: toBackendSettings(settings) })
   } catch {
@@ -106,7 +106,7 @@ async function pushToBackend(settings: WebsiteSettings): Promise<void> {
 export const settingsService = {
   async get(): Promise<WebsiteSettings> {
     const base = firstItem(await store.all<WebsiteSettings>('settings'))
-    if (!isLiveMode()) return base
+    if (!(await backendAvailable())) return base
     try {
       const { data } = await http.get('/settings')
       const record = (data.data as Record<string, unknown>) ?? {}

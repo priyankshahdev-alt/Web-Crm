@@ -1,5 +1,5 @@
 import { http, isAxiosError } from './api'
-import { signIn, signOut, type WebUserSession } from '../lib/session'
+import { signIn, signOut, getSession, type WebUserSession, type WebSiteOrg } from '../lib/session'
 
 export interface LoginInput {
   email: string
@@ -15,6 +15,14 @@ const DEMO_USER: WebUserSession = {
   currentOrgId: 'being-sevak',
   currentOrgSlug: 'being-sevak',
   currentOrgName: 'Being Sevak',
+  organizations: [
+    {
+      id: 'being-sevak',
+      slug: 'being-sevak',
+      name: 'Being Sevak',
+      isCurrent: true,
+    },
+  ],
   user: {
     id: 'u1',
     email: 'rahul@beingsevak.org',
@@ -42,6 +50,16 @@ export const authService = {
         currentOrgId: membership?.id ?? 'being-sevak',
         currentOrgSlug: membership?.slug,
         currentOrgName: membership?.name,
+        organizations: (payload.organizations ?? []).map((org: WebSiteOrg & { isCurrent: boolean }) => ({
+          id: org.id,
+          slug: org.slug,
+          name: org.name,
+          logoUrl: org.logoUrl ?? null,
+          website: org.website ?? null,
+          role: org.role,
+          roleName: org.roleName,
+          isCurrent: org.isCurrent,
+        })),
         user: {
           id: payload.user.id,
           email: payload.user.email,
@@ -80,6 +98,36 @@ export const authService = {
       }
       throw new Error('Invalid email or password')
     }
+  },
+
+  async switchOrganization(organizationId: string): Promise<WebUserSession> {
+    const session = getSession()
+    if (!session) throw new Error('Not signed in')
+    const { data } = await http.post('/auth/switch-organization', { organizationId })
+    const payload = data.data as {
+      accessToken: string
+      organization: WebSiteOrg & { role?: string; roleName?: string }
+    }
+    const org = payload.organization
+    const organizations = (session.organizations ?? []).map((item) => ({
+      ...item,
+      isCurrent: item.id === org.id,
+    }))
+    const updated: WebUserSession = {
+      ...session,
+      accessToken: payload.accessToken,
+      currentOrgId: org.id,
+      currentOrgSlug: org.slug,
+      currentOrgName: org.name,
+      organizations,
+      user: {
+        ...session.user,
+        role: org.role ?? session.user.role,
+        roleName: org.roleName ?? session.user.roleName,
+      },
+    }
+    signIn(updated)
+    return updated
   },
 
   async logout(): Promise<void> {

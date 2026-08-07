@@ -6,7 +6,7 @@ import {
   removeEntity,
   updateEntity,
 } from './crud'
-import { http, isLiveMode } from './api'
+import { http, backendAvailable } from './api'
 import { store } from './store'
 import type { ListParams, Paginated } from './store'
 
@@ -16,7 +16,7 @@ export const cmsService = {
   },
 
   async allPages(): Promise<CmsPage[]> {
-    if (isLiveMode()) {
+    if (await backendAvailable()) {
       try {
         const { data } = await http.get('/pages', { params: { limit: 100 } })
         const list: CmsPage[] = (data.data.items as CmsPage[]) ?? []
@@ -72,7 +72,7 @@ export const cmsService = {
 
 export const menuService = {
   async all(): Promise<Menu[]> {
-    if (isLiveMode()) {
+    if (await backendAvailable()) {
       try {
         const { data } = await http.get('/menus', { params: { limit: 100 } })
         const payload = data.data

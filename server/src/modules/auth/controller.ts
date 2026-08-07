@@ -14,6 +14,14 @@ export const authController = {
     ok(res, result, 'Token refreshed');
   }),
 
+  switchOrganization: asyncHandler(async (req: Request, res: Response) => {
+    const result = await authService.switchOrganization(
+      req.user!.id,
+      req.body.organizationId,
+    );
+    ok(res, result, 'Website switched');
+  }),
+
   logout: asyncHandler(async (req: Request, res: Response) => {
     await authService.logout(req.body?.refreshToken ?? '');
     ok(res, true, 'Logged out');
