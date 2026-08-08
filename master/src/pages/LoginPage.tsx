@@ -85,16 +85,6 @@ export function LoginPage() {
           </Button>
         </form>
 
-        <p className="mt-6 rounded-xl border border-line bg-slate-50 px-4 py-3 text-center text-xs text-muted">
-          Demo sign in · Username{' '}
-          <span className="font-semibold text-ink">master@webcrm.com</span>{' '}
-          · Password{' '}
-          <span className="font-semibold text-ink">Master@123456</span>
-        </p>
-
-        <p className="mt-6 text-center text-xs text-muted">
-          Super admin console · Master CRM
-        </p>
       </div>
     </main>
   )
