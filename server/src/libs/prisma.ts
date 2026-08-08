@@ -12,7 +12,7 @@ function databaseUrl(): string | undefined {
   try {
     const url = new URL(base);
     if (!url.searchParams.has('connection_limit')) {
-      url.searchParams.set('connection_limit', '5');
+      url.searchParams.set('connection_limit', '3');
     }
     if (!url.searchParams.has('pool_timeout')) {
       url.searchParams.set('pool_timeout', '15');

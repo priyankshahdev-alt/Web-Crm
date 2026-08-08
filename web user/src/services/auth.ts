@@ -89,13 +89,6 @@ export const authService = {
       }
       // Offline demo: accept the seeded demo account.
       await delay()
-      if (
-        input.email.toLowerCase() === 'rahul@beingsevak.org' &&
-        input.password.length >= 8
-      ) {
-        signIn(DEMO_USER)
-        return DEMO_USER
-      }
       throw new Error('Invalid email or password')
     }
   },

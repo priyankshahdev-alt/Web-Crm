@@ -8,7 +8,9 @@ import { http } from './api'
 
 export function resolveSiteSlug(): string {
   const session = getSession()
-  return session?.currentOrgSlug ?? session?.currentOrgId ?? 'being-sevak'
+  const slug = session?.currentOrgSlug
+  if (slug) return slug
+  throw new Error('No active website in session')
 }
 
 export interface SaveSectionInput {
