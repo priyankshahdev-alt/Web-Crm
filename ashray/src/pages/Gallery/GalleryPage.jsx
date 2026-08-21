@@ -37,23 +37,12 @@ function GalleryPage() {
         <h3 className="gh-hint">Moments in motion</h3>
       </section>
 
-      <section className="gh-marquee marquee-container">
-        <div className="marquee-track-left">
-          <div className="flex gap-8 px-4">
-            {galleryImages.map((src) => (
-              <div className="gh-card" key={src}>
-                <img src={src} alt="" loading="lazy" />
-              </div>
-            ))}
-          </div>
-          <div aria-hidden="true" className="flex gap-8 px-4">
-            {galleryImages.map((src) => (
-              <div className="gh-card" key={`dup-${src}`}>
-                <img src={src} alt="" loading="lazy" />
-              </div>
-            ))}
-          </div>
-        </div>
+      <section className="gh-grid" aria-label="Gallery images">
+        {galleryImages.map((src, i) => (
+          <figure className="gh-grid-card" key={src}>
+            <img src={src} alt={`Gallery image ${i + 1}`} loading="lazy" />
+          </figure>
+        ))}
       </section>
 
       <section className="gh-panel">

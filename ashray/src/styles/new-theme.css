@@ -549,3 +549,108 @@ h1, h2, h3, h4, h5, h6 {
   .btn-3d:hover,
   .btn-3d--gold:hover { filter: none; }
 }
+
+/* =========================================================
+   15. UI POLISH — typography, motion, focus, responsiveness
+   A lightweight global pass on top of the per-page styles.
+   ========================================================= */
+
+/* ---------- 15.1 BASE TYPOGRAPHY & RENDERING ---------- */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1.15;
+  text-wrap: balance;
+}
+
+::selection {
+  background: #ffc329;
+  color: #261a00;
+}
+
+/* ---------- 15.2 FOCUS STATES (gold on primary CTAs) ---------- */
+.btn-3d:focus-visible,
+.btn-primary-glass:focus-visible,
+.btn-secondary-glass:focus-visible,
+.donate-submit:focus-visible,
+.contact-submit:focus-visible {
+  outline-color: #ffc329;
+}
+
+/* ---------- 15.3 ANCHOR SCROLL OFFSET (fixed navbar) ---------- */
+section[id],
+div[id],
+main[id] {
+  scroll-margin-top: 96px;
+}
+
+/* ---------- 15.4 SCROLL-REVEAL ([data-reveal]) ---------- */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+[data-reveal].active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ---------- 15.5 HERO ENTRANCE ---------- */
+@keyframes hero-content-in {
+  from { opacity: 0; transform: translateY(26px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Every page's first section is its hero; animate its content wrapper
+   (badge → h1 → paragraph) with a soft staggered rise. The Home hero
+   is excluded because it runs its own GSAP carousel animation. */
+#main > * > section:first-of-type:not(.ashray-hero) .max-w-container-max > * {
+  animation: hero-content-in 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+#main > * > section:first-of-type:not(.ashray-hero) .max-w-container-max > *:nth-child(1) { animation-delay: 0.05s; }
+#main > * > section:first-of-type:not(.ashray-hero) .max-w-container-max > *:nth-child(2) { animation-delay: 0.15s; }
+#main > * > section:first-of-type:not(.ashray-hero) .max-w-container-max > *:nth-child(3) { animation-delay: 0.25s; }
+#main > * > section:first-of-type:not(.ashray-hero) .max-w-container-max > *:nth-child(4) { animation-delay: 0.35s; }
+#main > * > section:first-of-type:not(.ashray-hero) .max-w-container-max > *:nth-child(5) { animation-delay: 0.45s; }
+
+/* ---------- 15.6 CARD TRANSITIONS (consistent easing) ---------- */
+.about-team-card,
+.contact-info-item,
+.contact-form-wrapper,
+.management-card,
+.legal-card,
+.detail-mission-card,
+.detail-stat {
+  transition:
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.35s ease;
+}
+
+/* ---------- 15.7 RESPONSIVE SPACING RHYTHM ---------- */
+@media (max-width: 639px) {
+  .py-20 {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+}
+
+/* ---------- 15.8 REDUCED MOTION ---------- */
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  #main > * > section:first-of-type:not(.ashray-hero) .max-w-container-max > * {
+    animation: none;
+  }
+}

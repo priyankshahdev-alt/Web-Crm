@@ -30,3 +30,13 @@ export async function getMe(): Promise<MeResponse> {
   setUser(me.user)
   return me
 }
+
+export interface ImpersonateResult {
+  ticket: string
+  expiresInSeconds: number
+}
+
+/** Master-only: mint a short-lived "log in as admin" ticket. */
+export async function impersonate(userId: string): Promise<ImpersonateResult> {
+  return http.post<ImpersonateResult>('/auth/impersonate', { userId })
+}

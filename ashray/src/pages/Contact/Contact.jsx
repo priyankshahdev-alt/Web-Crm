@@ -58,7 +58,7 @@ export default function Contact() {
 
       {/* ===== MAIN ===== */}
       <section className="py-20 md:py-28 bg-white">
-        <div className="max-w-container-max mx-auto px-5 md:px-margin-desktop grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12">
+        <div className="max-w-container-max mx-auto px-5 md:px-margin-desktop grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12" data-reveal>
           {/* ===== INFO ===== */}
           <div className="lg:col-span-5 flex flex-col gap-6">
             <div className="bg-surface-container rounded-3xl border border-outline-variant subtle-shadow p-8 flex items-start gap-6">

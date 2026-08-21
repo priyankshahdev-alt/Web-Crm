@@ -433,6 +433,23 @@ export interface DashboardStats {
   publishedSeries: { label: string; value: number }[]
   trafficByDevice: { name: string; value: number; color: string }[]
   topPages: { title: string; views: number; change: number }[]
+
+  // Detailed content counts
+  pages: { total: number; published: number; draft: number; archived: number }
+  projects: { total: number; published: number; draft: number }
+  events: { total: number; published: number; draft: number; upcoming: number; past: number }
+  blogs: { total: number; published: number; draft: number }
+  galleries: { total: number; published: number; draft: number }
+  campaigns: { total: number; published: number; draft: number }
+  media: { total: number; images: number; documents: number; folders: number; storageBytes: number }
+  team: { total: number; active: number }
+  testimonials: { total: number; active: number }
+  partners: { total: number; active: number }
+  faqs: { total: number; active: number }
+
+  // Widget data
+  upcomingEvents: { id: string; title: string; startDate: string; endDate?: string; location?: string; status: string; slug: string }[]
+  recentForms: { id: string; name: string; status: string; submissions: number; fields: number }[]
 }
 
 export interface UserSession {
