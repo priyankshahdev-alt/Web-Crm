@@ -35,6 +35,30 @@ function redirectToLogin() {
   }
 }
 
+/** Friendly message used whenever a request dies before reaching the server. */
+const NETWORK_ERROR_MESSAGE =
+  'Cannot reach the server. Check your internet connection and try again.'
+
+/**
+ * Replace axios's generic "Network Error" (no response received) with a
+ * friendly message so the raw text never shows in the UI.
+ */
+function withFriendlyNetworkMessage(error: unknown): unknown {
+  if (
+    error &&
+    typeof error === 'object' &&
+    (error as { response?: unknown }).response == null &&
+    (error as { message?: string }).message === 'Network Error'
+  ) {
+    try {
+      ;(error as { message?: string }).message = NETWORK_ERROR_MESSAGE
+    } catch {
+      // Best-effort; if it can't be rewritten the original error is returned.
+    }
+  }
+  return error
+}
+
 async function refreshSession(): Promise<boolean> {
   const refreshToken = getRefreshToken()
   if (!refreshToken) return false
@@ -84,7 +108,7 @@ apiClient.interceptors.response.use(
       clearSession()
       redirectToLogin()
     }
-    return Promise.reject(error)
+    return Promise.reject(withFriendlyNetworkMessage(error))
   },
 )
 

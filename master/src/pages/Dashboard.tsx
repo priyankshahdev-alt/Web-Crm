@@ -6,6 +6,7 @@ import { websiteService } from '../services/websiteService'
 import { AdminStackCard } from '../components/dashboard/AdminStackCard'
 import { WebsiteCard } from '../components/dashboard/WebsiteCard'
 import { PlatformInsights } from '../components/dashboard/PlatformInsights'
+import { AdminActivity } from '../components/dashboard/AdminActivity'
 import { CreateAdminModal } from '../components/admin/CreateAdminModal'
 import { Button } from '../components/ui/Button'
 import { Pill } from '../components/ui/Pill'
@@ -84,6 +85,8 @@ export function Dashboard() {
           ))}
         </div>
       </section>
+
+      <AdminActivity />
 
       <PlatformInsights admins={admins} websites={websites} />
 

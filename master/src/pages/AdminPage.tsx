@@ -52,6 +52,7 @@ export function AdminPage() {
   const [editingAdmin, setEditingAdmin] = useState<AdminUser | null>(null)
   const [deletingAdmin, setDeletingAdmin] = useState<AdminUser | null>(null)
   const [copiedId, setCopiedId] = useState<string | null>(null)
+  const [updatedAdminEmail, setUpdatedAdminEmail] = useState<string | null>(null)
   const [page, setPage] = useState(1)
   const resetTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
@@ -101,6 +102,7 @@ export function AdminPage() {
     setAdmins((current) =>
       current.map((admin) => (admin.id === updated.id ? updated : admin)),
     )
+    setUpdatedAdminEmail(updated.email)
   }
 
   const handleAdminDeleted = (deleted: AdminUser) => {
@@ -163,6 +165,7 @@ export function AdminPage() {
         <AddAdminSection
           websites={websites}
           onCreated={handleAdminCreated}
+          updatedAdminEmail={updatedAdminEmail}
         />
       </div>
 

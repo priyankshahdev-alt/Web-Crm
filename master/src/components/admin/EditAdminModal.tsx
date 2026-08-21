@@ -53,10 +53,6 @@ export function EditAdminModal({
         status,
         managedWebsites,
       })
-      toast.success({
-        title: 'Admin updated',
-        description: `Changes to "${admin.email}" were saved.`,
-      })
       onUpdated(updated)
       onClose()
     } catch (err) {
