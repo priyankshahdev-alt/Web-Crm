@@ -893,6 +893,16 @@ export function ShieldCheckIcon(props: IconProps) {
   )
 }
 
+export function ChatIcon(props: IconProps) {
+  return (
+    <IconBase {...props}>
+      <path d="M2 12h20" />
+      <path d="M5.6 5.6l8.4 8.4" />
+      <circle cx="12" cy="12" r="1" />
+    </IconBase>
+  )
+}
+
 export function MonitorIcon(props: IconProps) {
   return (
     <IconBase {...props}>

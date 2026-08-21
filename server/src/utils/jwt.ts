@@ -34,3 +34,31 @@ export function verifyAccessToken(token: string): AccessTokenPayload {
 export function verifyRefreshToken(token: string): RefreshTokenPayload {
   return jwt.verify(token, config.jwt.refreshSecret) as RefreshTokenPayload;
 }
+
+export interface ImpersonateTicketPayload {
+  sub: string;
+  type: 'impersonate';
+  issuedBy: string;
+}
+
+/**
+ * Short-lived, single-purpose ticket that lets the platform master hand a
+ * temporary "log in as admin" link to the admin panel. It never carries the
+ * target user's tokens; those are only minted when the ticket is exchanged.
+ */
+export function signImpersonateTicket(userId: string, issuedBy: string): string {
+  const payload: ImpersonateTicketPayload = {
+    sub: userId,
+    type: 'impersonate',
+    issuedBy,
+  };
+  return jwt.sign(payload, config.jwt.accessSecret, { expiresIn: '2m' });
+}
+
+export function verifyImpersonateTicket(token: string): ImpersonateTicketPayload {
+  const payload = jwt.verify(token, config.jwt.accessSecret) as ImpersonateTicketPayload;
+  if (payload.type !== 'impersonate' || !payload.sub) {
+    throw new Error('Invalid impersonation ticket');
+  }
+  return payload;
+}

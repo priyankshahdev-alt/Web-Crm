@@ -30,8 +30,13 @@ export function createApp(): Express {
     res.json({ success: true, message: 'OK', data: { status: 'up', timestamp: new Date().toISOString() }, errors: null });
   });
 
-  app.use(globalLimiter);
-
+  // Rate limiting is a production concern. In development every local frontend
+  // (master, admin, ashray, ucs, ...) proxies to this server, so all of them
+  // share the same client IP and exhaust a global bucket almost immediately.
+  // Keep the global limiter active only for production deployments.
+  if (config.isProduction) {
+    app.use(globalLimiter);
+  }
   app.use('/api/v1', routes);
 
   app.use(notFoundHandler);
