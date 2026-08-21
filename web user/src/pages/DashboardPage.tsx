@@ -35,8 +35,12 @@ import {
   DatabaseIcon,
   ArrowRightIcon,
   GlobeIcon,
+  UsersIcon,
+  ImageIcon,
+  ChatIcon,
+  FolderIcon,
 } from '../components/icons'
-import { timeAgo, formatCompact } from '../utils/format'
+import { timeAgo, formatCompact, formatBytes } from '../utils/format'
 import { useSession } from '../context/SessionContext'
 
 const ACTION_VARIANT: Record<ActivityLog['action'], 'brand' | 'success' | 'danger' | 'neutral' | 'warning'> = {
@@ -57,6 +61,19 @@ const ACTION_STYLE: Record<ActivityLog['action'], string> = {
   REVIEW: 'bg-warning/10 text-warning',
   LOGIN: 'bg-brand-soft text-brand',
   LOGOUT: 'bg-soft text-muted',
+}
+
+function InventoryRow({ label, total, published, draft }: { label: string; total: number; published: number; draft: number }) {
+  return (
+    <div className="flex items-center justify-between">
+      <span className="text-muted">{label}</span>
+      <div className="flex items-center gap-3 text-right">
+        {total > 0 && <span className="font-semibold text-success">{published} pub</span>}
+        {draft > 0 && <span className="font-semibold text-warning">{draft} draft</span>}
+        <span className="font-bold text-ink tabular-nums">{total} total</span>
+      </div>
+    </div>
+  )
 }
 
 function ChartTooltip({ active, payload, label }: {
@@ -102,6 +119,14 @@ export function DashboardPage() {
     { id: 'draft', label: 'Drafts in Progress', value: stats?.draftPages ?? 0, icon: <FileTextIcon />, gradient: 'linear-gradient(135deg,#f59e0b,#d97706)', delay: 190 },
     { id: 'forms', label: 'Form Submissions', value: stats?.formsSubmitted ?? 0, icon: <DatabaseIcon />, gradient: 'linear-gradient(135deg,#8b5cf6,#6d28d9)', delay: 240 },
     { id: 'storage', label: 'Media Storage', value: Math.round((stats?.storageUsed ?? 0) / 1_000_000), suffix: ' MB', icon: <MonitorIcon />, gradient: 'linear-gradient(135deg,#64748b,#334155)', delay: 290 },
+    { id: 'pages', label: 'Pages', value: stats?.pages?.total ?? 0, subtitle: `${stats?.pages?.published ?? 0} published • ${stats?.pages?.draft ?? 0} draft`, icon: <FileTextIcon />, gradient: 'linear-gradient(135deg,#4f46e5,#7c3aed)', delay: 340 },
+    { id: 'projects', label: 'Programs', value: stats?.projects?.total ?? 0, subtitle: `${stats?.projects?.published ?? 0} published • ${stats?.projects?.draft ?? 0} draft`, icon: <CalendarIcon />, gradient: 'linear-gradient(135deg,#0ea5e9,#4f46e5)', delay: 390 },
+    { id: 'events', label: 'Events', value: stats?.events?.total ?? 0, subtitle: `${stats?.events?.upcoming ?? 0} upcoming • ${stats?.events?.past ?? 0} past`, icon: <CalendarIcon />, gradient: 'linear-gradient(135deg,#10b981,#059669)', delay: 440 },
+    { id: 'blogs', label: 'Blog Posts', value: stats?.blogs?.total ?? 0, subtitle: `${stats?.blogs?.published ?? 0} published • ${stats?.blogs?.draft ?? 0} draft`, icon: <FileTextIcon />, gradient: 'linear-gradient(135deg,#f59e0b,#d97706)', delay: 490 },
+    { id: 'galleries', label: 'Galleries', value: stats?.galleries?.total ?? 0, subtitle: `${stats?.galleries?.published ?? 0} published`, icon: <ImageIcon />, gradient: 'linear-gradient(135deg,#8b5cf6,#6d28d9)', delay: 540 },
+    { id: 'media', label: 'Images & Media', value: stats?.media?.total ?? 0, subtitle: `${stats?.media?.images ?? 0} images • ${formatBytes(stats?.media?.storageBytes ?? 0)}`, icon: <MonitorIcon />, gradient: 'linear-gradient(135deg,#64748b,#334155)', delay: 590 },
+    { id: 'team', label: 'Team Members', value: stats?.team?.total ?? 0, subtitle: `${stats?.team?.active ?? 0} active`, icon: <UsersIcon />, gradient: 'linear-gradient(135deg,#ec4899,#be185d)', delay: 640 },
+    { id: 'testimonials', label: 'Testimonials', value: stats?.testimonials?.total ?? 0, subtitle: `${stats?.testimonials?.active ?? 0} active`, icon: <ChatIcon />, gradient: 'linear-gradient(135deg,#14b8a6,#0d9488)', delay: 690 },
   ]
 
   const pendingApprovals = stats?.pendingApprovals ?? 0
@@ -314,6 +339,62 @@ export function DashboardPage() {
                 ))}
               </ul>
             )}
+          </div>
+        </Card>
+      </div>
+
+      {/* New widgets: Upcoming Events + Content Inventory */}
+      <div className="mt-6 grid grid-cols-1 gap-6 xl:grid-cols-2">
+        {/* Upcoming Events Widget */}
+        <Card className="xl:col-span-1">
+          <CardHeader
+            title="Upcoming Events"
+            description="Next 5 scheduled events"
+            actions={
+              <Link to="/events" className="inline-flex items-center gap-1 text-xs font-semibold text-brand hover:text-brand-strong">
+                View all <ArrowRightIcon className="h-3.5 w-3.5" />
+              </Link>
+            }
+          />
+          <div className="px-5 pb-3">
+            {stats?.upcomingEvents?.length > 0 ? (
+              <ul className="divide-y divide-line">
+                {stats.upcomingEvents.map((event) => (
+                  <li key={event.id} className="flex items-center justify-between py-3">
+                    <div>
+                      <p className="font-medium text-ink">{event.title}</p>
+                      <p className="text-sm text-muted">
+                        {new Date(event.startDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                        {event.endDate ? ` – ${new Date(event.endDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}` : ''}
+                        {event.location ? ` · ${event.location}` : ''}
+                      </p>
+                    </div>
+                    <Badge variant={event.status === 'PUBLISHED' ? 'success' : 'neutral'}>
+                      {event.status}
+                    </Badge>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <EmptyState compact title="No upcoming events" description="Events will appear here once scheduled." />
+            )}
+          </div>
+        </Card>
+
+        {/* Content Inventory Summary */}
+        <Card>
+          <CardHeader title="Content Inventory" description="All content types at a glance" />
+          <div className="px-5 pb-5 space-y-3 text-sm">
+            <InventoryRow label="Pages" total={stats?.pages?.total ?? 0} published={stats?.pages?.published ?? 0} draft={stats?.pages?.draft ?? 0} />
+            <InventoryRow label="Programs" total={stats?.projects?.total ?? 0} published={stats?.projects?.published ?? 0} draft={stats?.projects?.draft ?? 0} />
+            <InventoryRow label="Events" total={stats?.events?.total ?? 0} published={stats?.events?.published ?? 0} draft={stats?.events?.draft ?? 0} />
+            <InventoryRow label="Blogs" total={stats?.blogs?.total ?? 0} published={stats?.blogs?.published ?? 0} draft={stats?.blogs?.draft ?? 0} />
+            <InventoryRow label="Galleries" total={stats?.galleries?.total ?? 0} published={stats?.galleries?.published ?? 0} draft={stats?.galleries?.draft ?? 0} />
+            <InventoryRow label="Team" total={stats?.team?.total ?? 0} published={stats?.team?.active ?? 0} draft={0} />
+            <InventoryRow label="Testimonials" total={stats?.testimonials?.total ?? 0} published={stats?.testimonials?.active ?? 0} draft={0} />
+            <InventoryRow label="Partners" total={stats?.partners?.total ?? 0} published={stats?.partners?.active ?? 0} draft={0} />
+            <InventoryRow label="FAQs" total={stats?.faqs?.total ?? 0} published={stats?.faqs?.active ?? 0} draft={0} />
+            <InventoryRow label="Media" total={stats?.media?.total ?? 0} published={stats?.media?.images ?? 0} draft={stats?.media?.documents ?? 0} />
           </div>
         </Card>
       </div>

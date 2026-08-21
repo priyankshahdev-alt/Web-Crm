@@ -13,6 +13,7 @@ import { RolePage } from './pages/RolePage'
 import { LoginPage } from './pages/LoginPage'
 import { ProfilePage } from './pages/ProfilePage'
 import { SettingsPage } from './pages/SettingsPage'
+import { WebsiteDetailPage } from './pages/WebsiteDetailPage'
 import { SidebarAdminSection } from './components/sidebar/AdminSection'
 import { SidebarRoleSection } from './components/sidebar/RoleSection'
 import { ProfileDropdown } from './components/ProfileDropdown'
@@ -138,6 +139,7 @@ export default function App() {
           <Route element={<AppLayout />}>
             <Route path="/" element={<Dashboard />} />
             <Route path="/admin" element={<AdminPage />} />
+            <Route path="/websites/:id" element={<WebsiteDetailPage />} />
             <Route path="/role" element={<RolePage />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/settings" element={<SettingsPage />} />

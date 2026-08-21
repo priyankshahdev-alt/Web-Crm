@@ -77,6 +77,7 @@ const DEFAULT_PROJECTS = [
   {
     title: "Nutritious Meals",
     tag: "Nutrition",
+    status: "Active",
     description:
       "Providing healthy daily meals to elderly citizens in need, ensuring they receive the sustenance and care they deserve.",
     image: "/images/oldage/img1.jpg",
@@ -86,6 +87,7 @@ const DEFAULT_PROJECTS = [
   {
     title: "Healthcare Support",
     tag: "Healthcare",
+    status: "Active",
     description:
       "Specialized checkups and medical aid for disabled individuals, improving their quality of life and well-being.",
     image: "/images/medical/img4.jpg",
@@ -95,6 +97,7 @@ const DEFAULT_PROJECTS = [
   {
     title: "Empowering Education",
     tag: "Education",
+    status: "On-Going",
     description:
       "Supporting the dreams of underprivileged children with resources, tuition, and essential school supplies.",
     image: "/images/education/Educationhome.jpg",
@@ -128,6 +131,15 @@ const DEFAULT_CTA = {
 const fillStyle = { fontVariationSettings: "'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24" };
 
 const heroBadges = ["Regd. No. E-37237", "80G Certified", "10,000+ Lives Impacted"];
+
+function statusClasses(status) {
+  const key = String(status || "").toLowerCase();
+  if (key.includes("complete") || key.includes("done"))
+    return { dot: "bg-primary", text: "text-primary" };
+  if (key.includes("on") || key.includes("ongo"))
+    return { dot: "bg-secondary-container", text: "text-secondary" };
+  return { dot: "bg-green-500", text: "text-green-700" };
+}
 
 function normalizeHeroSlides(section) {
   const slides = section?.content?.slides;
@@ -172,6 +184,7 @@ function normalizeProjects(section) {
       .map((p) => ({
         title: p.title,
         tag: p.tag || "",
+        status: p.status || p.projectStatus || "Active",
         description: p.description || p.summary || "",
         image: p.image || p.imageUrl || "",
         to: p.url || p.to || "/programs",
@@ -203,44 +216,6 @@ function HeroCarousel({ slides = DEFAULT_HERO_SLIDES }) {
   }, [active, slides.length]);
 
   const go = (i) => setActive((i + slides.length) % slides.length);
-
-  useEffect(() => {
-    const gsap = window.gsap;
-    const SplitText = window.SplitText;
-    if (!gsap || !SplitText) return undefined;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return undefined;
-
-    gsap.registerPlugin(SplitText);
-
-    const title = document.querySelector(".ashray-hero__slide.is-active .ashray-hero__title");
-    if (!title) return undefined;
-
-    let cancelled = false;
-    let anim = null;
-
-    const split = SplitText.create(title, {
-      type: "words,lines",
-      linesClass: "line",
-      autoSplit: true,
-      mask: "lines",
-      onSplit: (self) => {
-        if (cancelled) return;
-        anim = gsap.from(self.lines, {
-          duration: 0.6,
-          yPercent: 100,
-          opacity: 0,
-          stagger: 0.1,
-          ease: "expo.out",
-        });
-      },
-    });
-
-    return () => {
-      cancelled = true;
-      if (anim) anim.kill();
-      if (split) split.revert();
-    };
-  }, [active]);
 
   // Cinematic entrance only (crossfade handled in CSS).
   useEffect(() => {
@@ -319,22 +294,6 @@ function HeroCarousel({ slides = DEFAULT_HERO_SLIDES }) {
                     </li>
                   ))}
                 </ul>
-              </div>
-
-              <div className="ashray-hero__panel">
-                <h2 className="ashray-hero__panel-name">{s.panelLabel}</h2>
-                <p className="ashray-hero__panel-tagline">{s.panelTitle}</p>
-                <div className="ashray-hero__panel-logo">
-                  <img
-                    src="/images/Ashray Foundation logo.png"
-                    alt="Ashray for Life Foundation"
-                    loading="lazy"
-                  />
-                  <span className="ashray-hero__panel-logo-text">
-                    <strong>Regd.No.E-37237</strong>
-                    <span>Ashray</span>
-                  </span>
-                </div>
               </div>
             </div>
           </div>
@@ -424,37 +383,44 @@ function Home() {
           <div className="w-16 h-1 bg-secondary-container mx-auto mt-4 rounded-full" />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {projects.map((project) => (
-            <Link
-              key={project.title}
-              to={project.to}
-              className="app-reveal bg-surface-container-lowest rounded-[1.5rem] overflow-hidden shadow-md hover:shadow-xl transition-shadow border border-outline-variant/20 flex flex-col group h-full"
-            >
-              <div className="relative h-56 overflow-hidden">
-                <img
-                  alt={project.title}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  src={project.image}
-                  style={{ objectPosition: project.position }}
-                />
-                <div className="absolute top-4 left-4 bg-surface-container-lowest/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-primary-container shadow-sm">
-                  {project.tag}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+          {projects.map((project) => {
+            const sc = statusClasses(project.status);
+            return (
+              <Link
+                key={project.title}
+                to={project.to}
+                className="app-reveal bg-surface-container-lowest rounded-[1.5rem] overflow-hidden shadow-md hover:shadow-xl transition-shadow border border-outline-variant/20 flex flex-col group h-full"
+              >
+                <div className="relative h-52 md:h-56 overflow-hidden">
+                  <img
+                    alt={project.title}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    src={project.image}
+                    style={{ objectPosition: project.position }}
+                  />
+                  <div className="absolute top-4 left-4 bg-surface-container-lowest/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-primary-container shadow-sm">
+                    {project.tag}
+                  </div>
+                  <span className="absolute top-4 right-4 inline-flex items-center gap-1.5 bg-surface-container-lowest/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold shadow-sm">
+                    <span className={`w-2 h-2 rounded-full ${sc.dot}`} />
+                    <span className={sc.text}>{project.status || "Active"}</span>
+                  </span>
                 </div>
-              </div>
-              <div className="p-8 flex flex-col flex-grow">
-                <h3 className="font-headline-sm text-headline-sm text-primary-container mb-3">
-                  {project.title}
-                </h3>
-                <p className="font-body-md text-body-md text-on-surface-variant mb-6 flex-grow">
-                  {project.description}
-                </p>
-                <span className="font-button-text text-button-text text-primary-container hover:text-secondary-container inline-flex items-center gap-1 group-hover:gap-2 transition-all mt-auto">
-                  Learn More <span className="material-symbols-outlined text-sm">arrow_forward</span>
-                </span>
-              </div>
-            </Link>
-          ))}
+                <div className="p-8 flex flex-col flex-grow">
+                  <h3 className="font-headline-sm text-headline-sm text-primary-container mb-3">
+                    {project.title}
+                  </h3>
+                  <p className="font-body-md text-body-md text-on-surface-variant mb-6 flex-grow">
+                    {project.description}
+                  </p>
+                  <span className="font-button-text text-button-text text-primary-container hover:text-secondary-container inline-flex items-center gap-1 group-hover:gap-2 transition-all mt-auto">
+                    Learn More <span className="material-symbols-outlined text-sm">arrow_forward</span>
+                  </span>
+                </div>
+              </Link>
+            );
+          })}
         </div>
       </section>
 

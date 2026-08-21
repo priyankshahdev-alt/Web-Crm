@@ -4,6 +4,7 @@ import {
   getMe,
   login as loginRequest,
   logout as logoutRequest,
+  exchangeImpersonate,
 } from '../services/authService'
 import type { LoginInput } from '../services/authService'
 import { getAccessToken } from '../lib/tokenStorage'
@@ -21,6 +22,32 @@ interface AuthContextValue {
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined)
 
+/**
+ * Pull a master-issued `?ticket=` off the URL and exchange it for a session.
+ * Returns true when a ticket was consumed (the caller then stores the user).
+ */
+async function consumeImpersonateTicket(
+  setUser: (user: AuthUser) => void,
+  setOrganizations: (orgs: SessionOrganization[]) => void,
+): Promise<boolean> {
+  const params = new URLSearchParams(window.location.search)
+  const ticket = params.get('ticket')
+  if (!ticket) return false
+
+  try {
+    const session = await exchangeImpersonate(ticket)
+    setUser(session.user)
+    setOrganizations(session.organizations ?? [])
+    const next = new URL(window.location.href)
+    next.searchParams.delete('ticket')
+    window.history.replaceState({}, '', next.toString())
+    return true
+  } catch {
+    // Leave the ticket in place so an error screen can explain the failure.
+    return false
+  }
+}
+
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(null)
   const [organizations, setOrganizations] = useState<SessionOrganization[]>([])
@@ -30,6 +57,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     let cancelled = false
 
     async function bootstrap() {
+      if (await consumeImpersonateTicket(setUser, setOrganizations)) {
+        if (!cancelled) setLoading(false)
+        return
+      }
+
       if (!getAccessToken()) {
         setLoading(false)
         return

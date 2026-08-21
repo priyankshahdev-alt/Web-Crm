@@ -26,7 +26,21 @@ export const switchOrganizationSchema = z
   })
   .strict();
 
+export const impersonateSchema = z
+  .object({
+    userId: z.string().uuid(),
+  })
+  .strict();
+
+export const impersonateTicketSchema = z
+  .object({
+    ticket: z.string().min(1),
+  })
+  .strict();
+
 export type LoginInput = z.infer<typeof loginSchema>;
 export type RefreshInput = z.infer<typeof refreshSchema>;
 export type ChangePasswordInput = z.infer<typeof changePasswordSchema>;
 export type SwitchOrganizationInput = z.infer<typeof switchOrganizationSchema>;
+export type ImpersonateInput = z.infer<typeof impersonateSchema>;
+export type ImpersonateTicketInput = z.infer<typeof impersonateTicketSchema>;
