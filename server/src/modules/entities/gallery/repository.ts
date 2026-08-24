@@ -5,6 +5,7 @@ import { slugify } from '../factory';
 interface GalleryItemInput {
   mediaId?: string | null;
   imageUrl: string;
+  mediaType?: 'image' | 'video';
   altText?: string | null;
   caption?: string | null;
   sortOrder?: number;
@@ -12,7 +13,39 @@ interface GalleryItemInput {
 
 const include = {
   items: { orderBy: { sortOrder: 'asc' as const } },
+  program: { select: { id: true, title: true, slug: true } },
+  event: { select: { id: true, title: true, slug: true, startDate: true } },
 };
+
+const listInclude = {
+  _count: { select: { items: true } },
+  program: { select: { id: true, title: true, slug: true } },
+  event: { select: { id: true, title: true, slug: true, startDate: true } },
+};
+
+/** Photo/video breakdown for the listed galleries (kept off the main query). */
+async function attachMediaCounts(
+  galleries: Array<{ id: string }>,
+): Promise<Map<string, { photos: number; videos: number }>> {
+  const ids = galleries.map((gallery) => gallery.id);
+  if (ids.length === 0) return new Map();
+  const grouped = await prisma.galleryItem.groupBy({
+    by: ['galleryId', 'mediaType'],
+    where: { galleryId: { in: ids } },
+    _count: { _all: true },
+  });
+  const result = new Map<string, { photos: number; videos: number }>();
+  for (const row of grouped) {
+    const entry = result.get(row.galleryId) ?? { photos: 0, videos: 0 };
+    if (row.mediaType === 'video') {
+      entry.videos += row._count._all;
+    } else {
+      entry.photos += row._count._all;
+    }
+    result.set(row.galleryId, entry);
+  }
+  return result;
+}
 
 export const galleryRepository = {
   async list(organizationId: string, params: {
@@ -29,6 +62,8 @@ export const galleryRepository = {
         ? { OR: [
             { title: { contains: params.search, mode: 'insensitive' as const } },
             { description: { contains: params.search, mode: 'insensitive' as const } },
+            { program: { title: { contains: params.search, mode: 'insensitive' as const } } },
+            { event: { title: { contains: params.search, mode: 'insensitive' as const } } },
           ] }
         : {}),
       ...(params.status ? { status: params.status as Prisma.GalleryWhereInput['status'] } : {}),
@@ -39,11 +74,19 @@ export const galleryRepository = {
         orderBy: { [params.sortBy]: params.sortOrder },
         skip: params.skip,
         take: params.take,
-        include: { _count: { select: { items: true } } },
+        include: listInclude,
       }),
       prisma.gallery.count({ where }),
     ]);
-    return { items, total };
+    const counts = await attachMediaCounts(items);
+    return {
+      items: items.map((gallery) => ({
+        ...gallery,
+        photos: counts.get(gallery.id)?.photos ?? 0,
+        videos: counts.get(gallery.id)?.videos ?? 0,
+      })),
+      total,
+    };
   },
 
   async findById(id: string) {
