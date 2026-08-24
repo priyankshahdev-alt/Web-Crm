@@ -24,19 +24,31 @@ interface SectionDto {
 }
 
 export const siteService = {
-  async getSiteBySlug(slug: string) {
-    const cached = siteCache.get(slug);
-    if (cached !== undefined) return cached;
+  async getSiteBySlug(slug: string, options?: { previewKey?: string }) {
+    const previewKey = typeof options?.previewKey === 'string' ? options.previewKey : '';
+    const previewRequested = previewKey.length > 0;
+    if (!previewRequested) {
+      const cached = siteCache.get(slug);
+      if (cached !== undefined) return cached;
+    }
 
     const org = await siteRepository.findBySlug(slug);
     if (!org) throw ApiError.notFound('Organization not found');
+
+    let draftPreview = false;
+    if (previewRequested) {
+      // Only serve drafts when the token matches; otherwise fall back to the
+      // published view silently so stale links never break the public site.
+      const settings = await siteRepository.getSettings(org.id);
+      draftPreview = settings['site.previewKey'] === previewKey;
+    }
 
     const [settings, menus, banners, sliders, pages, locations] = await Promise.all([
       siteRepository.getSettings(org.id),
       siteRepository.getMenus(org.id),
       siteRepository.getBanners(org.id),
       siteRepository.getSliders(org.id),
-      siteRepository.getPages(org.id),
+      draftPreview ? siteRepository.getPagesWithDrafts(org.id) : siteRepository.getPages(org.id),
       siteRepository.getLocations(org.id),
     ]);
 
@@ -44,15 +56,23 @@ export const siteService = {
       pages.map(async (page) => {
         const sections = await Promise.all(
           page.sections.map(async (section) => {
-            const content = (section.content as Record<string, unknown> | null) ?? {};
+            const isActive = draftPreview
+              ? (section.draftIsActive ?? section.isActive)
+              : section.isActive;
+            if (draftPreview && !isActive) return null;
+            const content = (
+              draftPreview
+                ? ((section.draftContent ?? section.content) as Record<string, unknown> | null)
+                : (section.content as Record<string, unknown> | null)
+            ) ?? {};
             const dto: SectionDto = {
               id: section.id,
               type: section.type,
-              name: section.name,
+              name: draftPreview ? (section.draftName ?? section.name) : section.name,
               sortOrder: section.sortOrder,
-              isActive: section.isActive,
-              settings: section.settings,
-              content: section.content,
+              isActive,
+              settings: draftPreview ? (section.draftSettings ?? section.settings) : section.settings,
+              content: draftPreview ? (section.draftContent ?? section.content) : section.content,
             };
             dto.entities = await this.resolveEntities(org.id, section.type, content);
             return dto;
@@ -66,7 +86,7 @@ export const siteService = {
           metaDescription: page.metaDescription,
           template: page.template,
           isHome: page.isHome,
-          sections,
+          sections: sections.filter((s): s is SectionDto => s !== null),
         };
       }),
     );
@@ -81,7 +101,9 @@ export const siteService = {
       pages: pageTree,
     };
 
-    siteCache.set(slug, result);
+    if (!previewRequested) {
+      siteCache.set(slug, result);
+    }
     return result;
   },
 

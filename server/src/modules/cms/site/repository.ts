@@ -100,11 +100,24 @@ export const siteRepository = {
     });
   },
 
+  async getPagesWithDrafts(organizationId: string) {
+    return prisma.page.findMany({
+      where: { organizationId, status: PublishStatus.PUBLISHED },
+      orderBy: [{ sortOrder: 'asc' }, { createdAt: 'asc' }],
+      include: {
+        sections: {
+          orderBy: { sortOrder: 'asc' },
+        },
+      },
+    });
+  },
+
   async getProjectsByIds(organizationId: string, ids?: string[], all = false) {
     return prisma.project.findMany({
       where: {
         organizationId,
         status: PublishStatus.PUBLISHED,
+        isHidden: false,
         ...(all ? {} : ids && ids.length > 0 ? { id: { in: ids } } : { id: { in: [] } }),
       },
       orderBy: { sortOrder: 'asc' },

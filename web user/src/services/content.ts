@@ -1,4 +1,13 @@
-import type { Blog, BlogCategory, Event, Gallery, Project, PublishStatus } from '../types'
+import type {
+  Blog,
+  BlogCategory,
+  Event,
+  Gallery,
+  Project,
+  ProjectImageItem,
+  ProjectServiceItem,
+  PublishStatus,
+} from '../types'
 import {
   createEntity,
   getAllEntities,
@@ -15,13 +24,15 @@ export interface ProgramWritePayload {
   slug?: string
   tag?: string | null
   summary?: string | null
-  category?: string | null
   description?: Record<string, unknown> | null
   cardImageUrl?: string | null
   heroImageUrl?: string | null
   status: PublishStatus
   featured?: boolean
+  isHidden?: boolean
   sortOrder?: number
+  images?: ProjectImageItem[]
+  services?: ProjectServiceItem[]
   stats?: Array<{ label: string; value: string; sortOrder?: number }>
   impacts?: Array<{ title: string; description?: string | null; sortOrder?: number }>
 }
@@ -42,13 +53,15 @@ export const programService = {
       slug: payload.slug ?? '',
       tag: payload.tag ?? null,
       summary: payload.summary ?? null,
-      category: payload.category ?? null,
       description: payload.description ?? null,
       cardImageUrl: payload.cardImageUrl ?? null,
       heroImageUrl: payload.heroImageUrl ?? null,
       status: payload.status,
       featured: payload.featured ?? false,
+      isHidden: payload.isHidden ?? false,
       sortOrder: payload.sortOrder ?? 0,
+      images: payload.images ?? [],
+      services: payload.services ?? [],
       stats: payload.stats ?? [],
       impacts: payload.impacts ?? [],
     })
@@ -68,6 +81,9 @@ export const eventService = {
   async all(): Promise<Event[]> {
     return getAllEntities<Event>('events', 'events')
   },
+  async get(id: string): Promise<Event | null> {
+    return getEntity<Event>('events', 'events', id)
+  },
   async create(payload: Partial<Event>): Promise<Event> {
     return createEntity<Event>('events', 'events', {
       title: payload.title ?? 'New Event',
@@ -79,7 +95,7 @@ export const eventService = {
       location: payload.location ?? null,
       status: payload.status ?? 'DRAFT',
       featured: payload.featured ?? false,
-      gallery: payload.gallery ?? [],
+      isHidden: payload.isHidden ?? false,
     })
   },
   async update(id: string, patch: Partial<Event>): Promise<Event | null> {

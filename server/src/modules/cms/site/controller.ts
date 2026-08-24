@@ -5,7 +5,10 @@ import { siteService } from './service';
 
 export const siteController = {
   getSite: asyncHandler(async (req: Request, res: Response) => {
-    const result = await siteService.getSiteBySlug(req.params.slug);
+    const result = await siteService.getSiteBySlug(req.params.slug, {
+      previewKey:
+        typeof req.query.preview === 'string' ? req.query.preview : undefined,
+    });
     ok(res, result, 'OK');
   }),
 };

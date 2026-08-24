@@ -44,6 +44,22 @@ export const publishWebsiteSchema = z
   })
   .strict();
 
+/**
+ * Body for saving a draft of a section. Drafts never touch the live content —
+ * they only become visible after `POST /websites/:slug/pages/:pageSlug/publish`.
+ */
+export const draftSectionSchema = z
+  .object({
+    name: z.string().max(300).nullable().optional(),
+    isActive: z.boolean().optional(),
+    settings: z.record(z.string(), z.unknown()).nullable().optional(),
+    content: z.record(z.string(), fieldValueSchema).optional(),
+  })
+  .strict()
+  .refine((data) => Object.keys(data).length > 0, {
+    message: 'At least one field must be provided',
+  });
+
 export const reorderSectionsSchema = z
   .object({
     order: z.array(z.string().min(1)).min(1),
@@ -54,3 +70,4 @@ export type PutSectionInput = z.infer<typeof putSectionSchema>;
 export type PatchSectionInput = z.infer<typeof patchSectionSchema>;
 export type PublishWebsiteInput = z.infer<typeof publishWebsiteSchema>;
 export type ReorderSectionsInput = z.infer<typeof reorderSectionsSchema>;
+export type DraftSectionInput = z.infer<typeof draftSectionSchema>;

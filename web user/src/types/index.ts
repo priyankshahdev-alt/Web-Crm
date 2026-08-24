@@ -213,6 +213,36 @@ export interface SectionTemplate {
   fields: FieldDef[]
 }
 
+export interface TemplateFieldDef {
+  name: string
+  label: string
+  type:
+    | 'text'
+    | 'textarea'
+    | 'richText'
+    | 'number'
+    | 'boolean'
+    | 'url'
+    | 'select'
+    | 'image'
+    | 'gallery'
+    | 'link'
+    | 'entityRef'
+    | 'list'
+    | 'repeater'
+    | 'group'
+    | 'date'
+  maxLength?: number
+  itemType?: 'string' | 'number'
+  minItems?: number
+  maxItems?: number
+  default?: unknown
+  fields?: TemplateFieldDef[]
+  options?: string[]
+  entityType?: string
+  multiple?: boolean
+}
+
 export interface WebsiteSectionField {
   name: string
   label: string
@@ -220,6 +250,7 @@ export interface WebsiteSectionField {
   value: unknown
   imageUrl: string | null
   displayOrder: number
+  def?: TemplateFieldDef | null
 }
 
 export interface WebsiteSection {
@@ -231,6 +262,11 @@ export interface WebsiteSection {
   settings: Record<string, unknown>
   content: Record<string, unknown>
   fields: WebsiteSectionField[]
+  hasChanges?: boolean
+  draftName?: string | null
+  draftIsActive?: boolean | null
+  draftSettings?: Record<string, unknown> | null
+  draftContent?: Record<string, unknown> | null
   createdAt: string
   updatedAt: string
 }
@@ -270,6 +306,9 @@ export interface WebsiteContent {
     slug: string
     description: string | null
     logoUrl: string | null
+    website?: string | null
+    email?: string | null
+    phone?: string | null
     status: string
     updatedAt: string
   }
@@ -295,6 +334,22 @@ export interface Menu extends IdEntity {
   items: MenuItem[]
 }
 
+export interface ProjectImageItem {
+  id?: string
+  imageUrl: string
+  altText?: string | null
+  sortOrder?: number
+}
+
+export interface ProjectServiceItem {
+  id?: string
+  title: string
+  description?: string | null
+  icon?: string | null
+  imageUrl?: string | null
+  sortOrder?: number
+}
+
 export interface Project extends IdEntity {
   slug: string
   title: string
@@ -306,7 +361,10 @@ export interface Project extends IdEntity {
   category?: string | null
   status: PublishStatus
   featured: boolean
+  isHidden?: boolean
   sortOrder: number
+  images?: ProjectImageItem[] | null
+  services?: ProjectServiceItem[] | null
   stats: ProjectStat[]
   impacts?: ProjectImpact[] | null
   _count?: { beneficiaries: number; images: number; stats: number }
@@ -337,6 +395,7 @@ export interface Event extends IdEntity {
   location?: string | null
   status: PublishStatus
   featured: boolean
+  isHidden?: boolean
   gallery: string[]
 }
 

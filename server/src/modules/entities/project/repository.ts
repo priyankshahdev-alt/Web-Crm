@@ -3,7 +3,7 @@ import { prisma } from '../../../libs/prisma';
 import { slugify } from '../factory';
 export interface ProjectChildInput {
   images?: { imageUrl: string; altText?: string | null; sortOrder?: number }[];
-  services?: { title: string; description?: string | null; icon?: string | null; sortOrder?: number }[];
+  services?: { title: string; description?: string | null; icon?: string | null; imageUrl?: string | null; sortOrder?: number }[];
   impacts?: { title: string; description?: string | null; icon?: string | null; sortOrder?: number }[];
   stats?: { label: string; value: string; sortOrder?: number }[];
 }

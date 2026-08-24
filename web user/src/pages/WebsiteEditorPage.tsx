@@ -1,16 +1,18 @@
-import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react'
-import { websiteEditorService } from '../services/websiteEditor'
-import type { WebsiteEditorData, WebsiteEditorSection } from '../types'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { websiteService } from '../services/website'
+import type { WebsitePage, WebsiteSection } from '../types'
 import { useToast } from '../context/ToastContext'
-import { isAxiosError } from '../services/api'
+import { useSession } from '../context/SessionContext'
+import { PUBLIC_SITE_ORIGIN } from '../config/api'
+import { http, isAxiosError } from '../services/api'
 import { PageHeader } from '../components/ui/PageHeader'
 import { Button } from '../components/ui/Button'
 import { Card } from '../components/ui/Card'
-import { Field, Input, Select, Textarea } from '../components/ui/Input'
+import { Field, Input, Textarea } from '../components/ui/Input'
 import { Toggle } from '../components/ui/Toggle'
+import { Modal } from '../components/ui/Modal'
+import { ConfirmDialog } from '../components/ui/ConfirmDialog'
 import {
-  ChevronUpIcon,
-  ChevronDownIcon,
   EyeIcon,
   EyeOffIcon,
   ExternalLinkIcon,
@@ -18,91 +20,30 @@ import {
   LayoutIcon,
   PlusIcon,
   RefreshIcon,
-  SaveIcon,
-  TrashIcon,
-  UploadIcon,
-  XIcon,
 } from '../components/icons'
+import { SectionFieldsForm } from '../components/website/SectionFieldsForm'
+import { MediaPickerModal } from '../components/website/MediaPickerModal'
 
 const TYPE_LABELS: Record<string, string> = {
-  'hero-slider': 'Hero Slider',
+  'hero-slider': 'Hero Slideshow',
+  'hero-banner': 'Hero Banner',
+  'home-about': 'About Preview',
+  'home-marquee': 'Impact Marquee',
   stats: 'Impact Stats',
   'projects-grid': 'Our Projects',
-  gallery: 'Impact in Action',
+  gallery: 'Photo Gallery',
   cta: 'Join Us CTA',
+  newsletter: 'Newsletter',
 }
 
-const ITEM_NAMES: Record<string, string> = {
-  slides: 'Slide',
-  items: 'Stat',
-  projects: 'Project',
-  images: 'Image',
-}
-
-const EMPTY_SLIDE: Record<string, unknown> = {
-  eyebrow: '',
-  title: '',
-  accent: '',
-  subtitle: '',
-  imageUrl: '',
-  subjectImageUrl: '',
-  subjectAlt: '',
-  subjectPosition: 'center 45%',
-  ctaLabel: '',
-  ctaUrl: '',
-  cta2Label: '',
-  cta2Url: '',
-  panelLabel: '',
-  panelTitle: '',
-}
-
-const EMPTY_STAT: Record<string, unknown> = { icon: '', value: '', label: '' }
-
-const EMPTY_PROJECT: Record<string, unknown> = {
-  title: '',
-  tag: '',
-  description: '',
-  image: '',
-  url: '',
-  position: '50% 50%',
-}
-
-function str(value: unknown): string {
-  return typeof value === 'string' ? value : ''
-}
-
-function arr(value: unknown): Record<string, unknown>[] {
-  return Array.isArray(value)
-    ? (value as Record<string, unknown>[])
-    : []
-}
-
-// Immutably set a dotted path (supports numeric array indices) inside an object.
-function setDeep(target: unknown, path: string, value: unknown): unknown {
-  const keys = path.split('.')
-  const index: string | number = /^\d+$/.test(keys[0]) ? Number(keys[0]) : keys[0]
-  if (keys.length === 1) {
-    if (Array.isArray(target)) {
-      const next: unknown[] = [...target]
-      ;(next as unknown as Record<string | number, unknown>)[index] = value
-      return next
-    }
-    return { ...(target as Record<string, unknown>), [keys[0]]: value }
-  }
-  const [head, ...rest] = keys
-  const headIndex: string | number = /^\d+$/.test(head) ? Number(head) : head
-  if (Array.isArray(target)) {
-    const next: unknown[] = [...target]
-    ;(next as unknown as Record<string | number, unknown>)[headIndex] = setDeep(
-      (next as unknown as Record<string | number, unknown>)[headIndex],
-      rest.join('.'),
-      value,
-    )
-    return next
-  }
-  const next: Record<string, unknown> = { ...(target as Record<string, unknown>) }
-  ;(next as Record<string | number, unknown>)[headIndex] = setDeep(next[headIndex], rest.join('.'), value)
-  return next
+function prettyType(type: string): string {
+  return (
+    TYPE_LABELS[type] ??
+    type
+      .split(/[-_]/)
+      .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+      .join(' ')
+  )
 }
 
 function errorMessage(error: unknown): string {
@@ -113,496 +54,551 @@ function errorMessage(error: unknown): string {
   return error instanceof Error ? error.message : 'Something went wrong'
 }
 
-interface ImageFieldProps {
-  value: string
-  onChange: (value: string) => void
-  label: string
-  hint?: string
-  entityType?: string
-  entityId?: string
+interface SectionEdit {
+  name?: string | null
+  isActive?: boolean
+  content: Record<string, unknown>
 }
 
-function ImageField({ value, onChange, label, hint, entityType, entityId }: ImageFieldProps) {
+/** A section as shown in the editor: server values overlaid with unsaved edits. */
+function editedSection(
+  section: WebsiteSection,
+  edit: SectionEdit | undefined,
+): WebsiteSection & { editActive: boolean; dirty: boolean } {
+  return {
+    ...section,
+    sectionName: edit?.name !== undefined ? edit.name : section.sectionName,
+    status: edit?.isActive !== undefined ? (edit.isActive ? 'ACTIVE' : 'INACTIVE') : section.status,
+    content: edit ? edit.content : section.content,
+    editActive: edit?.isActive ?? section.status === 'ACTIVE',
+    dirty: Boolean(edit),
+  }
+}
+
+/* ---------------------------------- Hero slideshow manager ---------------------------------- */
+
+interface HeroSlide {
+  id: string
+  title: string | null
+  subtitle: string | null
+  imageUrl: string
+  mobileImageUrl?: string | null
+  ctaLabel?: string | null
+  ctaUrl?: string | null
+  altText?: string | null
+  sortOrder: number
+  isActive: boolean
+}
+
+interface HeroSlider {
+  id: string
+  name: string
+  isActive: boolean
+  slides: HeroSlide[]
+}
+
+function SlidesManagerModal({
+  open,
+  onClose,
+}: {
+  open: boolean
+  onClose: () => void
+}) {
   const { toast } = useToast()
-  const fileRef = useRef<HTMLInputElement>(null)
-  const [uploading, setUploading] = useState(false)
-  const inputId = useId()
-
-  const handleFile = async (file: File | null) => {
-    if (!file) return
-    setUploading(true)
-    try {
-      const asset = await websiteEditorService.uploadMedia(file, entityType, entityId)
-      onChange(asset.url)
-      toast('Image uploaded', { variant: 'success', description: 'This image is now set in the field.' })
-    } catch (error) {
-      toast('Upload failed', { variant: 'error', description: errorMessage(error) })
-    } finally {
-      setUploading(false)
-    }
-  }
-
-  return (
-    <Field label={label} hint={hint} htmlFor={inputId}>
-      <div className="space-y-2">
-        {value ? (
-          <div className="relative overflow-hidden rounded-xl border border-line">
-            <img src={value} alt="" className="h-28 w-full object-cover" />
-            <button
-              type="button"
-              aria-label={`Remove ${label}`}
-              onClick={() => onChange('')}
-              className="absolute right-2 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-slate-900/60 text-white transition hover:bg-slate-900/80"
-            >
-              <XIcon className="h-3.5 w-3.5" />
-            </button>
-          </div>
-        ) : null}
-        <div className="flex gap-2">
-          <Input
-            id={inputId}
-            value={value}
-            placeholder="Paste an image link, or click Upload"
-            onChange={(event) => onChange(event.target.value)}
-          />
-          <input
-            ref={fileRef}
-            type="file"
-            accept="image/*"
-            hidden
-            onChange={(event) => {
-              void handleFile(event.target.files?.[0] ?? null)
-              event.target.value = ''
-            }}
-          />
-          <Button
-            variant="secondary"
-            size="sm"
-            className="shrink-0"
-            loading={uploading}
-            icon={<UploadIcon />}
-            onClick={() => fileRef.current?.click()}
-          >
-            Upload
-          </Button>
-        </div>
-      </div>
-    </Field>
-  )
-}
-
-interface EditorFormProps {
-  section: WebsiteEditorSection
-  onChange: (sectionId: string, path: string, value: unknown) => void
-  onAddItem: (sectionId: string, path: string, template: Record<string, unknown>) => void
-  onRemoveItem: (sectionId: string, path: string, index: number) => void
-  onMoveItem: (sectionId: string, path: string, index: number, direction: -1 | 1) => void
-}
-
-function EditorForm({ section, onChange, onAddItem, onRemoveItem, onMoveItem }: EditorFormProps) {
-  const c = section.content
-  const set = (path: string, value: unknown) => onChange(section.id, path, value)
-
-  const renderItems = (
-    path: string,
-    fields: { key: string; label: string; kind: 'input' | 'textarea' | 'image'; hint?: string }[],
-    addTemplate: Record<string, unknown>,
-    addLabel: string,
-  ) => {
-    const items = arr(c[path])
-    return (
-      <div className="space-y-3">
-        {items.map((item, index) => (
-          <div key={index} className="rounded-xl border border-line bg-slate-50 p-4">
-            <div className="mb-3 flex items-center justify-between">
-              <p className="text-xs font-bold uppercase tracking-wide text-faint">
-                {ITEM_NAMES[path] ?? path.slice(0, -1)} {index + 1}
-              </p>
-              <div className="flex items-center gap-0.5">
-                <button
-                  type="button"
-                  aria-label="Move item up"
-                  disabled={index === 0}
-                  onClick={() => onMoveItem(section.id, path, index, -1)}
-                  className="flex h-7 w-7 items-center justify-center rounded-full text-faint transition hover:bg-white hover:text-ink disabled:opacity-30"
-                >
-                  <ChevronUpIcon className="h-3.5 w-3.5" />
-                </button>
-                <button
-                  type="button"
-                  aria-label="Move item down"
-                  disabled={index === items.length - 1}
-                  onClick={() => onMoveItem(section.id, path, index, 1)}
-                  className="flex h-7 w-7 items-center justify-center rounded-full text-faint transition hover:bg-white hover:text-ink disabled:opacity-30"
-                >
-                  <ChevronDownIcon className="h-3.5 w-3.5" />
-                </button>
-                <button
-                  type="button"
-                  aria-label="Remove item"
-                  onClick={() => onRemoveItem(section.id, path, index)}
-                  className="flex h-7 w-7 items-center justify-center rounded-full text-faint transition hover:bg-white hover:text-danger"
-                >
-                  <TrashIcon className="h-3.5 w-3.5" />
-                </button>
-              </div>
-            </div>
-            <div className="space-y-3">
-              {fields.map((field) => {
-                const value = str(item[field.key])
-                const itemPath = `${path}.${index}.${field.key}`
-                if (field.kind === 'textarea') {
-                  return (
-                    <Field key={field.key} label={field.label} hint={field.hint} htmlFor={`${path}-${index}-${field.key}`}>
-                      <Textarea
-                        id={`${path}-${index}-${field.key}`}
-                        rows={2}
-                        value={value}
-                        onChange={(event) => set(itemPath, event.target.value)}
-                      />
-                    </Field>
-                  )
-                }
-                if (field.kind === 'image') {
-                  return (
-                    <ImageField
-                      key={field.key}
-                      label={field.label}
-                      hint={field.hint}
-                      value={value}
-                      entityType="section"
-                      entityId={section.id}
-                      onChange={(next) => set(itemPath, next)}
-                    />
-                  )
-                }
-                return (
-                  <Field key={field.key} label={field.label} hint={field.hint} htmlFor={`${path}-${index}-${field.key}`}>
-                    <Input
-                      id={`${path}-${index}-${field.key}`}
-                      value={value}
-                      onChange={(event) => set(itemPath, event.target.value)}
-                    />
-                  </Field>
-                )
-              })}
-            </div>
-          </div>
-        ))}
-        {items.length === 0 ? (
-          <p className="rounded-xl border border-dashed border-line px-4 py-6 text-center text-sm text-muted">
-            Nothing added here yet. Click the button below to add one.
-          </p>
-        ) : null}
-        <Button
-          variant="soft"
-          size="sm"
-          fullWidth
-          icon={<PlusIcon />}
-          onClick={() => onAddItem(section.id, path, addTemplate)}
-        >
-          {addLabel}
-        </Button>
-      </div>
-    )
-  }
-
-  switch (section.type) {
-    case 'hero-slider':
-      return (
-        <div className="space-y-4">
-          <div className="grid gap-3 sm:grid-cols-2">
-            <Field label="Heading" htmlFor="hero-heading">
-              <Input id="hero-heading" value={str(c.heading)} onChange={(e) => set('heading', e.target.value)} />
-            </Field>
-            <Field label="Subheading" htmlFor="hero-subheading">
-              <Input id="hero-subheading" value={str(c.subheading)} onChange={(e) => set('subheading', e.target.value)} />
-            </Field>
-          </div>
-          <div>
-            <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-faint">
-              Slides — each slide is one rotating banner on the website
-            </p>
-            {renderItems(
-              'slides',
-              [
-                { key: 'eyebrow', label: 'Small text above the title', kind: 'input' },
-                { key: 'title', label: 'Main title', kind: 'input' },
-                { key: 'accent', label: 'Accent word', hint: 'A word from the title shown in the highlight colour. Leave empty if not needed.', kind: 'input' },
-                { key: 'subtitle', label: 'Short description', kind: 'textarea' },
-                { key: 'imageUrl', label: 'Background image', hint: 'The big photo behind this slide.', kind: 'image' },
-                { key: 'subjectImageUrl', label: 'Front image (optional)', hint: 'A photo placed on top of the background, e.g. a cut-out person.', kind: 'image' },
-                { key: 'subjectAlt', label: 'Front image description', hint: 'Describes the image for visually impaired visitors.', kind: 'input' },
-                { key: 'subjectPosition', label: 'Front image position', hint: 'How the front image is aligned, e.g. "center 45%". Leave as is if unsure.', kind: 'input' },
-                { key: 'ctaLabel', label: 'Button text', kind: 'input' },
-                { key: 'ctaUrl', label: 'Button link', hint: 'Where the button goes, e.g. /donate', kind: 'input' },
-                { key: 'cta2Label', label: 'Second button text', kind: 'input' },
-                { key: 'cta2Url', label: 'Second button link', hint: 'Where the second button goes, e.g. /volunteer', kind: 'input' },
-                { key: 'panelLabel', label: 'Small panel label', hint: 'Short text shown in the corner box of the slide.', kind: 'input' },
-                { key: 'panelTitle', label: 'Panel tagline', hint: 'One line of text under the small panel label.', kind: 'input' },
-              ],
-              EMPTY_SLIDE,
-              'Add slide',
-            )}
-          </div>
-        </div>
-      )
-
-    case 'stats':
-      return (
-        <div className="space-y-4">
-          <Field label="Heading" htmlFor="stats-heading">
-            <Input id="stats-heading" value={str(c.heading)} onChange={(e) => set('heading', e.target.value)} />
-          </Field>
-          <div>
-            <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-faint">
-              Numbers — each one is a big number with a caption under it
-            </p>
-            {renderItems(
-              'items',
-              [
-                { key: 'icon', label: 'Icon name', hint: 'Icon shown above the number. Leave empty if unsure.', kind: 'input' },
-                { key: 'value', label: 'Number (e.g. 48,000+)', kind: 'input' },
-                { key: 'label', label: 'Caption (e.g. Lives impacted)', kind: 'input' },
-              ],
-              EMPTY_STAT,
-              'Add stat',
-            )}
-          </div>
-        </div>
-      )
-
-    case 'projects-grid':
-      return (
-        <div className="space-y-4">
-          <div className="grid gap-3 sm:grid-cols-2">
-            <Field label="Heading" htmlFor="projects-heading">
-              <Input id="projects-heading" value={str(c.heading)} onChange={(e) => set('heading', e.target.value)} />
-            </Field>
-            <Field label="Subheading" htmlFor="projects-subheading">
-              <Input id="projects-subheading" value={str(c.subheading)} onChange={(e) => set('subheading', e.target.value)} />
-            </Field>
-          </div>
-          <div>
-            <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-faint">
-              Projects — each one is a card with a photo and a short description
-            </p>
-            {renderItems(
-              'projects',
-              [
-                { key: 'title', label: 'Project name', kind: 'input' },
-                { key: 'tag', label: 'Category tag', hint: 'A small label on the card, e.g. EDUCATION or FOOD.', kind: 'input' },
-                { key: 'description', label: 'Short description', kind: 'textarea' },
-                { key: 'image', label: 'Card image', kind: 'image' },
-                { key: 'url', label: 'Link when clicked', hint: 'Where visitors go after clicking the card, e.g. /donate', kind: 'input' },
-                { key: 'position', label: 'Image focus point', hint: 'Which part of the photo stays centred, e.g. "50% 50%". Leave as is if unsure.', kind: 'input' },
-              ],
-              EMPTY_PROJECT,
-              'Add project',
-            )}
-          </div>
-        </div>
-      )
-
-    case 'gallery': {
-      const images = arr(c.images).map((item) => str(item as unknown))
-      return (
-        <div className="space-y-4">
-          <div className="grid gap-3 sm:grid-cols-2">
-            <Field label="Heading" htmlFor="gallery-heading">
-              <Input id="gallery-heading" value={str(c.heading)} onChange={(e) => set('heading', e.target.value)} />
-            </Field>
-            <Field label="Layout" htmlFor="gallery-layout">
-              <Select id="gallery-layout" value={str(c.layout) || 'marquee'} onChange={(e) => set('layout', e.target.value)}>
-                <option value="marquee">Marquee (auto scroll)</option>
-                <option value="grid">Grid</option>
-              </Select>
-            </Field>
-          </div>
-          <div>
-            <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-faint">
-              Photos — shown one after another in this gallery
-            </p>
-            <div className="space-y-2">
-              {images.map((image, index) => (
-                <ImageField
-                  key={index}
-                  label={`Image ${index + 1}`}
-                  value={image}
-                  entityType="section"
-                  entityId={section.id}
-                  onChange={(next) => {
-                    const nextImages = [...images]
-                    nextImages[index] = next
-                    set('images', nextImages)
-                  }}
-                />
-              ))}
-              {images.length === 0 ? (
-                <p className="rounded-xl border border-dashed border-line px-4 py-6 text-center text-sm text-muted">
-                  No images yet.
-                </p>
-              ) : null}
-              <Button
-                variant="soft"
-                size="sm"
-                fullWidth
-                icon={<PlusIcon />}
-                onClick={() => set('images', [...images, ''])}
-              >
-                Add image
-              </Button>
-            </div>
-          </div>
-        </div>
-      )
-    }
-
-    case 'cta':
-      return (
-        <div className="space-y-3">
-          <Field label="Heading" htmlFor="cta-heading">
-            <Textarea id="cta-heading" rows={2} value={str(c.heading)} onChange={(e) => set('heading', e.target.value)} />
-          </Field>
-          <Field label="Paragraph" htmlFor="cta-paragraph">
-            <Textarea id="cta-paragraph" rows={2} value={str(c.paragraph)} onChange={(e) => set('paragraph', e.target.value)} />
-          </Field>
-          <div className="grid gap-3 sm:grid-cols-2">
-          <Field label="Button text" htmlFor="cta-label">
-            <Input id="cta-label" value={str(c.buttonLabel)} onChange={(e) => set('buttonLabel', e.target.value)} />
-          </Field>
-            <Field label="Button link" htmlFor="cta-url" hint="Where visitors go after clicking, e.g. /donate">
-              <Input id="cta-url" value={str(c.buttonUrl)} onChange={(e) => set('buttonUrl', e.target.value)} />
-            </Field>
-          </div>
-          <Field label="Alignment" htmlFor="cta-align">
-            <Select id="cta-align" value={str(c.align) || 'center'} onChange={(e) => set('align', e.target.value)}>
-              <option value="left">Left</option>
-              <option value="center">Center</option>
-              <option value="right">Right</option>
-            </Select>
-          </Field>
-        </div>
-      )
-
-    default:
-      return (
-        <p className="text-sm text-muted">
-          This section cannot be edited here yet. Please ask the technical team to update it for you.
-        </p>
-      )
-  }
-}
-
-export function WebsiteEditorPage() {
-  const { toast } = useToast()
-  const [data, setData] = useState<WebsiteEditorData | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [saving, setSaving] = useState(false)
-  const [selectedId, setSelectedId] = useState<string | null>(null)
-  const [dirty, setDirty] = useState<Set<string>>(new Set())
+  const [sliders, setSliders] = useState<HeroSlider[]>([])
+  const [loading, setLoading] = useState(false)
+  const [busyId, setBusyId] = useState<string | null>(null)
+  const [editing, setEditing] = useState<Partial<HeroSlide> & { id?: string } | null>(null)
+  const [pickerField, setPickerField] = useState<'imageUrl' | 'mobileImageUrl' | null>(null)
 
   const load = useCallback(async () => {
     setLoading(true)
     try {
-      const result = await websiteEditorService.get()
-      setData(result)
-      setSelectedId((current) => current ?? result.page.sections[0]?.id ?? null)
+      const { data } = await http.get('/sliders')
+      setSliders((data.data?.items ?? data.data ?? []) as HeroSlider[])
     } catch (error) {
-      toast('Could not load website data', { variant: 'error', description: errorMessage(error) })
+      toast('Could not load the slideshow', { variant: 'error', description: errorMessage(error) })
     } finally {
       setLoading(false)
     }
   }, [toast])
 
   useEffect(() => {
+    if (!open) return
     void load()
-  }, [load])
+  }, [open, load])
 
-  const sections = useMemo(() => {
-    if (!data) return []
-    return [...data.page.sections].sort((a, b) => a.sortOrder - b.sortOrder)
-  }, [data])
-
-  const selected = sections.find((section) => section.id === selectedId) ?? null
-
-  const patchSection = (sectionId: string, patch: Partial<WebsiteEditorSection>) => {
-    setData((current) =>
-      current
-        ? {
-            ...current,
-            page: {
-              ...current.page,
-              sections: current.page.sections.map((section) =>
-                section.id === sectionId ? { ...section, ...patch } : section,
-              ),
-            },
-          }
-        : current,
-    )
-    setDirty((prev) => new Set(prev).add(sectionId))
+  const run = async (id: string, action: () => Promise<unknown>) => {
+    setBusyId(id)
+    try {
+      await action()
+      await load()
+    } catch (error) {
+      toast('Slideshow change failed', { variant: 'error', description: errorMessage(error) })
+    } finally {
+      setBusyId(null)
+    }
   }
 
-  const contentOf = (sectionId: string): Record<string, unknown> =>
-    sections.find((section) => section.id === sectionId)?.content ?? {}
+  const activeSlider = sliders[0] ?? null
 
-  const updateContent = (sectionId: string, path: string, value: unknown) => {
-    patchSection(sectionId, {
-      content: setDeep(contentOf(sectionId), path, value) as Record<string, unknown>,
+  const saveSlide = async () => {
+    if (!activeSlider || !editing) return
+    const payload = {
+      title: editing.title?.trim() || '',
+      subtitle: editing.subtitle?.trim() || null,
+      imageUrl: editing.imageUrl?.trim() || '',
+      mobileImageUrl: editing.mobileImageUrl?.trim() || null,
+      ctaLabel: editing.ctaLabel?.trim() || null,
+      ctaUrl: editing.ctaUrl?.trim() || null,
+      altText: editing.altText?.trim() || null,
+    }
+    if (!payload.title && !payload.imageUrl) {
+      toast('Add at least a title or an image', { variant: 'warning' })
+      return
+    }
+    await run(activeSlider.id, async () => {
+      if (editing.id) {
+        await http.patch(`/sliders/${activeSlider.id}/slides/${editing.id}`, payload)
+      } else {
+        await http.post(`/sliders/${activeSlider.id}/slides`, {
+          ...payload,
+          imageUrl: payload.imageUrl || 'images/placeholder.png',
+          title: payload.title || 'Slide',
+        })
+      }
+      toast('Slide saved — live on your website', { variant: 'success' })
+    })
+    setEditing(null)
+  }
+
+  return (
+    <Modal
+      open={open}
+      title="Hero slideshow"
+      description="The big rotating banners at the top of your homepage. Changes here go live immediately."
+      size="lg"
+      onClose={onClose}
+      footer={
+        <>
+          <Button variant="ghost" onClick={onClose}>
+            Done
+          </Button>
+          <Button
+            variant="primary"
+            icon={<PlusIcon />}
+            onClick={() =>
+              setEditing({
+                title: '',
+                subtitle: '',
+                imageUrl: '',
+                ctaLabel: '',
+                ctaUrl: '',
+              })
+            }
+          >
+            Add slide
+          </Button>
+        </>
+      }
+    >
+      {loading ? (
+        <p className="py-6 text-center text-sm text-muted">Loading…</p>
+      ) : !activeSlider ? (
+        <div className="space-y-4">
+          <p className="rounded-xl border border-dashed border-line bg-soft px-4 py-8 text-center text-sm text-muted">
+            No slideshow found yet. Create one to show banners on your homepage.
+          </p>
+          <Button
+            variant="soft"
+            fullWidth
+            onClick={() =>
+              void run('create', async () => {
+                await http.post('/sliders', { name: 'Homepage Hero' })
+              })
+            }
+          >
+            Create homepage slideshow
+          </Button>
+        </div>
+      ) : (
+        <div className="space-y-3">
+          {activeSlider.slides.length === 0 ? (
+            <p className="rounded-xl border border-dashed border-line bg-soft px-4 py-6 text-center text-sm text-muted">
+              No slides yet — click “Add slide” below.
+            </p>
+          ) : null}
+          {activeSlider.slides.map((slide, index) => (
+            <div
+              key={slide.id}
+              className={`flex items-center gap-3 rounded-xl border border-line bg-white p-2 ${
+                slide.isActive ? '' : 'opacity-60'
+              }`}
+            >
+              <span className="block h-14 w-24 shrink-0 overflow-hidden rounded-lg bg-slate-100">
+                {slide.imageUrl ? (
+                  <img src={slide.imageUrl} alt="" className="h-full w-full object-cover" loading="lazy" />
+                ) : null}
+              </span>
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-sm font-semibold text-ink">{slide.title || 'Untitled slide'}</p>
+                <p className="truncate text-xs text-muted">{slide.subtitle}</p>
+              </div>
+              <Button variant="ghost" size="sm" onClick={() => setEditing(slide)}>
+                Edit
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                aria-label={slide.isActive ? 'Hide slide' : 'Show slide'}
+                disabled={busyId === activeSlider.id}
+                onClick={() =>
+                  void run(activeSlider.id, () =>
+                    http.patch(`/sliders/${activeSlider.id}/slides/${slide.id}`, {
+                      isActive: !slide.isActive,
+                    }),
+                  )
+                }
+              >
+                {slide.isActive ? <EyeIcon className="h-4 w-4" /> : <EyeOffIcon className="h-4 w-4" />}
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                aria-label="Move slide up"
+                disabled={index === 0 || busyId === activeSlider.id}
+                onClick={() => {
+                  const orderedIds = activeSlider.slides.map((s) => s.id)
+                  ;[orderedIds[index - 1], orderedIds[index]] = [orderedIds[index]!, orderedIds[index - 1]!]
+                  void run(activeSlider.id, () =>
+                    http.post(`/sliders/${activeSlider.id}/slides/reorder`, { orderedIds }),
+                  )
+                }}
+              >
+                ↑
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                aria-label="Move slide down"
+                disabled={index === activeSlider.slides.length - 1 || busyId === activeSlider.id}
+                onClick={() => {
+                  const orderedIds = activeSlider.slides.map((s) => s.id)
+                  ;[orderedIds[index], orderedIds[index + 1]] = [orderedIds[index + 1]!, orderedIds[index]!]
+                  void run(activeSlider.id, () =>
+                    http.post(`/sliders/${activeSlider.id}/slides/reorder`, { orderedIds }),
+                  )
+                }}
+              >
+                ↓
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                aria-label="Delete slide"
+                disabled={busyId === activeSlider.id}
+                onClick={() =>
+                  void run(activeSlider.id, () =>
+                    http.delete(`/sliders/${activeSlider.id}/slides/${slide.id}`),
+                  )
+                }
+              >
+                ✕
+              </Button>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Slide editor */}
+      <Modal
+        open={editing !== null}
+        title={editing?.id ? 'Edit slide' : 'New slide'}
+        size="md"
+        onClose={() => setEditing(null)}
+        footer={
+          <>
+            <Button variant="ghost" onClick={() => setEditing(null)}>
+              Cancel
+            </Button>
+            <Button variant="primary" onClick={() => void saveSlide()}>
+              Save slide
+            </Button>
+          </>
+        }
+      >
+        {editing ? (
+          <div className="space-y-4">
+            <Field label="Title" htmlFor="slide-title">
+              <Input
+                id="slide-title"
+                value={editing.title ?? ''}
+                onChange={(event) => setEditing({ ...editing, title: event.target.value })}
+              />
+            </Field>
+            <Field label="Short description" htmlFor="slide-subtitle">
+              <Textarea
+                id="slide-subtitle"
+                rows={2}
+                value={editing.subtitle ?? ''}
+                onChange={(event) => setEditing({ ...editing, subtitle: event.target.value })}
+              />
+            </Field>
+            <Field label="Background image" htmlFor="slide-image">
+              <div className="flex gap-2">
+                <Input
+                  id="slide-image"
+                  value={editing.imageUrl ?? ''}
+                  onChange={(event) => setEditing({ ...editing, imageUrl: event.target.value })}
+                />
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  className="shrink-0"
+                  onClick={() => setPickerField('imageUrl')}
+                >
+                  Choose…
+                </Button>
+              </div>
+            </Field>
+            <Field
+              label="Button text"
+              htmlFor="slide-cta-label"
+              hint="Shown on the slide as a clickable button."
+            >
+              <Input
+                id="slide-cta-label"
+                value={editing.ctaLabel ?? ''}
+                onChange={(event) => setEditing({ ...editing, ctaLabel: event.target.value })}
+              />
+            </Field>
+            <Field label="Button link" htmlFor="slide-cta-url" hint="e.g. /donate">
+              <Input
+                id="slide-cta-url"
+                value={editing.ctaUrl ?? ''}
+                onChange={(event) => setEditing({ ...editing, ctaUrl: event.target.value })}
+              />
+            </Field>
+            <MediaPickerModal
+              open={pickerField === 'imageUrl'}
+              title="Choose background image"
+              onClose={() => setPickerField(null)}
+              onPick={(url) => setEditing((current) => ({ ...current, imageUrl: url }))}
+            />
+          </div>
+        ) : null}
+      </Modal>
+    </Modal>
+  )
+}
+
+/* ---------------------------------- Main page ---------------------------------- */
+
+export function WebsiteEditorPage() {
+  const { toast } = useToast()
+  const { session, switchWebsite } = useSession()
+  const organizations = useMemo(() => session?.organizations ?? [], [session])
+
+  const [page, setPage] = useState<WebsitePage | null>(null)
+  const [websiteInfo, setWebsiteInfo] = useState<{ name: string; logoUrl?: string | null; website?: string | null } | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [selectedId, setSelectedId] = useState<string | null>(null)
+  const [edits, setEdits] = useState<Record<string, SectionEdit>>({})
+  const [savingIds, setSavingIds] = useState<Set<string>>(new Set())
+  const [publishing, setPublishing] = useState(false)
+  const [discardOpen, setDiscardOpen] = useState(false)
+  const [switchTo, setSwitchTo] = useState<string | null>(null)
+  const [slidesOpen, setSlidesOpen] = useState(false)
+  const pageRef = useRef(page)
+  pageRef.current = page
+
+  const homeSlug = 'home'
+
+  const load = useCallback(
+    async (keepSelection = true) => {
+      setLoading(true)
+      try {
+        const [pageData, websiteData] = await Promise.all([
+          websiteService.getPage(homeSlug),
+          websiteService.getWebsite(),
+        ])
+        setPage(pageData)
+        setWebsiteInfo({
+          name: websiteData.website.name,
+          logoUrl: websiteData.website.logoUrl,
+          website: websiteData.website.website,
+        })
+        setEdits({})
+        setSelectedId((current) =>
+          keepSelection && current && pageData.sections.some((s) => s.id === current)
+            ? current
+            : pageData.sections[0]?.id ?? null,
+        )
+      } catch (error) {
+        toast('Could not load website data', { variant: 'error', description: errorMessage(error) })
+      } finally {
+        setLoading(false)
+      }
+    },
+    [toast],
+  )
+
+  useEffect(() => {
+    void load(false)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  const sections = useMemo(() => {
+    if (!page) return []
+    return [...page.sections]
+      .sort((a, b) => a.displayOrder - b.displayOrder)
+      .map((section) => editedSection(section, edits[section.id]))
+  }, [page, edits])
+
+  const selected = sections.find((section) => section.id === selectedId) ?? null
+  const dirtyCount = sections.filter((section) => section.dirty).length
+  const hasUnsavedEdits = dirtyCount > 0
+
+  useEffect(() => {
+    if (!hasUnsavedEdits) return undefined
+    const handler = (event: BeforeUnloadEvent) => {
+      event.preventDefault()
+    }
+    window.addEventListener('beforeunload', handler)
+    return () => window.removeEventListener('beforeunload', handler)
+  }, [hasUnsavedEdits])
+
+  const patchEdit = (sectionId: string, patch: Partial<SectionEdit>) => {
+    setEdits((current) => {
+      const base: SectionEdit =
+        current[sectionId] ??
+        (() => {
+          const server = pageRef.current?.sections.find((s) => s.id === sectionId)
+          return { content: server ? { ...server.content } : {} }
+        })()
+      return { ...current, [sectionId]: { ...base, ...patch } }
     })
   }
 
-  const addItem = (sectionId: string, path: string, template: Record<string, unknown>) => {
-    updateContent(sectionId, path, [...arr(contentOf(sectionId)[path]), template])
-  }
-
-  const removeItem = (sectionId: string, path: string, index: number) => {
-    updateContent(
-      sectionId,
-      path,
-      arr(contentOf(sectionId)[path]).filter((_, i) => i !== index),
-    )
-  }
-
-  const moveItem = (sectionId: string, path: string, index: number, direction: -1 | 1) => {
-    const items = [...arr(contentOf(sectionId)[path])]
-    const target = index + direction
-    if (target < 0 || target >= items.length) return
-    const [moved] = items.splice(index, 1)
-    items.splice(target, 0, moved)
-    updateContent(sectionId, path, items)
-  }
-
-  const save = async () => {
-    if (dirty.size === 0) {
-      toast('No changes to save', { variant: 'info' })
+  const saveDraft = async (section: WebsiteSection & { dirty: boolean }) => {
+    const edit = edits[section.id]
+    if (!edit) {
+      toast('No changes to save in this section', { variant: 'info' })
       return
     }
-    setSaving(true)
-    const failed: string[] = []
-    for (const sectionId of dirty) {
-      const section = sections.find((item) => item.id === sectionId)
-      if (!section) continue
-      try {
-        await websiteEditorService.updateSection(sectionId, {
-          name: section.name,
-          isActive: section.isActive,
-          content: section.content,
-        })
-      } catch (error) {
-        failed.push(section.name ?? section.type)
-        toast(`Could not save "${section.name ?? section.type}"`, {
-          variant: 'error',
-          description: errorMessage(error),
-        })
-      }
+    setSavingIds((prev) => new Set(prev).add(section.id))
+    try {
+      const updated = await websiteService.saveSectionDraft(homeSlug, section.component, {
+        name: edit.name !== undefined ? edit.name : section.sectionName,
+        isActive: edit.isActive !== undefined ? edit.isActive : section.status === 'ACTIVE',
+        content: edit.content,
+      })
+      setPage((current) =>
+        current
+          ? {
+              ...current,
+              sections: current.sections.map((s) => (s.id === updated.id ? updated : s)),
+            }
+          : current,
+      )
+      setEdits((current) => {
+        const next = { ...current }
+        delete next[section.id]
+        return next
+      })
+      toast('Draft saved', {
+        variant: 'success',
+        description: 'Use “Publish changes” to make it visible on your website.',
+      })
+    } catch (error) {
+      toast('Could not save this section', { variant: 'error', description: errorMessage(error) })
+    } finally {
+      setSavingIds((prev) => {
+        const next = new Set(prev)
+        next.delete(section.id)
+        return next
+      })
     }
-    setSaving(false)
-    if (failed.length === 0) {
-      setDirty(new Set())
-      toast('Website updated', { variant: 'success', description: 'Your changes are now live.' })
-    } else {
-      toast('Some sections failed to save', { variant: 'error' })
+  }
+
+  const publish = async () => {
+    setPublishing(true)
+    try {
+      const result = await websiteService.publishPage(homeSlug)
+      await load()
+      toast(
+        result.published > 0 ? 'Changes published' : 'Everything already live',
+        {
+          variant: 'success',
+          description:
+            result.published > 0
+              ? `${result.published} ${result.published === 1 ? 'section is' : 'sections are'} now visible on your website.`
+              : 'There were no pending drafts to publish.',
+        },
+      )
+    } catch (error) {
+      toast('Could not publish', { variant: 'error', description: errorMessage(error) })
+    } finally {
+      setPublishing(false)
+    }
+  }
+
+  const discard = async () => {
+    setDiscardOpen(false)
+    setPublishing(true)
+    try {
+      const result = await websiteService.discardDrafts(homeSlug)
+      await load()
+      toast(`Discarded ${result.discarded} drafted ${result.discarded === 1 ? 'section' : 'sections'}`, {
+        variant: 'info',
+      })
+    } catch (error) {
+      toast('Could not discard drafts', { variant: 'error', description: errorMessage(error) })
+    } finally {
+      setPublishing(false)
+    }
+  }
+
+  const openWithPreview = async (): Promise<string | null> => {
+    try {
+      const { baseUrl, previewKey } = await websiteService.getPreviewLink()
+      const origin = baseUrl || PUBLIC_SITE_ORIGIN
+      return `${origin}/?preview=${encodeURIComponent(previewKey)}`
+    } catch (error) {
+      toast('Could not create a preview link', { variant: 'error', description: errorMessage(error) })
+      return null
+    }
+  }
+
+  const handlePreview = async () => {
+    const url = await openWithPreview()
+    if (url) window.open(url, '_blank', 'noopener')
+  }
+
+  const handleViewSite = () => {
+    const origin =
+      websiteInfo?.website && /^https?:\/\//i.test(websiteInfo.website)
+        ? websiteInfo.website.replace(/\/+$/, '')
+        : PUBLIC_SITE_ORIGIN
+    window.open(origin, '_blank', 'noopener')
+  }
+
+  const handleSwitchWebsite = async (organizationId: string) => {
+    if (organizationId === session?.currentOrgId) return
+    if (dirtyCount > 0) {
+      setSwitchTo(organizationId)
+      return
+    }
+    await doSwitch(organizationId)
+  }
+
+  const doSwitch = async (organizationId: string) => {
+    try {
+      await switchWebsite(organizationId)
+      await load(false)
+      toast('Switched website', { variant: 'success' })
+    } catch (error) {
+      toast('Could not switch website', { variant: 'error', description: errorMessage(error) })
     }
   }
 
@@ -618,7 +614,7 @@ export function WebsiteEditorPage() {
     )
   }
 
-  if (!data) {
+  if (!page) {
     return (
       <div className="p-4 sm:p-6 lg:p-8">
         <PageHeader eyebrow="Content" title="Website Editor" />
@@ -630,57 +626,71 @@ export function WebsiteEditorPage() {
     )
   }
 
-  const liveUrl = data.liveUrl.startsWith('http')
-    ? data.liveUrl
-    : `${window.location.origin}${data.liveUrl}`
-
   return (
     <div className="p-4 sm:p-6 lg:p-8">
       <PageHeader
         eyebrow="Content"
         title="Website Editor"
-        description={`Update the text and pictures on "${data.website.name}". Pick a section on the left, make your changes here, then click "Save changes" — they appear on your live website right away.`}
+        description='Pick a section, edit the text and pictures, then "Save draft". When you are happy, press "Publish changes" — only then do visitors see them.'
         actions={
           <>
-            <a href={liveUrl} target="_blank" rel="noopener noreferrer">
-              <Button variant="secondary" icon={<ExternalLinkIcon />}>
-                View website
-              </Button>
-            </a>
+            {organizations.length > 1 ? (
+              <select
+                aria-label="Choose website"
+                value={session?.currentOrgId ?? ''}
+                onChange={(event) => void handleSwitchWebsite(event.target.value)}
+                className="h-9 rounded-full border border-line bg-white px-3 text-sm font-medium text-ink shadow-sm focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20"
+              >
+                {organizations.map((org) => (
+                  <option key={org.id} value={org.id}>
+                    {org.name}
+                  </option>
+                ))}
+              </select>
+            ) : null}
+            <Button variant="secondary" icon={<ExternalLinkIcon />} onClick={handleViewSite}>
+              View website
+            </Button>
+            <Button variant="secondary" icon={<EyeIcon />} disabled={publishing} onClick={() => void handlePreview()}>
+              Preview drafts
+            </Button>
             <Button
               variant="secondary"
               icon={<RefreshIcon />}
-              disabled={saving}
+              disabled={publishing || dirtyCount > 0}
               onClick={() => void load()}
             >
               Reload
             </Button>
-            <Button icon={<SaveIcon />} loading={saving} onClick={() => void save()}>
-              Save changes
+            <Button variant="secondary" disabled={publishing} onClick={() => setDiscardOpen(true)}>
+              Discard drafts
+            </Button>
+            <Button loading={publishing} onClick={() => void publish()}>
+              Publish changes{dirtyCount > 0 ? ` (${dirtyCount})` : ''}
             </Button>
           </>
         }
       />
 
       <div className="mb-5 flex items-center gap-3 rounded-2xl border border-line bg-white p-4 shadow-card">
-        {data.website.logoUrl ? (
-          <img src={data.website.logoUrl} alt={data.website.name} className="h-10 w-10 rounded-xl object-contain" />
+        {websiteInfo?.logoUrl ? (
+          <img src={websiteInfo.logoUrl} alt={websiteInfo.name} className="h-10 w-10 rounded-xl object-contain" />
         ) : (
           <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-soft text-brand">
             <ImageIcon className="h-5 w-5" />
           </span>
         )}
         <div className="min-w-0 flex-1">
-          <p className="truncate text-sm font-semibold text-ink">{data.website.name}</p>
+          <p className="truncate text-sm font-semibold text-ink">{websiteInfo?.name ?? page.slug}</p>
           <p className="truncate text-xs text-muted">
-            {data.page.title} page · {sections.length} sections ·{' '}
-            {dirty.size > 0
-              ? `${dirty.size} ${dirty.size === 1 ? 'change' : 'changes'} not saved yet`
-              : 'all changes saved'}
+            Homepage · {sections.length} sections ·{' '}
+            {dirtyCount > 0
+              ? `${dirtyCount} drafted ${dirtyCount === 1 ? 'section' : 'sections'} waiting to be published`
+              : 'everything published'}
           </p>
         </div>
         <span className="hidden items-center gap-1.5 rounded-full bg-brand-soft px-3 py-1 text-xs font-semibold text-brand sm:inline-flex">
-          <LayoutIcon className="h-3.5 w-3.5" /> {data.page.slug}
+          <LayoutIcon className="h-3.5 w-3.5" /> {page.isHome ? 'home' : page.slug}
         </span>
       </div>
 
@@ -707,45 +717,37 @@ export function WebsiteEditorPage() {
                           isSelected
                             ? 'border-brand/40 bg-brand-soft/60'
                             : 'border-transparent hover:border-line hover:bg-slate-50'
-                        } ${!section.isActive ? 'opacity-60' : ''}`}
+                        } ${!section.editActive ? 'opacity-60' : ''}`}
                       >
                         <button
                           type="button"
-                          aria-label={`Edit ${section.name ?? section.type}`}
                           onClick={() => setSelectedId(section.id)}
                           className="flex min-w-0 flex-1 items-center gap-2.5 text-left"
+                          aria-label={`Edit ${section.sectionName ?? prettyType(section.component)}`}
                         >
                           <span
                             className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-xs font-bold ${
                               isSelected ? 'bg-brand text-white' : 'bg-brand-soft text-brand'
                             }`}
                           >
-                            {section.sortOrder}
+                            {section.displayOrder}
                           </span>
                           <span className="min-w-0">
                             <span className="block truncate text-sm font-semibold text-ink">
-                              {section.name ?? TYPE_LABELS[section.type] ?? section.type}
+                              {section.sectionName ?? prettyType(section.component)}
                             </span>
                             <span className="block text-[11px] font-medium uppercase tracking-wide text-faint">
-                              {TYPE_LABELS[section.type] ?? section.type}
-                              {dirty.has(section.id) ? ' · unsaved' : ''}
+                              {prettyType(section.component)}
+                              {section.dirty ? ' · drafted' : section.hasChanges ? ' · has draft' : ''}
                             </span>
                           </span>
                         </button>
-                        <button
-                          type="button"
-                          aria-label={section.isActive ? 'Hide section' : 'Show section'}
-                          onClick={() =>
-                            patchSection(section.id, { isActive: !section.isActive })
-                          }
-                          className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-faint transition hover:bg-white hover:text-ink"
-                        >
-                          {section.isActive ? (
-                            <EyeIcon className="h-3.5 w-3.5" />
-                          ) : (
-                            <EyeOffIcon className="h-3.5 w-3.5" />
-                          )}
-                        </button>
+                        {section.hasChanges && !section.dirty ? (
+                          <span
+                            title="This section has unpublished changes"
+                            className="h-2 w-2 shrink-0 rounded-full bg-warning"
+                          />
+                        ) : null}
                       </div>
                     </li>
                   )
@@ -757,7 +759,7 @@ export function WebsiteEditorPage() {
 
         {/* Properties */}
         <Card className="overflow-hidden">
-          <div className="flex items-center gap-2 border-b border-line px-4 py-3">
+          <div className="border-b border-line px-4 py-3">
             <p className="text-sm font-semibold text-ink">Edit this section</p>
           </div>
           {!selected ? (
@@ -766,17 +768,12 @@ export function WebsiteEditorPage() {
             </div>
           ) : (
             <div className="max-h-[calc(100vh-320px)] space-y-5 overflow-y-auto p-4">
-              <Field
-                label="Section name"
-                htmlFor="section-name"
-                hint="Only used inside this editor so you can recognise the section. It does not appear on the website."
-              >
-                <Input
-                  id="section-name"
-                  value={selected.name ?? ''}
-                  onChange={(event) => patchSection(selected.id, { name: event.target.value })}
-                />
-              </Field>
+              {selected.hasChanges ? (
+                <p className="rounded-xl border border-warning/30 bg-warning/10 px-4 py-2.5 text-xs font-medium text-ink">
+                  This section has unpublished changes. Use “Preview drafts” to check them, then
+                  “Publish changes” to make them live.
+                </p>
+              ) : null}
 
               <div className="flex items-center justify-between rounded-xl border border-line bg-slate-50 px-4 py-3">
                 <div>
@@ -784,28 +781,79 @@ export function WebsiteEditorPage() {
                   <p className="text-xs text-muted">Turn off to hide it from the website. Nothing gets deleted.</p>
                 </div>
                 <Toggle
-                  checked={selected.isActive}
-                  onChange={(checked) => patchSection(selected.id, { isActive: checked })}
+                  checked={selected.editActive}
+                  onChange={(checked) => patchEdit(selected.id, { isActive: checked })}
                   label="Show this section"
                 />
               </div>
 
+              {selected.component === 'hero-slider' ? (
+                <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-line bg-brand-soft/40 px-4 py-3">
+                  <div>
+                    <p className="text-sm font-medium text-ink">Rotating banner images</p>
+                    <p className="text-xs text-muted">Manage the big photos that rotate at the top of the homepage.</p>
+                  </div>
+                  <Button variant="soft" size="sm" onClick={() => setSlidesOpen(true)}>
+                    Manage slideshow
+                  </Button>
+                </div>
+              ) : null}
+
               <div className="border-t border-line pt-4">
                 <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-faint">
-                  Edit content
+                  Content
                 </p>
-                <EditorForm
-                  section={selected}
-                  onChange={updateContent}
-                  onAddItem={addItem}
-                  onRemoveItem={removeItem}
-                  onMoveItem={moveItem}
+                <SectionFieldsForm
+                  fields={selected.fields}
+                  value={selected.content}
+                  onChange={(next) => patchEdit(selected.id, { content: next })}
                 />
+              </div>
+
+              <div className="sticky bottom-0 -mx-4 flex items-center justify-end gap-3 border-t border-line bg-white px-4 py-3">
+                <span className="mr-auto text-xs text-muted">
+                  {selected.dirty ? 'Unsaved changes in this section' : 'No unsaved changes here'}
+                </span>
+                <Button
+                  variant="primary"
+                  loading={savingIds.has(selected.id)}
+                  disabled={!selected.dirty}
+                  onClick={() => void saveDraft(selected)}
+                >
+                  Save draft
+                </Button>
               </div>
             </div>
           )}
         </Card>
       </div>
+
+      <ConfirmDialog
+        open={discardOpen}
+        title="Discard all drafts?"
+        message="Every unpublished change on this page will be thrown away. Your live website stays exactly as it is now."
+        confirmLabel="Discard drafts"
+        destructive
+        loading={publishing}
+        onConfirm={() => void discard()}
+        onClose={() => setDiscardOpen(false)}
+      />
+
+      <ConfirmDialog
+        open={switchTo !== null}
+        title="Leave with unsaved changes?"
+        message="You have drafted changes that were not saved yet. Switching websites will lose them."
+        confirmLabel="Switch anyway"
+        destructive
+        onConfirm={() => {
+          const target = switchTo
+          setSwitchTo(null)
+          if (target) void doSwitch(target)
+        }}
+        onClose={() => setSwitchTo(null)}
+      />
+
+      <SlidesManagerModal open={slidesOpen} onClose={() => setSlidesOpen(false)} />
     </div>
   )
 }
