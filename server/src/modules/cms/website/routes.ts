@@ -6,7 +6,7 @@ import { websiteScope } from './scope';
 import { rbac } from '../../../middlewares/rbac';
 import { validate } from '../../../middlewares/validate';
 import { asyncHandler } from '../../../utils/asyncHandler';
-import { patchSectionSchema, publishWebsiteSchema, putSectionSchema, reorderSectionsSchema } from './schema';
+import { patchSectionSchema, publishWebsiteSchema, putSectionSchema, reorderSectionsSchema, draftSectionSchema } from './schema';
 
 const upload = multer({
   storage: multer.memoryStorage(),
@@ -30,6 +30,12 @@ router.post(
   asyncHandler(websiteController.publish),
 );
 
+router.post(
+  '/:slug/preview-link',
+  rbac('site:view'),
+  asyncHandler(websiteController.previewLink),
+);
+
 router.get(
   '/:slug/pages/:pageSlug',
   rbac('page:view'),
@@ -45,6 +51,22 @@ router.put(
   rbac('section:update'),
   validate(reorderSectionsSchema),
   asyncHandler(websiteController.reorderSections),
+);
+router.put(
+  '/:slug/pages/:pageSlug/publish',
+  rbac('page:update'),
+  asyncHandler(websiteController.publishPage),
+);
+router.delete(
+  '/:slug/pages/:pageSlug/draft',
+  rbac('section:update'),
+  asyncHandler(websiteController.discardPageDrafts),
+);
+router.put(
+  '/:slug/pages/:pageSlug/sections/:sectionType/draft',
+  rbac('section:update'),
+  validate(draftSectionSchema),
+  asyncHandler(websiteController.saveSectionDraft),
 );
 router.put(
   '/:slug/pages/:pageSlug/sections/:sectionType',

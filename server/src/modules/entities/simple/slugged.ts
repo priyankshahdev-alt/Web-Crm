@@ -14,7 +14,7 @@ export const eventCrud = makeCrud({
   resource: 'event',
   model: 'event',
   permissionBase: 'event',
-  searchFields: ['title'],
+  searchFields: ['title', 'location'],
   slugFrom: 'title',
   extraFilters: { status: 'status' },
   createSchema: z.object({
@@ -27,6 +27,7 @@ export const eventCrud = makeCrud({
     location: optionalString,
     status,
     featured,
+    isHidden: z.boolean().optional(),
   }).strict(),
   updateSchema: z.object({
     title: requiredString(300).optional(),
@@ -38,6 +39,7 @@ export const eventCrud = makeCrud({
     location: optionalString,
     status,
     featured,
+    isHidden: z.boolean().optional(),
   }).strict().refine((d) => Object.keys(d).length > 0, { message: 'At least one field required' }),
 });
 

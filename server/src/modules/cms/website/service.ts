@@ -1,4 +1,5 @@
 import type { Request } from 'express';
+import { randomBytes } from 'node:crypto';
 import { PublishStatus } from '@prisma/client';
 import { prisma } from '../../../libs/prisma';
 import { ApiError } from '../../../utils/ApiError';
@@ -7,7 +8,13 @@ import { mediaService } from '../../media/service';
 import { websiteRepository } from './repository';
 import { getDefaultSections, genericDefaultSections } from './defaults';
 import { siteCache } from '../site/cache';
-import type { PatchSectionInput, PutSectionInput } from './schema';
+import type {
+  DraftSectionInput,
+  PatchSectionInput,
+  PutSectionInput,
+} from './schema';
+
+const PREVIEW_KEY_SETTING = 'site.previewKey';
 
 const IMAGE_EXT = /\.(jpe?g|png|webp|gif|svg|avif|bmp)(\?.*)?$/i;
 
@@ -49,6 +56,7 @@ function buildFields(
   value: unknown;
   imageUrl: string | null;
   displayOrder: number;
+  def?: unknown;
 }> {
   const defs = (template?.fields as TemplateFieldLike[] | undefined) ?? [];
   const defByName = new Map(defs.map((f) => [f.name, f]));
@@ -69,6 +77,7 @@ function buildFields(
       value,
       imageUrl: isImageUrl(value) ? value : null,
       displayOrder: index + 1,
+      def: def ?? null,
     };
   });
 }
@@ -82,12 +91,21 @@ function toSectionDto(
     isActive: boolean;
     settings: unknown;
     content: unknown;
+    draftName?: string | null;
+    draftIsActive?: boolean | null;
+    draftSettings?: unknown;
+    draftContent?: unknown;
     createdAt: Date;
     updatedAt: Date;
   },
   template?: { fields?: unknown } | null,
 ) {
   const content = (section.content as Record<string, unknown> | null) ?? {};
+  const hasChanges =
+    section.draftContent != null ||
+    section.draftSettings != null ||
+    section.draftName != null ||
+    section.draftIsActive != null;
   return {
     id: section.id,
     component: section.type,
@@ -97,6 +115,11 @@ function toSectionDto(
     settings: section.settings,
     content,
     fields: buildFields(content, template),
+    hasChanges,
+    draftName: section.draftName ?? null,
+    draftIsActive: section.draftIsActive ?? null,
+    draftSettings: (section.draftSettings as Record<string, unknown> | null) ?? null,
+    draftContent: (section.draftContent as Record<string, unknown> | null) ?? null,
     createdAt: section.createdAt,
     updatedAt: section.updatedAt,
   };
@@ -435,6 +458,146 @@ export const websiteService = {
     });
 
     return { published: result.count };
+  },
+
+  async saveSectionDraft(
+    slug: string,
+    pageSlug: string,
+    sectionType: string,
+    input: DraftSectionInput,
+    req: Request,
+  ) {
+    const org = await websiteRepository.findBySlug(slug);
+    if (!org) throw ApiError.notFound('Website not found');
+    const page = await requirePage(org.id, pageSlug);
+    const existing = await websiteRepository.findSectionByType(page.id, sectionType);
+    if (!existing) throw ApiError.notFound(`Section not found: ${sectionType}`);
+
+    const section = await websiteRepository.saveSectionDraft(existing.id, {
+      name: input.name === undefined ? undefined : input.name,
+      isActive: input.isActive === undefined ? undefined : input.isActive,
+      settings: input.settings === undefined ? undefined : input.settings,
+      content: input.content ?? {},
+    });
+
+    await recordAudit({
+      userId: req.user?.id,
+      organizationId: org.id,
+      action: 'UPDATE',
+      resource: 'section',
+      resourceId: section.id,
+      message: `Draft saved for ${sectionType} on /${pageSlug} (not live yet)`,
+      req,
+    });
+
+    const templates = await loadTemplates(org.id);
+    return toSectionDto(section, templates.get(sectionType));
+  },
+
+  async publishPage(slug: string, pageSlug: string, req: Request) {
+    const org = await websiteRepository.findBySlug(slug);
+    if (!org) throw ApiError.notFound('Website not found');
+    const page = await requirePage(org.id, pageSlug);
+
+    let promoted = 0;
+    for (const section of page.sections) {
+      const hasDraft =
+        section.draftContent != null ||
+        section.draftSettings != null ||
+        section.draftName != null ||
+        section.draftIsActive != null;
+      if (!hasDraft) continue;
+      await websiteRepository.promoteSectionDraft(section.id, {
+        name: section.draftName ?? section.name,
+        isActive: section.draftIsActive ?? section.isActive,
+        settings:
+          (section.draftSettings as Record<string, unknown> | null) ??
+          (section.settings as Record<string, unknown> | null) ??
+          {},
+        content:
+          (section.draftContent as Record<string, unknown> | null) ??
+          (section.content as Record<string, unknown> | null) ??
+          {},
+      });
+      promoted += 1;
+    }
+
+    await websiteRepository.setPagePublished(org.id, page.id);
+    siteCache.invalidate(slug);
+
+    await recordAudit({
+      userId: req.user?.id,
+      organizationId: org.id,
+      action: 'PUBLISH',
+      resource: 'page',
+      resourceId: page.id,
+      message: `Page /${pageSlug} published: ${promoted} drafted section(s) made live`,
+      req,
+    });
+
+    return { published: promoted };
+  },
+
+  async discardPageDrafts(slug: string, pageSlug: string, req: Request) {
+    const org = await websiteRepository.findBySlug(slug);
+    if (!org) throw ApiError.notFound('Website not found');
+    const page = await requirePage(org.id, pageSlug);
+
+    let discarded = 0;
+    for (const section of page.sections) {
+      const hasDraft =
+        section.draftContent != null ||
+        section.draftSettings != null ||
+        section.draftName != null ||
+        section.draftIsActive != null;
+      if (!hasDraft) continue;
+      await websiteRepository.clearSectionDraft(section.id);
+      discarded += 1;
+    }
+
+    await recordAudit({
+      userId: req.user?.id,
+      organizationId: org.id,
+      action: 'UPDATE',
+      resource: 'page',
+      resourceId: page.id,
+      message: `Discarded ${discarded} drafted section(s) on /${pageSlug}`,
+      req,
+    });
+
+    return { discarded };
+  },
+
+  async getPreviewLink(slug: string, req: Request) {
+    const org = await websiteRepository.findBySlug(slug);
+    if (!org) throw ApiError.notFound('Website not found');
+
+    const settings = await websiteRepository.getSettings(org.id);
+    let previewKey =
+      typeof settings[PREVIEW_KEY_SETTING] === 'string'
+        ? (settings[PREVIEW_KEY_SETTING] as string)
+        : null;
+    if (!previewKey || previewKey.length < 16) {
+      previewKey = randomBytes(16).toString('hex');
+      await websiteRepository.upsertSetting(org.id, PREVIEW_KEY_SETTING, previewKey);
+    }
+
+    const baseUrl =
+      typeof org.website === 'string' && /^https?:\/\//i.test(org.website)
+        ? org.website.replace(/\/+$/, '')
+        : null;
+
+    await recordAudit({
+      userId: req.user?.id,
+      organizationId: org.id,
+      action: 'UPDATE',
+      resource: 'page',
+      resourceId: org.id,
+      message: `Preview link generated for ${org.slug}`,
+      req,
+    });
+
+    return { baseUrl, previewKey };
   },
 
   async upload(

@@ -391,6 +391,10 @@ model PageSection {
   isActive       Boolean   @default(true)
   settings       Json?
   content        Json?
+  draftName      String?
+  draftIsActive  Boolean?
+  draftSettings  Json?
+  draftContent   Json?
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
 
@@ -652,6 +656,7 @@ model Project {
   cardImageUrl   String?
   status         PublishStatus @default(DRAFT)
   featured       Boolean   @default(false)
+  isHidden       Boolean   @default(false)
   sortOrder      Int       @default(0)
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
@@ -688,6 +693,7 @@ model ProjectService {
   title          String
   description    String?
   icon           String?
+  imageUrl       String?
   sortOrder      Int      @default(0)
 
   project      Project      @relation(fields: [projectId], references: [id], onDelete: Cascade)
@@ -737,6 +743,7 @@ model Event {
   location       String?
   status         PublishStatus @default(DRAFT)
   featured       Boolean   @default(false)
+  isHidden       Boolean   @default(false)
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
 

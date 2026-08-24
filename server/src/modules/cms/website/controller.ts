@@ -79,6 +79,36 @@ export const websiteController = {
     ok(res, result, 'Website published');
   }),
 
+  saveSectionDraft: asyncHandler(async (req: Request, res: Response) => {
+    const result = await websiteService.saveSectionDraft(
+      req.params.slug,
+      req.params.pageSlug,
+      req.params.sectionType,
+      req.body,
+      req,
+    );
+    ok(res, result, 'Draft saved (not live yet)');
+  }),
+
+  publishPage: asyncHandler(async (req: Request, res: Response) => {
+    const result = await websiteService.publishPage(req.params.slug, req.params.pageSlug, req);
+    ok(res, result, 'Page published');
+  }),
+
+  discardPageDrafts: asyncHandler(async (req: Request, res: Response) => {
+    const result = await websiteService.discardPageDrafts(
+      req.params.slug,
+      req.params.pageSlug,
+      req,
+    );
+    ok(res, result, 'Drafts discarded');
+  }),
+
+  previewLink: asyncHandler(async (req: Request, res: Response) => {
+    const result = await websiteService.getPreviewLink(req.params.slug, req);
+    ok(res, result, 'OK');
+  }),
+
   upload: asyncHandler(async (req: Request, res: Response) => {
     const result = await websiteService.upload(
       req.params.slug,

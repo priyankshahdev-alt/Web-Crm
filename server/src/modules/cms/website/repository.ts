@@ -1,4 +1,4 @@
-import { PublishStatus } from '@prisma/client';
+import { Prisma, PublishStatus } from '@prisma/client';
 import { prisma } from '../../../libs/prisma';
 import type { SectionPatch } from '../page/schema';
 
@@ -119,6 +119,70 @@ export const websiteRepository = {
     });
   },
 
+  async saveSectionDraft(
+    sectionId: string,
+    data: {
+      name?: string | null;
+      isActive?: boolean;
+      settings?: Record<string, unknown> | null;
+      content: Record<string, unknown>;
+    },
+  ) {
+    return prisma.pageSection.update({
+      where: { id: sectionId },
+      data: {
+        draftName: data.name === undefined ? undefined : data.name,
+        draftIsActive: data.isActive === undefined ? undefined : data.isActive,
+        draftSettings: data.settings === undefined ? undefined : (data.settings as never),
+        draftContent: data.content as never,
+      },
+    });
+  },
+
+  async promoteSectionDraft(
+    sectionId: string,
+    data: {
+      name?: string | null;
+      isActive?: boolean;
+      settings?: Record<string, unknown>;
+      content?: Record<string, unknown>;
+    },
+  ) {
+    return prisma.pageSection.update({
+      where: { id: sectionId },
+      data: {
+        name: data.name ?? null,
+        isActive: data.isActive ?? true,
+        settings: (data.settings ?? undefined) as never,
+        content: (data.content ?? {}) as never,
+        draftName: null,
+        draftIsActive: null,
+        draftSettings: Prisma.DbNull,
+        draftContent: Prisma.DbNull,
+      },
+    });
+  },
+
+  async clearSectionDraft(sectionId: string) {
+    return prisma.pageSection.update({
+      where: { id: sectionId },
+      data: {
+        draftName: null,
+        draftIsActive: null,
+        draftSettings: Prisma.DbNull,
+        draftContent: Prisma.DbNull,
+      },
+    });
+  },
+
+  async upsertSetting(organizationId: string, key: string, value: unknown) {
+    return prisma.organizationSetting.upsert({
+      where: { organizationId_key: { organizationId, key } },
+      update: { value: value as never },
+      create: { organizationId, key, value: value as never },
+    });
+  },
+
   async deleteSection(sectionId: string) {
     return prisma.pageSection.delete({ where: { id: sectionId } });
   },
@@ -199,9 +263,18 @@ export const websiteRepository = {
   },
 
   async listTemplatesForOrg(organizationId: string) {
-    return prisma.sectionTemplate.findMany({
-      where: { organizationId, isActive: true },
-      orderBy: { name: 'asc' },
-    });
+    // System templates (organizationId null) apply to every website; an
+    // org-scoped template with the same type overrides its system twin.
+    const [scoped, system] = await Promise.all([
+      prisma.sectionTemplate.findMany({
+        where: { organizationId, isActive: true },
+        orderBy: { name: 'asc' },
+      }),
+      prisma.sectionTemplate.findMany({
+        where: { organizationId: null, isSystem: true, isActive: true },
+        orderBy: { name: 'asc' },
+      }),
+    ]);
+    return [...system, ...scoped];
   },
 };

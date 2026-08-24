@@ -60,6 +60,36 @@ export const websiteService = {
     return data.data as WebsiteSection
   },
 
+  async saveSectionDraft(
+    pageSlug: string,
+    sectionType: string,
+    input: SaveSectionInput,
+  ): Promise<WebsiteSection> {
+    const { data } = await http.put(
+      `/websites/${resolveSiteSlug()}/pages/${pageSlug}/sections/${sectionType}/draft`,
+      input,
+    )
+    return data.data as WebsiteSection
+  },
+
+  async publishPage(pageSlug: string): Promise<{ published: number }> {
+    const { data } = await http.put(
+      `/websites/${resolveSiteSlug()}/pages/${pageSlug}/publish`,
+      {},
+    )
+    return data.data as { published: number }
+  },
+
+  async discardDrafts(pageSlug: string): Promise<{ discarded: number }> {
+    const { data } = await http.delete(`/websites/${resolveSiteSlug()}/pages/${pageSlug}/draft`)
+    return data.data as { discarded: number }
+  },
+
+  async getPreviewLink(): Promise<{ baseUrl: string | null; previewKey: string }> {
+    const { data } = await http.post(`/websites/${resolveSiteSlug()}/preview-link`, {})
+    return data.data as { baseUrl: string | null; previewKey: string }
+  },
+
   async deleteSection(pageSlug: string, sectionType: string): Promise<void> {
     await http.delete(`/websites/${resolveSiteSlug()}/pages/${pageSlug}/sections/${sectionType}`)
   },
