@@ -10,6 +10,7 @@ import { AboutPage } from './pages/AboutPage'
 import { ProgramsPage } from './pages/ProgramsPage'
 import { EventsPage } from './pages/EventsPage'
 import { GalleryPage } from './pages/GalleryPage'
+import { GalleryDetailPage } from './pages/GalleryDetailPage'
 import { BlogsPage } from './pages/BlogsPage'
 import { TeamPage } from './pages/TeamPage'
 import { TestimonialsPage } from './pages/TestimonialsPage'
@@ -41,6 +42,7 @@ export default function App() {
           <Route path="/programs" element={<ProgramsPage />} />
           <Route path="/events" element={<EventsPage />} />
           <Route path="/gallery" element={<GalleryPage />} />
+          <Route path="/gallery/:galleryId" element={<GalleryDetailPage />} />
           <Route path="/blogs" element={<BlogsPage />} />
           <Route path="/team" element={<TeamPage />} />
           <Route path="/testimonials" element={<TestimonialsPage />} />

@@ -426,12 +426,21 @@ export interface Gallery extends IdEntity {
   description?: string | null
   coverImageUrl?: string | null
   status: PublishStatus
-  items: GalleryItem[]
+  isHidden?: boolean
+  programId?: string | null
+  eventId?: string | null
+  program?: { id: string; title: string; slug: string } | null
+  event?: { id: string; title: string; slug: string; startDate?: string | null } | null
+  photos?: number
+  videos?: number
+  items?: GalleryItem[] | null
 }
 
 export interface GalleryItem {
   id: string
+  mediaId?: string | null
   imageUrl: string
+  mediaType?: 'image' | 'video'
   altText?: string | null
   caption?: string | null
   sortOrder: number

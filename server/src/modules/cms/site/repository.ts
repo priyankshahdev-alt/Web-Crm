@@ -222,11 +222,11 @@ export const siteRepository = {
   async getGalleryById(organizationId: string, galleryId?: string) {
     const gallery = galleryId
       ? await prisma.gallery.findFirst({
-          where: { id: galleryId, organizationId, status: PublishStatus.PUBLISHED },
+          where: { id: galleryId, organizationId, status: PublishStatus.PUBLISHED, isHidden: false },
           include: { items: { orderBy: { sortOrder: 'asc' } } },
         })
       : await prisma.gallery.findFirst({
-          where: { organizationId, status: PublishStatus.PUBLISHED },
+          where: { organizationId, status: PublishStatus.PUBLISHED, isHidden: false },
           orderBy: { updatedAt: 'desc' },
           include: { items: { orderBy: { sortOrder: 'asc' } } },
         });

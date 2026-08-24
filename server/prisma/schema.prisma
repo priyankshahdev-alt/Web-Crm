@@ -667,6 +667,7 @@ model Project {
   impacts       ProjectImpact[]
   stats         ProjectStat[]
   beneficiaries Beneficiary[]
+  galleries     Gallery[]
 
   @@unique([organizationId, slug])
   @@index([organizationId, status])
@@ -748,6 +749,7 @@ model Event {
   updatedAt      DateTime  @updatedAt
 
   organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  galleries    Gallery[]
 
   @@unique([organizationId, slug])
   @@index([organizationId])
@@ -799,13 +801,21 @@ model Gallery {
   layout         String   @default("grid")
   coverImageUrl  String?
   status         PublishStatus @default(DRAFT)
+  isHidden       Boolean  @default(false)
+  programId      String?  @db.Uuid
+  eventId        String?  @db.Uuid
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
   organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   items        GalleryItem[]
+  program      Project?     @relation(fields: [programId], references: [id], onDelete: SetNull)
+  event        Event?       @relation(fields: [eventId], references: [id], onDelete: SetNull)
 
   @@unique([organizationId, slug])
+  @@index([organizationId, status])
+  @@index([programId])
+  @@index([eventId])
 }
 
 model GalleryItem {
@@ -814,6 +824,7 @@ model GalleryItem {
   organizationId String   @db.Uuid
   mediaId        String?  @db.Uuid
   imageUrl       String
+  mediaType      String   @default("image")
   altText        String?
   caption        String?
   sortOrder      Int      @default(0)

@@ -106,6 +106,28 @@ export const eventService = {
   },
 }
 
+/** Write shape mirroring the backend gallery schema (item ids are server-generated). */
+export interface GalleryItemInput {
+  mediaId?: string | null
+  imageUrl: string
+  mediaType?: 'image' | 'video'
+  altText?: string | null
+  caption?: string | null
+  sortOrder?: number
+}
+
+export interface GalleryWritePayload {
+  title?: string
+  slug?: string
+  description?: string | null
+  coverImageUrl?: string | null
+  status?: PublishStatus
+  isHidden?: boolean
+  programId?: string | null
+  eventId?: string | null
+  items?: GalleryItemInput[]
+}
+
 export const galleryService = {
   async list(params: ListParams = {}): Promise<Paginated<Gallery>> {
     return listEntities<Gallery>('galleries', 'galleries', params)
@@ -113,17 +135,23 @@ export const galleryService = {
   async all(): Promise<Gallery[]> {
     return getAllEntities<Gallery>('galleries', 'galleries')
   },
-  async create(payload: Partial<Gallery>): Promise<Gallery> {
+  async get(id: string): Promise<Gallery | null> {
+    return getEntity<Gallery>('galleries', 'galleries', id)
+  },
+  async create(payload: Partial<GalleryWritePayload>): Promise<Gallery> {
     return createEntity<Gallery>('galleries', 'galleries', {
       title: payload.title ?? 'New Gallery',
       slug: payload.slug ?? '',
       description: payload.description ?? null,
       coverImageUrl: payload.coverImageUrl ?? null,
       status: payload.status ?? 'DRAFT',
+      isHidden: payload.isHidden ?? false,
+      programId: payload.programId ?? null,
+      eventId: payload.eventId ?? null,
       items: payload.items ?? [],
     })
   },
-  async update(id: string, patch: Partial<Gallery>): Promise<Gallery | null> {
+  async update(id: string, patch: Partial<GalleryWritePayload>): Promise<Gallery | null> {
     return updateEntity<Gallery>('galleries', 'galleries', id, patch as Record<string, unknown>)
   },
   async remove(id: string): Promise<void> {

@@ -236,7 +236,7 @@ const SEARCHABLE_FIELDS: Partial<Record<StoreKey, string[]>> = {
   projects: ['title', 'slug', 'tag'],
   events: ['title', 'slug', 'location'],
   blogs: ['title', 'excerpt', 'authorName'],
-  galleries: ['title', 'slug'],
+  galleries: ['title', 'slug', 'description'],
   team: ['name', 'role'],
   testimonials: ['name', 'quote'],
   partners: ['name', 'website'],
