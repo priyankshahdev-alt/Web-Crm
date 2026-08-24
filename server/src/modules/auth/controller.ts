@@ -36,4 +36,14 @@ export const authController = {
     const result = await authService.me(req.user!.id);
     ok(res, result, 'OK');
   }),
+
+  impersonate: asyncHandler(async (req: Request, res: Response) => {
+    const result = await authService.impersonate(req.body, req.user!);
+    ok(res, result, 'Login ticket created');
+  }),
+
+  exchangeImpersonate: asyncHandler(async (req: Request, res: Response) => {
+    const result = await authService.exchangeImpersonate(req.body, req);
+    ok(res, result, 'Logged in');
+  }),
 };

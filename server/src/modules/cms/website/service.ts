@@ -1,5 +1,6 @@
 import type { Request } from 'express';
 import { PublishStatus } from '@prisma/client';
+import { prisma } from '../../../libs/prisma';
 import { ApiError } from '../../../utils/ApiError';
 import { recordAudit } from '../../../utils/audit';
 import { mediaService } from '../../media/service';
@@ -451,5 +452,119 @@ export const websiteService = {
     const org = await websiteRepository.findBySlug(slug);
     if (!org) throw ApiError.notFound('Website not found');
     return mediaService.remove(org.id, mediaId, userId);
+  },
+
+  async getLiveImages(slug: string) {
+    const org = await websiteRepository.findBySlug(slug);
+    if (!org) throw ApiError.notFound('Website not found');
+
+    const baseUrl = org.website?.startsWith('http') ? org.website : `https://${org.website || slug}.vercel.app`;
+    
+    try {
+      // Get the homepage sections from database
+      const pages = await prisma.page.findMany({
+        where: { organizationId: org.id, isHome: true },
+        include: { sections: { orderBy: { sortOrder: 'asc' } } },
+      });
+
+      const homePage = pages[0] || pages.find((p: { slug: string }) => p.slug === 'home') || pages[0];
+      if (!homePage) return {};
+
+      const images: Record<string, string> = {};
+      const galleryImages: string[] = [];
+
+      // Helper to make URL absolute
+      const makeAbsolute = (url: string) => {
+        if (!url) return '';
+        if (url.startsWith('http')) return url;
+        if (url.startsWith('/')) return new URL(url, baseUrl).href;
+        return new URL(url, baseUrl + '/').href;
+      };
+
+      // Helper to check if a string is an image URL
+      const isImageUrl = (str: string) => 
+        typeof str === 'string' && str.match(/\.(jpe?g|png|webp|gif|svg|avif|bmp)/i);
+
+      // Extract images from homepage sections - generic approach
+      for (const section of homePage.sections) {
+        const content = (section.content as Record<string, unknown>) ?? {};
+        
+        // Check for single image field
+        const singleImage = content.image as string;
+        if (singleImage && isImageUrl(singleImage)) {
+          const absUrl = makeAbsolute(singleImage);
+          // First image becomes hero if not set
+          if (!images.hero) images.hero = absUrl;
+          // Second becomes about if not set
+          else if (!images.about) images.about = absUrl;
+          // Add to gallery pool
+          galleryImages.push(absUrl);
+        }
+
+        // Check all fields for image arrays and nested objects
+        for (const [, value] of Object.entries(content)) {
+          if (Array.isArray(value)) {
+            // Handle arrays of strings (e.g., gallery images)
+            const imgArray = value.filter(v => isImageUrl(v as string)) as string[];
+            if (imgArray.length > 0) {
+              galleryImages.push(...imgArray.map(makeAbsolute));
+            }
+            // Handle arrays of objects with image fields (e.g., items with image property)
+            for (const item of value) {
+              if (item && typeof item === 'object') {
+                const obj = item as Record<string, unknown>;
+                for (const [, v] of Object.entries(obj)) {
+                  if (isImageUrl(v as string)) {
+                    galleryImages.push(makeAbsolute(v as string));
+                  }
+                }
+              }
+            }
+          } else if (value && typeof value === 'object') {
+            // Handle nested objects with image fields
+            const obj = value as Record<string, unknown>;
+            for (const [, v] of Object.entries(obj)) {
+              if (isImageUrl(v as string)) {
+                galleryImages.push(makeAbsolute(v as string));
+              }
+            }
+          }
+        }
+
+        // Also check for explicit images array (partners section)
+        const explicitImages = content.images as string[];
+        if (Array.isArray(explicitImages) && explicitImages.length > 0) {
+          galleryImages.push(...explicitImages.filter(isImageUrl).map(makeAbsolute));
+        }
+
+        // Check items array for testimonials with images
+        const items = content.items as Array<Record<string, unknown>>;
+        if (Array.isArray(items)) {
+          for (const item of items) {
+            if (item && typeof item === 'object') {
+              const itemImage = item.image as string;
+              if (isImageUrl(itemImage)) {
+                galleryImages.push(makeAbsolute(itemImage));
+              }
+            }
+          }
+        }
+      }
+
+      // Deduplicate and assign
+      const uniqueGallery = [...new Set(galleryImages.filter(Boolean))];
+      
+      // Assign first gallery image as hero if not set
+      if (!images.hero && uniqueGallery.length > 0) images.hero = uniqueGallery[0];
+      // Assign second as about if not set
+      if (!images.about && uniqueGallery.length > 1) images.about = uniqueGallery[1];
+      // Limit gallery to 6 images
+      images.gallery = uniqueGallery.slice(0, 6).join(',');
+
+      // Expose base URL so clients can absolutize relative image paths
+      return { ...images, baseUrl };
+    } catch {
+      return {};
+    }
   },
 };

@@ -1,13 +1,41 @@
+import { useEffect, useState } from 'react'
 import type { PageSection } from '../../types'
 import { CURRENT_WEBSITE } from '../../data/seed'
 import { useSession } from '../../context/SessionContext'
 import { currentOrganization, siteDisplayName } from '../../lib/session'
 import { QuoteIcon } from '../icons'
+import { websiteService } from '../../services/website'
 
 const useSiteName = (): string => {
   const { session } = useSession()
   const org = currentOrganization(session)
   return siteDisplayName(org?.slug, org?.name ?? CURRENT_WEBSITE.name)
+}
+
+function useLiveImages(): Record<string, string> {
+  const { session } = useSession()
+  const org = currentOrganization(session)
+  const slug = org?.slug
+  const [images, setImages] = useState<Record<string, string>>({})
+
+  useEffect(() => {
+    if (!slug) return
+    let cancelled = false
+    websiteService.getLiveImages().then((data) => {
+      if (!cancelled) setImages(data)
+    }).catch(() => {})
+    return () => { cancelled = true }
+  }, [slug])
+
+  return images
+}
+
+function absolutizeImage(src: string | undefined, liveImages: Record<string, string>): string | undefined {
+  if (!src) return src
+  if (/^(https?:|data:|blob:)/i.test(src)) return src
+  const base = liveImages.baseUrl
+  if (!base) return src
+  return `${base.replace(/\/+$/, '')}/${src.replace(/^\/+/, '')}`
 }
 
 const text = (content: Record<string, unknown>, key: string, fallback = ''): string =>
@@ -55,20 +83,21 @@ function SectionHeading({
 function HeroPreview({ section }: { section: PageSection }) {
   const image = text(section.content, 'image')
   const siteName = useSiteName()
+  const liveImages = useLiveImages()
   const overlay =
     typeof section.settings.overlay === 'number' ? (section.settings.overlay as number) : 0.6
+  const fallbackImage = 'https://images.unsplash.com/photo-1579027989536-b7b1f875659b?w=1200&h=600&fit=crop'
+  const bgImage = image || liveImages.hero || fallbackImage
   return (
     <div className="relative overflow-hidden rounded-2xl">
-      {image ? (
-        <img
-          src={image}
-          alt=""
-          className="absolute inset-0 h-full w-full object-cover"
-        />
-      ) : null}
+      <img
+        src={bgImage}
+        alt=""
+        className="absolute inset-0 h-full w-full object-cover"
+      />
       <div
         className="relative flex flex-col items-center justify-center px-6 py-16 text-center text-white"
-        style={{ background: image ? `rgba(15,23,42,${overlay})` : '#0f172a' }}
+        style={{ background: `rgba(15,23,42,${overlay})` }}
       >
         <p className="rounded-full bg-white/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-widest">
           {siteName}
@@ -94,17 +123,18 @@ function HeroPreview({ section }: { section: PageSection }) {
 
 function AboutPreview({ section }: { section: PageSection }) {
   const image = text(section.content, 'image')
+  const liveImages = useLiveImages()
+  const fallbackImage = 'https://images.unsplash.com/photo-1593113598332-cd288d649433?w=600&h=450&fit=crop'
+  const bgImage = image || liveImages.about || fallbackImage
   return (
     <div>
       <SectionHeading section={section} align="left" />
       <div className="grid items-center gap-6 sm:grid-cols-2">
-        {image ? (
-          <img src={image} alt="" className="aspect-[4/3] w-full rounded-xl object-cover" />
-        ) : (
-          <div className="flex aspect-[4/3] w-full items-center justify-center rounded-xl bg-slate-100 text-slate-300">
-            Add an image
-          </div>
-        )}
+        <img
+          src={bgImage}
+          alt="About"
+          className="aspect-[4/3] w-full rounded-xl object-cover"
+        />
         <div>
           <p className="text-sm leading-relaxed text-slate-600">
             {text(
@@ -157,6 +187,18 @@ function ProgramsPreview({ section }: { section: PageSection }) {
 
 function GalleryPreview({ section }: { section: PageSection }) {
   const count = num(section.settings, 'columns', 3)
+  const liveImages = useLiveImages()
+  const fallbackImages = [
+    'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400&h=300&fit=crop',
+    'https://images.unsplash.com/photo-1581833971358-2c8b550f87b3?w=400&h=300&fit=crop',
+    'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=400&h=300&fit=crop',
+    'https://images.unsplash.com/photo-1596495577886-d920f1fb7238?w=400&h=300&fit=crop',
+    'https://images.unsplash.com/photo-1573164574508-4b2e2c9e4b3a?w=400&h=300&fit=crop',
+    'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=400&h=300&fit=crop',
+  ]
+  const galleryImages = liveImages.gallery
+    ? liveImages.gallery.split(',').map(u => u.trim())
+    : fallbackImages
   return (
     <div>
       <SectionHeading section={section} />
@@ -165,9 +207,11 @@ function GalleryPreview({ section }: { section: PageSection }) {
       >
         {Array.from({ length: Math.min(count * 2, 6) }, (_, index) => (
           <div key={index} className="aspect-[4/3] overflow-hidden rounded-xl bg-slate-200">
-            <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-slate-100 to-slate-200 text-[10px] font-medium text-slate-400">
-              Image {index + 1}
-            </div>
+            <img
+              src={galleryImages[index % galleryImages.length]}
+              alt={`Gallery image ${index + 1}`}
+              className="h-full w-full object-cover"
+            />
           </div>
         ))}
       </div>
@@ -325,13 +369,28 @@ const IMAGE_EXT = /\.(jpe?g|png|webp|gif|svg|avif|bmp)(\?.*)?$/i
 const isImageLike = (value: unknown): value is string =>
   typeof value === 'string' && IMAGE_EXT.test(value)
 
+function collectImages(value: unknown, out: string[] = []): string[] {
+  if (isImageLike(value)) {
+    if (!out.includes(value)) out.push(value)
+  } else if (Array.isArray(value)) {
+    for (const item of value) collectImages(item, out)
+  } else if (value && typeof value === 'object') {
+    for (const nested of Object.values(value as Record<string, unknown>)) collectImages(nested, out)
+  }
+  return out
+}
+
 function GenericSectionPreview({ section }: { section: PageSection }) {
+  const liveImages = useLiveImages()
   const entries = Object.entries(section.content ?? {})
-  const image = entries.find(([, value]) => isImageLike(value))?.[1] as string | undefined
+  const absImages = collectImages(section.content ?? {})
+    .map((src) => absolutizeImage(src, liveImages))
+    .filter((src): src is string => !!src)
+    .slice(0, 5)
   const texts: string[] = []
   const pills: { label: string; value: string }[] = []
   for (const [key, value] of entries) {
-    if (key === image && isImageLike(value)) continue
+    if (isImageLike(value)) continue
     if (typeof value === 'string' && value.trim()) {
       texts.push(value)
     } else if (typeof value === 'number') {
@@ -354,15 +413,28 @@ function GenericSectionPreview({ section }: { section: PageSection }) {
           {entries.length} fields
         </span>
       </div>
-      {image ? (
-        <img
-          src={image}
-          alt=""
-          className="mt-4 h-40 w-full rounded-xl object-cover"
-          onError={(event) => {
-            ;(event.currentTarget as HTMLImageElement).style.display = 'none'
-          }}
-        />
+      {absImages.length > 0 ? (
+        <div className="mt-4 grid grid-cols-2 gap-2">
+          <img
+            src={absImages[0]}
+            alt=""
+            className={`${absImages.length > 1 ? 'col-span-2' : ''} h-40 w-full rounded-xl object-cover`}
+            onError={(event) => {
+              ;(event.currentTarget as HTMLImageElement).style.display = 'none'
+            }}
+          />
+          {absImages.slice(1).map((src) => (
+            <img
+              key={src}
+              src={src}
+              alt=""
+              className="h-20 w-full rounded-lg object-cover"
+              onError={(event) => {
+                ;(event.currentTarget as HTMLImageElement).style.display = 'none'
+              }}
+            />
+          ))}
+        </div>
       ) : null}
       {texts.length > 0 ? (
         <div className="mt-4 space-y-1.5">
@@ -398,10 +470,17 @@ function GenericSectionPreview({ section }: { section: PageSection }) {
 const PREVIEWS: Record<string, React.FC<{ section: PageSection }>> = {
   hero: HeroPreview,
   about: AboutPreview,
+  'home-about': AboutPreview,
   programs: ProgramsPreview,
   gallery: GalleryPreview,
+  'home-impact-stories': GalleryPreview,
+  'home-celebrity': GalleryPreview,
+  'home-latest-updates': GalleryPreview,
+  'home-activities': GalleryPreview,
   testimonials: TestimonialsPreview,
+  'home-testimonials': TestimonialsPreview,
   partners: PartnersPreview,
+  'home-partners': PartnersPreview,
   faq: FaqPreview,
   cta: CtaPreview,
   stats: StatsPreview,

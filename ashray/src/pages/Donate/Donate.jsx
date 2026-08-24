@@ -278,7 +278,7 @@ export default function Donate() {
 
       {/* ===== DONATE MAIN ===== */}
       <section className="py-20 md:py-28 bg-background">
-        <div className="max-w-container-max mx-auto px-5 md:px-margin-desktop">
+        <div className="max-w-container-max mx-auto px-5 md:px-margin-desktop" data-reveal>
           {/* ===== TABS ===== */}
           <div className="flex gap-3 overflow-x-auto pb-2 mb-12">
             {causes.map((c) => (

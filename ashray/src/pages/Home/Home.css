@@ -1582,19 +1582,23 @@
 .ashray-hero__inner {
   position: relative;
   z-index: 5;
+  width: 100%;
   height: 100%;
-  max-width: 1280px;
-  margin: 0;
+  max-width: 1320px;
+  margin: 0 auto;
   padding: 136px max(24px, 4vw) 120px;
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
   align-items: center;
-  justify-content: space-between;
-  gap: 48px;
+  justify-content: center;
 }
 .ashray-hero__content {
   position: relative;
   z-index: 6;
-  max-width: 660px;
+  width: 100%;
+  min-width: 0;
+  max-width: 720px;
+  justify-self: start;
 }
 .ashray-hero__eyebrow {
   display: inline-flex;
@@ -1727,74 +1731,6 @@
   }
 }
 
-/* ---- Right-side project text (no card, plain on the hero bg) ---- */
-.ashray-hero__panel {
-  position: relative;
-  z-index: 6;
-  flex-shrink: 0;
-  width: min(36vw, 500px);
-  text-align: left;
-  opacity: 0;
-}
-.ashray-hero__panel-name {
-  font-family: "Manrope", "Inter", "Segoe UI", sans-serif;
-  font-size: min(clamp(2.25rem, 4.2vw, 3.75rem), 9vh);
-  font-weight: 800;
-  line-height: 1.05;
-  letter-spacing: -0.02em;
-  text-transform: uppercase;
-  color: #ffffff;
-  text-shadow: 0 8px 40px rgba(0, 0, 0, 0.4);
-}
-.ashray-hero__panel-tagline {
-  margin-top: 20px;
-  font-family: "Manrope", "Inter", "Segoe UI", sans-serif;
-  font-size: clamp(1.05rem, 1.6vw, 1.3rem);
-  font-weight: 700;
-  line-height: 1.4;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-  color: #ffffff;
-  text-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
-}
-.ashray-hero__panel-logo {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  margin-top: 28px;
-  border-top: 1px solid rgba(255, 255, 255, 0.22);
-  padding-top: 22px;
-}
-.ashray-hero__panel-logo img {
-  height: 46px;
-  width: auto;
-  object-fit: contain;
-}
-.ashray-hero__panel-logo-text {
-  display: flex;
-  flex-direction: column;
-  line-height: 1.2;
-}
-.ashray-hero__panel-logo-text strong {
-  font-family: "Inter", "Segoe UI", sans-serif;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: #ffffff;
-}
-.ashray-hero__panel-logo-text span {
-  font-family: "Inter", "Segoe UI", sans-serif;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.32em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.7);
-}
-.ashray-hero__slide.is-active .ashray-hero__panel {
-  animation: ashray-hero-subject-in 1s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
-}
-
 /* ---- Controls: circular arrows + expanding dots ---- */
 .ashray-hero__controls {
   position: absolute;
@@ -1898,14 +1834,10 @@
 @media (max-width: 1280px) {
   .ashray-hero__inner {
     padding: 104px 24px 150px;
-    justify-content: flex-start;
+    justify-content: center;
   }
   .ashray-hero__content {
-    max-width: 100%;
-  }
-  .ashray-hero__subject,
-  .ashray-hero__panel {
-    display: none;
+    max-width: 720px;
   }
 }
 
@@ -2003,16 +1935,6 @@
     height: min(66svh, 560px);
     height: min(66vh, 560px);
   }
-  .ashray-hero__panel {
-    width: min(30vw, 420px);
-  }
-  .ashray-hero__panel-name {
-    font-size: min(clamp(1.9rem, 3.4vw, 3rem), 8vh);
-  }
-  .ashray-hero__panel-tagline {
-    font-size: clamp(0.95rem, 1.4vw, 1.1rem);
-    margin-top: 16px;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -2024,8 +1946,7 @@
     transition: none;
   }
   .ashray-hero__anim,
-  .ashray-hero__slide.is-active .ashray-hero__subject,
-  .ashray-hero__slide.is-active .ashray-hero__panel {
+  .ashray-hero__slide.is-active .ashray-hero__subject {
     opacity: 1;
     animation: none;
   }

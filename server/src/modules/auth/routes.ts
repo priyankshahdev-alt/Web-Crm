@@ -3,7 +3,14 @@ import { authController } from './controller';
 import { validate } from '../../middlewares/validate';
 import { authenticate } from '../../middlewares/auth';
 import { authLimiter } from '../../middlewares/rateLimiter';
-import { changePasswordSchema, loginSchema, refreshSchema, switchOrganizationSchema } from './schema';
+import {
+  changePasswordSchema,
+  impersonateSchema,
+  impersonateTicketSchema,
+  loginSchema,
+  refreshSchema,
+  switchOrganizationSchema,
+} from './schema';
 import { asyncHandler } from '../../utils/asyncHandler';
 
 const router = Router();
@@ -19,5 +26,21 @@ router.post(
 router.post('/logout', authenticate(), asyncHandler(authController.logout));
 router.post('/change-password', authenticate(), validate(changePasswordSchema), asyncHandler(authController.changePassword));
 router.get('/me', authenticate(), asyncHandler(authController.me));
+
+// Master "log in as admin": the master mints a short-lived ticket, the admin
+// panel exchanges it for a real session. The exchange endpoint is deliberately
+// unauthenticated — the ticket itself is the credential.
+router.post(
+  '/impersonate',
+  authenticate(),
+  validate(impersonateSchema),
+  asyncHandler(authController.impersonate),
+);
+router.post(
+  '/impersonate/exchange',
+  authLimiter,
+  validate(impersonateTicketSchema),
+  asyncHandler(authController.exchangeImpersonate),
+);
 
 export default router;

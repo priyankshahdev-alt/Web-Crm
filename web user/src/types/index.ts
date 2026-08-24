@@ -107,6 +107,110 @@ export interface PageSection extends IdEntity {
   settings: Record<string, unknown>
   content: Record<string, unknown>
   fields?: WebsiteSectionField[]
+  template?: {
+    id: string
+    type: string
+    name: string
+    label: string
+    isSystem: boolean
+    fields: FieldDef[]
+  }
+}
+
+export type FieldType =
+  | 'text'
+  | 'textarea'
+  | 'richText'
+  | 'url'
+  | 'number'
+  | 'boolean'
+  | 'select'
+  | 'image'
+  | 'gallery'
+  | 'link'
+  | 'entityRef'
+  | 'group'
+  | 'list'
+  | 'repeater'
+  | 'date'
+
+export interface BaseFieldDef {
+  name: string
+  label: string
+  required?: boolean
+  help?: string
+  placeholder?: string
+  default?: unknown
+}
+
+export interface ScalarFieldDef extends BaseFieldDef {
+  type: 'text' | 'textarea' | 'richText' | 'url' | 'date'
+  maxLength?: number
+}
+export interface NumberFieldDef extends BaseFieldDef {
+  type: 'number'
+  min?: number
+  max?: number
+}
+export interface BooleanFieldDef extends BaseFieldDef {
+  type: 'boolean'
+}
+export interface SelectFieldDef extends BaseFieldDef {
+  type: 'select'
+  options: string[]
+}
+export interface ImageFieldDef extends BaseFieldDef {
+  type: 'image'
+}
+export interface GalleryFieldDef extends BaseFieldDef {
+  type: 'gallery'
+  maxItems?: number
+}
+export interface LinkFieldDef extends BaseFieldDef {
+  type: 'link'
+}
+export interface EntityRefFieldDef extends BaseFieldDef {
+  type: 'entityRef'
+  entityType: string
+  multiple?: boolean
+}
+export interface GroupFieldDef extends BaseFieldDef {
+  type: 'group'
+  fields: FieldDef[]
+}
+export interface ListFieldDef extends BaseFieldDef {
+  type: 'list'
+  itemType: 'string' | 'number'
+  maxItems?: number
+}
+export interface RepeaterFieldDef extends BaseFieldDef {
+  type: 'repeater'
+  minItems?: number
+  maxItems?: number
+  fields: FieldDef[]
+}
+
+export type FieldDef =
+  | ScalarFieldDef
+  | NumberFieldDef
+  | BooleanFieldDef
+  | SelectFieldDef
+  | ImageFieldDef
+  | GalleryFieldDef
+  | LinkFieldDef
+  | EntityRefFieldDef
+  | GroupFieldDef
+  | ListFieldDef
+  | RepeaterFieldDef
+
+export interface SectionTemplate {
+  id: string
+  type: string
+  name: string
+  label: string
+  description?: string | null
+  isSystem: boolean
+  fields: FieldDef[]
 }
 
 export interface WebsiteSectionField {
@@ -204,12 +308,22 @@ export interface Project extends IdEntity {
   featured: boolean
   sortOrder: number
   stats: ProjectStat[]
+  impacts?: ProjectImpact[] | null
+  _count?: { beneficiaries: number; images: number; stats: number }
 }
 
 export interface ProjectStat {
   id: string
   label: string
   value: string
+  sortOrder: number
+}
+
+export interface ProjectImpact {
+  id: string
+  title: string
+  description?: string | null
+  icon?: string | null
   sortOrder: number
 }
 
@@ -433,6 +547,23 @@ export interface DashboardStats {
   publishedSeries: { label: string; value: number }[]
   trafficByDevice: { name: string; value: number; color: string }[]
   topPages: { title: string; views: number; change: number }[]
+
+  // Detailed content counts
+  pages: { total: number; published: number; draft: number; archived: number }
+  projects: { total: number; published: number; draft: number }
+  events: { total: number; published: number; draft: number; upcoming: number; past: number }
+  blogs: { total: number; published: number; draft: number }
+  galleries: { total: number; published: number; draft: number }
+  campaigns: { total: number; published: number; draft: number }
+  media: { total: number; images: number; documents: number; folders: number; storageBytes: number }
+  team: { total: number; active: number }
+  testimonials: { total: number; active: number }
+  partners: { total: number; active: number }
+  faqs: { total: number; active: number }
+
+  // Widget data
+  upcomingEvents: { id: string; title: string; startDate: string; endDate?: string; location?: string; status: string; slug: string }[]
+  recentForms: { id: string; name: string; status: string; submissions: number; fields: number }[]
 }
 
 export interface UserSession {

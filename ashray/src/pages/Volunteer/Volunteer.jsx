@@ -127,7 +127,7 @@ export default function Volunteer() {
 
       {/* ===== WHY VOLUNTEER ===== */}
       <section className="py-20 md:py-28 bg-white" ref={(el) => (sectionRefs.current[3] = el)}>
-        <div className="max-w-container-max mx-auto px-5 md:px-margin-desktop grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+        <div className="max-w-container-max mx-auto px-5 md:px-margin-desktop grid grid-cols-1 lg:grid-cols-12 gap-16 items-center" data-reveal>
           <div className="lg:col-span-7">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-1 bg-primary rounded-full" />
@@ -157,7 +157,7 @@ export default function Volunteer() {
 
       {/* ===== BENEFITS ===== */}
       <section className="py-20 md:py-28 bg-background" ref={(el) => (sectionRefs.current[4] = el)}>
-        <div className="max-w-container-max mx-auto px-5 md:px-margin-desktop">
+        <div className="max-w-container-max mx-auto px-5 md:px-margin-desktop" data-reveal>
           <div className="text-center max-w-3xl mx-auto mb-16">
             <h2 className="font-headline-lg text-primary mb-4">Benefits of Volunteering</h2>
             <p className="font-body-lg text-on-surface-variant">
@@ -183,7 +183,7 @@ export default function Volunteer() {
 
       {/* ===== OPPORTUNITIES ===== */}
       <section className="py-20 md:py-28 bg-white" ref={(el) => (sectionRefs.current[5] = el)}>
-        <div className="max-w-container-max mx-auto px-5 md:px-margin-desktop">
+        <div className="max-w-container-max mx-auto px-5 md:px-margin-desktop" data-reveal>
           <div className="flex items-center gap-3 mb-4">
             <div className="w-10 h-1 bg-primary rounded-full" />
             <span className="font-label-md text-primary uppercase tracking-[0.2em]">Open Positions</span>
@@ -217,7 +217,7 @@ export default function Volunteer() {
 
       {/* ===== APPLICATION FORM ===== */}
       <section className="py-20 md:py-28 bg-background" ref={(el) => (sectionRefs.current[6] = el)}>
-        <div className="max-w-container-max mx-auto px-5 md:px-margin-desktop">
+        <div className="max-w-container-max mx-auto px-5 md:px-margin-desktop" data-reveal>
           <div className="max-w-3xl mx-auto bg-surface-container rounded-3xl border border-outline-variant subtle-shadow p-8 md:p-12">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-1 bg-primary rounded-full" />

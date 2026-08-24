@@ -3,6 +3,7 @@ import Navbar from './components/Navbar/Navbar';
 import Footer from './components/Footer/Footer';
 import AppRoutes from './routes/AppRoutes';
 import ScrollProgress from './components/ScrollProgress/ScrollProgress';
+import ScrollReveal from './components/ScrollReveal/ScrollReveal';
 import './styles/global.css';
 import './styles/responsive.css';
 import './styles/new-theme.css';
@@ -16,6 +17,7 @@ function App() {
       }}
     >
       <ScrollProgress />
+      <ScrollReveal />
       <a href="#main" className="skip-link">
         Skip to main content
       </a>

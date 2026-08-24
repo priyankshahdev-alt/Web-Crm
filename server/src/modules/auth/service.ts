@@ -1,13 +1,20 @@
 import type { Request } from 'express';
 import { randomUUID } from 'node:crypto';
+import { prisma } from '../../libs/prisma';
 import { config } from '../../config';
 import { ApiError } from '../../utils/ApiError';
 import { hashPassword, verifyPassword } from '../../utils/password';
-import { signAccessToken, signRefreshToken, verifyRefreshToken } from '../../utils/jwt';
+import {
+  signAccessToken,
+  signRefreshToken,
+  signImpersonateTicket,
+  verifyImpersonateTicket,
+  verifyRefreshToken,
+} from '../../utils/jwt';
 import { authRepository } from './repository';
 import { buildAuthUser, resolveWebsiteId } from './authContext';
 import type { AuthUser } from '../../types';
-import type { ChangePasswordInput, LoginInput, RefreshInput } from './schema';
+import type { ChangePasswordInput, ImpersonateInput, LoginInput, RefreshInput } from './schema';
 
 function addSeconds(seconds: string): Date {
   const match = seconds.match(/^(\d+)([smhd])$/);
@@ -136,8 +143,7 @@ export const authService = {
    * Persists the selection (isCurrent) so it also survives token refresh and
    * future logins, then issues a fresh access token carrying the new websiteId.
    */
-  async switchOrganization(userId: string, organizationId: string) {
-    const memberships = await authRepository.findMemberships(userId);
+  async switchOrganization(userId: string, organizationId: string) {    const memberships = await authRepository.findMemberships(userId);
     const target = memberships.find((m) => m.organization.id === organizationId);
     if (!target) {
       throw ApiError.forbidden('No access to this website');
@@ -168,6 +174,93 @@ export const authService = {
         roleName: target.role.name,
         isCurrent: true,
       },
+    };
+  },
+
+  /**
+   * Master-only: issue a short-lived "log in as admin" ticket for a platform
+   * admin. The ticket is exchanged (not the admin's credentials) so tokens are
+   * only ever minted inside the admin panel's own origin.
+   */
+  async impersonate(input: ImpersonateInput, master: AuthUser) {
+    if (!master.isMaster) {
+      throw ApiError.forbidden('Only the platform master can impersonate admins');
+    }
+
+    const target = await authRepository.findUserById(input.userId);
+    if (!target || !target.isActive) {
+      throw ApiError.unauthorized('User not found or deactivated');
+    }
+    if (target.isMaster) {
+      throw ApiError.forbidden('Cannot impersonate another master user');
+    }
+
+    const roles = await prisma.userRole.findMany({
+      where: { userId: target.id },
+      select: { role: { select: { key: true } } },
+    });
+    if (!roles.some((r) => r.role.key === 'admins')) {
+      throw ApiError.forbidden('Only platform admins can be impersonated');
+    }
+
+    const ticket = signImpersonateTicket(target.id, master.id);
+    return { ticket, expiresInSeconds: 120 };
+  },
+
+  /**
+   * Exchange a master-issued impersonation ticket for a full admin session.
+   * Unsigned tokens are never put in the URL; they are minted here and stored
+   * by the admin panel itself.
+   */
+  async exchangeImpersonate(input: { ticket: string }, req: Request) {
+    let payload;
+    try {
+      payload = verifyImpersonateTicket(input.ticket);
+    } catch {
+      throw ApiError.unauthorized('Invalid or expired login ticket');
+    }
+
+    const target = await authRepository.findUserById(payload.sub);
+    if (!target || !target.isActive) {
+      throw ApiError.unauthorized('User not found or deactivated');
+    }
+
+    const authUser = await buildAuthUser(target.id);
+    const accessToken = signAccessToken(authUser);
+    const familyId = randomUUID();
+    const refreshToken = signRefreshToken(target.id, familyId);
+
+    await Promise.all([
+      authRepository.createRefreshToken({
+        userId: target.id,
+        token: refreshToken,
+        familyId,
+        expiresAt: refreshExpiry(),
+        ipAddress: req.ip,
+        userAgent: req.get('user-agent'),
+      }),
+      authRepository.updateLastLogin(target.id),
+    ]);
+
+    const memberships = await authRepository.findMemberships(target.id);
+
+    return {
+      accessToken,
+      refreshToken,
+      user: {
+        id: authUser.id,
+        email: authUser.email,
+        firstName: authUser.firstName,
+        lastName: authUser.lastName,
+        isMaster: authUser.isMaster,
+        roles: authUser.roles,
+      },
+      organizations: memberships.map((m) => ({
+        ...m.organization,
+        role: m.role.key,
+        roleName: m.role.name,
+        isCurrent: m.isCurrent,
+      })),
     };
   },
 

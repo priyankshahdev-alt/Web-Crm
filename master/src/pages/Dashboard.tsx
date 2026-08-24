@@ -11,23 +11,35 @@ import { CreateAdminModal } from '../components/admin/CreateAdminModal'
 import { Button } from '../components/ui/Button'
 import { Pill } from '../components/ui/Pill'
 import { PlusIcon } from '../components/icons'
+import { apiErrorMessage } from '../lib/api'
 
 export function Dashboard() {
   const [admins, setAdmins] = useState<AdminUser[]>([])
   const [websites, setWebsites] = useState<ManagedWebsite[]>([])
   const [modalOpen, setModalOpen] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const load = useCallback(async () => {
-    const [adminResult, websiteResult] = await Promise.all([
-      adminService.list(),
-      websiteService.list(),
-    ])
-    setAdmins(adminResult)
-    setWebsites(websiteResult)
+    setError(null)
+    try {
+      const [adminResult, websiteResult] = await Promise.all([
+        adminService.list(),
+        websiteService.list(),
+      ])
+      setAdmins(adminResult)
+      setWebsites(websiteResult)
+    } catch (err) {
+      setError(
+        apiErrorMessage(
+          err,
+          'Could not load dashboard data. Is the backend running?',
+        ),
+      )
+    }
   }, [])
 
   useEffect(() => {
-    void load().catch(() => {})
+    void load()
   }, [load])
 
   const handleAdminCreated = (admin: AdminUser) => {
@@ -48,6 +60,17 @@ export function Dashboard() {
           control.
         </p>
       </header>
+
+      {error ? (
+        <div className="mb-8 flex flex-wrap items-center gap-3 rounded-2xl border border-danger/30 bg-danger/10 px-4 py-3">
+          <p className="min-w-0 flex-1 text-sm font-medium text-danger">
+            {error}
+          </p>
+          <Button size="sm" variant="secondary" onClick={() => void load()}>
+            Retry
+          </Button>
+        </div>
+      ) : null}
 
       <section
         aria-labelledby="admin-stack-title"

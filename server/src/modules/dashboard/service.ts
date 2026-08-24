@@ -25,6 +25,6 @@ export const dashboardService = {
     if (!req.activeOrg) {
       throw ApiError.badRequest('Provide an X-Organization-Id header for your website');
     }
-    return dashboardRepository.siteStats(req.activeOrg.id);
+    return dashboardRepository.siteStatsDetailed(req.activeOrg.id);
   },
 };

@@ -17,6 +17,19 @@ const EMPTY_STATS: DashboardStats = {
   publishedSeries: [],
   trafficByDevice: [],
   topPages: [],
+  pages: { total: 0, published: 0, draft: 0, archived: 0 },
+  projects: { total: 0, published: 0, draft: 0 },
+  events: { total: 0, published: 0, draft: 0, upcoming: 0, past: 0 },
+  blogs: { total: 0, published: 0, draft: 0 },
+  galleries: { total: 0, published: 0, draft: 0 },
+  campaigns: { total: 0, published: 0, draft: 0 },
+  media: { total: 0, images: 0, documents: 0, folders: 0, storageBytes: 0 },
+  team: { total: 0, active: 0 },
+  testimonials: { total: 0, active: 0 },
+  partners: { total: 0, active: 0 },
+  faqs: { total: 0, active: 0 },
+  upcomingEvents: [],
+  recentForms: [],
 }
 
 /**
@@ -31,20 +44,35 @@ export const dashboardService = {
       const { data } = await http.get('/dashboard/my-website')
       const body = data?.data
       const counts = body?.counts ?? {}
-      const orgCount = body?.organization?._count ?? {}
-      const pages = counts.pages ?? orgCount?.pages ?? 0
-      const projects = counts.projects ?? orgCount?.projects ?? 0
+
       return {
         ...EMPTY_STATS,
-        publishedPages: pages + projects,
-        draftPages: 0,
-        pendingApprovals: 0,
-        formsSubmitted: 0,
+        // Legacy fields for backward compat
+        publishedPages: (counts.pages?.published ?? 0) + (counts.projects?.published ?? 0) + (counts.events?.published ?? 0) + (counts.blogs?.published ?? 0),
+        draftPages: (counts.pages?.draft ?? 0) + (counts.projects?.draft ?? 0) + (counts.events?.draft ?? 0) + (counts.blogs?.draft ?? 0),
+        formsSubmitted: 0, // Will be 0 until forms moved to backend
+        storageUsed: counts.media?.storageBytes ?? 0,
         publishedSeries: [
-          { label: 'Pages', value: pages },
-          { label: 'Programs', value: projects },
-          { label: 'Events', value: counts.events ?? 0 },
+          { label: 'Pages', value: counts.pages?.published ?? 0 },
+          { label: 'Programs', value: counts.projects?.published ?? 0 },
+          { label: 'Events', value: counts.events?.published ?? 0 },
+          { label: 'Blogs', value: counts.blogs?.published ?? 0 },
+          { label: 'Galleries', value: counts.galleries?.published ?? 0 },
         ],
+        // NEW: Detailed counts
+        pages: counts.pages ?? { total: 0, published: 0, draft: 0, archived: 0 },
+        projects: counts.projects ?? { total: 0, published: 0, draft: 0 },
+        events: counts.events ?? { total: 0, published: 0, draft: 0, upcoming: 0, past: 0 },
+        blogs: counts.blogs ?? { total: 0, published: 0, draft: 0 },
+        galleries: counts.galleries ?? { total: 0, published: 0, draft: 0 },
+        campaigns: counts.campaigns ?? { total: 0, published: 0, draft: 0 },
+        media: counts.media ?? { total: 0, images: 0, documents: 0, folders: 0, storageBytes: 0 },
+        team: counts.team ?? { total: 0, active: 0 },
+        testimonials: counts.testimonials ?? { total: 0, active: 0 },
+        partners: counts.partners ?? { total: 0, active: 0 },
+        faqs: counts.faqs ?? { total: 0, active: 0 },
+        upcomingEvents: body?.upcomingEvents ?? [],
+        recentForms: body?.recentForms ?? [],
       }
     } catch {
       return this._fromStore()

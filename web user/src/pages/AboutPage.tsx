@@ -165,7 +165,7 @@ export function AboutPage() {
     ]
     try {
       await cmsService.saveSections(page.id, sections)
-      toast('About Us page saved', { variant: 'success', description: 'Changes are stored and ready to publish.' })
+      toast('About Us page saved', { variant: 'success', description: 'Your changes have been stored.' })
     } finally {
       setSaving(false)
     }
@@ -188,7 +188,7 @@ export function AboutPage() {
       <PageHeader
         eyebrow="Content"
         title="About Us"
-        description="Shape the story your visitors read on the About page."
+        description="Tell visitors who you are, what you stand for, the numbers behind your work and how your journey began. Fill in the boxes below, then click “Save changes”."
         actions={
           <Button icon={<SaveIcon />} loading={saving} onClick={() => void save()}>
             Save changes
@@ -205,13 +205,17 @@ export function AboutPage() {
                 Introduction
               </span>
             }
-            description="Short opener shown at the top of the page"
+            description="A short welcome shown at the top of the About page"
           />
           <div className="space-y-4 px-5 pb-5">
             <Field label="Heading" htmlFor="about-heading">
               <Input id="about-heading" value={introHeading} onChange={(event) => setIntroHeading(event.target.value)} />
             </Field>
-            <Field label="Introduction text" htmlFor="about-intro">
+            <Field
+              label="Introduction text"
+              hint="2–4 sentences about who Being Sevak is and what it does."
+              htmlFor="about-intro"
+            >
               <Textarea
                 id="about-intro"
                 rows={4}
@@ -231,10 +235,10 @@ export function AboutPage() {
                 Mission & Vision
               </span>
             }
-            description="Why we exist and where we are heading"
+            description="Why you exist and where you are heading"
           />
           <div className="space-y-4 px-5 pb-5">
-            <Field label="Mission" htmlFor="about-mission">
+            <Field label="Mission" hint="What your team does every day." htmlFor="about-mission">
               <Textarea
                 id="about-mission"
                 rows={3}
@@ -243,7 +247,7 @@ export function AboutPage() {
                 onChange={(event) => setMission(event.target.value)}
               />
             </Field>
-            <Field label="Vision" htmlFor="about-vision">
+            <Field label="Vision" hint="The change you want to see in the world." htmlFor="about-vision">
               <Textarea
                 id="about-vision"
                 rows={3}
@@ -268,7 +272,7 @@ export function AboutPage() {
                 Impact stats
               </span>
             }
-            description="The numbers that prove your impact"
+            description="Big numbers that show your work, e.g. lives touched or villages reached"
             actions={
               <Button
                 variant="soft"
@@ -283,14 +287,14 @@ export function AboutPage() {
           <div className="space-y-3 px-5 pb-5">
             {stats.map((stat) => (
               <div key={stat.id} className="grid grid-cols-1 items-end gap-3 rounded-xl border border-line bg-slate-50 p-3 sm:grid-cols-[1fr_120px_auto]">
-                <Field label="Label">
+                <Field label="Caption">
                   <Input
                     value={stat.label}
                     onChange={(event) => updateStat(stat.id, 'label', event.target.value)}
                     placeholder="e.g. Villages reached"
                   />
                 </Field>
-                <Field label="Value">
+                <Field label="Number">
                   <Input
                     value={stat.value}
                     onChange={(event) => updateStat(stat.id, 'value', event.target.value)}
@@ -318,7 +322,7 @@ export function AboutPage() {
                 Our journey
               </span>
             }
-            description="Key milestones for the history timeline"
+            description="Important moments in your story, shown year by year"
             actions={
               <Button
                 variant="soft"
@@ -365,9 +369,9 @@ export function AboutPage() {
 
       <div className="mt-5 flex items-center gap-2 rounded-2xl border border-dashed border-brand/30 bg-brand-soft/40 px-5 py-4 text-sm text-muted">
         <UsersIcon className="h-4 w-4 shrink-0 text-brand" />
-        Team members, partners and FAQ answers live in their own modules — visit{' '}
+        Team members, partners and FAQ answers are managed on their own pages — open{' '}
         <span className="font-semibold text-ink">Team Members</span>, <span className="font-semibold text-ink">Partners</span> and{' '}
-        <span className="font-semibold text-ink">Menus</span> to manage them.
+        <span className="font-semibold text-ink">Menus</span> to edit them.
       </div>
     </div>
   )

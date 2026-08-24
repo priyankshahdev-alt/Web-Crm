@@ -38,3 +38,12 @@ export async function changePassword(
 export async function getMe(): Promise<MeResponse> {
   return http.get<MeResponse>('/auth/me')
 }
+
+/** Exchange a master-issued "log in as admin" ticket for a session. */
+export async function exchangeImpersonate(ticket: string): Promise<AuthSession> {
+  const session = await http.post<AuthSession>('/auth/impersonate/exchange', {
+    ticket,
+  })
+  setTokens(session.accessToken, session.refreshToken)
+  return session
+}

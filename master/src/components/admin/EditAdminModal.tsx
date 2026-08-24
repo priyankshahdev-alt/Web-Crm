@@ -25,12 +25,14 @@ export function EditAdminModal({
   const toast = useToast()
   const [status, setStatus] = useState<AdminStatus>('active')
   const [managedWebsites, setManagedWebsites] = useState<string[]>([])
+  const [password, setPassword] = useState('')
   const [submitting, setSubmitting] = useState(false)
 
   useEffect(() => {
     if (open && admin) {
       setStatus(admin.status)
       setManagedWebsites([...(admin.managedWebsites ?? [])])
+      setPassword('')
     }
   }, [open, admin])
 
@@ -52,6 +54,7 @@ export function EditAdminModal({
         email: admin.email,
         status,
         managedWebsites,
+        ...(password ? { password } : {}),
       })
       onUpdated(updated)
       onClose()
@@ -97,6 +100,17 @@ export function EditAdminModal({
             value={admin?.email ?? ''}
             disabled
             hint="Email is used as the sign-in identifier and cannot be changed here."
+          />
+
+          <Input
+            label="New password (optional)"
+            type="password"
+            revealable
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+            autoComplete="new-password"
+            placeholder="Leave blank to keep the current password"
+            hint="Must be at least 8 characters. The admin must sign in again after a reset."
           />
 
           <div>
