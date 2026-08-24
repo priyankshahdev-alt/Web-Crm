@@ -8,6 +8,7 @@ import { EditAdminModal } from '../components/admin/EditAdminModal'
 import { DeleteAdminModal } from '../components/admin/DeleteAdminModal'
 import { AddAdminSection } from '../components/admin/AddAdminSection'
 import { AdminDetailPanel } from '../components/admin/AdminDetailPanel'
+import { AdminDetailPanel } from '../components/admin/AdminDetailPanel'
 import { Pagination } from '../components/ui/Pagination'
 import { Button } from '../components/ui/Button'
 import { Pill, type PillVariant } from '../components/ui/Pill'
@@ -15,10 +16,13 @@ import { useToast } from '../context/ToastContext'
 import { useCurrentUserRole } from '../hooks/useCurrentUserRole'
 import { useAuth } from '../context/AuthContext'
 import { apiErrorMessage } from '../lib/api'
+import { apiErrorMessage } from '../lib/api'
 import {
   CheckIcon,
   ChevronDownIcon,
+  ChevronDownIcon,
   CopyIcon,
+  LogInIcon,
   LogInIcon,
   PencilIcon,
   PlusIcon,
@@ -56,8 +60,9 @@ export function AdminPage() {
   const [editingAdmin, setEditingAdmin] = useState<AdminUser | null>(null)
   const [deletingAdmin, setDeletingAdmin] = useState<AdminUser | null>(null)
   const [copiedId, setCopiedId] = useState<string | null>(null)
-  const [expandedId, setExpandedId] = useState<string | null>(null)
+  const [updatedAdminEmail, setUpdatedAdminEmail] = useState<string | null>(null)
   const [page, setPage] = useState(1)
+  const [loadError, setLoadError] = useState<string | null>(null)
   const [loadError, setLoadError] = useState<string | null>(null)
   const resetTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
@@ -79,6 +84,7 @@ export function AdminPage() {
   const loadAdmins = useCallback(async () => {
     setLoading(true)
     setLoadError(null)
+    setLoadError(null)
     try {
       const [adminResult, websiteResult] = await Promise.all([
         adminService.list(),
@@ -86,6 +92,13 @@ export function AdminPage() {
       ])
       setAdmins(adminResult)
       setWebsites(websiteResult)
+    } catch (err) {
+      setLoadError(
+        apiErrorMessage(
+          err,
+          'Could not load admins and websites. Is the backend running?',
+        ),
+      )
     } catch (err) {
       setLoadError(
         apiErrorMessage(
@@ -115,6 +128,7 @@ export function AdminPage() {
     setAdmins((current) =>
       current.map((admin) => (admin.id === updated.id ? updated : admin)),
     )
+    setUpdatedAdminEmail(updated.email)
   }
 
   const handleAdminDeleted = (deleted: AdminUser) => {
@@ -184,10 +198,22 @@ export function AdminPage() {
         </div>
       ) : null}
 
+      {loadError ? (
+        <div className="mb-8 flex flex-wrap items-center gap-3 rounded-2xl border border-danger/30 bg-danger/10 px-4 py-3">
+          <p className="min-w-0 flex-1 text-sm font-medium text-danger">
+            {loadError}
+          </p>
+          <Button size="sm" variant="secondary" onClick={() => void loadAdmins()}>
+            Retry
+          </Button>
+        </div>
+      ) : null}
+
       <div className="mb-8">
         <AddAdminSection
           websites={websites}
           onCreated={handleAdminCreated}
+          updatedAdminEmail={updatedAdminEmail}
         />
       </div>
 
@@ -264,6 +290,7 @@ export function AdminPage() {
                 const isCopied = copiedId === admin.id
                 const sites = managedSiteNames(admin)
                 return (
+                  <>
                   <>
                   <tr
                     key={admin.id}
@@ -355,6 +382,47 @@ export function AdminPage() {
                         ) : null}
                         <button
                           type="button"
+                          aria-label={
+                            expandedId === admin.id
+                              ? `Hide details for ${admin.email}`
+                              : `Show details for ${admin.email}`
+                          }
+                          title="View websites and users"
+                          onClick={() =>
+                            setExpandedId((current) =>
+                              current === admin.id ? null : admin.id,
+                            )
+                          }
+                          className={`flex h-8 w-8 items-center justify-center rounded-full text-muted transition-colors duration-150 hover:bg-soft hover:text-brand focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand ${
+                            expandedId === admin.id ? 'bg-brand-soft text-brand' : ''
+                          }`}
+                        >
+                          <ChevronDownIcon
+                            className={`h-4 w-4 transition-transform duration-150 ${
+                              expandedId === admin.id ? 'rotate-180' : ''
+                            }`}
+                          />
+                        </button>
+                        {admin.role !== 'master' ? (
+                          <button
+                            type="button"
+                            aria-label={`Log in as ${admin.email}`}
+                            title="Log in as this admin"
+                            onClick={() => {
+                              setExpandedId(admin.id)
+                              window.requestAnimationFrame(() => {
+                                document
+                                  .getElementById(`admin-detail-${admin.id}`)
+                                  ?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+                              })
+                            }}
+                            className="flex h-8 w-8 items-center justify-center rounded-full text-muted transition-colors duration-150 hover:bg-brand-soft hover:text-brand focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+                          >
+                            <LogInIcon className="h-4 w-4" />
+                          </button>
+                        ) : null}
+                        <button
+                          type="button"
                           onClick={() => copyCredentials(admin)}
                           className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold transition-colors duration-150 ${
                             isCopied
@@ -394,6 +462,22 @@ export function AdminPage() {
                       </div>
                     </td>
                   </tr>
+                  {expandedId === admin.id ? (
+                    <tr
+                      key={`${admin.id}-detail`}
+                      id={`admin-detail-${admin.id}`}
+                      className="border-0"
+                    >
+                      <td colSpan={6} className="bg-transparent p-0">
+                        <AdminDetailPanel
+                          admin={admin}
+                          websites={websites}
+                          onClose={() => setExpandedId(null)}
+                        />
+                      </td>
+                    </tr>
+                  ) : null}
+                  </>
                   {expandedId === admin.id ? (
                     <tr
                       key={`${admin.id}-detail`}

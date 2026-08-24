@@ -21,6 +21,7 @@ import {
 interface AddAdminSectionProps {
   websites: ManagedWebsite[]
   onCreated: (admin: AdminUser) => void
+  updatedAdminEmail?: string | null
 }
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -29,6 +30,7 @@ const COPY_FEEDBACK_MS = 1500
 export function AddAdminSection({
   websites,
   onCreated,
+  updatedAdminEmail = null,
 }: AddAdminSectionProps) {
   const toast = useToast()
   const [email, setEmail] = useState('')
@@ -355,7 +357,22 @@ export function AddAdminSection({
               </div>
             </div>
 
-            <div className="flex justify-end border-t border-line px-6 py-4">
+            <div className="flex flex-wrap items-center justify-between gap-3 border-t border-line px-6 py-4">
+              {updatedAdminEmail ? (
+                <div className="flex min-w-0 items-center gap-2.5">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-success text-white">
+                    <CheckIcon className="h-4 w-4" />
+                  </span>
+                  <div className="min-w-0">
+                    <p className="text-sm font-semibold text-ink">
+                      Admin updated
+                    </p>
+                    <p className="truncate text-xs text-muted">
+                      Changes to &quot;{updatedAdminEmail}&quot; were saved.
+                    </p>
+                  </div>
+                </div>
+              ) : null}
               <Button
                 type="submit"
                 variant="violet"

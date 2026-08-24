@@ -32,6 +32,13 @@ const TYPE_LABELS: Record<string, string> = {
   cta: 'Join Us CTA',
 }
 
+const ITEM_NAMES: Record<string, string> = {
+  slides: 'Slide',
+  items: 'Stat',
+  projects: 'Project',
+  images: 'Image',
+}
+
 const EMPTY_SLIDE: Record<string, unknown> = {
   eyebrow: '',
   title: '',
@@ -127,7 +134,7 @@ function ImageField({ value, onChange, label, hint, entityType, entityId }: Imag
     try {
       const asset = await websiteEditorService.uploadMedia(file, entityType, entityId)
       onChange(asset.url)
-      toast('Image uploaded', { variant: 'success', description: 'URL inserted into the field.' })
+      toast('Image uploaded', { variant: 'success', description: 'This image is now set in the field.' })
     } catch (error) {
       toast('Upload failed', { variant: 'error', description: errorMessage(error) })
     } finally {
@@ -155,7 +162,7 @@ function ImageField({ value, onChange, label, hint, entityType, entityId }: Imag
           <Input
             id={inputId}
             value={value}
-            placeholder="Image URL"
+            placeholder="Paste an image link, or click Upload"
             onChange={(event) => onChange(event.target.value)}
           />
           <input
@@ -198,7 +205,7 @@ function EditorForm({ section, onChange, onAddItem, onRemoveItem, onMoveItem }: 
 
   const renderItems = (
     path: string,
-    fields: { key: string; label: string; kind: 'input' | 'textarea' | 'image' }[],
+    fields: { key: string; label: string; kind: 'input' | 'textarea' | 'image'; hint?: string }[],
     addTemplate: Record<string, unknown>,
     addLabel: string,
   ) => {
@@ -209,7 +216,7 @@ function EditorForm({ section, onChange, onAddItem, onRemoveItem, onMoveItem }: 
           <div key={index} className="rounded-xl border border-line bg-slate-50 p-4">
             <div className="mb-3 flex items-center justify-between">
               <p className="text-xs font-bold uppercase tracking-wide text-faint">
-                {path.slice(0, -1)} {index + 1}
+                {ITEM_NAMES[path] ?? path.slice(0, -1)} {index + 1}
               </p>
               <div className="flex items-center gap-0.5">
                 <button
@@ -246,7 +253,7 @@ function EditorForm({ section, onChange, onAddItem, onRemoveItem, onMoveItem }: 
                 const itemPath = `${path}.${index}.${field.key}`
                 if (field.kind === 'textarea') {
                   return (
-                    <Field key={field.key} label={field.label} htmlFor={`${path}-${index}-${field.key}`}>
+                    <Field key={field.key} label={field.label} hint={field.hint} htmlFor={`${path}-${index}-${field.key}`}>
                       <Textarea
                         id={`${path}-${index}-${field.key}`}
                         rows={2}
@@ -261,6 +268,7 @@ function EditorForm({ section, onChange, onAddItem, onRemoveItem, onMoveItem }: 
                     <ImageField
                       key={field.key}
                       label={field.label}
+                      hint={field.hint}
                       value={value}
                       entityType="section"
                       entityId={section.id}
@@ -269,7 +277,7 @@ function EditorForm({ section, onChange, onAddItem, onRemoveItem, onMoveItem }: 
                   )
                 }
                 return (
-                  <Field key={field.key} label={field.label} htmlFor={`${path}-${index}-${field.key}`}>
+                  <Field key={field.key} label={field.label} hint={field.hint} htmlFor={`${path}-${index}-${field.key}`}>
                     <Input
                       id={`${path}-${index}-${field.key}`}
                       value={value}
@@ -283,7 +291,7 @@ function EditorForm({ section, onChange, onAddItem, onRemoveItem, onMoveItem }: 
         ))}
         {items.length === 0 ? (
           <p className="rounded-xl border border-dashed border-line px-4 py-6 text-center text-sm text-muted">
-            No items yet.
+            Nothing added here yet. Click the button below to add one.
           </p>
         ) : null}
         <Button
@@ -312,24 +320,26 @@ function EditorForm({ section, onChange, onAddItem, onRemoveItem, onMoveItem }: 
             </Field>
           </div>
           <div>
-            <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-faint">Slides</p>
+            <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-faint">
+              Slides — each slide is one rotating banner on the website
+            </p>
             {renderItems(
               'slides',
               [
-                { key: 'eyebrow', label: 'Eyebrow', kind: 'input' },
-                { key: 'title', label: 'Title', kind: 'input' },
-                { key: 'accent', label: 'Accent (highlight)', kind: 'input' },
-                { key: 'subtitle', label: 'Subtitle', kind: 'textarea' },
-                { key: 'imageUrl', label: 'Background image', kind: 'image' },
-                { key: 'subjectImageUrl', label: 'Subject image', kind: 'image' },
-                { key: 'subjectAlt', label: 'Subject alt text', kind: 'input' },
-                { key: 'subjectPosition', label: 'Subject position', kind: 'input' },
-                { key: 'ctaLabel', label: 'Button label', kind: 'input' },
-                { key: 'ctaUrl', label: 'Button URL', kind: 'input' },
-                { key: 'cta2Label', label: 'Secondary button label', kind: 'input' },
-                { key: 'cta2Url', label: 'Secondary button URL', kind: 'input' },
-                { key: 'panelLabel', label: 'Panel label', kind: 'input' },
-                { key: 'panelTitle', label: 'Panel tagline', kind: 'input' },
+                { key: 'eyebrow', label: 'Small text above the title', kind: 'input' },
+                { key: 'title', label: 'Main title', kind: 'input' },
+                { key: 'accent', label: 'Accent word', hint: 'A word from the title shown in the highlight colour. Leave empty if not needed.', kind: 'input' },
+                { key: 'subtitle', label: 'Short description', kind: 'textarea' },
+                { key: 'imageUrl', label: 'Background image', hint: 'The big photo behind this slide.', kind: 'image' },
+                { key: 'subjectImageUrl', label: 'Front image (optional)', hint: 'A photo placed on top of the background, e.g. a cut-out person.', kind: 'image' },
+                { key: 'subjectAlt', label: 'Front image description', hint: 'Describes the image for visually impaired visitors.', kind: 'input' },
+                { key: 'subjectPosition', label: 'Front image position', hint: 'How the front image is aligned, e.g. "center 45%". Leave as is if unsure.', kind: 'input' },
+                { key: 'ctaLabel', label: 'Button text', kind: 'input' },
+                { key: 'ctaUrl', label: 'Button link', hint: 'Where the button goes, e.g. /donate', kind: 'input' },
+                { key: 'cta2Label', label: 'Second button text', kind: 'input' },
+                { key: 'cta2Url', label: 'Second button link', hint: 'Where the second button goes, e.g. /volunteer', kind: 'input' },
+                { key: 'panelLabel', label: 'Small panel label', hint: 'Short text shown in the corner box of the slide.', kind: 'input' },
+                { key: 'panelTitle', label: 'Panel tagline', hint: 'One line of text under the small panel label.', kind: 'input' },
               ],
               EMPTY_SLIDE,
               'Add slide',
@@ -345,13 +355,15 @@ function EditorForm({ section, onChange, onAddItem, onRemoveItem, onMoveItem }: 
             <Input id="stats-heading" value={str(c.heading)} onChange={(e) => set('heading', e.target.value)} />
           </Field>
           <div>
-            <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-faint">Stats</p>
+            <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-faint">
+              Numbers — each one is a big number with a caption under it
+            </p>
             {renderItems(
               'items',
               [
-                { key: 'icon', label: 'Icon name', kind: 'input' },
-                { key: 'value', label: 'Value', kind: 'input' },
-                { key: 'label', label: 'Label', kind: 'input' },
+                { key: 'icon', label: 'Icon name', hint: 'Icon shown above the number. Leave empty if unsure.', kind: 'input' },
+                { key: 'value', label: 'Number (e.g. 48,000+)', kind: 'input' },
+                { key: 'label', label: 'Caption (e.g. Lives impacted)', kind: 'input' },
               ],
               EMPTY_STAT,
               'Add stat',
@@ -372,16 +384,18 @@ function EditorForm({ section, onChange, onAddItem, onRemoveItem, onMoveItem }: 
             </Field>
           </div>
           <div>
-            <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-faint">Featured projects</p>
+            <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-faint">
+              Projects — each one is a card with a photo and a short description
+            </p>
             {renderItems(
               'projects',
               [
-                { key: 'title', label: 'Title', kind: 'input' },
-                { key: 'tag', label: 'Tag', kind: 'input' },
-                { key: 'description', label: 'Description', kind: 'textarea' },
+                { key: 'title', label: 'Project name', kind: 'input' },
+                { key: 'tag', label: 'Category tag', hint: 'A small label on the card, e.g. EDUCATION or FOOD.', kind: 'input' },
+                { key: 'description', label: 'Short description', kind: 'textarea' },
                 { key: 'image', label: 'Card image', kind: 'image' },
-                { key: 'url', label: 'URL', kind: 'input' },
-                { key: 'position', label: 'Object position', kind: 'input' },
+                { key: 'url', label: 'Link when clicked', hint: 'Where visitors go after clicking the card, e.g. /donate', kind: 'input' },
+                { key: 'position', label: 'Image focus point', hint: 'Which part of the photo stays centred, e.g. "50% 50%". Leave as is if unsure.', kind: 'input' },
               ],
               EMPTY_PROJECT,
               'Add project',
@@ -406,7 +420,9 @@ function EditorForm({ section, onChange, onAddItem, onRemoveItem, onMoveItem }: 
             </Field>
           </div>
           <div>
-            <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-faint">Marquee images</p>
+            <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-faint">
+              Photos — shown one after another in this gallery
+            </p>
             <div className="space-y-2">
               {images.map((image, index) => (
                 <ImageField
@@ -452,10 +468,10 @@ function EditorForm({ section, onChange, onAddItem, onRemoveItem, onMoveItem }: 
             <Textarea id="cta-paragraph" rows={2} value={str(c.paragraph)} onChange={(e) => set('paragraph', e.target.value)} />
           </Field>
           <div className="grid gap-3 sm:grid-cols-2">
-            <Field label="Button label" htmlFor="cta-label">
-              <Input id="cta-label" value={str(c.buttonLabel)} onChange={(e) => set('buttonLabel', e.target.value)} />
-            </Field>
-            <Field label="Button URL" htmlFor="cta-url">
+          <Field label="Button text" htmlFor="cta-label">
+            <Input id="cta-label" value={str(c.buttonLabel)} onChange={(e) => set('buttonLabel', e.target.value)} />
+          </Field>
+            <Field label="Button link" htmlFor="cta-url" hint="Where visitors go after clicking, e.g. /donate">
               <Input id="cta-url" value={str(c.buttonUrl)} onChange={(e) => set('buttonUrl', e.target.value)} />
             </Field>
           </div>
@@ -472,8 +488,7 @@ function EditorForm({ section, onChange, onAddItem, onRemoveItem, onMoveItem }: 
     default:
       return (
         <p className="text-sm text-muted">
-          This section type (<code className="rounded bg-slate-100 px-1.5 py-0.5 text-xs">{section.type}</code>) is not
-          editable here.
+          This section cannot be edited here yet. Please ask the technical team to update it for you.
         </p>
       )
   }
@@ -608,7 +623,8 @@ export function WebsiteEditorPage() {
       <div className="p-4 sm:p-6 lg:p-8">
         <PageHeader eyebrow="Content" title="Website Editor" />
         <Card className="p-8 text-center text-sm text-muted">
-          No website data available. Check that you are signed in with website-user access.
+          We couldn't load your website content. Please sign out and sign in again. If the problem continues,
+          contact the technical team.
         </Card>
       </div>
     )
@@ -623,12 +639,12 @@ export function WebsiteEditorPage() {
       <PageHeader
         eyebrow="Content"
         title="Website Editor"
-        description={`Edit the live content of "${data.website.name}". Changes publish immediately.`}
+        description={`Update the text and pictures on "${data.website.name}". Pick a section on the left, make your changes here, then click "Save changes" — they appear on your live website right away.`}
         actions={
           <>
             <a href={liveUrl} target="_blank" rel="noopener noreferrer">
               <Button variant="secondary" icon={<ExternalLinkIcon />}>
-                Open site
+                View website
               </Button>
             </a>
             <Button
@@ -657,7 +673,10 @@ export function WebsiteEditorPage() {
         <div className="min-w-0 flex-1">
           <p className="truncate text-sm font-semibold text-ink">{data.website.name}</p>
           <p className="truncate text-xs text-muted">
-            {data.page.title} · {sections.length} sections · {dirty.size > 0 ? `${dirty.size} unsaved` : 'all saved'}
+            {data.page.title} page · {sections.length} sections ·{' '}
+            {dirty.size > 0
+              ? `${dirty.size} ${dirty.size === 1 ? 'change' : 'changes'} not saved yet`
+              : 'all changes saved'}
           </p>
         </div>
         <span className="hidden items-center gap-1.5 rounded-full bg-brand-soft px-3 py-1 text-xs font-semibold text-brand sm:inline-flex">
@@ -669,14 +688,14 @@ export function WebsiteEditorPage() {
         {/* Section list */}
         <Card className="overflow-hidden">
           <div className="flex items-center justify-between border-b border-line px-4 py-3">
-            <p className="text-sm font-semibold text-ink">Sections</p>
+            <p className="text-sm font-semibold text-ink">Website sections</p>
             <span className="rounded-full bg-brand-soft px-2 py-0.5 text-[11px] font-bold text-brand">
               {sections.length}
             </span>
           </div>
           <div className="max-h-[calc(100vh-320px)] overflow-y-auto p-2">
             {sections.length === 0 ? (
-              <p className="px-3 py-8 text-center text-sm text-muted">No sections on this page.</p>
+              <p className="px-3 py-8 text-center text-sm text-muted">This page has no sections yet.</p>
             ) : (
               <ul className="space-y-1">
                 {sections.map((section) => {
@@ -739,15 +758,19 @@ export function WebsiteEditorPage() {
         {/* Properties */}
         <Card className="overflow-hidden">
           <div className="flex items-center gap-2 border-b border-line px-4 py-3">
-            <p className="text-sm font-semibold text-ink">Section settings</p>
+            <p className="text-sm font-semibold text-ink">Edit this section</p>
           </div>
           {!selected ? (
             <div className="px-4 py-10 text-center text-sm text-muted">
-              Select a section to edit its content.
+              Click a section on the left to start editing.
             </div>
           ) : (
             <div className="max-h-[calc(100vh-320px)] space-y-5 overflow-y-auto p-4">
-              <Field label="Display name" htmlFor="section-name">
+              <Field
+                label="Section name"
+                htmlFor="section-name"
+                hint="Only used inside this editor so you can recognise the section. It does not appear on the website."
+              >
                 <Input
                   id="section-name"
                   value={selected.name ?? ''}
@@ -757,19 +780,19 @@ export function WebsiteEditorPage() {
 
               <div className="flex items-center justify-between rounded-xl border border-line bg-slate-50 px-4 py-3">
                 <div>
-                  <p className="text-sm font-medium text-ink">Section visible</p>
-                  <p className="text-xs text-muted">Shown on the live website</p>
+                  <p className="text-sm font-medium text-ink">Show this section</p>
+                  <p className="text-xs text-muted">Turn off to hide it from the website. Nothing gets deleted.</p>
                 </div>
                 <Toggle
                   checked={selected.isActive}
                   onChange={(checked) => patchSection(selected.id, { isActive: checked })}
-                  label="Section visible"
+                  label="Show this section"
                 />
               </div>
 
               <div className="border-t border-line pt-4">
                 <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-faint">
-                  Content
+                  Edit content
                 </p>
                 <EditorForm
                   section={selected}

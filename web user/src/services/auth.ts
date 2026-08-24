@@ -9,31 +9,6 @@ export interface LoginInput {
 const delay = (ms = 600): Promise<void> =>
   new Promise((resolve) => setTimeout(resolve, ms))
 
-const DEMO_USER: WebUserSession = {
-  accessToken: 'demo-token',
-  refreshToken: 'demo-refresh',
-  currentOrgId: 'being-sevak',
-  currentOrgSlug: 'being-sevak',
-  currentOrgName: 'Being Sevak',
-  organizations: [
-    {
-      id: 'being-sevak',
-      slug: 'being-sevak',
-      name: 'Being Sevak',
-      isCurrent: true,
-    },
-  ],
-  user: {
-    id: 'u1',
-    email: 'rahul@beingsevak.org',
-    firstName: 'Rahul',
-    lastName: 'Mehta',
-    role: 'admin',
-    roleName: 'Website Administrator',
-    avatarUrl: null,
-  },
-}
-
 export const authService = {
   async login(input: LoginInput): Promise<WebUserSession> {
     try {
@@ -73,23 +48,24 @@ export const authService = {
       return session
     } catch (error) {
       if (isAxiosError(error)) {
-        // Backend answered with real credentials — surface the error.
+        // Backend answered.
         if (error.response) {
-          // A 5xx here means the backend is unreachable (the dev proxy also
-          // returns 500 when the target isn't running), so fall through to the
-          // offline demo below instead of blocking the user.
+          // A 4xx is a real credential rejection from the API.
           if (error.response.status < 500) {
             throw new Error('Invalid email or password')
           }
-        } else if (error.code === 'ECONNABORTED') {
-          // Request aborted (client timeout) — the backend answered too slowly.
+          // A 5xx means the backend is unreachable (the dev proxy also
+          // returns 500 when the target isn't running).
+          throw new Error('Cannot reach the server. Make sure the API server is running, then try again.')
+        }
+        // Request aborted (client timeout) — the backend answered too slowly.
+        if (error.code === 'ECONNABORTED') {
           throw new Error('Login timed out. The backend is responding slowly — please try again.')
         }
-        // No response — backend unreachable — fall through to the offline demo.
+        // No response at all — backend unreachable.
+        throw new Error('Cannot reach the server. Make sure the API server is running, then try again.')
       }
-      // Offline demo: accept the seeded demo account.
-      await delay()
-      throw new Error('Invalid email or password')
+      throw new Error('Login failed, please try again')
     }
   },
 

@@ -51,7 +51,7 @@ export const projectRepository = {
         skip: params.skip,
         take: params.take,
         include: {
-          _count: { select: { beneficiaries: true, images: true } },
+          _count: { select: { beneficiaries: true, images: true, stats: true } },
         },
       }),
       prisma.project.count({ where }),
@@ -69,11 +69,15 @@ export const projectRepository = {
     if (!payload.slug && payload.title) {
       payload.slug = slugify(String(payload.title));
     }
+    const children = childrenPayload(organizationId, { images, services, impacts, stats } as ProjectChildInput);
     return prisma.project.create({
       data: {
         ...payload,
         organizationId,
-        ...childrenPayload(organizationId, { images, services, impacts, stats } as ProjectChildInput),
+        images: { create: children.images },
+        services: { create: children.services },
+        impacts: { create: children.impacts },
+        stats: { create: children.stats },
       } as unknown as Prisma.ProjectUncheckedCreateInput,
       include,
     });

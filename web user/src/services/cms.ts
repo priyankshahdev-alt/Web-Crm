@@ -1,4 +1,4 @@
-import type { CmsPage, Menu, PageSection } from '../types'
+import type { CmsPage, Menu, PageSection, SectionTemplate } from '../types'
 import {
   createEntity,
   getEntity,
@@ -67,6 +67,45 @@ export const cmsService = {
 
   async saveSections(pageId: string, sections: PageSection[]): Promise<CmsPage | null> {
     return updateEntity<CmsPage>('pages', 'pages', pageId, { sections })
+  },
+
+  async listSectionTemplates(): Promise<SectionTemplate[]> {
+    if (!(await backendAvailable())) {
+      throw new Error('Live backend not connected')
+    }
+    const { data } = await http.get('/sections/templates')
+    return data.data as SectionTemplate[]
+  },
+
+  async addSection(pageId: string, input: { type: string; name?: string; sortOrder?: number; isActive?: boolean; content?: Record<string, unknown>; settings?: Record<string, unknown> }): Promise<PageSection> {
+    if (!(await backendAvailable())) {
+      throw new Error('Live backend not connected')
+    }
+    const { data } = await http.post(`/pages/${pageId}/sections`, input)
+    return data.data as PageSection
+  },
+
+  async updateSection(pageId: string, sectionId: string, patch: { name?: string | null; isActive?: boolean; sortOrder?: number; content?: Record<string, unknown> }): Promise<PageSection> {
+    if (!(await backendAvailable())) {
+      throw new Error('Live backend not connected')
+    }
+    const { data } = await http.patch(`/pages/${pageId}/sections/${sectionId}`, patch)
+    return data.data as PageSection
+  },
+
+  async removeSection(pageId: string, sectionId: string): Promise<void> {
+    if (!(await backendAvailable())) {
+      throw new Error('Live backend not connected')
+    }
+    await http.delete(`/pages/${pageId}/sections/${sectionId}`)
+  },
+
+  async reorderSections(pageId: string, orderedIds: string[]): Promise<string[]> {
+    if (!(await backendAvailable())) {
+      throw new Error('Live backend not connected')
+    }
+    const { data } = await http.post(`/pages/${pageId}/sections/reorder`, { orderedIds })
+    return data.data as string[]
   },
 }
 

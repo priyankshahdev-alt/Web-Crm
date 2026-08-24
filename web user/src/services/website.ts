@@ -26,6 +26,11 @@ export const websiteService = {
     return data.data as { website: WebsiteContent['website']; settings: WebsiteContent['settings'] }
   },
 
+  async getLiveImages(): Promise<Record<string, string>> {
+    const { data } = await http.get(`/websites/${resolveSiteSlug()}/live-images`)
+    return data.data as Record<string, string>
+  },
+
   async getContentTree(): Promise<WebsiteContent> {
     const { data } = await http.get(`/websites/${resolveSiteSlug()}/content`)
     return data.data as WebsiteContent

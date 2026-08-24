@@ -18,6 +18,8 @@ const router = Router();
 // Authenticated, scoped to the website resolved from the :slug path segment.
 router.use('/:slug', authenticate(), websiteScope());
 
+router.get('/:slug/live-images', rbac('site:view'), asyncHandler(websiteController.getLiveImages));
+
 router.get('/:slug', rbac('site:view'), asyncHandler(websiteController.get));
 router.get('/:slug/content', rbac('site:view'), asyncHandler(websiteController.content));
 

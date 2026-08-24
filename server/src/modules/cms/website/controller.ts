@@ -4,6 +4,10 @@ import { ok } from '../../../utils/ApiResponse';
 import { websiteService } from './service';
 
 export const websiteController = {
+  getLiveImages: asyncHandler(async (req: Request, res: Response) => {
+    const images = await websiteService.getLiveImages(req.params.slug);
+    ok(res, images, 'OK');
+  }),
   get: asyncHandler(async (req: Request, res: Response) => {
     const result = await websiteService.getWebsite(req.params.slug);
     ok(res, result, 'OK');
