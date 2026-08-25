@@ -1,6 +1,6 @@
-import type { DashboardStats, ProfileUser } from '../types'
-import { store } from './store'
-import { http, isLiveMode } from './api'
+import type { DashboardStats, ProfileUser, SessionDevice } from '../types'
+import { http } from './api'
+import { approvalService } from './settings'
 
 const EMPTY_STATS: DashboardStats = {
   visitors: 0,
@@ -32,25 +32,51 @@ const EMPTY_STATS: DashboardStats = {
   recentForms: [],
 }
 
-/**
- * Merge live org-scoped counts from the backend with the local fallback so the
- * dashboard always reflects the currently logged-in organization, never a
- * leftover from another account.
- */
+function mapProfileUser(u: any): ProfileUser {
+  return {
+    id: u.id,
+    firstName: u.firstName,
+    lastName: u.lastName ?? '',
+    email: u.email,
+    phone: u.phone ?? null,
+    role: (u.roles ?? [])[0] ?? 'user',
+    roleName: (u.roles ?? [])[0] ?? 'User',
+    avatarUrl: u.avatarUrl ?? null,
+    lastLoginAt: u.lastLoginAt ?? null,
+    createdAt: u.createdAt ?? '',
+    twoFactorEnabled: false,
+    sessions: [],
+  }
+}
+
+function mapSessionDevice(s: any): SessionDevice {
+  return {
+    id: s.id,
+    device: s.device,
+    browser: s.browser,
+    ip: s.ip,
+    location: s.location,
+    current: s.current,
+    lastActive: s.lastActive,
+  }
+}
+
 export const dashboardService = {
   async stats(): Promise<DashboardStats> {
-    if (!isLiveMode()) return this._fromStore()
     try {
-      const { data } = await http.get('/dashboard/my-website')
-      const body = data?.data
+      const [dashboardResult, pendingCount] = await Promise.all([
+        http.get('/dashboard/my-website').then(({ data }) => data?.data),
+        approvalService.pendingCount().catch(() => 0),
+      ])
+      const body = dashboardResult
       const counts = body?.counts ?? {}
 
       return {
         ...EMPTY_STATS,
-        // Legacy fields for backward compat
+        pendingApprovals: pendingCount,
         publishedPages: (counts.pages?.published ?? 0) + (counts.projects?.published ?? 0) + (counts.events?.published ?? 0) + (counts.blogs?.published ?? 0),
         draftPages: (counts.pages?.draft ?? 0) + (counts.projects?.draft ?? 0) + (counts.events?.draft ?? 0) + (counts.blogs?.draft ?? 0),
-        formsSubmitted: 0, // Will be 0 until forms moved to backend
+        formsSubmitted: 0,
         storageUsed: counts.media?.storageBytes ?? 0,
         publishedSeries: [
           { label: 'Pages', value: counts.pages?.published ?? 0 },
@@ -59,7 +85,6 @@ export const dashboardService = {
           { label: 'Blogs', value: counts.blogs?.published ?? 0 },
           { label: 'Galleries', value: counts.galleries?.published ?? 0 },
         ],
-        // NEW: Detailed counts
         pages: counts.pages ?? { total: 0, published: 0, draft: 0, archived: 0 },
         projects: counts.projects ?? { total: 0, published: 0, draft: 0 },
         events: counts.events ?? { total: 0, published: 0, draft: 0, upcoming: 0, past: 0 },
@@ -75,58 +100,46 @@ export const dashboardService = {
         recentForms: body?.recentForms ?? [],
       }
     } catch {
-      return this._fromStore()
-    }
-  },
-
-  async _fromStore(): Promise<DashboardStats> {
-    const [pages, projects, events, blogs, media] = await Promise.all([
-      store.all<{ status: string }>('pages'),
-      store.all<{ status: string }>('projects'),
-      store.all<{ status: string }>('events'),
-      store.all<{ status: string }>('blogs'),
-      store.all<{ size: number }>('media'),
-    ])
-    const rows = await store.all<DashboardStats>('stats')
-    const stats = Array.isArray(rows) ? rows[0] : (rows as unknown as DashboardStats)
-    const publishedPages =
-      pages.filter((p) => p.status === 'PUBLISHED').length + projects.filter((p) => p.status === 'PUBLISHED').length + events.filter((e) => e.status === 'PUBLISHED').length + blogs.filter((b) => b.status === 'PUBLISHED').length
-    const draftPages =
-      pages.filter((p) => p.status === 'DRAFT').length + projects.filter((p) => p.status === 'DRAFT').length + events.filter((e) => e.status === 'DRAFT').length + blogs.filter((b) => b.status === 'DRAFT').length
-    return {
-      ...EMPTY_STATS,
-      ...stats,
-      visitsSeries: stats?.visitsSeries ?? EMPTY_STATS.visitsSeries,
-      publishedSeries: stats?.publishedSeries ?? EMPTY_STATS.publishedSeries,
-      trafficByDevice: stats?.trafficByDevice ?? EMPTY_STATS.trafficByDevice,
-      topPages: stats?.topPages ?? EMPTY_STATS.topPages,
-      publishedPages,
-      draftPages,
-      storageUsed: media.reduce((sum, item) => sum + item.size, 0),
+      return EMPTY_STATS
     }
   },
 
   async profile(): Promise<ProfileUser> {
-    const rows = await store.all<ProfileUser>('profile')
-    return Array.isArray(rows) ? rows[0] : (rows as unknown as ProfileUser)
+    const { data } = await http.get('/auth/me')
+    const u = data?.data?.user
+    if (!u) throw new Error('Not authenticated')
+    return mapProfileUser(u)
   },
 
   async updateProfile(patch: Partial<ProfileUser>): Promise<ProfileUser> {
-    const rows = await store.all<ProfileUser>('profile')
-    const current = Array.isArray(rows) ? rows[0] : (rows as unknown as ProfileUser)
-    const updated = { ...current, ...patch }
-    await store.set<ProfileUser[]>('profile', [updated])
-    return updated
+    const { data } = await http.patch('/auth/profile', {
+      firstName: patch.firstName,
+      lastName: patch.lastName,
+      phone: patch.phone,
+      avatarUrl: patch.avatarUrl,
+    })
+    return mapProfileUser(data?.data?.user)
   },
 
-  async revokeSession(sessionId: string): Promise<ProfileUser> {
-    const rows = await store.all<ProfileUser>('profile')
-    const current = Array.isArray(rows) ? rows[0] : (rows as unknown as ProfileUser)
-    const updated = {
-      ...current,
-      sessions: current.sessions.filter((session) => session.id !== sessionId),
-    }
-    await store.set<ProfileUser[]>('profile', [updated])
-    return updated
+  async changePassword(input: { currentPassword: string; newPassword: string }): Promise<void> {
+    await http.post('/auth/change-password', input)
+  },
+
+  async changeEmail(newEmail: string): Promise<string> {
+    const { data } = await http.post('/auth/email', { newEmail })
+    return data?.data?.message ?? 'Verification email sent. Please verify your new email address.'
+  },
+
+  async listSessions(): Promise<SessionDevice[]> {
+    const { data } = await http.get('/auth/sessions')
+    return (data?.data ?? []).map(mapSessionDevice)
+  },
+
+  async revokeSession(sessionId: string): Promise<void> {
+    await http.post(`/auth/sessions/${sessionId}/revoke`)
+  },
+
+  async revokeAllOtherSessions(currentFamilyId: string): Promise<void> {
+    await http.post('/auth/sessions/revoke-all', { currentFamilyId })
   },
 }

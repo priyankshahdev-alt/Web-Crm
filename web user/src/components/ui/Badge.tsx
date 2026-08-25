@@ -72,6 +72,8 @@ export const STATUS_VARIANT: Record<string, BadgeVariant> = {
   APPROVED: 'success',
   REJECTED: 'danger',
   SUSPENDED: 'danger',
+  CHANGES_REQUESTED: 'info',
+  CANCELLED: 'neutral',
 }
 
 export function StatusBadge({ status }: { status: string }) {

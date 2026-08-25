@@ -76,6 +76,9 @@ model Organization {
   teamMembers     TeamMember[]
   externalDomains ExternalDomain[]
   apiKeys         ApiKey[]
+  forms           Form[]
+  formSubmissions FormSubmission[]
+  approvalRequests ApprovalRequest[]
 
   @@index([slug])
 }
@@ -171,6 +174,8 @@ model User {
   departmentsManaged Department[] @relation("DepartmentManager")
   roles           UserRole[]
   permissions     UserPermission[]
+  submittedApprovals ApprovalRequest[] @relation("SubmittedBy")
+  reviewedApprovals ApprovalRequest[] @relation("ReviewedBy")
 
   @@index([email])
 }
@@ -341,8 +346,10 @@ model Media {
   thumbnailUrl   String?
   entityType     String?
   entityId       String?
+  folder         String?
   uploadedById   String?
   createdAt      DateTime @default(now())
+  updatedAt      DateTime @default(now()) @updatedAt
 
   organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
 
@@ -361,6 +368,10 @@ model Page {
   title          String
   metaTitle      String?
   metaDescription String?
+  ogImageUrl     String?
+  canonicalUrl   String?
+  robots         String?
+  keywords       Json?
   status         PublishStatus @default(DRAFT)
   template       String    @default("default")
   sortOrder      Int       @default(0)
@@ -549,6 +560,7 @@ model TeamMember {
   role           String?
   photoUrl       String?
   bio            String?
+  socials        Json?
   sortOrder      Int      @default(0)
   isActive       Boolean  @default(true)
   createdAt      DateTime @default(now())
@@ -984,6 +996,10 @@ model Testimonial {
   role           String?
   avatarUrl      String?
   color          String?
+  rating         Int?
+  personType     String?
+  location       String?
+  programId      String?  @db.Uuid
   isActive       Boolean  @default(true)
   sortOrder      Int      @default(0)
   createdAt      DateTime @default(now())
@@ -1067,4 +1083,85 @@ model Location {
 
   @@unique([organizationId, name])
   @@index([organizationId])
+}
+
+model Form {
+  id             String   @id @default(uuid()) @db.Uuid
+  organizationId String   @db.Uuid
+  name           String
+  description    String?
+  status         String   @default("DRAFT")
+  submitLabel    String?
+  successMessage String?
+  fields         Json     @default("[]")
+  settings       Json?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  submissions FormSubmission[]
+
+  @@index([organizationId])
+}
+
+model FormSubmission {
+  id             String   @id @default(uuid()) @db.Uuid
+  formId         String   @db.Uuid
+  organizationId String   @db.Uuid
+  data           Json
+  status         String   @default("NEW")
+  createdAt      DateTime @default(now())
+
+  form         Form         @relation(fields: [formId], references: [id], onDelete: Cascade)
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([formId])
+  @@index([organizationId])
+}
+
+// ============================================================
+// APPROVAL WORKFLOW
+// ============================================================
+
+model ApprovalRequest {
+  id             String   @id @default(uuid()) @db.Uuid
+  organizationId String   @db.Uuid
+  resourceId     String
+  resourceType   String
+  resourceTitle  String
+  action         String
+  status         String   @default("PENDING")
+  submitterNote  String?
+  reviewerNote   String?
+  submitterId    String?  @db.Uuid
+  reviewerId     String?  @db.Uuid
+  submittedAt    DateTime @default(now())
+  reviewedAt     DateTime?
+  contentSnapshot Json?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  submitter    User?        @relation("SubmittedBy", fields: [submitterId], references: [id], onDelete: SetNull)
+  reviewer     User?        @relation("ReviewedBy", fields: [reviewerId], references: [id], onDelete: SetNull)
+  events       ApprovalEvent[]
+
+  @@index([organizationId, status])
+  @@index([resourceType, resourceId])
+  @@index([submitterId])
+  @@index([reviewerId])
+}
+
+model ApprovalEvent {
+  id        String   @id @default(uuid()) @db.Uuid
+  requestId String   @db.Uuid
+  actorName String
+  actorId   String?  @db.Uuid
+  action    String
+  note      String?
+  createdAt DateTime @default(now())
+
+  request ApprovalRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+
+  @@index([requestId])
 }

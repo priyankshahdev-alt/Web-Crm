@@ -43,23 +43,23 @@ import {
 import { timeAgo, formatCompact, formatBytes } from '../utils/format'
 import { useSession } from '../context/SessionContext'
 
-const ACTION_VARIANT: Record<ActivityLog['action'], 'brand' | 'success' | 'danger' | 'neutral' | 'warning'> = {
+const ACTION_VARIANT: Record<string, 'brand' | 'success' | 'danger' | 'neutral' | 'warning' | 'info'> = {
   CREATE: 'brand',
   UPDATE: 'neutral',
   DELETE: 'danger',
   PUBLISH: 'success',
   REVIEW: 'warning',
-  LOGIN: 'brand',
+  LOGIN: 'info',
   LOGOUT: 'neutral',
 }
 
-const ACTION_STYLE: Record<ActivityLog['action'], string> = {
+const ACTION_STYLE: Record<string, string> = {
   CREATE: 'bg-brand-soft text-brand',
   UPDATE: 'bg-soft text-muted',
   DELETE: 'bg-danger/10 text-danger',
   PUBLISH: 'bg-success/10 text-success',
   REVIEW: 'bg-warning/10 text-warning',
-  LOGIN: 'bg-brand-soft text-brand',
+  LOGIN: 'bg-info/10 text-info',
   LOGOUT: 'bg-soft text-muted',
 }
 
@@ -104,10 +104,10 @@ export function DashboardPage() {
   const [activity, setActivity] = useState<ActivityLog[]>([])
 
   useEffect(() => {
-    void Promise.all([dashboardService.stats(), activityService.list()]).then(
+    void Promise.all([dashboardService.stats(), activityService.list({ limit: 6 })]).then(
       ([statsData, activityData]) => {
         setStats(statsData)
-        setActivity(activityData.slice(0, 6))
+        setActivity(activityData.items)
       },
     )
   }, [])
@@ -330,7 +330,7 @@ export function DashboardPage() {
                     <div className="min-w-0 flex-1">
                       <p className="text-sm font-medium text-ink">{entry.message ?? entry.action}</p>
                       <p className="mt-0.5 flex flex-wrap items-center gap-x-2 text-xs text-muted">
-                        <span className="font-semibold">{entry.userName}</span>
+                        <span className="font-semibold">{entry.user ? `${entry.user.firstName} ${entry.user.lastName ?? ''}`.trim() : 'System'}</span>
                         <Badge variant={ACTION_VARIANT[entry.action]}>{entry.action}</Badge>
                         <span>{timeAgo(entry.createdAt)}</span>
                       </p>

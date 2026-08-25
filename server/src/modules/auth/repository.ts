@@ -90,6 +90,84 @@ export const authRepository = {
     });
   },
 
+  async findUserProfileById(id: string) {
+    return prisma.user.findUnique({
+      where: { id },
+      select: {
+        id: true,
+        email: true,
+        firstName: true,
+        lastName: true,
+        phone: true,
+        avatarUrl: true,
+        isMaster: true,
+        isActive: true,
+        lastLoginAt: true,
+        createdAt: true,
+        roles: {
+          select: {
+            role: {
+              select: { key: true, name: true },
+            },
+          },
+        },
+      },
+    });
+  },
+
+  async updateProfile(id: string, data: { firstName?: string; lastName?: string; phone?: string | null; avatarUrl?: string | null }) {
+    return prisma.user.update({
+      where: { id },
+      data,
+      select: {
+        id: true,
+        email: true,
+        firstName: true,
+        lastName: true,
+        phone: true,
+        avatarUrl: true,
+        isMaster: true,
+        isActive: true,
+        lastLoginAt: true,
+        createdAt: true,
+        roles: {
+          select: {
+            role: { select: { key: true, name: true } },
+          },
+        },
+      },
+    });
+  },
+
+  async findActiveRefreshTokens(userId: string) {
+    return prisma.refreshToken.findMany({
+      where: { userId, revokedAt: null },
+      select: {
+        id: true,
+        familyId: true,
+        ipAddress: true,
+        userAgent: true,
+        createdAt: true,
+        expiresAt: true,
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+  },
+
+  async revokeRefreshTokenById(id: string, userId: string) {
+    return prisma.refreshToken.updateMany({
+      where: { id, userId },
+      data: { revokedAt: new Date() },
+    });
+  },
+
+  async revokeAllOtherSessions(userId: string, exceptFamilyId: string) {
+    return prisma.refreshToken.updateMany({
+      where: { userId, revokedAt: null, NOT: { familyId: exceptFamilyId } },
+      data: { revokedAt: new Date() },
+    });
+  },
+
   async findActiveRefreshFamilies(userId: string) {
     return prisma.refreshToken.findMany({
       where: { userId, revokedAt: null },

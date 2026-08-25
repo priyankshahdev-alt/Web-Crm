@@ -238,11 +238,11 @@ const SEARCHABLE_FIELDS: Partial<Record<StoreKey, string[]>> = {
   blogs: ['title', 'excerpt', 'authorName'],
   galleries: ['title', 'slug', 'description'],
   team: ['name', 'role'],
-  testimonials: ['name', 'quote'],
+  testimonials: ['name', 'quote', 'personType', 'location'],
   partners: ['name', 'website'],
   faqs: ['question', 'answer'],
   media: ['fileName', 'folder'],
   forms: ['name', 'description'],
-  approvals: ['title', 'type'],
+  approvals: ['resourceTitle', 'resourceType'],
   notifications: ['title', 'body'],
 }

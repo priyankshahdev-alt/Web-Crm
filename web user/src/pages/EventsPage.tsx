@@ -3,7 +3,9 @@ import { eventService, programService } from '../services/content'
 import type { Event, Project, PublishStatus } from '../types'
 import { slugify, formatDate } from '../utils/format'
 import { useToast } from '../context/ToastContext'
+import { useSession } from '../context/SessionContext'
 import { isAxiosError } from '../services/api'
+import { approvalService } from '../services/settings'
 import { PageHeader } from '../components/ui/PageHeader'
 import { Button } from '../components/ui/Button'
 import { Card } from '../components/ui/Card'
@@ -32,6 +34,7 @@ import {
   MonitorIcon,
   PencilIcon,
   PlusIcon,
+  SendIcon,
   TrashIcon,
   XCircleIcon,
 } from '../components/icons'
@@ -381,6 +384,7 @@ function SectionAccordion({
 
 export function EventsPage() {
   const { toast } = useToast()
+  const { session } = useSession()
 
   const [items, setItems] = useState<Event[]>([])
   const [loading, setLoading] = useState(true)
@@ -780,6 +784,43 @@ export function EventsPage() {
       await load()
     } catch (error) {
       toast('Could not save this event', { variant: 'error', description: errorMessage(error) })
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  const handleSubmitForReview = async () => {
+    if (!formRef.current.title.trim()) {
+      toast('Event name is required', { variant: 'warning' })
+      setOpenSections((current) => ({ ...current, basic: true }))
+      return
+    }
+    if (!formRef.current.date) {
+      toast('Please pick an event date', { variant: 'warning' })
+      setOpenSections((current) => ({ ...current, datetime: true }))
+      return
+    }
+    setSaving(true)
+    try {
+      await eventService.update(editorId!, buildPayload('DRAFT'))
+      await approvalService.create({
+        resourceType: 'event',
+        resourceId: editorId!,
+        resourceTitle: formRef.current.title.trim(),
+        action: 'publish',
+        submitterNote: 'Submitted for review.',
+        contentSnapshot: {
+          title: formRef.current.title.trim(),
+          date: formRef.current.date,
+          venue: formRef.current.venue,
+          shortDescription: formRef.current.shortDescription,
+        },
+      })
+      toast('Submitted for review', { variant: 'success', description: formRef.current.title.trim() })
+      setSnapshot(JSON.stringify(formRef.current))
+      await load()
+    } catch (error) {
+      toast('Could not submit for review', { variant: 'error', description: errorMessage(error) })
     } finally {
       setSaving(false)
     }
@@ -1314,6 +1355,14 @@ export function EventsPage() {
                 {formRef.current.status === 'PUBLISHED' && !formRef.current.eventState
                   ? 'Save Changes'
                   : 'Save Draft'}
+              </Button>
+              <Button
+                variant="secondary"
+                loading={saving}
+                icon={<SendIcon className="h-4 w-4" />}
+                onClick={() => void handleSubmitForReview()}
+              >
+                Submit for Review
               </Button>
               <Button
                 loading={saving}

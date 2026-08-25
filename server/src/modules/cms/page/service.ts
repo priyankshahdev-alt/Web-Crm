@@ -153,6 +153,10 @@ export const pageService = {
       title: input.title,
       metaTitle: input.metaTitle ?? null,
       metaDescription: input.metaDescription ?? null,
+      ogImageUrl: input.ogImageUrl ?? null,
+      canonicalUrl: input.canonicalUrl ?? null,
+      robots: input.robots ?? null,
+      keywords: input.keywords ?? undefined,
       status: input.status ?? 'DRAFT',
       template: input.template ?? 'default',
       sortOrder: input.sortOrder ?? 0,
@@ -200,7 +204,7 @@ export const pageService = {
       }
     }
 
-    const { sections, ...pagePatch } = input;
+    const { sections, keywords: _keywords, ...pagePatch } = input;
     const hasStatusChange = pagePatch.status !== undefined && pagePatch.status !== existing.status;
 
     if (sections) {
@@ -217,8 +221,13 @@ export const pageService = {
       });
     }
 
-    if (Object.keys(pagePatch).length > 0) {
-      await pageRepository.update(id, { ...pagePatch });
+    const updateData: Record<string, unknown> = { ...pagePatch };
+    if (_keywords !== undefined) {
+      updateData.keywords = _keywords ?? undefined;
+    }
+
+    if (Object.keys(updateData).length > 0) {
+      await pageRepository.update(id, updateData as any);
 
       await recordAudit({
         userId: req.user?.id,

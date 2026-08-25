@@ -1,4 +1,5 @@
 import { Prisma, PublishStatus } from '@prisma/client';
+import { randomUUID } from 'node:crypto';
 import { prisma } from '../../../libs/prisma';
 import type { SectionPatch } from './schema';
 
@@ -113,7 +114,7 @@ export const pageRepository = {
       if (sections.length > 0) {
         await tx.pageSection.createMany({
           data: sections.map((section) => ({
-            id: section.id,
+            id: section.id ?? randomUUID(),
             pageId,
             organizationId,
             type: section.type,

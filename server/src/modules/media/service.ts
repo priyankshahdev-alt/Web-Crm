@@ -13,6 +13,10 @@ const ALLOWED_MIME = new Set([
   'image/webp',
   'image/gif',
   'image/svg+xml',
+  'image/avif',
+  'video/mp4',
+  'video/webm',
+  'video/quicktime',
   'application/pdf',
   'application/msword',
   'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
@@ -20,6 +24,8 @@ const ALLOWED_MIME = new Set([
   'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
   'application/vnd.ms-powerpoint',
   'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+  'audio/mpeg',
+  'audio/wav',
 ]);
 
 const MAX_SIZE = 10 * 1024 * 1024;
@@ -31,6 +37,10 @@ function extFromMime(mime: string): string {
     'image/webp': 'webp',
     'image/gif': 'gif',
     'image/svg+xml': 'svg',
+    'image/avif': 'avif',
+    'video/mp4': 'mp4',
+    'video/webm': 'webm',
+    'video/quicktime': 'mov',
     'application/pdf': 'pdf',
     'application/msword': 'doc',
     'application/vnd.openxmlformats-officedocument.wordprocessingml.document': 'docx',
@@ -38,6 +48,8 @@ function extFromMime(mime: string): string {
     'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': 'xlsx',
     'application/vnd.ms-powerpoint': 'ppt',
     'application/vnd.openxmlformats-officedocument.presentationml.presentation': 'pptx',
+    'audio/mpeg': 'mp3',
+    'audio/wav': 'wav',
   };
   return map[mime] ?? 'bin';
 }
@@ -55,7 +67,7 @@ export const mediaService = {
   async upload(
     org: { id: string; slug: string },
     file: Express.Multer.File,
-    meta: { entityType?: string; entityId?: string },
+    meta: { entityType?: string; entityId?: string; folder?: string },
     userId: string,
   ) {
     if (!file) throw ApiError.badRequest('No file uploaded');
@@ -103,6 +115,7 @@ export const mediaService = {
       thumbnailUrl: isImage(file.mimetype) ? url : undefined,
       entityType: meta.entityType,
       entityId: meta.entityId,
+      folder: meta.folder || undefined,
       uploadedById: userId,
     });
 
@@ -116,6 +129,47 @@ export const mediaService = {
     });
 
     return media;
+  },
+
+  async rename(orgId: string, id: string, fileName: string, userId: string) {
+    const media = await mediaRepository.findById(id);
+    if (!media) throw ApiError.notFound('Media not found');
+    if (media.organizationId !== orgId) throw ApiError.forbidden('Media does not belong to this organization');
+
+    const sanitized = fileName.replace(/[^\w.\- ]/g, '_').slice(0, 120).trim();
+    if (!sanitized) throw ApiError.badRequest('Invalid file name');
+
+    const updated = await mediaRepository.update(id, { fileName: sanitized });
+
+    await recordAudit({
+      userId,
+      organizationId: orgId,
+      action: 'UPDATE',
+      resource: 'media',
+      resourceId: id,
+      message: `Media renamed: ${media.fileName} → ${sanitized}`,
+    });
+
+    return updated;
+  },
+
+  async moveToFolder(orgId: string, id: string, folder: string | null, userId: string) {
+    const media = await mediaRepository.findById(id);
+    if (!media) throw ApiError.notFound('Media not found');
+    if (media.organizationId !== orgId) throw ApiError.forbidden('Media does not belong to this organization');
+
+    const updated = await mediaRepository.update(id, { folder: folder || null });
+
+    await recordAudit({
+      userId,
+      organizationId: orgId,
+      action: 'UPDATE',
+      resource: 'media',
+      resourceId: id,
+      message: `Media moved to folder: ${folder ?? 'All files'}`,
+    });
+
+    return updated;
   },
 
   async remove(orgId: string, id: string, userId: string) {
