@@ -7,6 +7,7 @@ export const listAuditLogsSchema = z
     action: z.string().max(60).optional(),
     resource: z.string().max(60).optional(),
     userId: z.string().uuid().optional(),
+    search: z.string().max(200).optional(),
     from: z.string().datetime().optional(),
     to: z.string().datetime().optional(),
   })

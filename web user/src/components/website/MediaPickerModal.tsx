@@ -7,6 +7,9 @@ import { useToast } from '../../context/ToastContext'
 import { mediaService } from '../../services/media'
 import { websiteService } from '../../services/website'
 import { isAxiosError } from '../../services/api'
+import { formatBytes } from '../../utils/format'
+import { ImagePlaceholderIcon } from '../ui/IconsExtra'
+import { UploadIcon } from '../icons'
 import type { MediaAsset } from '../../types'
 
 interface MediaPickerModalProps {
@@ -28,6 +31,29 @@ function errorMessage(error: unknown): string {
 function isImage(asset: MediaAsset): boolean {
   return asset.mimeType?.startsWith('image/') ?? /\.(jpe?g|png|webp|gif|svg|avif)(\?|$)/i.test(asset.url)
 }
+function isVideo(asset: MediaAsset): boolean {
+  return asset.mimeType?.startsWith('video/') ?? false
+}
+function isAudio(asset: MediaAsset): boolean {
+  return asset.mimeType?.startsWith('audio/') ?? false
+}
+
+type PickerTypeFilter = 'all' | 'image' | 'video' | 'document'
+
+const PICKER_TABS: { key: PickerTypeFilter; label: string }[] = [
+  { key: 'all', label: 'All' },
+  { key: 'image', label: 'Images' },
+  { key: 'video', label: 'Videos' },
+  { key: 'document', label: 'Documents' },
+]
+
+function matchesPickerFilter(asset: MediaAsset, filter: PickerTypeFilter): boolean {
+  if (filter === 'all') return true
+  if (filter === 'image') return isImage(asset)
+  if (filter === 'video') return isVideo(asset)
+  if (filter === 'document') return !isImage(asset) && !isVideo(asset) && !isAudio(asset)
+  return true
+}
 
 export function MediaPickerModal({
   open,
@@ -41,6 +67,7 @@ export function MediaPickerModal({
   const [loading, setLoading] = useState(false)
   const [uploading, setUploading] = useState(false)
   const [search, setSearch] = useState('')
+  const [typeFilter, setTypeFilter] = useState<PickerTypeFilter>('all')
   const [manualUrl, setManualUrl] = useState('')
   const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -51,7 +78,7 @@ export function MediaPickerModal({
     mediaService
       .all()
       .then((items) => {
-        if (!cancelled) setAssets(items.filter(isImage))
+        if (!cancelled) setAssets(items)
       })
       .catch((error) => {
         if (!cancelled) toast(errorMessage(error), { variant: 'error' })
@@ -59,15 +86,14 @@ export function MediaPickerModal({
       .finally(() => {
         if (!cancelled) setLoading(false)
       })
-    return () => {
-      cancelled = true
-    }
+    return () => { cancelled = true }
   }, [open, toast])
 
   useEffect(() => {
     if (!open) {
       setSearch('')
       setManualUrl('')
+      setTypeFilter('all')
     }
   }, [open])
 
@@ -88,11 +114,12 @@ export function MediaPickerModal({
     [onClose, onPick, toast],
   )
 
-  const filtered = search.trim()
-    ? assets.filter((asset) =>
-        `${asset.fileName} ${asset.altText ?? ''}`.toLowerCase().includes(search.trim().toLowerCase()),
-      )
-    : assets
+  const q = search.trim().toLowerCase()
+  const filtered = assets.filter((asset) => {
+    if (!matchesPickerFilter(asset, typeFilter)) return false
+    if (q) return (asset.fileName + ' ' + (asset.altText ?? '')).toLowerCase().includes(q)
+    return true
+  })
 
   return (
     <Modal
@@ -124,7 +151,7 @@ export function MediaPickerModal({
           <div className="min-w-0 flex-1">
             <Input
               aria-label="Search media"
-              placeholder="Search by file name…"
+              placeholder="Search by file name..."
               value={search}
               onChange={(event) => setSearch(event.target.value)}
             />
@@ -143,10 +170,24 @@ export function MediaPickerModal({
           <Button
             variant="secondary"
             loading={uploading}
+            icon={<UploadIcon />}
             onClick={() => fileInputRef.current?.click()}
           >
-            Upload image
+            Upload
           </Button>
+        </div>
+
+        <div className="flex items-center gap-0.5 rounded-xl border border-line bg-white p-0.5">
+          {PICKER_TABS.map((tab) => (
+            <button
+              key={tab.key}
+              type="button"
+              onClick={() => setTypeFilter(tab.key)}
+              className={'whitespace-nowrap rounded-lg px-3 py-1.5 text-xs font-semibold transition ' + (typeFilter === tab.key ? 'bg-brand text-white shadow-sm' : 'text-muted hover:bg-slate-100 hover:text-ink')}
+            >
+              {tab.label}
+            </button>
+          ))}
         </div>
 
         {loading ? (
@@ -156,9 +197,12 @@ export function MediaPickerModal({
             ))}
           </div>
         ) : filtered.length === 0 ? (
-          <p className="rounded-xl border border-dashed border-line bg-soft px-4 py-10 text-center text-sm text-muted">
-            No images in the library yet. Upload your first image to get started.
-          </p>
+          <div className="rounded-xl border border-dashed border-line bg-soft px-4 py-10 text-center">
+            <ImagePlaceholderIcon className="mx-auto mb-2 h-8 w-8 text-slate-300" />
+            <p className="text-sm text-muted">
+              {search ? 'No files match your search.' : 'No files in the library yet. Upload your first file to get started.'}
+            </p>
+          </div>
         ) : (
           <ul className="grid max-h-[50vh] grid-cols-2 gap-3 overflow-y-auto sm:grid-cols-3 md:grid-cols-4">
             {filtered.map((asset) => {
@@ -171,23 +215,29 @@ export function MediaPickerModal({
                       onPick(asset.url)
                       onClose()
                     }}
-                    className={`group block w-full overflow-hidden rounded-xl border-2 bg-white text-left transition focus:outline-none ${
-                      selected
-                        ? 'border-brand ring-2 ring-brand/30'
-                        : 'border-line hover:border-brand/60'
-                    }`}
+                    className={'group block w-full overflow-hidden rounded-xl border-2 bg-white text-left transition focus:outline-none ' + (selected ? 'border-brand ring-2 ring-brand/30' : 'border-line hover:border-brand/60')}
                     title={asset.fileName}
                   >
                     <span className="block aspect-[4/3] w-full overflow-hidden bg-slate-100">
-                      <img
-                        src={asset.thumbnailUrl || asset.url}
-                        alt={asset.altText || asset.fileName}
-                        className="h-full w-full object-cover transition group-hover:scale-105"
-                        loading="lazy"
-                      />
+                      {isImage(asset) ? (
+                        <img
+                          src={asset.thumbnailUrl || asset.url}
+                          alt={asset.altText || asset.fileName}
+                          className="h-full w-full object-cover transition group-hover:scale-105"
+                          loading="lazy"
+                        />
+                      ) : (
+                        <div className="flex h-full w-full flex-col items-center justify-center gap-1 text-slate-400">
+                          <ImagePlaceholderIcon className="h-8 w-8" />
+                          <span className="text-[10px] font-bold">{asset.mimeType.split('/')[1]?.toUpperCase()}</span>
+                        </div>
+                      )}
                     </span>
                     <span className="block truncate px-2 py-1.5 text-xs text-muted">
                       {asset.fileName}
+                    </span>
+                    <span className="block px-2 pb-1.5 text-[10px] text-faint">
+                      {formatBytes(asset.size)}
                     </span>
                   </button>
                 </li>
@@ -202,7 +252,7 @@ export function MediaPickerModal({
           </label>
           <Input
             id="media-manual-url"
-            placeholder="https://… or images/photo.jpg"
+            placeholder="https://... or images/photo.jpg"
             value={manualUrl}
             onChange={(event) => setManualUrl(event.target.value)}
           />

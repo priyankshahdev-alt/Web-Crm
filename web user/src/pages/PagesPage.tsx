@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useState, type ReactNode } from 'react'
 import { cmsService } from '../services/cms'
 import { isLiveMode } from '../services/api'
-import { settingsService } from '../services/settings'
+import { settingsService, approvalService } from '../services/settings'
 import type { CmsPage, PublishStatus } from '../types'
 import { slugify, formatDate } from '../utils/format'
 import { uuid } from '../utils/uuid'
 import { useToast } from '../context/ToastContext'
+import { useSession } from '../context/SessionContext'
 import { PageHeader } from '../components/ui/PageHeader'
 import { Button } from '../components/ui/Button'
 import { Modal } from '../components/ui/Modal'
@@ -38,6 +39,7 @@ import {
   ExternalLinkIcon,
   ChevronDownIcon,
   ArrowRightIcon,
+  SendIcon,
 } from '../components/icons'
 
 const PAGE_SIZE = 9
@@ -113,6 +115,7 @@ const emptyForm: PageFormState = {
 
 export function PagesPage() {
   const { toast } = useToast()
+  const { session } = useSession()
   const [pages, setPages] = useState<CmsPage[]>([])
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState('')
@@ -212,6 +215,49 @@ export function PagesPage() {
       }
       setModalOpen(false)
       await load()
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  const handleSubmitForReview = async () => {
+    if (!form.title.trim()) {
+      toast('Please give the page a name', { variant: 'error' })
+      return
+    }
+    setSaving(true)
+    const payload = {
+      ...form,
+      slug: form.slug.trim() || slugify(form.title),
+      status: 'DRAFT' as PublishStatus,
+    }
+    try {
+      let pageId = editing?.id
+      if (editing) {
+        await cmsService.updatePage(editing.id, payload)
+      } else {
+        const created = await cmsService.createPage(payload)
+        pageId = created.id
+      }
+      if (pageId) {
+        await approvalService.create({
+          resourceType: 'page',
+          resourceId: pageId,
+          resourceTitle: form.title.trim(),
+          action: 'publish',
+          submitterNote: 'Submitted for review.',
+          contentSnapshot: {
+            title: form.title.trim(),
+            slug: form.slug.trim() || slugify(form.title),
+            status: 'DRAFT',
+          },
+        })
+        toast('Submitted for review', { variant: 'success', description: form.title.trim() })
+        setModalOpen(false)
+        await load()
+      }
+    } catch {
+      toast('Could not submit for review', { variant: 'error' })
     } finally {
       setSaving(false)
     }
@@ -508,6 +554,9 @@ export function PagesPage() {
             <>
               <Button variant="secondary" onClick={() => setModalOpen(false)}>
                 Cancel
+              </Button>
+              <Button variant="secondary" loading={saving} icon={<SendIcon className="h-4 w-4" />} onClick={() => void handleSubmitForReview()}>
+                Submit for Review
               </Button>
               <Button loading={saving} onClick={() => void handleSave()}>
                 {editing ? 'Save changes' : 'Create page'}

@@ -113,6 +113,14 @@ export const blogCrud = makeCrud({
     publishedAt: z.string().datetime().optional().nullable(),
     status,
     featured,
+    programId: z.string().uuid().optional().nullable(),
+    eventId: z.string().uuid().optional().nullable(),
+    tags: z.array(z.string()).optional(),
+    seo: z.object({
+      title: z.string().max(300).optional(),
+      description: z.string().max(500).optional(),
+      keywords: z.array(z.string()).optional(),
+    }).optional().nullable(),
   }).strict(),
   updateSchema: z.object({
     categoryId: z.string().uuid().optional().nullable(),
@@ -125,6 +133,14 @@ export const blogCrud = makeCrud({
     publishedAt: z.string().datetime().optional().nullable(),
     status,
     featured,
+    programId: z.string().uuid().optional().nullable(),
+    eventId: z.string().uuid().optional().nullable(),
+    tags: z.array(z.string()).optional(),
+    seo: z.object({
+      title: z.string().max(300).optional(),
+      description: z.string().max(500).optional(),
+      keywords: z.array(z.string()).optional(),
+    }).optional().nullable(),
   }).strict().refine((d) => Object.keys(d).length > 0, { message: 'At least one field required' }),
 });
 

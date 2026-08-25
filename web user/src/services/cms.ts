@@ -6,8 +6,7 @@ import {
   removeEntity,
   updateEntity,
 } from './crud'
-import { http, backendAvailable } from './api'
-import { store } from './store'
+import { http } from './api'
 import type { ListParams, Paginated } from './store'
 
 export const cmsService = {
@@ -16,26 +15,19 @@ export const cmsService = {
   },
 
   async allPages(): Promise<CmsPage[]> {
-    if (await backendAvailable()) {
-      try {
-        const { data } = await http.get('/pages', { params: { limit: 100 } })
-        const list: CmsPage[] = (data.data.items as CmsPage[]) ?? []
-        const full = await Promise.all(
-          list.map(async (page) => {
-            try {
-              const { data: detail } = await http.get(`/pages/${page.id}`)
-              return (detail.data as CmsPage) ?? page
-            } catch {
-              return page
-            }
-          }),
-        )
-        return full
-      } catch {
-        /* fall through to store */
-      }
-    }
-    return store.all<CmsPage>('pages')
+    const { data } = await http.get('/pages', { params: { limit: 100 } })
+    const list: CmsPage[] = (data.data.items as CmsPage[]) ?? []
+    const full = await Promise.all(
+      list.map(async (page) => {
+        try {
+          const { data: detail } = await http.get(`/pages/${page.id}`)
+          return (detail.data as CmsPage) ?? page
+        } catch {
+          return page
+        }
+      }),
+    )
+    return full
   },
 
   async getPage(id: string): Promise<CmsPage | null> {
@@ -70,40 +62,25 @@ export const cmsService = {
   },
 
   async listSectionTemplates(): Promise<SectionTemplate[]> {
-    if (!(await backendAvailable())) {
-      throw new Error('Live backend not connected')
-    }
     const { data } = await http.get('/sections/templates')
     return data.data as SectionTemplate[]
   },
 
   async addSection(pageId: string, input: { type: string; name?: string; sortOrder?: number; isActive?: boolean; content?: Record<string, unknown>; settings?: Record<string, unknown> }): Promise<PageSection> {
-    if (!(await backendAvailable())) {
-      throw new Error('Live backend not connected')
-    }
     const { data } = await http.post(`/pages/${pageId}/sections`, input)
     return data.data as PageSection
   },
 
   async updateSection(pageId: string, sectionId: string, patch: { name?: string | null; isActive?: boolean; sortOrder?: number; content?: Record<string, unknown> }): Promise<PageSection> {
-    if (!(await backendAvailable())) {
-      throw new Error('Live backend not connected')
-    }
     const { data } = await http.patch(`/pages/${pageId}/sections/${sectionId}`, patch)
     return data.data as PageSection
   },
 
   async removeSection(pageId: string, sectionId: string): Promise<void> {
-    if (!(await backendAvailable())) {
-      throw new Error('Live backend not connected')
-    }
     await http.delete(`/pages/${pageId}/sections/${sectionId}`)
   },
 
   async reorderSections(pageId: string, orderedIds: string[]): Promise<string[]> {
-    if (!(await backendAvailable())) {
-      throw new Error('Live backend not connected')
-    }
     const { data } = await http.post(`/pages/${pageId}/sections/reorder`, { orderedIds })
     return data.data as string[]
   },
@@ -111,29 +88,22 @@ export const cmsService = {
 
 export const menuService = {
   async all(): Promise<Menu[]> {
-    if (await backendAvailable()) {
-      try {
-        const { data } = await http.get('/menus', { params: { limit: 100 } })
-        const payload = data.data
-        const list: Menu[] = Array.isArray(payload)
-          ? (payload as Menu[])
-          : ((payload?.items as Menu[]) ?? [])
-        const full = await Promise.all(
-          list.map(async (menu) => {
-            try {
-              const { data: detail } = await http.get(`/menus/${menu.id}`)
-              return (detail.data as Menu) ?? menu
-            } catch {
-              return menu
-            }
-          }),
-        )
-        return full
-      } catch {
-        /* fall through to store */
-      }
-    }
-    return store.all<Menu>('menus')
+    const { data } = await http.get('/menus', { params: { limit: 100 } })
+    const payload = data.data
+    const list: Menu[] = Array.isArray(payload)
+      ? (payload as Menu[])
+      : ((payload?.items as Menu[]) ?? [])
+    const full = await Promise.all(
+      list.map(async (menu) => {
+        try {
+          const { data: detail } = await http.get(`/menus/${menu.id}`)
+          return (detail.data as Menu) ?? menu
+        } catch {
+          return menu
+        }
+      }),
+    )
+    return full
   },
 
   async get(id: string): Promise<Menu | null> {

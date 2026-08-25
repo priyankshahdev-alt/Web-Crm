@@ -21,6 +21,8 @@ router.post(
   upload.single('file'),
   mediaController.upload,
 );
+router.patch('/:id/rename', rbac('media:update'), mediaController.rename);
+router.patch('/:id/move', rbac('media:update'), mediaController.moveToFolder);
 router.delete('/:id', rbac('media:delete'), mediaController.remove);
 
 export default router;

@@ -1,5 +1,5 @@
 import type { ActivityLog, ApprovalRequest, Notification, SeoMeta, WebsiteSettings } from '../types'
-import { http, backendAvailable } from './api'
+import { http } from './api'
 import { store } from './store'
 
 function firstItem<T>(rows: T[]): T {
@@ -8,10 +8,6 @@ function firstItem<T>(rows: T[]): T {
 
 type FlatSetting = string | number | boolean | null
 
-/**
- * Flatten the structured panel settings into the flat key-value settings the
- * public website reads from the backend (`site.*`, `contact.*`, `social.*`).
- */
 function toBackendSettings(settings: WebsiteSettings): Record<string, FlatSetting> {
   return {
     'site.siteName': settings.websiteName,
@@ -47,10 +43,21 @@ function pick(record: Record<string, unknown>, key: string): FlatSetting | undef
   return undefined
 }
 
-/**
- * Rebuild a structured settings object from the flat backend record, keeping
- * the local copy as the base so unmapped fields are never lost.
- */
+const DEFAULT_SETTINGS: WebsiteSettings = {
+  id: '',
+  websiteName: '',
+  tagline: null,
+  logoUrl: null,
+  faviconUrl: null,
+  primaryColor: '#4f46e5',
+  footerText: null,
+  socialLinks: {},
+  contact: {},
+  analytics: {},
+  createdAt: '',
+  updatedAt: '',
+}
+
 function fromBackendSettings(record: Record<string, unknown>, base: WebsiteSettings): WebsiteSettings {
   const str = (key: string, fallback: string | null | undefined): string | undefined => {
     const value = pick(record, key)
@@ -94,91 +101,144 @@ function fromBackendSettings(record: Record<string, unknown>, base: WebsiteSetti
   }
 }
 
-async function pushToBackend(settings: WebsiteSettings): Promise<void> {
-  if (!(await backendAvailable())) return
-  try {
-    await http.put('/settings', { settings: toBackendSettings(settings) })
-  } catch {
-    /* offline fallback keeps the last local copy */
-  }
-}
-
 export const settingsService = {
   async get(): Promise<WebsiteSettings> {
-    const base = firstItem(await store.all<WebsiteSettings>('settings'))
-    if (!(await backendAvailable())) return base
-    try {
-      const { data } = await http.get('/settings')
-      const record = (data.data as Record<string, unknown>) ?? {}
-      return fromBackendSettings(record, base)
-    } catch {
-      return base
-    }
+    const { data } = await http.get('/settings')
+    const record = (data.data as Record<string, unknown>) ?? {}
+    return fromBackendSettings(record, DEFAULT_SETTINGS)
   },
   async update(patch: Partial<WebsiteSettings>): Promise<WebsiteSettings> {
-    const current = firstItem(await store.all<WebsiteSettings>('settings'))
+    const current = await settingsService.get()
     const updated = { ...current, ...patch, updatedAt: new Date().toISOString() }
-    await store.update<WebsiteSettings>('settings', current.id, updated)
-    await pushToBackend(updated)
+    await http.put('/settings', { settings: toBackendSettings(updated) })
     return updated
   },
 }
 
 export const seoService = {
   async get(): Promise<SeoMeta> {
-    return firstItem(await store.all<SeoMeta>('seo'))
+    const { data } = await http.get('/settings')
+    const record = (data.data as Record<string, unknown>) ?? {}
+    const str = (key: string): string => {
+      const v = record[key]
+      return typeof v === 'string' ? v : ''
+    }
+    const optStr = (key: string): string | null => {
+      const v = record[key]
+      return typeof v === 'string' && v ? v : null
+    }
+    let keywords: string[] = []
+    try {
+      const raw = record['seo.keywords']
+      if (typeof raw === 'string' && raw) keywords = JSON.parse(raw)
+    } catch { /* ignore */ }
+    return {
+      metaTitle: str('seo.metaTitle'),
+      metaDescription: str('seo.metaDescription'),
+      keywords,
+      ogImageUrl: optStr('seo.ogImageUrl') ?? null,
+      canonicalUrl: optStr('seo.canonicalUrl') ?? null,
+      robots: str('seo.robots') || 'index, follow',
+      schema: null,
+    }
   },
   async update(patch: Partial<SeoMeta>): Promise<SeoMeta> {
-    const current = firstItem(await store.all<SeoMeta>('seo'))
+    const current = await seoService.get()
     const updated = { ...current, ...patch }
-    await store.set<SeoMeta[]>('seo', [updated])
+    const settings: Record<string, string | null> = {}
+    if ('metaTitle' in patch) settings['seo.metaTitle'] = updated.metaTitle
+    if ('metaDescription' in patch) settings['seo.metaDescription'] = updated.metaDescription
+    if ('keywords' in patch) settings['seo.keywords'] = JSON.stringify(updated.keywords)
+    if ('ogImageUrl' in patch) settings['seo.ogImageUrl'] = updated.ogImageUrl ?? null
+    if ('canonicalUrl' in patch) settings['seo.canonicalUrl'] = updated.canonicalUrl ?? null
+    if ('robots' in patch) settings['seo.robots'] = updated.robots
+    if (Object.keys(settings).length > 0) {
+      await http.put('/settings', { settings })
+    }
     return updated
   },
 }
 
 export const activityService = {
-  async list(): Promise<ActivityLog[]> {
-    const items = await store.all<ActivityLog>('activity')
-    return [...items].sort((a, b) => b.createdAt.localeCompare(a.createdAt))
-  },
-  async log(
-    entry: Omit<ActivityLog, 'id' | 'createdAt' | 'updatedAt'>,
-  ): Promise<void> {
-    await store.push('activity', { ...entry, id: crypto.randomUUID() })
+  async list(params?: {
+    page?: number
+    limit?: number
+    action?: string
+    resource?: string
+    userId?: string
+    search?: string
+    from?: string
+    to?: string
+  }): Promise<{ items: ActivityLog[]; total: number; page: number; limit: number; totalPages: number }> {
+    const query = new URLSearchParams()
+    if (params?.page) query.set('page', String(params.page))
+    if (params?.limit) query.set('limit', String(params.limit))
+    if (params?.action && params.action !== 'all') query.set('action', params.action)
+    if (params?.resource && params.resource !== 'all') query.set('resource', params.resource)
+    if (params?.userId && params.userId !== 'all') query.set('userId', params.userId)
+    if (params?.search) query.set('search', params.search)
+    if (params?.from) query.set('from', params.from)
+    if (params?.to) query.set('to', params.to)
+    const qs = query.toString()
+    const { data } = await http.get(`/audit-logs${qs ? `?${qs}` : ''}`)
+    return data.data
   },
 }
 
 export const approvalService = {
-  async list(): Promise<ApprovalRequest[]> {
-    const items = await store.all<ApprovalRequest>('approvals')
-    return [...items].sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+  async list(params?: {
+    page?: number
+    limit?: number
+    status?: string
+    resourceType?: string
+    search?: string
+    from?: string
+    to?: string
+    tab?: 'PENDING' | 'ALL'
+  }): Promise<{ items: ApprovalRequest[]; total: number; pendingCount: number; page: number; limit: number; totalPages: number }> {
+    const query = new URLSearchParams()
+    if (params?.page) query.set('page', String(params.page))
+    if (params?.limit) query.set('limit', String(params.limit))
+    if (params?.status && params.status !== 'ALL') query.set('status', params.status)
+    if (params?.resourceType && params.resourceType !== 'ALL') query.set('resourceType', params.resourceType)
+    if (params?.search) query.set('search', params.search)
+    if (params?.from) query.set('from', params.from)
+    if (params?.to) query.set('to', params.to)
+    if (params?.tab) query.set('tab', params.tab)
+    const qs = query.toString()
+    const { data } = await http.get(`/approvals${qs ? `?${qs}` : ''}`)
+    return data.data
   },
+
+  async getById(id: string): Promise<ApprovalRequest> {
+    const { data } = await http.get(`/approvals/${id}`)
+    return data.data
+  },
+
+  async create(payload: {
+    resourceType: string
+    resourceId: string
+    resourceTitle: string
+    action: string
+    submitterNote?: string
+    contentSnapshot?: Record<string, unknown>
+  }): Promise<ApprovalRequest> {
+    const { data } = await http.post('/approvals', payload)
+    return data.data
+  },
+
   async review(
     id: string,
-    decision: 'APPROVED' | 'REJECTED',
-    note: string,
-    reviewer: string,
-  ): Promise<ApprovalRequest | null> {
-    const approval = await store.get<ApprovalRequest>('approvals', id)
-    if (!approval) return null
-    const now = new Date().toISOString()
-    const timeline = [
-      ...approval.timeline,
-      {
-        id: crypto.randomUUID(),
-        actor: reviewer,
-        action: decision === 'APPROVED' ? 'Approved' : 'Rejected',
-        note: note || null,
-        at: now,
-      },
-    ]
-    return store.update<ApprovalRequest>('approvals', id, {
-      status: decision,
-      reviewedBy: reviewer,
-      reviewedAt: now,
-      comment: note || approval.comment,
-      timeline,
-    })
+    decision: 'APPROVED' | 'REJECTED' | 'CHANGES_REQUESTED',
+    reviewerNote?: string,
+  ): Promise<ApprovalRequest> {
+    const { data } = await http.post(`/approvals/${id}/review`, { decision, reviewerNote })
+    return data.data
+  },
+
+  async pendingCount(): Promise<number> {
+    const { data } = await http.get('/approvals/pending-count')
+    return data.data.count
   },
 }
 

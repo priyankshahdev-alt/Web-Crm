@@ -47,7 +47,10 @@ export const testimonialService = {
       name: payload.name ?? 'New Testimonial',
       role: payload.role ?? null,
       avatarUrl: payload.avatarUrl ?? null,
-      rating: payload.rating ?? 5,
+      rating: payload.rating ?? null,
+      personType: payload.personType ?? null,
+      location: payload.location ?? null,
+      programId: payload.programId ?? null,
       isActive: payload.isActive ?? true,
       sortOrder: payload.sortOrder ?? 0,
     })

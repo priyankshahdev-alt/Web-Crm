@@ -76,6 +76,10 @@ export interface CmsPage extends IdEntity {
   title: string
   metaTitle?: string | null
   metaDescription?: string | null
+  ogImageUrl?: string | null
+  canonicalUrl?: string | null
+  robots?: string | null
+  keywords?: string[] | null
   status: PublishStatus
   template: string
   sortOrder: number
@@ -413,6 +417,10 @@ export interface Blog extends IdEntity {
   authorName?: string | null
   categoryId?: string | null
   category?: { id: string; name: string; slug: string } | null
+  programId?: string | null
+  program?: { id: string; title: string; slug: string } | null
+  eventId?: string | null
+  event?: { id: string; title: string; slug: string; startDate?: string | null } | null
   publishedAt: string | null
   status: PublishStatus
   featured: boolean
@@ -461,7 +469,11 @@ export interface Testimonial extends IdEntity {
   name: string
   role?: string | null
   avatarUrl?: string | null
-  rating: number
+  rating?: number | null
+  personType?: string | null
+  location?: string | null
+  programId?: string | null
+  program?: { id: string; title: string; slug: string } | null
   isActive: boolean
   sortOrder: number
 }
@@ -506,6 +518,7 @@ export interface FormField {
   type: 'text' | 'textarea' | 'email' | 'phone' | 'checkbox' | 'select' | 'date' | 'file'
   label: string
   placeholder?: string
+  helpText?: string
   required: boolean
   options?: string[]
 }
@@ -516,11 +529,14 @@ export interface CmsForm extends IdEntity {
   fields: FormField[]
   submissions: number
   status: 'ACTIVE' | 'DRAFT'
-  entries: FormEntry[]
+  submitLabel?: string | null
+  successMessage?: string | null
 }
 
 export interface FormEntry extends IdEntity {
+  formId: string
   data: Record<string, string>
+  status: 'NEW' | 'READ' | 'ARCHIVED'
 }
 
 export interface SeoMeta {
@@ -546,41 +562,61 @@ export interface WebsiteSettings extends IdEntity {
   connectedSite?: { url?: string | null; slug?: string | null }
 }
 
-export type ActivityAction = 'CREATE' | 'UPDATE' | 'DELETE' | 'PUBLISH' | 'REVIEW' | 'LOGIN' | 'LOGOUT'
+export type ActivityAction = 'CREATE' | 'UPDATE' | 'DELETE' | 'PUBLISH' | 'REVIEW' | 'LOGIN' | 'LOGOUT' | 'UNPUBLISH' | string
+
+export interface ActivityLogUser {
+  id: string
+  email: string
+  firstName: string
+  lastName?: string | null
+  avatarUrl?: string | null
+}
 
 export interface ActivityLog extends IdEntity {
   userId?: string | null
-  userName: string
-  action: ActivityAction
+  organizationId?: string | null
+  action: string
   resource: string
   resourceId?: string | null
   message?: string | null
+  before?: unknown
+  after?: unknown
   ipAddress?: string | null
-  device: string
-  status: 'success' | 'warning' | 'danger'
+  userAgent?: string | null
+  user?: ActivityLogUser | null
+  organization?: { id: string; name: string; slug: string } | null
 }
 
-export type ApprovalStatus = 'PENDING' | 'APPROVED' | 'REJECTED'
+export type ApprovalStatus = 'PENDING' | 'APPROVED' | 'REJECTED' | 'CHANGES_REQUESTED' | 'CANCELLED'
 
-export interface ApprovalRequest extends IdEntity {
-  type: string
-  resource: string
-  title: string
-  submittedBy: string
-  submittedAt: string
-  status: ApprovalStatus
-  comment?: string | null
-  reviewedBy?: string | null
-  reviewedAt?: string | null
-  timeline: ApprovalTimelineEntry[]
-}
-
-export interface ApprovalTimelineEntry {
+export interface ApprovalRequest {
   id: string
-  actor: string
+  organizationId: string
+  resourceId: string
+  resourceType: string
+  resourceTitle: string
+  action: string
+  status: ApprovalStatus
+  submitterNote?: string | null
+  reviewerNote?: string | null
+  submitter?: { id: string; firstName: string; lastName?: string | null; email: string; avatarUrl?: string | null } | null
+  reviewer?: { id: string; firstName: string; lastName?: string | null; email: string } | null
+  submittedAt: string
+  reviewedAt?: string | null
+  contentSnapshot?: Record<string, unknown> | null
+  createdAt: string
+  updatedAt: string
+  events: ApprovalEvent[]
+}
+
+export interface ApprovalEvent {
+  id: string
+  requestId: string
+  actorName: string
+  actorId?: string | null
   action: string
   note?: string | null
-  at: string
+  createdAt: string
 }
 
 export interface SiteSettingsValue {

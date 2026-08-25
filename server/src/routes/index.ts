@@ -19,6 +19,8 @@ import websiteRouter from '../modules/cms/website/routes';
 import entityRouter from '../modules/entities/index';
 import webUserRouter from '../modules/webuser/routes';
 import adminRouter from '../modules/admin/routes';
+import formRouter from '../modules/forms/routes';
+import approvalRouter from '../modules/approval/routes';
 
 const router = Router();
 
@@ -45,6 +47,8 @@ router.use('/site', siteRouter);
 router.use('/webuser', webUserRouter);
 router.use('/admin', adminRouter);
 router.use('/websites', websiteRouter);
+router.use('/forms', formRouter);
+router.use('/approvals', approvalRouter);
 router.use('/', entityRouter);
 
 export default router;

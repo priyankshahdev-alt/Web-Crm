@@ -272,6 +272,16 @@ export function TrashIcon(props: IconProps) {
   )
 }
 
+export function ArchiveIcon(props: IconProps) {
+  return (
+    <IconBase {...props}>
+      <rect width="20" height="5" x="2" y="3" rx="1" />
+      <path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8" />
+      <path d="M10 12h4" />
+    </IconBase>
+  )
+}
+
 export function CopyIcon(props: IconProps) {
   return (
     <IconBase {...props}>
@@ -376,6 +386,24 @@ export function ArrowLeftIcon(props: IconProps) {
     <IconBase {...props}>
       <path d="M19 12H5" />
       <path d="m12 19-7-7 7-7" />
+    </IconBase>
+  )
+}
+
+export function ArrowUpIcon(props: IconProps) {
+  return (
+    <IconBase {...props}>
+      <path d="M12 19V5" />
+      <path d="m5 12 7-7 7 7" />
+    </IconBase>
+  )
+}
+
+export function ArrowDownIcon(props: IconProps) {
+  return (
+    <IconBase {...props}>
+      <path d="M12 5v14" />
+      <path d="m19 12-7 7-7-7" />
     </IconBase>
   )
 }

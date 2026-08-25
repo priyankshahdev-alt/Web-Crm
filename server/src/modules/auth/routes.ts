@@ -12,6 +12,22 @@ import {
   switchOrganizationSchema,
 } from './schema';
 import { asyncHandler } from '../../utils/asyncHandler';
+import { z } from 'zod';
+
+const updateProfileSchema = z.object({
+  firstName: z.string().min(1).max(100).optional(),
+  lastName: z.string().max(100).optional(),
+  phone: z.string().max(30).optional().nullable(),
+  avatarUrl: z.string().url().max(500).optional().nullable(),
+}).strict();
+
+const changeEmailSchema = z.object({
+  newEmail: z.string().email().max(254),
+}).strict();
+
+const revokeAllSessionsSchema = z.object({
+  currentFamilyId: z.string().uuid().optional(),
+}).strict();
 
 const router = Router();
 
@@ -26,6 +42,11 @@ router.post(
 router.post('/logout', authenticate(), asyncHandler(authController.logout));
 router.post('/change-password', authenticate(), validate(changePasswordSchema), asyncHandler(authController.changePassword));
 router.get('/me', authenticate(), asyncHandler(authController.me));
+router.patch('/profile', authenticate(), validate(updateProfileSchema), asyncHandler(authController.updateProfile));
+router.post('/email', authenticate(), validate(changeEmailSchema), asyncHandler(authController.changeEmail));
+router.get('/sessions', authenticate(), asyncHandler(authController.listSessions));
+router.post('/sessions/:id/revoke', authenticate(), asyncHandler(authController.revokeSession));
+router.post('/sessions/revoke-all', authenticate(), validate(revokeAllSessionsSchema), asyncHandler(authController.revokeAllOtherSessions));
 
 // Master "log in as admin": the master mints a short-lived ticket, the admin
 // panel exchanges it for a real session. The exchange endpoint is deliberately

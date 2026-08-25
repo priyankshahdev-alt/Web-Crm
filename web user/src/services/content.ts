@@ -175,10 +175,13 @@ export const blogService = {
       coverImageUrl: payload.coverImageUrl ?? null,
       authorName: payload.authorName ?? 'Editor',
       categoryId: payload.categoryId ?? null,
+      programId: payload.programId ?? null,
+      eventId: payload.eventId ?? null,
       publishedAt: payload.publishedAt ?? null,
       status: payload.status ?? 'DRAFT',
       featured: payload.featured ?? false,
       tags: payload.tags ?? [],
+      seo: payload.seo ?? null,
     })
   },
   async update(id: string, patch: Partial<Blog>): Promise<Blog | null> {
@@ -189,5 +192,22 @@ export const blogService = {
   },
   async categories(): Promise<BlogCategory[]> {
     return getAllEntities<BlogCategory>('blog-categories', 'blogCategories')
+  },
+  async duplicate(original: Blog): Promise<Blog> {
+    return createEntity<Blog>('blogs', 'blogs', {
+      title: `${original.title} (Copy)`,
+      slug: '',
+      excerpt: original.excerpt ?? null,
+      content: original.content ?? null,
+      coverImageUrl: original.coverImageUrl ?? null,
+      authorName: original.authorName ?? 'Editor',
+      categoryId: original.categoryId ?? null,
+      programId: original.programId ?? null,
+      eventId: original.eventId ?? null,
+      status: 'DRAFT',
+      featured: false,
+      tags: original.tags ?? [],
+      seo: original.seo ?? null,
+    })
   },
 }

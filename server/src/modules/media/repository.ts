@@ -8,6 +8,8 @@ export interface ListParams {
   entityType?: string;
   entityId?: string;
   mimeType?: string;
+  folder?: string;
+  search?: string;
 }
 
 export interface CreateMediaInput {
@@ -21,6 +23,7 @@ export interface CreateMediaInput {
   thumbnailUrl?: string;
   entityType?: string;
   entityId?: string;
+  folder?: string;
   uploadedById?: string;
 }
 
@@ -31,6 +34,10 @@ export const mediaRepository = {
       ...(params.entityType ? { entityType: params.entityType } : {}),
       ...(params.entityId ? { entityId: params.entityId } : {}),
       ...(params.mimeType ? { mimeType: params.mimeType } : {}),
+      ...(params.folder ? { folder: params.folder } : {}),
+      ...(params.search
+        ? { fileName: { contains: params.search, mode: 'insensitive' as const } }
+        : {}),
     };
 
     const [items, total] = await Promise.all([
@@ -59,6 +66,7 @@ export const mediaRepository = {
         thumbnailUrl: input.thumbnailUrl ?? null,
         entityType: input.entityType ?? null,
         entityId: input.entityId ?? null,
+        folder: input.folder ?? null,
         uploadedById: input.uploadedById ?? null,
       },
     });
@@ -66,6 +74,10 @@ export const mediaRepository = {
 
   async findById(id: string) {
     return prisma.media.findUnique({ where: { id } });
+  },
+
+  async update(id: string, data: Prisma.MediaUpdateInput) {
+    return prisma.media.update({ where: { id }, data });
   },
 
   async delete(id: string) {

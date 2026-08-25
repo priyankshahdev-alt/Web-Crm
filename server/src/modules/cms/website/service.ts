@@ -131,6 +131,10 @@ function toPageDto(page: {
   title: string;
   metaTitle: string | null;
   metaDescription: string | null;
+  ogImageUrl: string | null;
+  canonicalUrl: string | null;
+  robots: string | null;
+  keywords: unknown;
   status: string;
   template: string;
   sortOrder: number;
@@ -155,6 +159,10 @@ function toPageDto(page: {
     title: page.title,
     metaTitle: page.metaTitle,
     metaDescription: page.metaDescription,
+    ogImageUrl: page.ogImageUrl,
+    canonicalUrl: page.canonicalUrl,
+    robots: page.robots,
+    keywords: page.keywords,
     status: page.status,
     template: page.template,
     sortOrder: page.sortOrder,
@@ -603,7 +611,7 @@ export const websiteService = {
   async upload(
     slug: string,
     file: Express.Multer.File,
-    meta: { entityType?: string; entityId?: string },
+    meta: { entityType?: string; entityId?: string; folder?: string },
     userId: string,
   ) {
     const org = await websiteRepository.findBySlug(slug);

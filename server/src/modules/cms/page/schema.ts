@@ -3,7 +3,7 @@ import { PublishStatus } from '@prisma/client';
 
 export const sectionPatchSchema = z
   .object({
-    id: z.string().uuid(),
+    id: z.string().uuid().optional(),
     pageId: z.string().uuid().optional(),
     organizationId: z.string().optional(),
     type: z.string().min(1).max(100),
@@ -27,6 +27,10 @@ export const createPageSchema = z
     title: z.string().min(1).max(300),
     metaTitle: z.string().max(300).optional().nullable(),
     metaDescription: z.string().max(1000).optional().nullable(),
+    ogImageUrl: z.string().max(1000).optional().nullable(),
+    canonicalUrl: z.string().max(1000).optional().nullable(),
+    robots: z.string().max(100).optional().nullable(),
+    keywords: z.array(z.string()).optional().nullable(),
     status: z.nativeEnum(PublishStatus).optional(),
     template: z.string().max(100).optional(),
     sortOrder: z.coerce.number().int().min(0).optional(),
@@ -47,6 +51,10 @@ export const updatePageSchema = z
     title: z.string().min(1).max(300).optional(),
     metaTitle: z.string().max(300).optional().nullable(),
     metaDescription: z.string().max(1000).optional().nullable(),
+    ogImageUrl: z.string().max(1000).optional().nullable(),
+    canonicalUrl: z.string().max(1000).optional().nullable(),
+    robots: z.string().max(100).optional().nullable(),
+    keywords: z.array(z.string()).optional().nullable(),
     status: z.nativeEnum(PublishStatus).optional(),
     template: z.string().max(100).optional(),
     sortOrder: z.coerce.number().int().min(0).optional(),

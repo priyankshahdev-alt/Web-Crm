@@ -19,6 +19,7 @@ export const auditController = {
         action: (req.query.action as string) || undefined,
         resource: (req.query.resource as string) || undefined,
         userId: (req.query.userId as string) || undefined,
+        search: (req.query.search as string) || undefined,
         from,
         to,
       });
