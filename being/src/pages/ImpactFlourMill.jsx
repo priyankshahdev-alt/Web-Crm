@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+﻿import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
 import { usePageContent } from '../hooks/usePageContent';
 
@@ -24,7 +24,7 @@ export default function ImpactFlourMill() {
   const storyTitle = content('impact-flour-mill-impact', 'heading') ?? 'From Support to Self-Sufficiency';
   const storyText =
     content('impact-flour-mill-impact', 'text') ??
-    'For many families, a flour mill is more than a machine — it is a pathway to financial independence. Through this initiative, beneficiaries can operate their own small business, earn a steady income, and build a brighter future for their families while contributing to their local communities.';
+    'For many families, a flour mill is more than a machine â€” it is a pathway to financial independence. Through this initiative, beneficiaries can operate their own small business, earn a steady income, and build a brighter future for their families while contributing to their local communities.';
   const stats =
     content('impact-flour-mill-impact', 'stats') ?? [
       { value: '500+', label: 'Families Empowered' },
@@ -106,7 +106,7 @@ export default function ImpactFlourMill() {
 
           <div className="flourmill-grid">
             <div className="flourmill-image">
-              <img src={mainImage} alt="Flour Mill Support" />
+              <img src={mainImage} alt="Flour Mill Support" loading="lazy" decoding="async" width="800" height="600" />
             </div>
             <div className="flourmill-content">
               {cards.map((card, i) => (
@@ -144,10 +144,11 @@ export default function ImpactFlourMill() {
         </div>
         <div className="shital-gallery">
           {galleryImages.map((src, i) => (
-            <div className="shital-gallery-item" key={i}><img src={src} alt="" /></div>
+            <div className="shital-gallery-item" key={i}><img src={src} alt="" loading="lazy" decoding="async" width="800" height="600" /></div>
           ))}
         </div>
       </section>
     </>
   );
 }
+

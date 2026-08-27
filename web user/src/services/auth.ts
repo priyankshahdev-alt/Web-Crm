@@ -103,7 +103,7 @@ export const authService = {
     try {
       await http.post('/auth/logout', {})
     } catch {
-      /* offline */
+      /* ignore */
     }
     signOut()
   },

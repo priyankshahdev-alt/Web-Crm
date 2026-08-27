@@ -1,6 +1,5 @@
 import type { ActivityLog, ApprovalRequest, Notification, SeoMeta, WebsiteSettings } from '../types'
 import { http } from './api'
-import { store } from './store'
 
 function firstItem<T>(rows: T[]): T {
   return Array.isArray(rows) ? rows[0] : (rows as unknown as T)
@@ -244,17 +243,27 @@ export const approvalService = {
 
 export const notificationService = {
   async list(): Promise<Notification[]> {
-    const items = await store.all<Notification>('notifications')
-    return [...items].sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+    try {
+      const { data } = await http.get('/notifications', { params: { limit: 50 } })
+      const payload = data.data as { items: Notification[] } | Notification[]
+      const items = Array.isArray(payload) ? payload : payload.items ?? []
+      return [...items].sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+    } catch {
+      return []
+    }
   },
   async markRead(id: string): Promise<void> {
-    const item = await store.get<Notification>('notifications', id)
-    if (item) await store.update<Notification>('notifications', id, { isRead: true })
+    try {
+      await http.patch(`/notifications/${id}/read`)
+    } catch {
+      /* silent - backend may be temporarily unavailable (502) */
+    }
   },
   async markAllRead(): Promise<void> {
-    const items = await store.all<Notification>('notifications')
-    for (const item of items) {
-      await store.update<Notification>('notifications', item.id, { isRead: true })
+    try {
+      await http.patch('/notifications/read-all')
+    } catch {
+      /* silent */
     }
   },
 }

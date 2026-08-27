@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+﻿import { Link } from 'react-router-dom';
 import { useEffect, useState, useCallback } from 'react';
 import { usePageContent } from '../hooks/usePageContent';
 
@@ -129,7 +129,7 @@ const Newspaper = () => {
         .news-ticker-track{flex:1;overflow:hidden;position:relative;}
         .news-ticker-text{display:flex;gap:60px;white-space:nowrap;animation:tickerScroll 25s linear infinite;font-size:14px;font-weight:600;color:rgba(255,255,255,0.85);letter-spacing:0.5px;}
         .news-ticker-text span{display:inline-flex;align-items:center;gap:60px;}
-        .news-ticker-text span::before{content:'◆';color:var(--cyan);font-size:10px;}
+        .news-ticker-text span::before{content:'â—†';color:var(--cyan);font-size:10px;}
         @keyframes tickerScroll{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
         .news-ticker:hover .news-ticker-text{animation-play-state:paused;}
         .news-featured{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-bottom:50px;align-items:center;background:linear-gradient(135deg, #f8fafc 0%, #eef2f7 100%);border-radius:20px;padding:40px;border:1px solid #e8edf4;position:relative;overflow:hidden;}
@@ -199,7 +199,7 @@ const Newspaper = () => {
           </div>
         </div>
         <div className="hero-image">
-          <img src={heroImage} alt="Newspaper" />
+          <img src={heroImage} alt="Newspaper" loading="eager" fetchPriority="high" decoding="async" width="800" height="600" />
         </div>
         <div className="blur blur1"></div>
         <div className="blur blur2"></div>
@@ -231,7 +231,7 @@ const Newspaper = () => {
             <p>{featuredText}</p>
           </div>
           <div className="news-featured-image" onClick={() => openLightbox(0)}>
-            <img src={newspaperData[featuredIndex]?.url} alt="Featured newspaper" />
+            <img src={newspaperData[featuredIndex]?.url} alt="Featured newspaper" loading="lazy" decoding="async" width="800" height="600" />
             <div className="play-overlay">
               <span>{newspaperData[featuredIndex]?.label}</span>
               <i className="fas fa-expand-alt"></i>
@@ -248,7 +248,7 @@ const Newspaper = () => {
               <div className="news-item-badge">{item.label}</div>
               <div className="news-item-stamp">PRESS</div>
               <div className="news-item-inner">
-                <img src={item.url} alt={item.label} loading="lazy" />
+                <img src={item.url} alt={item.label} loading="lazy" decoding="async" width="800" height="600" />
                 <div className="news-item-overlay">
                   <span><i className="fas fa-search-plus"></i> Click to view</span>
                 </div>
@@ -261,7 +261,7 @@ const Newspaper = () => {
       <div className={`lightbox${lightboxOpen ? ' open' : ''}`} onClick={(e) => { if (e.target === e.currentTarget) closeLightbox(); }}>
         <button className="lightbox-close" onClick={closeLightbox}><i className="fas fa-times"></i></button>
         <button className="lightbox-prev" onClick={() => navigateLightbox(-1)}><i className="fas fa-chevron-left"></i></button>
-        <img className="lightbox-img" src={newspaperData[currentIndex]?.url} alt="newspaper scan" />
+        <img className="lightbox-img" src={newspaperData[currentIndex]?.url} alt="newspaper scan" loading="lazy" decoding="async" width="800" height="600" />
         <button className="lightbox-next" onClick={() => navigateLightbox(1)}><i className="fas fa-chevron-right"></i></button>
         <div className="lightbox-counter">{currentIndex + 1} / {newspaperData.length}</div>
       </div>
@@ -270,3 +270,4 @@ const Newspaper = () => {
 };
 
 export default Newspaper;
+

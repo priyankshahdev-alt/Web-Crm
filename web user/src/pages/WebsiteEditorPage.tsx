@@ -65,12 +65,16 @@ function editedSection(
   section: WebsiteSection,
   edit: SectionEdit | undefined,
 ): WebsiteSection & { editActive: boolean; dirty: boolean } {
+  // Prefer local unsaved edit, else server draft (saved but not published), else published content
+  const draftContent = (section as unknown as { draftContent?: Record<string, unknown> | null }).draftContent ?? null
+  const draftName = (section as unknown as { draftName?: string | null }).draftName ?? null
+  const draftIsActive = (section as unknown as { draftIsActive?: boolean | null }).draftIsActive ?? null
   return {
     ...section,
-    sectionName: edit?.name !== undefined ? edit.name : section.sectionName,
-    status: edit?.isActive !== undefined ? (edit.isActive ? 'ACTIVE' : 'INACTIVE') : section.status,
-    content: edit ? edit.content : section.content,
-    editActive: edit?.isActive ?? section.status === 'ACTIVE',
+    sectionName: edit?.name !== undefined ? edit.name : (draftName ?? section.sectionName),
+    status: edit?.isActive !== undefined ? (edit.isActive ? 'ACTIVE' : 'INACTIVE') : (draftIsActive !== null ? (draftIsActive ? 'ACTIVE' : 'INACTIVE') : section.status),
+    content: edit ? edit.content : (draftContent ?? section.content),
+    editActive: edit?.isActive ?? draftIsActive ?? (section.status === 'ACTIVE'),
     dirty: Boolean(edit),
   }
 }
@@ -422,6 +426,11 @@ export function WebsiteEditorPage() {
           websiteService.getPage(homeSlug),
           websiteService.getWebsite(),
         ])
+        // Cache last successful for offline preview (per spec: preserve last successful, don't fallback to mock)
+        try {
+          localStorage.setItem(`webcms:lastPage:${homeSlug}`, JSON.stringify(pageData))
+          localStorage.setItem(`webcms:lastWebsite:${homeSlug}`, JSON.stringify(websiteData))
+        } catch {}
         setPage(pageData)
         setWebsiteInfo({
           name: websiteData.website.name,
@@ -435,12 +444,38 @@ export function WebsiteEditorPage() {
             : pageData.sections[0]?.id ?? null,
         )
       } catch (error) {
-        toast('Could not load website data', { variant: 'error', description: errorMessage(error) })
+        const status = isAxiosError(error) ? error.response?.status : undefined
+        const isTransient = status === 502 || status === 503 || status === 429 || !status
+        if (isTransient) {
+          // Keep last successful real data (per spec: don't switch to mock), show cached if available
+          try {
+            const cachedPage = localStorage.getItem(`webcms:lastPage:${homeSlug}`)
+            const cachedWebsite = localStorage.getItem(`webcms:lastWebsite:${homeSlug}`)
+            if (cachedPage && page === null) {
+              const parsed = JSON.parse(cachedPage) as WebsitePage
+              setPage(parsed)
+              if (cachedWebsite) {
+                const w = JSON.parse(cachedWebsite) as { website: { name: string; logoUrl?: string | null; website?: string | null } }
+                setWebsiteInfo({ name: w.website.name, logoUrl: w.website.logoUrl, website: w.website.website })
+              }
+              toast('Offline — showing last saved content', { variant: 'warning', description: 'API unavailable, reconnecting automatically...' })
+              return
+            }
+          } catch {}
+          if (page === null) {
+            // No cached yet, show retry UI but don't spam toast
+            setPage(null)
+          } else {
+            toast('Connection lost — showing cached content', { variant: 'warning' })
+          }
+        } else {
+          toast('Could not load website data', { variant: 'error', description: errorMessage(error) })
+        }
       } finally {
         setLoading(false)
       }
     },
-    [toast],
+    [toast, page],
   )
 
   useEffect(() => {
@@ -473,8 +508,13 @@ export function WebsiteEditorPage() {
       const base: SectionEdit =
         current[sectionId] ??
         (() => {
-          const server = pageRef.current?.sections.find((s) => s.id === sectionId)
-          return { content: server ? { ...server.content } : {} }
+          const server = pageRef.current?.sections.find((s) => s.id === sectionId) as unknown as WebsiteSection & { draftContent?: Record<string, unknown> | null; draftName?: string | null; draftIsActive?: boolean | null } | undefined
+          const baseContent = server?.draftContent ?? server?.content ?? {}
+          return {
+            content: { ...(baseContent as Record<string, unknown>) },
+            name: server?.draftName ?? server?.sectionName ?? undefined,
+            isActive: server?.draftIsActive ?? (server?.status === 'ACTIVE'),
+          } as SectionEdit
         })()
       return { ...current, [sectionId]: { ...base, ...patch } }
     })
@@ -618,9 +658,11 @@ export function WebsiteEditorPage() {
     return (
       <div className="p-4 sm:p-6 lg:p-8">
         <PageHeader eyebrow="Content" title="Website Editor" />
-        <Card className="p-8 text-center text-sm text-muted">
-          We couldn't load your website content. Please sign out and sign in again. If the problem continues,
-          contact the technical team.
+        <Card className="p-8 text-center">
+          <p className="text-sm text-muted">Website content is not available right now. The backend may be restarting — please retry.</p>
+          <Button variant="secondary" className="mt-4" icon={<RefreshIcon />} onClick={() => void load(false)}>
+            Retry
+          </Button>
         </Card>
       </div>
     )

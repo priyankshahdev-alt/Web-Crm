@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+﻿import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
 import { usePageContent } from '../hooks/usePageContent';
 
@@ -259,7 +259,7 @@ export default function ImpactTricycle() {
 
           <div className="tricycle-grid">
             <div className="tricycle-image">
-              <img src={mainImage} alt="Tricycle Distribution" />
+              <img src={mainImage} alt="Tricycle Distribution" loading="lazy" decoding="async" width="800" height="600" />
             </div>
             <div className="tricycle-content">
               {cards.map((card, i) => (
@@ -290,10 +290,11 @@ export default function ImpactTricycle() {
         </div>
         <div className="shital-gallery">
           {galleryImages.map((src, i) => (
-            <div className="shital-gallery-item" key={i}><img src={src} alt="" /></div>
+            <div className="shital-gallery-item" key={i}><img src={src} alt="" loading="lazy" decoding="async" width="800" height="600" /></div>
           ))}
         </div>
       </section>
     </>
   );
 }
+

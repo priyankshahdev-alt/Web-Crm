@@ -6,12 +6,14 @@ interface CardProps {
   hoverable?: boolean
   glass?: boolean
   style?: React.CSSProperties
+  onClick?: () => void
 }
 
-export function Card({ children, className = '', hoverable = false, glass = false, style }: CardProps) {
+export function Card({ children, className = '', hoverable = false, glass = false, style, onClick }: CardProps) {
   return (
     <div
       style={style}
+      onClick={onClick}
       className={`rounded-2xl border border-line bg-white shadow-card ${glass ? 'glass-card' : ''} ${hoverable ? 'card-lift' : ''} ${className}`}
     >
       {children}

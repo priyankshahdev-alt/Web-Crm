@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+﻿import { Link } from 'react-router-dom';
 import { useRef, useEffect } from 'react';
 import { usePageContent } from '../hooks/usePageContent';
 
@@ -341,7 +341,7 @@ const MissionAurat = () => {
             </div>
             <div className="hero-right">
               <div className="image-box">
-                <img src={heroImage} alt="Women Empowerment" />
+                <img src={heroImage} alt="Women Empowerment" loading="eager" fetchPriority="high" decoding="async" width="800" height="600" />
                 {heroStats.map((stat, i) => (
                   <div className={`floating-card card${i + 1}`} key={i}>
                     <h3>{stat.value}</h3>
@@ -364,7 +364,7 @@ const MissionAurat = () => {
 
         <section className="about-section" id="about">
           <div className="about-image">
-            <img src={aboutImage} alt="Women" />
+            <img src={aboutImage} alt="Women" loading="lazy" decoding="async" width="800" height="600" />
           </div>
           <div className="about-content">
             <span>{aboutTag}</span>
@@ -413,7 +413,7 @@ const MissionAurat = () => {
               </div>
             </div>
             <div className="impact-image">
-              <img src={impactImage} alt="" />
+              <img src={impactImage} alt="" loading="lazy" decoding="async" width="800" height="600" />
             </div>
           </div>
         </section>
@@ -426,7 +426,7 @@ const MissionAurat = () => {
           </div>
           <div className="gallery-grid">
             {galleryImages.map((g, i) => (
-              <div className="gallery-card" key={i}><img src={g.src} alt={g.alt} /></div>
+              <div className="gallery-card" key={i}><img src={g.src} alt={g.alt} loading="lazy" decoding="async" width="800" height="600" /></div>
             ))}
           </div>
         </section>
@@ -467,3 +467,4 @@ const MissionAurat = () => {
 };
 
 export default MissionAurat;
+

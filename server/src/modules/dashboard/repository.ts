@@ -1,6 +1,56 @@
+import fs from 'node:fs';
+import path from 'node:path';
 import { Prisma } from '@prisma/client';
 import type { AuthUser } from '../../types';
 import { prisma } from '../../libs/prisma';
+
+/**
+ * Count real images in the BeingSevak public website (being/public).
+ * Returns total number of image files on disk (.png .jpg .jpeg .webp .svg .gif .avif .bmp).
+ * This is the actual website image count, independent of DB Media records.
+ */
+function countBeingSevakImages(): number {
+  const candidates = [
+    path.resolve(process.cwd(), '../being/public'),
+    path.resolve(process.cwd(), '../../being/public'),
+    path.resolve(__dirname, '../../../being/public'),
+    path.resolve(__dirname, '../../../../being/public'),
+    // absolute fallback for local dev path
+    path.resolve('C:/Users/Administrator/Desktop/Super admin/Web-Crm/being/public'),
+  ];
+  let dir: string | null = null;
+  for (const c of candidates) {
+    try {
+      if (fs.existsSync(c) && fs.statSync(c).isDirectory()) {
+        dir = c;
+        break;
+      }
+    } catch {
+      // ignore
+    }
+  }
+  if (!dir) return 0;
+  const imageExts = new Set(['.png', '.jpg', '.jpeg', '.webp', '.svg', '.gif', '.avif', '.bmp']);
+  const excludeDirs = new Set(['optimized', 'unused', 'original']);
+  let count = 0;
+  const walk = (d: string) => {
+    let entries: fs.Dirent[] = [];
+    try {
+      entries = fs.readdirSync(d, { withFileTypes: true });
+    } catch {
+      return;
+    }
+    for (const e of entries) {
+      const full = path.join(d, e.name);
+      if (e.isDirectory()) {
+        if (excludeDirs.has(e.name.toLowerCase())) continue;
+        walk(full);
+      } else if (e.isFile() && imageExts.has(path.extname(e.name).toLowerCase())) count++;
+    }
+  };
+  walk(dir);
+  return count;
+}
 
 export type DashboardScope = {
   orgIds: string[];
@@ -115,6 +165,7 @@ export type SiteDetailedStats = {
   testimonials: { total: number; active: number };
   partners: { total: number; active: number };
   faqs: { total: number; active: number };
+  beingSevakImages: { total: number };
 };
 
 export type UpcomingEvent = {
@@ -288,6 +339,7 @@ export const dashboardRepository = {
     ]);
 
     const c = counts[0];
+    const beingSevakImageCount = countBeingSevakImages();
     return {
       counts: {
         pages: { total: c.pages_total, published: c.pages_published, draft: c.pages_draft, archived: c.pages_archived },
@@ -301,6 +353,7 @@ export const dashboardRepository = {
         testimonials: { total: c.testimonials_total, active: c.testimonials_active },
         partners: { total: c.partners_total, active: c.partners_active },
         faqs: { total: c.faqs_total, active: c.faqs_active },
+        beingSevakImages: { total: beingSevakImageCount },
       },
       upcomingEvents: upcomingEvents as UpcomingEvent[],
     };

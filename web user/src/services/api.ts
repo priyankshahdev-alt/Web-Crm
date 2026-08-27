@@ -27,15 +27,14 @@ http.interceptors.request.use((config) => {
 })
 
 /**
- * On a 401 the access token is invalid or stale (e.g. a leftover offline demo
- * token once the live backend is up). Attempt one silent refresh and retry the
- * original request; if refresh fails, clear the session and go back to login.
+ * Handle 401 (refresh), and transient 502/503/429 (proxy / rate-limit) with one retry.
+ * Keeps the UI from spamming toasts when the dev backend restarts.
  */
 http.interceptors.response.use(
   (response) => response,
   async (error) => {
     const response = error?.response
-    const config = error?.config as (AxiosRequestConfig & { _retry?: boolean }) | undefined
+    const config = error?.config as (AxiosRequestConfig & { _retry?: boolean; _retryTransient?: boolean }) | undefined
 
     const isLoginOrRefresh =
       typeof config?.url === 'string' &&
@@ -68,6 +67,16 @@ http.interceptors.response.use(
         window.location.assign('/login')
       }
     }
+
+    // One automatic retry for transient gateway / rate-limit errors during dev
+    const transient = response?.status === 502 || response?.status === 503 || response?.status === 429
+    if (transient && config && !config._retryTransient && !isLoginOrRefresh) {
+      config._retryTransient = true
+      const delayMs = response.status === 429 ? 800 : 400
+      await new Promise((r) => setTimeout(r, delayMs))
+      return http(config)
+    }
+
     return Promise.reject(error)
   },
 )
@@ -80,11 +89,9 @@ let liveProbe: boolean | null = null
 let liveProbePromise: Promise<boolean> | null = null
 
 /**
- * Probe whether the backend is reachable. The in-flight probe is cached so
- * every caller shares the same request, and the result is cached for the page
- * session so subsequent reads take the fast path. Components and services
- * should await this before deciding whether to use the live backend, because
- * `isLiveMode()` is only reliable once the probe has finished.
+ * Probe whether the backend is reachable. Cached per page session.
+ * Used for Live API connection status indicator — does NOT automatically
+ * switch to mock data (per spec: keep last successful real data).
  */
 export function backendAvailable(): Promise<boolean> {
   if (!liveProbePromise) {
@@ -104,10 +111,14 @@ export function backendAvailable(): Promise<boolean> {
   return liveProbePromise
 }
 
-// Kick off the probe as early as possible so the live/offline decision is
-// already resolved before the first data reads on a fresh page load or refresh.
+// Kick off probe early so Live/Offline badge is resolved before first data load.
 backendAvailable()
 
 export function isLiveMode(): boolean {
   return liveProbe === true
+}
+
+export function resetLiveProbe(): void {
+  liveProbe = null
+  liveProbePromise = null
 }

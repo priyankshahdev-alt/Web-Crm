@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+﻿import { Link } from 'react-router-dom';
 import { useRef, useEffect } from 'react';
 import { usePageContent } from '../hooks/usePageContent';
 
@@ -14,7 +14,7 @@ const MissionVidhya = () => {
   const heroHeadingText = content('mission-vidhya-hero', 'headingText') ?? 'Programme';
   const heroText =
     content('mission-vidhya-hero', 'description') ??
-    'Being Sevak Charitable Trust presents Project Vidhya – Fight Against Illiteracy, an initiative dedicated to empowering disabled and underprivileged children through education and personal development.';
+    'Being Sevak Charitable Trust presents Project Vidhya â€“ Fight Against Illiteracy, an initiative dedicated to empowering disabled and underprivileged children through education and personal development.';
   const heroImage = content('mission-vidhya-hero', 'image') ?? '/images/v1.jpg';
   const heroStats =
     content('vidhya-hero-stats', 'items') ?? [
@@ -27,12 +27,12 @@ const MissionVidhya = () => {
   const aboutHighlight = content('vidhya-about', 'headingHighlight') ?? 'Education';
   const aboutText =
     content('vidhya-about', 'text') ??
-    'Our mission is to empower children from financially weak backgrounds by providing quality education support. From notebooks and school kits to awareness programmes and mentorship — we aim to create equal opportunities for every child.';
+    'Our mission is to empower children from financially weak backgrounds by providing quality education support. From notebooks and school kits to awareness programmes and mentorship â€” we aim to create equal opportunities for every child.';
   const aboutImage = content('vidhya-about', 'image') ?? '/images/v2.jpg';
   const aboutFeatures =
     content('vidhya-about', 'features') ?? [
-      { icon: '📖', title: 'School Kits', description: 'Educational support material for children.' },
-      { icon: '🎓', title: 'Learning Support', description: 'Helping children continue quality education.' },
+      { icon: 'ðŸ“–', title: 'School Kits', description: 'Educational support material for children.' },
+      { icon: 'ðŸŽ“', title: 'Learning Support', description: 'Helping children continue quality education.' },
     ];
 
   const impactTag = content('vidhya-impact', 'tag') ?? 'Our Impact';
@@ -311,7 +311,7 @@ const MissionVidhya = () => {
           </div>
           <div className="hero-right">
             <div className="main-image-card">
-              <img src={heroImage} alt="Children Education" />
+              <img src={heroImage} alt="Children Education" loading="eager" fetchPriority="high" decoding="async" width="800" height="600" />
               {heroStats.map((stat, i) => (
                 <div className={`floating-card card${i + 1}`} key={i}>
                   <h3>{stat.value}</h3>
@@ -333,7 +333,7 @@ const MissionVidhya = () => {
 
         <section className="about-section" id="about" style={{ marginTop: '1px' }}>
           <div className="about-image">
-            <img src={aboutImage} alt="Education" />
+            <img src={aboutImage} alt="Education" loading="lazy" decoding="async" width="800" height="600" />
           </div>
           <div className="about-content">
             <span className="mini-title">{aboutTag}</span>
@@ -370,7 +370,7 @@ const MissionVidhya = () => {
           </div>
           <div className="gallery-grid">
             {galleryImages.map((g, i) => (
-              <div className={`gallery-item${g.big ? ' big' : ''}`} key={i}><img src={g.src} alt="" /></div>
+              <div className={`gallery-item${g.big ? ' big' : ''}`} key={i}><img src={g.src} alt="" loading="lazy" decoding="async" width="800" height="600" /></div>
             ))}
           </div>
         </section>
@@ -411,3 +411,4 @@ const MissionVidhya = () => {
 };
 
 export default MissionVidhya;
+

@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+﻿import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
 import { usePageContent } from '../hooks/usePageContent';
 
@@ -8,17 +8,17 @@ const Management = () => {
   const pageTitle = content('management-title', 'heading') ?? 'Our Management';
 
   const founderName = content('management-founder', 'name') ?? 'Priyank Shah';
-  const founderRole = content('management-founder', 'role') ?? 'Founder Chairman – BEING SEVAK CHARITABLE TRUST';
+  const founderRole = content('management-founder', 'role') ?? 'Founder Chairman â€“ BEING SEVAK CHARITABLE TRUST';
   const founderImage = content('management-founder', 'image') ?? '/images/managesir.png';
   const founderLeft =
     content('management-founder', 'left') ?? [
-      { icon: '🏅', text: 'Being Sevak Charitable Trust (BSCT) is driven by a vision of creating meaningful social impact through healthcare, education, environmental sustainability, women empowerment, and community welfare initiatives across India.' },
-      { icon: '❝', text: 'Our mission is to serve humanity with compassion, dignity, and purpose, ensuring that no individual is left behind.' },
+      { icon: 'ðŸ…', text: 'Being Sevak Charitable Trust (BSCT) is driven by a vision of creating meaningful social impact through healthcare, education, environmental sustainability, women empowerment, and community welfare initiatives across India.' },
+      { icon: 'â', text: 'Our mission is to serve humanity with compassion, dignity, and purpose, ensuring that no individual is left behind.' },
     ];
   const founderRight =
     content('management-founder', 'right') ?? [
-      { icon: '👁️', text: 'Guided by compassion and social responsibility, BSCT envisions an inclusive future where every individual can thrive with dignity, equal opportunities, and access to essential resources.' },
-      { icon: '🏆', text: 'Through impactful projects in healthcare, education, women empowerment, environmental conservation, and humanitarian assistance, Being Sevak Charitable Trust continues to drive meaningful change and inspire communities nationwide.' },
+      { icon: 'ðŸ‘ï¸', text: 'Guided by compassion and social responsibility, BSCT envisions an inclusive future where every individual can thrive with dignity, equal opportunities, and access to essential resources.' },
+      { icon: 'ðŸ†', text: 'Through impactful projects in healthcare, education, women empowerment, environmental conservation, and humanitarian assistance, Being Sevak Charitable Trust continues to drive meaningful change and inspire communities nationwide.' },
     ];
 
   const teamHeading = content('management-team', 'heading') ?? 'Management Team';
@@ -163,7 +163,7 @@ const Management = () => {
               <div className="founder-item animate-up" key={i}><div className="founder-icon">{item.icon}</div><p>{item.text}</p></div>
             ))}
           </div>
-          <div className="founder-image animate-zoom"><img src={founderImage} alt={founderName}/></div>
+          <div className="founder-image animate-zoom"><img src={founderImage} alt={founderName} loading="lazy" decoding="async" width="800" height="600" /></div>
           <div className="founder-col right">
             {founderRight.map((item, i) => (
               <div className="founder-item animate-up" key={i}><div className="founder-icon">{item.icon}</div><p>{item.text}</p></div>
@@ -177,7 +177,7 @@ const Management = () => {
         <p className="section-subtitle">{teamSubtitle}</p>
         <div className="team-circles">
           {team.map((m, i) => (
-            <div className="team-member" key={i}><img src={m.image} alt={m.name} className="team-member-img"/><div className="team-member-name">{m.name}</div><div className="team-member-role">{m.role}</div><div className="team-member-divider"></div></div>
+            <div className="team-member" key={i}><img src={m.image} alt={m.name} className="team-member-img" loading="lazy" decoding="async" width="800" height="600" /><div className="team-member-name">{m.name}</div><div className="team-member-role">{m.role}</div><div className="team-member-divider"></div></div>
           ))}
         </div>
       </section>
@@ -214,3 +214,4 @@ const Management = () => {
 };
 
 export default Management;
+

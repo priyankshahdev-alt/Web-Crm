@@ -2,7 +2,6 @@ import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 import { getSession, signOut as clearSession, type WebUserSession } from '../lib/session'
 import { authService } from '../services/auth'
 import { backendAvailable } from '../services/api'
-import { store } from '../services/store'
 
 interface SessionContextValue {
   session: WebUserSession | null
@@ -38,7 +37,6 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
       signOut: () => {
         void authService.logout()
         clearSession()
-        store.reset()
         setSession(null)
       },
       switchWebsite: async (organizationId) => {

@@ -2,18 +2,14 @@
  * Base URL for the backend API.
  *
  * Relative (`/api/v1`) so development requests go through the Vite proxy
- * (see `vite.config.ts`) and production requests resolve on the same origin.
+ * (see `vite.config.ts`) and avoid CORS. Production uses VITE_API_URL.
  */
-export const BASE_URL = '/api/v1'
+export const BASE_URL = import.meta.env.VITE_API_URL || '/api/v1'
 
 /**
- * Base origin of the public website preview served by this organization's
- * frontend in development. "View site" links in the panel open this origin.
+ * Base origin of the public website. "View site" / preview links in the CMS
+ * now open the actual production site, not a localhost preview.
  */
-export const PUBLIC_SITE_ORIGIN = 'http://localhost:5177'
+export const PUBLIC_SITE_ORIGIN = 'https://beingsevak.org'
 
-/**
- * When the backend is unreachable the app transparently falls back to the
- * local mock repository so the CMS remains fully explorable.
- */
-export const API_TIMEOUT_MS = 4500
+export const API_TIMEOUT_MS = 10000

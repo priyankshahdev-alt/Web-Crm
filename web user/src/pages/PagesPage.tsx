@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState, type ReactNode } from 'react'
 import { cmsService } from '../services/cms'
-import { isLiveMode } from '../services/api'
 import { settingsService, approvalService } from '../services/settings'
 import type { CmsPage, PublishStatus } from '../types'
 import { slugify, formatDate } from '../utils/format'
@@ -313,13 +312,6 @@ export function PagesPage() {
   }
 
   const openContentEditor = (item: CmsPage) => {
-    if (!isLiveMode()) {
-      toast('Content editing needs the live server', {
-        variant: 'info',
-        description: 'Start the backend server to edit this page\'s content.',
-      })
-      return
-    }
     setEditing(item)
     setActiveTab('content')
     setModalOpen(true)

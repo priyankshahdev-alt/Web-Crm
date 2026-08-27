@@ -1,4 +1,4 @@
-import { http, isAxiosError } from './api'
+import { http } from './api'
 
 /**
  * Generic CRUD gateway that routes all operations to the live backend.
@@ -14,14 +14,17 @@ export interface CrudEntity {
 export async function listEntities<T extends CrudEntity>(
   resource: string,
   _storeKey: string,
-  params: { page?: number; pageSize?: number; search?: string; status?: string } = {},
+  params: any = {},
 ): Promise<{ items: T[]; total: number }> {
+  const { page, pageSize, search, status, folder, ...rest } = params as any
   const { data } = await http.get('/' + resource, {
     params: {
-      page: params.page ?? 1,
-      limit: params.pageSize ?? 10,
-      search: params.search || undefined,
-      status: params.status || undefined,
+      page: page ?? 1,
+      limit: pageSize ?? 10,
+      search: search || undefined,
+      status: status || undefined,
+      folder: folder || undefined,
+      ...Object.fromEntries(Object.entries(rest).filter(([, v]) => v !== undefined && v !== null && v !== '')),
     },
   })
   const payload = data.data

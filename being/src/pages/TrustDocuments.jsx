@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+﻿import { useEffect, useState, useRef } from 'react';
 import { usePageContent } from '../hooks/usePageContent';
 
 const TrustDocuments = () => {
@@ -39,7 +39,7 @@ const TrustDocuments = () => {
     ];
 
   const portalTitle = content('td-portal', 'title') ?? 'Trust Documents & Reports';
-  const portalSubtitle = content('td-portal', 'subtitle') ?? 'Transparency, Accountability & Impact — Building Trust Through Every Action.';
+  const portalSubtitle = content('td-portal', 'subtitle') ?? 'Transparency, Accountability & Impact â€” Building Trust Through Every Action.';
   const tab1Label = content('td-portal', 'tab1Label') ?? 'Trust Documents';
   const tab2Label = content('td-portal', 'tab2Label') ?? 'BSCT Audit Reports';
   const legalDocs =
@@ -274,7 +274,7 @@ const TrustDocuments = () => {
         <div className="hero-image">
           <div className="floating-card card1"><h3>{heroCard1Value}</h3><p>{heroCard1Label}</p></div>
           <div className="floating-card card2"><h3>{heroCard2Value}</h3><p>{heroCard2Label}</p></div>
-          <img src={heroImage} alt="Trust Documents" />
+          <img src={heroImage} alt="Trust Documents" loading="eager" fetchPriority="high" decoding="async" width="800" height="600" />
         </div>
       </section>
 
@@ -294,7 +294,7 @@ const TrustDocuments = () => {
                     if (idx !== -1) openPdfModal(idx, docs);
                   }}
                 >
-                  <img src={item.img} alt={item.year} loading="lazy" />
+                  <img src={item.img} alt={item.year} loading="lazy" decoding="async" width="800" height="600" />
                   <div className="booklet-overlay">
                     <div className="year">{item.year}</div>
                     {!item.pdf && <div className="status">PDF coming soon</div>}
@@ -316,7 +316,7 @@ const TrustDocuments = () => {
                 const idx = docs.findIndex(d => d.pdf === doc.pdf);
                 if (idx !== -1) openPdfModal(idx, docs);
               }}>
-                <div className="doc-card-icon"><i className={doc.icon}></i></div>
+                <div className="doc-card-icon">{doc.image ? <img src={doc.image} alt={doc.title} style={{width:'100%',height:'100%',objectFit:'cover',borderRadius:12}} /> : <i className={doc.icon}></i>}</div>
                 <div className="doc-card-body"><h4>{doc.title}</h4><p>{doc.desc}</p></div>
                 <div className="doc-card-arrow"><i className="fas fa-arrow-right"></i></div>
               </div>
@@ -329,7 +329,7 @@ const TrustDocuments = () => {
                 const idx = docs.findIndex(d => d.pdf === doc.pdf);
                 if (idx !== -1) openPdfModal(idx, docs);
               }}>
-                <div className="doc-card-icon"><i className={doc.icon}></i></div>
+                <div className="doc-card-icon">{doc.image ? <img src={doc.image} alt={doc.title} style={{width:'100%',height:'100%',objectFit:'cover',borderRadius:12}} /> : <i className={doc.icon}></i>}</div>
                 <div className="doc-card-body"><h4>{doc.title}</h4><p>{doc.desc}</p></div>
                 <div className="doc-card-arrow"><i className="fas fa-arrow-right"></i></div>
               </div>
@@ -361,7 +361,7 @@ const TrustDocuments = () => {
           <div className="section-title"><span className="section-label">{complianceTag}</span><h2>{complianceHeading}</h2><p>{complianceDescription}</p></div>
           <div className="values-grid">
             {complianceValues.map((v, i) => (
-              <div className="value-card reveal" key={i}><div className="val-icon"><i className={`fas ${v.icon}`}></i></div><h3>{v.title}</h3><p>{v.desc}</p></div>
+              <div className="value-card reveal" key={i}><div className="val-icon">{v.image ? <img src={v.image} alt={v.title} style={{width:'100%',height:'100%',objectFit:'contain',borderRadius:8}} /> : <i className={`fas ${v.icon}`}></i>}</div><h3>{v.title}</h3><p>{v.desc}</p></div>
             ))}
           </div>
         </div>
@@ -382,3 +382,4 @@ const TrustDocuments = () => {
 };
 
 export default TrustDocuments;
+

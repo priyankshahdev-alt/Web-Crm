@@ -1,3 +1,4 @@
+import fs from 'node:fs';
 import path from 'node:path';
 import { randomUUID } from 'node:crypto';
 import { config } from '../../config';
@@ -58,10 +59,133 @@ function isImage(mime: string): boolean {
   return mime.startsWith('image/');
 }
 
+function mimeFromExt(ext: string): string {
+  const m: Record<string, string> = {
+    '.jpg': 'image/jpeg',
+    '.jpeg': 'image/jpeg',
+    '.png': 'image/png',
+    '.webp': 'image/webp',
+    '.gif': 'image/gif',
+    '.svg': 'image/svg+xml',
+    '.avif': 'image/avif',
+    '.bmp': 'image/bmp',
+  };
+  return m[ext.toLowerCase()] ?? 'image/jpeg';
+}
+
+function resolveOptimizedDir(): string | null {
+  const candidates = [
+    path.resolve(process.cwd(), '../being/public/images/optimized'),
+    path.resolve(process.cwd(), '../../being/public/images/optimized'),
+    path.resolve(__dirname, '../../../being/public/images/optimized'),
+    path.resolve(__dirname, '../../../../being/public/images/optimized'),
+    path.resolve('C:/Users/Administrator/Desktop/Super admin/Web-Crm/being/public/images/optimized'),
+  ];
+  for (const c of candidates) {
+    try {
+      if (fs.existsSync(c) && fs.statSync(c).isDirectory()) return c;
+    } catch {
+      // ignore
+    }
+  }
+  return null;
+}
+
+function getOptimizedEntries(organizationId: string): any[] {
+  const dir = resolveOptimizedDir();
+  if (!dir) return [];
+  let files: string[] = [];
+  try {
+    files = fs.readdirSync(dir);
+  } catch {
+    return [];
+  }
+  const entries: any[] = [];
+  for (const fileName of files) {
+    const full = path.join(dir, fileName);
+    let stat: fs.Stats | null = null;
+    try {
+      stat = fs.statSync(full);
+    } catch {
+      continue;
+    }
+    if (!stat.isFile()) continue;
+    if (stat.size === 0) continue;
+    const ext = path.extname(fileName).toLowerCase();
+    if (!['.png', '.jpg', '.jpeg', '.webp', '.avif', '.gif', '.svg', '.bmp'].includes(ext)) continue;
+    const mimeType = mimeFromExt(ext);
+    const size = stat.size;
+    const mtime = stat.mtime;
+    // stable id per org + filename
+    const id = `optimized-${organizationId}-${fileName}`;
+    // Use relative URL so Vite proxy (/static -> localhost:4000) serves it same-origin and avoids helmet CORP / CORS issues
+    const url = `/static/optimized/${encodeURIComponent(fileName)}`;
+    entries.push({
+      id,
+      organizationId,
+      fileName,
+      mimeType,
+      size,
+      bucket: 'local',
+      key: `optimized/${fileName}`,
+      url,
+      thumbnailUrl: url,
+      entityType: null,
+      entityId: null,
+      folder: 'optimized',
+      uploadedById: null,
+      createdAt: mtime.toISOString(),
+      updatedAt: mtime.toISOString(),
+    });
+  }
+  // newest first
+  entries.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  return entries;
+}
+
 export const mediaService = {
   async list(params: ListParams): Promise<Paginated<unknown>> {
-    const { items, total } = await mediaRepository.list(params);
-    return buildPaginated(items, total, Math.floor(params.skip / params.take) + 1, params.take);
+    let dbItems: any[] = [];
+    let dbTotal = 0;
+    try {
+      const res = await mediaRepository.list(params);
+      dbItems = res.items as any[];
+      dbTotal = res.total;
+    } catch {
+      // DB unavailable — fall back to optimized-only results
+      dbItems = [];
+      dbTotal = 0;
+    }
+
+    // Merge Being optimized images into the media list so they appear in every CMS picker
+    // Do not include them when filtering by entityType/entityId (they are general)
+    let optimizedFiltered: any[] = [];
+    const hasEntityFilter = !!(params.entityType || params.entityId);
+    if (!hasEntityFilter) {
+      const allOptimized = getOptimizedEntries(params.organizationId);
+      optimizedFiltered = allOptimized.filter((e) => {
+        if (params.folder && e.folder !== params.folder) return false;
+        if (params.mimeType && e.mimeType !== params.mimeType) return false;
+        if (params.search && !e.fileName.toLowerCase().includes(params.search.toLowerCase())) return false;
+        return true;
+      });
+    }
+
+    const shouldMerge = optimizedFiltered.length > 0;
+    if (!shouldMerge) {
+      return buildPaginated(dbItems, dbTotal, Math.floor(params.skip / params.take) + 1, params.take);
+    }
+
+    // If folder=mimeType/search filters were active, DB already filtered; reuse dbTotal
+    // Total must include optimized matches
+    const combinedTotal = dbTotal + optimizedFiltered.length;
+
+    // Merge + sort + paginate across combined set
+    const combined = [...dbItems as any[], ...optimizedFiltered].sort(
+      (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+    );
+    const paged = combined.slice(params.skip, params.skip + params.take);
+    return buildPaginated(paged, combinedTotal, Math.floor(params.skip / params.take) + 1, params.take);
   },
 
   async upload(
@@ -132,6 +256,9 @@ export const mediaService = {
   },
 
   async rename(orgId: string, id: string, fileName: string, userId: string) {
+    if (id.startsWith('optimized-')) {
+      throw ApiError.badRequest('Optimized images are read-only (being/public/images/optimized). Rename via filesystem.');
+    }
     const media = await mediaRepository.findById(id);
     if (!media) throw ApiError.notFound('Media not found');
     if (media.organizationId !== orgId) throw ApiError.forbidden('Media does not belong to this organization');
@@ -154,6 +281,9 @@ export const mediaService = {
   },
 
   async moveToFolder(orgId: string, id: string, folder: string | null, userId: string) {
+    if (id.startsWith('optimized-')) {
+      throw ApiError.badRequest('Optimized images are read-only (being/public/images/optimized). Move via filesystem.');
+    }
     const media = await mediaRepository.findById(id);
     if (!media) throw ApiError.notFound('Media not found');
     if (media.organizationId !== orgId) throw ApiError.forbidden('Media does not belong to this organization');
@@ -173,6 +303,9 @@ export const mediaService = {
   },
 
   async remove(orgId: string, id: string, userId: string) {
+    if (id.startsWith('optimized-')) {
+      throw ApiError.badRequest('Optimized images are read-only (being/public/images/optimized). Delete via filesystem.');
+    }
     const media = await mediaRepository.findById(id);
     if (!media) throw ApiError.notFound('Media not found');
     if (media.organizationId !== orgId) throw ApiError.forbidden('Media does not belong to this organization');

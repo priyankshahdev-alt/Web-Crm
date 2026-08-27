@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+﻿import { Link } from 'react-router-dom';
 import { useSite } from '../context/SiteContext';
 
 const DEFAULT_FOOTER_COLUMNS = [
@@ -52,11 +52,11 @@ export default function Footer() {
   const address = getSetting('contact.address', 'MUMBAI, INDIA');
   const tagline = getSetting(
     'site.tagline',
-    'Serving humanity with compassion, dignity, and hope — empowering lives through food, education, healthcare, and community support',
+    'Serving humanity with compassion, dignity, and hope â€” empowering lives through food, education, healthcare, and community support',
   );
   const copyright = getSetting(
     'footer.copyright',
-    '© 2026 Copyright 2023 Being Sevak Charitable Trust. All rights reserved. Registered Charity No. E-31948',
+    'Â© 2026 Copyright 2023 Being Sevak Charitable Trust. All rights reserved. Registered Charity No. E-31948',
   );
   const socialFb = getSetting('social.facebook', '');
   const socialIg = getSetting('social.instagram', '');
@@ -67,8 +67,8 @@ export default function Footer() {
       <div className="footer-inner">
         <div className="footer-col">
           <div className="footer-logo">
-            <img src="/images/logo11.png" alt="Being Sevak Logo" className="footer-logo-img" />
-            <img src="/images/bs.png" alt="Text Logo" className="BS-text-logo" />
+            <img src="/images/logo11.png" alt="Being Sevak Logo" className="footer-logo-img" loading="lazy" decoding="async" width="48" height="48" />
+            <img src="/images/bs.png" alt="Text Logo" className="BS-text-logo" loading="lazy" decoding="async" width="48" height="48" />
           </div>
           <p className="footer-desc"> {tagline}</p>
         </div>
@@ -113,7 +113,7 @@ export default function Footer() {
               <i className="fas fa-file-pdf"></i> Brochure
             </a>
             <div className="footer-qr">
-              <img src="/images/Qrcode.jpeg" alt="Donation QR Code" />
+              <img src="/images/Qrcode.jpeg" alt="Donation QR Code" loading="lazy" decoding="async" width="200" height="200" />
             </div>
           </div>
         </div>
@@ -127,3 +127,4 @@ export default function Footer() {
     </footer>
   );
 }
+

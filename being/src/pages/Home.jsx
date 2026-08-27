@@ -77,26 +77,26 @@ export default function Home() {
   const mostNeededHeading = content('home-most-needed', 'heading') ?? 'Most Needed';
   const mostNeededDescription =
     content('home-most-needed', 'description') ??
-    'Every moment matters—people are struggling without basic needs';
+    'Every moment matters\u2014people are struggling without basic needs';
   const mostNeededCauses =
     content('home-most-needed', 'items') ?? [
-      { title: 'Mission Bezubaan', description: 'Animal feeding support, paw care services, and Pedigree distribution.', imageClass: 'cause-img-5', progress: '78%', funded: '78% Funded', raised: '₹2,34,000 raised', link: '/mission-bezubaan' },
-      { title: 'Project H2', description: 'Clean water and washroom facilities for schools.', imageClass: 'cause-img-6', progress: '55%', funded: '55% Funded', raised: '₹1,12,000 raised', link: '/mission-wellness' },
-      { title: 'Baby Feeding Booth', description: 'Safe and hygienic baby feeding booths for mothers and child care in government hospitals.', imageClass: 'cause-img-7', progress: '91%', funded: '91% Funded', raised: '₹3,08,000 raised', link: '/mission-aurat' },
-      { title: 'Sevak Niwas', description: 'provides housing, care and dignity to visually impaired individuals and families in need.', imageClass: 'cause-img-8', progress: '63%', funded: '63% Funded', raised: '₹1,74,000 raised', link: '/sevak-nivash' },
+      { title: 'Mission Bezubaan', description: 'Animal feeding support, paw care services, and Pedigree distribution.', imageClass: 'cause-img-5', progress: '78%', funded: '78% Funded', raised: '\u20B92,34,000 raised', link: '/mission-bezubaan' },
+      { title: 'Project H2', description: 'Clean water and washroom facilities for schools.', imageClass: 'cause-img-6', progress: '55%', funded: '55% Funded', raised: '\u20B91,12,000 raised', link: '/mission-wellness' },
+      { title: 'Baby Feeding Booth', description: 'Safe and hygienic baby feeding booths for mothers and child care in government hospitals.', imageClass: 'cause-img-7', progress: '91%', funded: '91% Funded', raised: '\u20B93,08,000 raised', link: '/mission-aurat' },
+      { title: 'Sevak Niwas', description: 'provides housing, care and dignity to visually impaired individuals and families in need.', imageClass: 'cause-img-8', progress: '63%', funded: '63% Funded', raised: '\u20B91,74,000 raised', link: '/sevak-nivash' },
     ];
 
   const urgentHeading =
     content('home-urgent-appeals', 'heading') ?? 'Urgent Appeals';
   const urgentDescription =
     content('home-urgent-appeals', 'description') ??
-    'Every moment matters—people are struggling without basic needs';
+    'Every moment matters\u2014people are struggling without basic needs';
   const urgentAppeals =
     content('home-urgent-appeals', 'items') ?? [
-      { title: 'Mission Annapurna', description: 'Dry Ration Kit , Mid-Day Meal , Snacks kit. Meals With Care.', imageClass: 'cause-img-1', progress: '78%', funded: '78% Funded', raised: '₹2,34,000 raised', link: '/mission-annapurna' },
-      { title: 'Mission Vidhya', description: 'Digital Education Center, Writing Pad Distribution, and Stationery Kit Distribution.', imageClass: 'cause-img-2', progress: '55%', funded: '55% Funded', raised: '₹1,12,000 raised', link: '/mission-vidhya' },
-      { title: 'Medical Emergency', description: 'Financial aid for critical treatments, surgeries, and emergency care.', imageClass: 'cause-img-3', progress: '91%', funded: '91% Funded', raised: '₹3,08,000 raised', link: '/mission-wellness' },
-      { title: 'Mission Atmanirbhar', description: 'Empowering lives through livelihood support and essential assistive tools.', imageClass: 'cause-img-4', progress: '63%', funded: '63% Funded', raised: '₹1,74,000 raised', link: '/mission-atmanirbhar' },
+      { title: 'Mission Annapurna', description: 'Dry Ration Kit , Mid-Day Meal , Snacks kit. Meals With Care.', imageClass: 'cause-img-1', progress: '78%', funded: '78% Funded', raised: '\u20B92,34,000 raised', link: '/mission-annapurna' },
+      { title: 'Mission Vidhya', description: 'Digital Education Center, Writing Pad Distribution, and Stationery Kit Distribution.', imageClass: 'cause-img-2', progress: '55%', funded: '55% Funded', raised: '\u20B91,12,000 raised', link: '/mission-vidhya' },
+      { title: 'Medical Emergency', description: 'Financial aid for critical treatments, surgeries, and emergency care.', imageClass: 'cause-img-3', progress: '91%', funded: '91% Funded', raised: '\u20B93,08,000 raised', link: '/mission-wellness' },
+      { title: 'Mission Atmanirbhar', description: 'Empowering lives through livelihood support and essential assistive tools.', imageClass: 'cause-img-4', progress: '63%', funded: '63% Funded', raised: '\u20B91,74,000 raised', link: '/mission-atmanirbhar' },
     ];
 
   const eduTitle = content('home-support-education', 'title') ?? 'Support Education';
@@ -157,8 +157,8 @@ export default function Home() {
     ];
   const metroItems =
     content('home-metro', 'items') ?? [
-      { image: 'images/bottle.JPG', label: 'Bottle Crusher Machine', price: '₹1,80,000', buttonLabel: 'DONATE NOW', link: '/donate' },
-      { image: 'images/sanitary.JPG', label: 'Sanitary Pad Vending Machine', price: '₹7,000', buttonLabel: 'DONATE NOW', link: '/donate' },
+      { image: 'images/bottle.JPG', label: 'Bottle Crusher Machine', price: '\u20B91,80,000', buttonLabel: 'DONATE NOW', link: '/donate' },
+      { image: 'images/sanitary.JPG', label: 'Sanitary Pad Vending Machine', price: '\u20B97,000', buttonLabel: 'DONATE NOW', link: '/donate' },
     ];
   const metroImage = content('home-metro', 'image') ?? 'images/bottelmetro.jpeg';
 
@@ -638,7 +638,7 @@ export default function Home() {
       <div className="quick-donate-bar">
         <div className="qd-inner">
           <div className="currency-select">
-            <span className="flag">🇮🇳</span>
+            <span className="flag">{'\u{1F1EE}\u{1F1F3}'}</span>
             <span className="cur-code">INR</span>
             <i className="fas fa-chevron-down"></i>
           </div>
@@ -651,19 +651,19 @@ export default function Home() {
               onChange={(e) => setQuickAmt(e.target.value)}
             />
           </div>
-          <button className={`preset-amt ${activePreset === 100 ? 'active' : ''}`} onClick={() => handlePresetClick(100)}>₹100 INR</button>
-          <button className={`preset-amt ${activePreset === 150 ? 'active' : ''}`} onClick={() => handlePresetClick(150)}>₹150 INR</button>
-          <button className={`preset-amt ${activePreset === 200 ? 'active' : ''}`} onClick={() => handlePresetClick(200)}>₹200 INR</button>
-          <button className={`preset-amt ${activePreset === 500 ? 'active' : ''}`} onClick={() => handlePresetClick(500)}>₹500 INR</button>
+          <button className={`preset-amt ${activePreset === 100 ? 'active' : ''}`} onClick={() => handlePresetClick(100)}>{'\u20B9'}100 INR</button>
+          <button className={`preset-amt ${activePreset === 150 ? 'active' : ''}`} onClick={() => handlePresetClick(150)}>{'\u20B9'}150 INR</button>
+          <button className={`preset-amt ${activePreset === 200 ? 'active' : ''}`} onClick={() => handlePresetClick(200)}>{'\u20B9'}200 INR</button>
+          <button className={`preset-amt ${activePreset === 500 ? 'active' : ''}`} onClick={() => handlePresetClick(500)}>{'\u20B9'}500 INR</button>
           <div className="payment-icons">
-            <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/paypal.svg" alt="PayPal" className="pay-icon"
+            <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/paypal.svg" alt="PayPal" className="pay-icon" loading="lazy" decoding="async" width="32" height="32"
               onError={(e) => { e.target.outerHTML = '<span class="pay-icon-fb">PayPal</span>'; }} />
             <span className="pay-icon-text">VISA</span>
             <span className="pay-icon-text mc">MC</span>
-            <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/applepay.svg" alt="Apple Pay"
-              className="pay-icon" onError={(e) => { e.target.outerHTML = '<span class="pay-icon-fb">Apple Pay</span>'; }} />
-            <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/googlepay.svg" alt="Google Pay"
-              className="pay-icon" onError={(e) => { e.target.outerHTML = '<span class="pay-icon-fb">G Pay</span>'; }} />
+            <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/applepay.svg" alt="Apple Pay" className="pay-icon" loading="lazy" decoding="async" width="32" height="32"
+              onError={(e) => { e.target.outerHTML = '<span class="pay-icon-fb">Apple Pay</span>'; }} />
+            <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/googlepay.svg" alt="Google Pay" className="pay-icon" loading="lazy" decoding="async" width="32" height="32"
+              onError={(e) => { e.target.outerHTML = '<span class="pay-icon-fb">G Pay</span>'; }} />
           </div>
           <div className="quick-donate-pulse-wrap">
             <div className="quick-donate-pulse-ring"></div>
@@ -750,7 +750,7 @@ export default function Home() {
       <section className="about-section">
         <div className="about-left">
           <div className="single-image-box">
-            <img src={aboutImage} alt={aboutImageAlt} className="about-img" />
+            <img src={aboutImage} alt={aboutImageAlt} className="about-img" loading="lazy" decoding="async" width="800" height="600" />
           </div>
         </div>
         <div className="about-right">
@@ -780,7 +780,7 @@ export default function Home() {
             {marqueeItems.map((item, i) => (
               <div className="circle-box" key={i}>
                 <div className="circle">
-                  <img src={item.image} alt="" />
+                  <img src={item.image} alt="" loading="lazy" decoding="async" width="800" height="600" />
                 </div>
                 <h2>{item.value}</h2>
                 <p>{item.label}</p>
@@ -825,7 +825,7 @@ export default function Home() {
         <div className="being-slider-box">
           {impactStories.map((item, i) => (
             <Link to={item.link} className={`being-slide ${currentImpact === i ? 'active' : ''}`} key={i}>
-              <img src={item.image} alt={item.alt} />
+              <img src={item.image} alt={item.alt} loading="lazy" decoding="async" width="800" height="600" />
               <div className="being-text">
                 <h3>{item.title}</h3>
                 <p>Read More</p>
@@ -872,7 +872,7 @@ export default function Home() {
       <section className="donation-section">
         <div className="donation-images">
           <div className="img-box img1">
-            <img src={eduImage} alt="" />
+            <img src={eduImage} alt="" loading="lazy" decoding="async" width="800" height="600" />
           </div>
         </div>
         <div className="donation-content">
@@ -895,7 +895,7 @@ export default function Home() {
       {/* EYE HEALTH PROGRAMME */}
       <section className="eye-health-slide">
         <div className="eye-img">
-          <img src={eyeImage} alt="Eye Health" />
+          <img src={eyeImage} alt="Eye Health" loading="lazy" decoding="async" width="800" height="600" />
         </div>
         <div className="eye-content">
           <span className="tag">{eyeTag}</span>
@@ -930,7 +930,7 @@ export default function Home() {
             <div className={`celebrity-slide ${currentSlide % 2 === si ? 'active' : ''}`} key={si}>
               {slide.map((src, ci) => (
                 <div className="celebrity-card" key={ci}>
-                  <img src={src} alt={`Celebrity Note ${si * 2 + ci + 1}`} />
+                  <img src={src} alt={`Celebrity Note ${si * 2 + ci + 1}`} loading="lazy" decoding="async" width="800" height="600" />
                 </div>
               ))}
             </div>
@@ -947,14 +947,14 @@ export default function Home() {
         <div className="metro-box">
           <div className="metro-images">
             <div className="metro-hero-img">
-              <img src={metroImage} alt="Metro Station Initiative" />
+              <img src={metroImage} alt="Metro Station Initiative" loading="lazy" decoding="async" width="800" height="600" />
               <div className="metro-hero-overlay"></div>
             </div>
             <div className="metro-image-grid">
               {metroItems.map((item, i) => (
                 <div className="metro-img-box" key={i}>
                   <div className="metro-img-wrapper">
-                    <img src={item.image} alt={item.label} />
+                    <img src={item.image} alt={item.label} loading="lazy" decoding="async" width="800" height="600" />
                     <span className="metro-img-label">{item.label}</span>
                   </div>
                   <div className="metro-img-footer">
@@ -979,7 +979,7 @@ export default function Home() {
       <section className="promise-xection">
         <div className="promise-box">
           <div className="promise-logo">
-            <img src={promiseImage} alt="NGO Logo" />
+            <img src={promiseImage} alt="NGO Logo" loading="lazy" decoding="async" width="48" height="48" />
           </div>
           <div className="promise-content">
             <h2>{promiseHeading}</h2>
@@ -1001,10 +1001,10 @@ export default function Home() {
           <div className="slider-track">
             {activitiesItems.map((item, i) => (
               <div className="circle-card" key={i}>
-                <img src={item.image} alt="" />
+                <img src={item.image} alt="" loading="lazy" decoding="async" width="800" height="600" />
                 <h3>{item.title}</h3>
                 <p className="circle-desc">{item.description}</p>
-                <a href="#" className="circle-read-more">Read More →</a>
+                <a href="#" className="circle-read-more">Read More \u2192</a>
               </div>
             ))}
           </div>
@@ -1014,7 +1014,7 @@ export default function Home() {
       {/* OUR PARTNERS */}
       <section className="projects-section">
         <div className="projects-hero">
-          <img src="banner.jpg" alt="Our Partners" />
+          <img src="banner.jpg" alt="Our Partners" loading="lazy" decoding="async" width="800" height="600" />
           <div className="overlay">
             <h1>{partnersH.head} <span>{partnersH.tail}</span></h1>
             <p>{partnersDescription}</p>
@@ -1024,12 +1024,12 @@ export default function Home() {
           <div className="partners-track">
             <div className="projects-grid">
               {partnersImages.map((src, i) => (
-                <div className="project-card" key={i}><img src={'images/'+src} alt="" /></div>
+                <div className="project-card" key={i}><img src={'images/'+src} alt="" loading="lazy" decoding="async" width="800" height="600" /></div>
               ))}
             </div>
             <div className="projects-grid duplicate">
               {partnersImages.map((src, i) => (
-                <div className="project-card" key={'d'+i}><img src={'images/'+src} alt="" /></div>
+                <div className="project-card" key={'d'+i}><img src={'images/'+src} alt="" loading="lazy" decoding="async" width="800" height="600" /></div>
               ))}
             </div>
           </div>
@@ -1065,7 +1065,7 @@ export default function Home() {
         <div className="testimonial-track">
           {[...testimonials, ...testimonials].map((t, i) => (
             <div className="testimonial-card" key={i}>
-              <div className="quote">❝</div>
+              <div className="quote">{'\u201C'}</div>
               <p>{t.quote}</p>
               <div className="donor-info">
                 <h4>{t.name}</h4>
@@ -1105,7 +1105,7 @@ export default function Home() {
           <button className="month-modal-download" title="Download Image" onClick={handleDownload}><i className="fas fa-download"></i></button>
           <button className="month-modal-nav prev" onClick={prevMonth}><i className="fas fa-chevron-left"></i></button>
           <button className="month-modal-nav next" onClick={nextMonth}><i className="fas fa-chevron-right"></i></button>
-          <img src={monthData[currentMonthIdx].img} alt="Monthly Update" />
+          <img src={monthData[currentMonthIdx].img} alt="Monthly Update" loading="lazy" decoding="async" width="800" height="600" />
           <div className="month-modal-caption">{monthData[currentMonthIdx].label}</div>
         </div>
       </div>
@@ -1231,3 +1231,4 @@ export default function Home() {
     </>
   );
 }
+

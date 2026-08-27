@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+﻿import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { usePageContent } from '../hooks/usePageContent';
 
@@ -362,7 +362,7 @@ export default function Donation2() {
             <h3>{heroStats[1].value}</h3>
             <p>{heroStats[1].label}</p>
           </div>
-          <img src={heroImage} alt="Being Sevak" />
+          <img src={heroImage} alt="Being Sevak" loading="eager" fetchPriority="high" decoding="async" width="800" height="600" />
         </div>
         <div className="blur blur1"></div>
         <div className="blur blur2"></div>
@@ -405,3 +405,4 @@ export default function Donation2() {
     </>
   );
 }
+

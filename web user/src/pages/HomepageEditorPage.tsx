@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { cmsService } from '../services/cms'
 import { websiteService } from '../services/website'
-import { backendAvailable } from '../services/api'
+import { http, isAxiosError } from '../services/api'
 import type { CmsPage, PageSection, SectionType } from '../types'
 import { SectionFieldEditor } from '../components/website/SectionFieldEditor'
 import { uuid } from '../utils/uuid'
@@ -23,17 +22,30 @@ import {
   LayersIcon,
 } from '../components/icons'
 
-const SECTION_TYPES: { value: SectionType; label: string; icon: React.ReactNode }[] = [
+const SECTION_TYPES: { value: string; label: string; icon: React.ReactNode }[] = [
+  { value: 'home-about', label: 'About', icon: <LayersIcon className="h-4 w-4" /> },
+  { value: 'home-marquee', label: 'Marquee', icon: <SparklesIcon className="h-4 w-4" /> },
+  { value: 'home-impact-stories', label: 'Impact Stories', icon: <LayersIcon className="h-4 w-4" /> },
+  { value: 'home-most-needed', label: 'Most Needed', icon: <LayersIcon className="h-4 w-4" /> },
+  { value: 'home-support-education', label: 'Support Education', icon: <LayersIcon className="h-4 w-4" /> },
+  { value: 'home-eye-health', label: 'Eye Health', icon: <LayersIcon className="h-4 w-4" /> },
+  { value: 'home-celebrity', label: 'Celebrity Notes', icon: <LayersIcon className="h-4 w-4" /> },
+  { value: 'home-metro', label: 'Metro', icon: <LayersIcon className="h-4 w-4" /> },
+  { value: 'home-promise', label: 'Promise', icon: <LayersIcon className="h-4 w-4" /> },
+  { value: 'home-activities', label: 'Activities', icon: <LayersIcon className="h-4 w-4" /> },
+  { value: 'home-latest-updates', label: 'Latest Updates', icon: <LayersIcon className="h-4 w-4" /> },
+  { value: 'home-basket-missions', label: 'Basket Missions', icon: <LayersIcon className="h-4 w-4" /> },
+  { value: 'home-featured-projects', label: 'Featured Projects', icon: <LayersIcon className="h-4 w-4" /> },
+  { value: 'home-urgent-appeals', label: 'Urgent Appeals', icon: <LayersIcon className="h-4 w-4" /> },
+  { value: 'home-partners', label: 'Partners', icon: <LayersIcon className="h-4 w-4" /> },
+  { value: 'stats', label: 'Impact Stats', icon: <LayersIcon className="h-4 w-4" /> },
+  { value: 'home-testimonials', label: 'Testimonials', icon: <LayersIcon className="h-4 w-4" /> },
   { value: 'hero', label: 'Hero', icon: <SparklesIcon className="h-4 w-4" /> },
-  { value: 'about', label: 'About', icon: <LayersIcon className="h-4 w-4" /> },
-  { value: 'programs', label: 'Programs', icon: <LayersIcon className="h-4 w-4" /> },
-  { value: 'gallery', label: 'Gallery', icon: <LayersIcon className="h-4 w-4" /> },
-  { value: 'testimonials', label: 'Testimonials', icon: <LayersIcon className="h-4 w-4" /> },
-  { value: 'cta', label: 'Call to Action', icon: <LayersIcon className="h-4 w-4" /> },
+  { value: 'cta', label: 'CTA', icon: <LayersIcon className="h-4 w-4" /> },
   { value: 'footer', label: 'Footer', icon: <LayersIcon className="h-4 w-4" /> },
 ]
 
-const CONTENT_FIELDS: Record<SectionType, string[]> = {
+const CONTENT_FIELDS: Record<string, string[]> = {
   hero: ['heading', 'description', 'buttonLabel', 'buttonUrl'],
   about: ['heading', 'description'],
   programs: ['heading', 'description'],
@@ -61,43 +73,111 @@ export function HomepageEditorPage() {
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
+  const [savedAt, setSavedAt] = useState<number | null>(null)
+  const [connectionMode, setConnectionMode] = useState<'live' | 'cached' | 'offline' | 'error'>('live')
   const [showAdd, setShowAdd] = useState(false)
   const [deleteTarget, setDeleteTarget] = useState<PageSection | null>(null)
+
+  const pageRef = useRef(page)
+  pageRef.current = page
 
   const load = useCallback(async () => {
     setLoading(true)
     try {
-      if (await backendAvailable()) {
-        const content = await websiteService.getContentTree()
-        const home = content.pages.find((p) => p.isHome || p.slug === 'home') ?? content.pages[0]
-if (home) {
-            setPage({
-              ...home,
-              author: '',
-              status: home.status as CmsPage['status'],
-              sections: home.sections.map((s) => ({
-                id: s.id,
-                pageId: home.id,
-                type: s.component,
-                name: s.sectionName,
-                sortOrder: s.displayOrder,
-                isActive: s.status === 'ACTIVE',
-                settings: s.settings ?? {},
-                content: s.content ?? {},
-                fields: s.fields,
-                createdAt: s.createdAt,
-                updatedAt: s.updatedAt,
-              })),
-            })
-            setLoading(false)
-            return
+      const content = await websiteService.getContentTree()
+      try { localStorage.setItem('webcms:lastContentTree', JSON.stringify(content)) } catch {}
+      setConnectionMode('live')
+      let home = content.pages.find((p) => p.isHome || p.slug === 'home') ?? content.pages[0] ?? null
+      if (!home) {
+        try {
+          await http.post('/pages', {
+            title: 'Homepage',
+            slug: 'home',
+            status: 'PUBLISHED',
+            template: 'home',
+            isHome: true,
+          })
+          const retried = await websiteService.getContentTree()
+          try { localStorage.setItem('webcms:lastContentTree', JSON.stringify(retried)) } catch {}
+          home = retried.pages.find((p) => p.isHome || p.slug === 'home') ?? retried.pages[0] ?? null
+        } catch (createErr) {
+          if (isAxiosError(createErr) && createErr.response?.status === 409) {
+            const retried = await websiteService.getContentTree()
+            try { localStorage.setItem('webcms:lastContentTree', JSON.stringify(retried)) } catch {}
+            home = retried.pages.find((p) => p.isHome || p.slug === 'home') ?? retried.pages[0] ?? null
+          } else if (!isAxiosError(createErr) || createErr.response?.status !== 409) {
+            if (!home) throw createErr
           }
+        }
       }
-      const pages = await cmsService.allPages()
-      const home = pages.find((p) => p.isHome || p.slug === 'home') ?? pages[0]
-      setPage(home ?? null)
-    } catch {
-      toast('Failed to load homepage', { variant: 'error' })
+      if (home) {
+        setPage({
+          ...(home as unknown as CmsPage),
+          author: '',
+          status: home.status as CmsPage['status'],
+          sections: home.sections.map((s) => ({
+            id: s.id,
+            pageId: home.id,
+            type: s.component,
+            name: s.sectionName,
+            sortOrder: s.displayOrder,
+            isActive: s.status === 'ACTIVE',
+            settings: s.settings ?? {},
+            content: s.content ?? {},
+            fields: s.fields,
+            createdAt: s.createdAt,
+            updatedAt: s.updatedAt,
+          })),
+        } as unknown as CmsPage)
+      } else {
+        setPage(null)
+      }
+    } catch (error) {
+      const status = isAxiosError(error) ? error.response?.status : undefined
+      const isTransient = status === 502 || status === 503 || status === 429 || !status
+      if (isTransient) {
+        if (pageRef.current) {
+          setConnectionMode('cached')
+          toast('Connection lost — showing cached homepage (Offline)', { variant: 'warning' })
+          return
+        }
+        try {
+          const cached = localStorage.getItem('webcms:lastContentTree')
+          if (cached) {
+            const content = JSON.parse(cached) as { pages: Array<{ isHome?: boolean; slug: string; id: string; status: string; sections: Array<{ id: string; component: string; sectionName: string; displayOrder: number; status: string; settings: unknown; content: unknown; fields: unknown; createdAt: string; updatedAt: string }> }> }
+            const home = content.pages.find((p) => p.isHome || p.slug === 'home') ?? content.pages[0] ?? null
+            if (home) {
+              setPage({
+                ...(home as unknown as CmsPage),
+                author: '',
+                status: home.status as CmsPage['status'],
+                sections: home.sections.map((s) => ({
+                  id: s.id,
+                  pageId: home.id,
+                  type: s.component,
+                  name: s.sectionName,
+                  sortOrder: s.displayOrder,
+                  isActive: s.status === 'ACTIVE',
+                  settings: (s.settings as Record<string, unknown>) ?? {},
+                  content: (s.content as Record<string, unknown>) ?? {},
+                  fields: s.fields as unknown as CmsPage['sections'][0]['fields'],
+                  createdAt: s.createdAt,
+                  updatedAt: s.updatedAt,
+                })),
+              } as unknown as CmsPage)
+              setConnectionMode('offline')
+              toast('Offline Demo — showing last saved homepage (not live)', { variant: 'warning' })
+              return
+            }
+          }
+        } catch {}
+        setConnectionMode('error')
+        setPage(null)
+      } else {
+        setConnectionMode('error')
+        const msg = isAxiosError(error) ? (error.response?.data as { message?: string })?.message : undefined
+        toast('Failed to load homepage', { variant: 'error', description: msg ?? (error instanceof Error ? error.message : undefined) })
+      }
     } finally {
       setLoading(false)
     }
@@ -123,12 +203,12 @@ if (home) {
     setPage((p) => p ? { ...p, sections: fn(p.sections) } : p)
   }
 
-  const addSection = (type: SectionType) => {
+  const addSection = (type: string) => {
     const section: PageSection = {
       id: uuid(),
       pageId: page?.id ?? '',
       type,
-      name: SECTION_TYPES.find((t) => t.value === type)?.label ?? type,
+      name: (SECTION_TYPES.find((t) => t.value === type)?.label ?? type) as string,
       sortOrder: sections.length + 1,
       isActive: true,
       settings: { background: '#ffffff' },
@@ -172,23 +252,22 @@ if (home) {
     if (!page) return
     setSaving(true)
     try {
-      if (await backendAvailable()) {
-        for (const section of sections) {
-          await websiteService.saveSection(page.slug, section.type, {
-            name: section.name,
-            isActive: section.isActive,
-            settings: section.settings,
-            content: section.content,
-          })
-        }
-        await websiteService.reorderSections(page.slug, sections.map((s) => s.type))
-        await load()
-        toast('Saved & published', { variant: 'success' })
-      } else {
-        const result = await cmsService.saveSections(page.id, sections)
-        if (result) setPage(result)
-        toast('Saved locally', { variant: 'success' })
+      for (const section of sections) {
+        await websiteService.saveSection(page.slug, section.type, {
+          name: section.name,
+          isActive: section.isActive,
+          settings: section.settings,
+          content: section.content,
+        })
       }
+      await websiteService.reorderSections(page.slug, sections.map((s) => s.type))
+      await load()
+      setSavedAt(Date.now())
+      setTimeout(() => setSavedAt(null), 2000)
+      toast('Saved & published — preview updated from server', { variant: 'success' })
+    } catch (error) {
+      const msg = isAxiosError(error) ? (error.response?.data as { message?: string })?.message : undefined
+      toast('Failed to save homepage — data preserved, retry', { variant: 'error', description: msg ?? (error instanceof Error ? error.message : undefined) })
     } finally {
       setSaving(false)
     }
@@ -211,7 +290,12 @@ if (home) {
     return (
       <div className="p-6">
         <PageHeader title="Homepage Editor" />
-        <Card className="p-8 text-center text-muted">No homepage found. Create one in Pages first.</Card>
+        <Card className="p-8 text-center">
+          <p className="text-sm text-muted">Homepage is not available right now. The backend may be restarting — please retry.</p>
+          <Button variant="secondary" className="mt-4" onClick={() => void load()}>
+            Retry
+          </Button>
+        </Card>
       </div>
     )
   }
@@ -222,6 +306,10 @@ if (home) {
         title="Homepage Editor"
         actions={
           <>
+            <span className={`text-xs px-2 py-1 rounded-full border ${connectionMode === 'live' ? 'bg-green-50 border-green-200 text-green-700' : connectionMode === 'offline' || connectionMode === 'cached' ? 'bg-amber-50 border-amber-200 text-amber-700' : 'bg-red-50 border-red-200 text-red-700'}`}>
+              {connectionMode === 'live' ? '● Live — API' : connectionMode === 'offline' ? '○ Offline Demo — cached' : connectionMode === 'cached' ? '○ Cached — reconnecting' : '● Error'}
+            </span>
+            {savedAt ? <span className="text-xs font-semibold text-green-600">Saved ✓</span> : null}
             <Button variant="secondary" icon={<PlusIcon />} onClick={() => setShowAdd(true)}>
               Add Section
             </Button>
@@ -288,17 +376,43 @@ if (home) {
               sections
                 .filter((s) => s.isActive)
                 .map((section) => (
-                  <div key={section.id}>
+                  <div key={section.id} className="relative group">
+                    <button
+                      onClick={() => setSelectedId(section.id)}
+                      className={`absolute right-2 top-2 z-10 rounded-full px-3 py-1 text-xs font-semibold shadow transition ${section.id === selectedId ? 'bg-brand text-white' : 'bg-white border text-slate-700'}`}
+                    >
+                      Edit this section
+                    </button>
                     <div
                       ref={(el) => { previewRefs.current[section.id] = el }}
-                      className={`rounded-2xl transition-all duration-200 ${
+                      onClick={() => setSelectedId(section.id)}
+                      className={`rounded-2xl transition-all duration-200 cursor-pointer ${
                         section.id === selectedId
                           ? 'ring-2 ring-brand ring-offset-2 ring-offset-slate-50'
-                          : ''
+                          : 'hover:ring-1 hover:ring-slate-200'
                       }`}
                     >
                       <SectionPreview section={section} />
                     </div>
+                    {selectedId === section.id && (
+                      <div className="mt-3 rounded-xl border bg-white p-4">
+                        <p className="mb-3 text-xs font-bold uppercase tracking-widest text-slate-500">Edit this section — text & images</p>
+                        <SectionFieldEditor
+                          fields={section.fields ?? []}
+                          content={section.content}
+                          onChange={updateContent}
+                        />
+                        <div className="mt-4 flex gap-2">
+                          <Button size="sm" icon={<SaveIcon />} loading={saving} onClick={() => void save()}>
+                            Save
+                          </Button>
+                          <Button size="sm" variant="secondary" onClick={() => setSelectedId(null)}>
+                            Done
+                          </Button>
+                        </div>
+                        <p className="mt-2 text-[11px] text-slate-400">Changes Save → Live Preview → Published → https://beingsevak.org/</p>
+                      </div>
+                    )}
                     <hr className="my-4" />
                   </div>
                 ))
@@ -334,8 +448,8 @@ if (home) {
               </div>
 
               <div>
-                <p className="text-xs font-semibold uppercase text-muted mb-2">Content</p>
-                {selected.fields && selected.fields.length > 0 ? (
+                <p className="text-xs font-semibold uppercase text-muted mb-2">Content — edit text & images</p>
+                {selected.fields ? (
                   <SectionFieldEditor
                     fields={selected.fields}
                     content={selected.content}
@@ -343,7 +457,7 @@ if (home) {
                   />
                 ) : (
                   <div className="space-y-3">
-                    {(CONTENT_FIELDS[selected.type as SectionType] ?? []).map((key) => (
+                    {(CONTENT_FIELDS[selected.type as SectionType] ?? CONTENT_FIELDS[selected.type] ?? []).map((key) => (
                       <Field key={key} label={FIELD_LABELS[key] ?? key}>
                         {key === 'description' ? (
                           <Textarea rows={3} value={String(selected.content[key] ?? '')} onChange={(e) => updateContent(key, e.target.value)} />
@@ -352,6 +466,9 @@ if (home) {
                         )}
                       </Field>
                     ))}
+                    {(CONTENT_FIELDS[selected.type as SectionType] ?? CONTENT_FIELDS[selected.type] ?? []).length === 0 ? (
+                      <p className="text-xs text-muted">No editable fields — content is managed via repeater above.</p>
+                    ) : null}
                   </div>
                 )}
               </div>
@@ -399,9 +516,9 @@ if (home) {
       {/* Add Section Modal */}
       {showAdd && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50" onClick={() => setShowAdd(false)}>
-          <div className="bg-white rounded-xl p-5 w-full max-w-md" onClick={(e) => e.stopPropagation()}>
+          <div className="bg-white rounded-xl p-5 w-full max-w-lg" onClick={(e) => e.stopPropagation()}>
             <h2 className="text-lg font-semibold mb-4">Add Section</h2>
-            <div className="grid grid-cols-3 gap-3 max-h-60 overflow-y-auto">
+            <div className="grid grid-cols-3 gap-3 max-h-80 overflow-y-auto">
               {SECTION_TYPES.map((type) => (
                 <button
                   key={type.value}

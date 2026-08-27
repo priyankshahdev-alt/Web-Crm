@@ -586,6 +586,22 @@ export function buildSeed(): {
       { title: 'About Us', views: 12900, change: 6 },
       { title: 'Blog', views: 11200, change: 22 },
     ],
+    // actual BeingSevak website image count - real public folder scan (373 images)
+    beingSevakImages: { total: 373 },
+    // stub defaults for new detailed inventory so seed typechecks
+    pages: { total: 0, published: 0, draft: 0, archived: 0 },
+    projects: { total: 0, published: 0, draft: 0 },
+    events: { total: 0, published: 0, draft: 0, upcoming: 0, past: 0 },
+    blogs: { total: 0, published: 0, draft: 0 },
+    galleries: { total: 0, published: 0, draft: 0 },
+    campaigns: { total: 0, published: 0, draft: 0 },
+    media: { total: 0, images: 0, documents: 0, folders: 0, storageBytes: 0 },
+    team: { total: 0, active: 0 },
+    testimonials: { total: 0, active: 0 },
+    partners: { total: 0, active: 0 },
+    faqs: { total: 0, active: 0 },
+    upcomingEvents: [],
+    recentForms: [],
   }
 
   const settings: WebsiteSettings = {

@@ -54,13 +54,13 @@ const MIME_BADGE: Record<string, 'brand' | 'warning' | 'danger' | 'success' | 'n
 const DEFAULT_FOLDERS = ['banners', 'team', 'gallery', 'documents', 'reports', 'branding', 'uploads']
 
 function isImage(asset: MediaAsset): boolean {
-  return asset.mimeType.startsWith('image/')
+  return (asset.mimeType ?? '').startsWith('image/') || /\.(jpe?g|png|webp|gif|svg|avif|bmp)(\?|$)/i.test(asset.url ?? '')
 }
 function isVideo(asset: MediaAsset): boolean {
-  return asset.mimeType.startsWith('video/')
+  return (asset.mimeType ?? '').startsWith('video/')
 }
 function isAudio(asset: MediaAsset): boolean {
-  return asset.mimeType.startsWith('audio/')
+  return (asset.mimeType ?? '').startsWith('audio/')
 }
 function isDocument(asset: MediaAsset): boolean {
   return !isImage(asset) && !isVideo(asset) && !isAudio(asset)
@@ -228,7 +228,7 @@ export function MediaPage() {
         title="Media Library"
         description="Upload and organize images, videos and documents for your website."
         actions={
-          <Button icon={<UploadIcon />} onClick={() => fileInputRef.current?.click()}>
+          <Button icon={<UploadIcon />} loading={uploading} onClick={() => fileInputRef.current?.click()}>
             Upload files
           </Button>
         }
@@ -345,9 +345,16 @@ export function MediaPage() {
                   <Card key={asset.id} hoverable className="group overflow-hidden" onClick={() => openDetails(asset)}>
                     <div className="relative aspect-square overflow-hidden bg-slate-100">
                       {isImage(asset) ? (
-                        <img src={asset.thumbnailUrl || asset.url} alt={asset.altText ?? asset.fileName}
-                          className="h-full w-full object-cover transition group-hover:scale-105"
-                          onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none' }} />
+                        <>
+                          <img src={asset.thumbnailUrl || asset.url} alt={asset.altText ?? asset.fileName}
+                            className="h-full w-full object-cover transition group-hover:scale-105"
+                            loading="lazy"
+                            onError={(e) => { e.currentTarget.style.display = 'none'; const fb = e.currentTarget.nextElementSibling as HTMLElement | null; if (fb) fb.style.display = 'flex' }} />
+                          <div data-fallback style={{ display: 'none' }} className="absolute inset-0 flex flex-col items-center justify-center gap-1 bg-slate-100 text-slate-400">
+                            <ImagePlaceholderIcon className="h-8 w-8" />
+                            <span className="text-[10px] font-medium">No preview</span>
+                          </div>
+                        </>
                       ) : isVideo(asset) ? (
                         <div className="flex h-full w-full flex-col items-center justify-center gap-2 text-slate-400">
                           <svg className="h-10 w-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><polygon points="5,3 19,12 5,21" /></svg>
@@ -389,9 +396,14 @@ export function MediaPage() {
                 <ul className="divide-y divide-line">
                   {filtered.map((asset) => (
                     <li key={asset.id} className="group flex items-center gap-4 px-5 py-3.5 transition hover:bg-row-hover cursor-pointer" onClick={() => openDetails(asset)}>
-                      <span className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-slate-100">
+                      <span className="relative flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-slate-100">
                         {isImage(asset) ? (
-                          <img src={asset.thumbnailUrl ?? asset.url} alt={asset.fileName} className="h-full w-full object-cover" />
+                          <>
+                            <img src={asset.thumbnailUrl ?? asset.url} alt={asset.fileName} className="h-full w-full object-cover" loading="lazy" onError={(e) => { e.currentTarget.style.display = 'none'; const fb = e.currentTarget.nextElementSibling as HTMLElement | null; if (fb) fb.style.display = 'flex' }} />
+                            <span data-fallback style={{ display: 'none' }} className="absolute inset-0 flex items-center justify-center bg-slate-100">
+                              <ImagePlaceholderIcon className="h-5 w-5 text-slate-400" />
+                            </span>
+                          </>
                         ) : (
                           <ImagePlaceholderIcon className="h-5 w-5 text-slate-400" />
                         )}
@@ -432,10 +444,15 @@ export function MediaPage() {
       >
         {detailsAsset && (
           <div className="flex flex-col gap-4 sm:flex-row">
-            <div className="shrink-0 sm:w-48">
+            <div className="relative shrink-0 sm:w-48">
               {isImage(detailsAsset) ? (
-                <img src={detailsAsset.url} alt={detailsAsset.fileName} className="w-full rounded-xl object-cover" style={{ maxHeight: 200 }}
-                  onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none' }} />
+                <>
+                  <img src={detailsAsset.thumbnailUrl || detailsAsset.url} alt={detailsAsset.fileName} className="w-full rounded-xl object-cover" style={{ maxHeight: 200 }}
+                    onError={(e) => { e.currentTarget.style.display = 'none'; const fb = e.currentTarget.nextElementSibling as HTMLElement | null; if (fb) fb.style.display = 'flex' }} />
+                  <div data-fallback style={{ display: 'none' }} className="flex h-32 w-full items-center justify-center rounded-xl bg-slate-100">
+                    <ImagePlaceholderIcon className="h-12 w-12 text-slate-300" />
+                  </div>
+                </>
               ) : (
                 <div className="flex h-32 w-full items-center justify-center rounded-xl bg-slate-100">
                   <ImagePlaceholderIcon className="h-12 w-12 text-slate-300" />

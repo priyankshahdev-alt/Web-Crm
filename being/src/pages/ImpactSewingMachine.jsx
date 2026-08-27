@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+﻿import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
 import { usePageContent } from '../hooks/usePageContent';
 
@@ -13,7 +13,7 @@ export default function ImpactSewingMachine() {
   const headingTitle = content('impact-sewing-machine-heading', 'heading') ?? 'Sewing Machine ';
   const headingText =
     content('impact-sewing-machine-heading', 'description') ??
-    'A sewing machine is more than a tool — it is a pathway to dignity, financial independence, and a brighter future. Through this initiative, Being Sevak Charitable Trust provides sewing machines to visually impaired and economically challenged families, helping them create sustainable livelihoods and support their households with confidence.';
+    'A sewing machine is more than a tool â€” it is a pathway to dignity, financial independence, and a brighter future. Through this initiative, Being Sevak Charitable Trust provides sewing machines to visually impaired and economically challenged families, helping them create sustainable livelihoods and support their households with confidence.';
   const mainImage = content('impact-sewing-machine-heading', 'image') ?? '/images/g94.webp';
   const cards =
     content('impact-sewing-machine-cards', 'items') ?? [
@@ -120,7 +120,7 @@ export default function ImpactSewingMachine() {
               ))}
             </div>
             <div className="sewing-image">
-              <img src={mainImage} alt="" />
+              <img src={mainImage} alt="" loading="lazy" decoding="async" width="800" height="600" />
             </div>
           </div>
 
@@ -150,10 +150,11 @@ export default function ImpactSewingMachine() {
         </div>
         <div className="shital-gallery">
           {galleryImages.map((src, i) => (
-            <div className="shital-gallery-item" key={i}><img src={src} alt="" /></div>
+            <div className="shital-gallery-item" key={i}><img src={src} alt="" loading="lazy" decoding="async" width="800" height="600" /></div>
           ))}
         </div>
       </section>
     </>
   );
 }
+

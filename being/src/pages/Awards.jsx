@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+﻿import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
 import { usePageContent } from '../hooks/usePageContent';
 
@@ -168,7 +168,7 @@ const Awards = () => {
         <div className="hero-image">
           <div className="floating-card card1"><h3>{heroCard1Value}</h3><p>{heroCard1Label}</p></div>
           <div className="floating-card card2"><h3>{heroCard2Value}</h3><p>{heroCard2Label}</p></div>
-          <img src={heroImage} alt="Awards"/>
+          <img src={heroImage} alt="Awards" loading="eager" fetchPriority="high" decoding="async" width="800" height="600" />
         </div>
         <div className="blur blur1"></div><div className="blur blur2"></div>
       </section>
@@ -176,13 +176,13 @@ const Awards = () => {
       <h2 className="section-title reveal" id="achievements">{awardsTitle}</h2>
       <div className="awards-grid reveal">
         {awards.map((award, i) => (
-          <div className="award-card" key={i}><img src={award.image} alt={award.alt}/><div className="award-name">{award.name}</div></div>
+          <div className="award-card" key={i}><img src={award.image} alt={award.alt} loading="lazy" decoding="async" width="800" height="600" /><div className="award-name">{award.name}</div></div>
         ))}
       </div>
 
       <h2 className="section-title reveal">{lettersTitle}</h2>
       <div className="letter-grid reveal">
-        {letters.map((img, i) => <img key={i} src={img.src} alt={img.alt}/>)}
+        {letters.map((img, i) => <img key={i} src={img.src} alt={img.alt} loading="lazy" decoding="async" width="800" height="600" />)}
       </div>
 
       <section className="values-section">
@@ -211,3 +211,4 @@ const Awards = () => {
 };
 
 export default Awards;
+

@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+﻿import { Link } from 'react-router-dom';
 import { useRef, useEffect } from 'react';
 import { usePageContent } from '../hooks/usePageContent';
 
@@ -286,7 +286,7 @@ const MissionAtmanirbhar = () => {
               </div>
             </div>
             <div className="hero-right">
-              <img src={heroImage} alt="Atmanirbhar" />
+              <img src={heroImage} alt="Atmanirbhar" loading="eager" fetchPriority="high" decoding="async" width="800" height="600" />
             </div>
           </div>
         </section>
@@ -302,7 +302,7 @@ const MissionAtmanirbhar = () => {
 
         <section className="about-section" id="about">
           <div className="about-image">
-            <img src={aboutImage} alt="Atmanirbhar" />
+            <img src={aboutImage} alt="Atmanirbhar" loading="lazy" decoding="async" width="800" height="600" />
           </div>
           <div className="about-content">
             <span>{aboutTag}</span>
@@ -338,7 +338,7 @@ const MissionAtmanirbhar = () => {
           </div>
           <div className="gallery-grid">
             {galleryItems.map((g, i) => (
-              <div className={g.className} key={i}><img src={g.src} alt="" /><div className="gallery-overlay"><h3>{g.title}</h3></div></div>
+              <div className={g.className} key={i}><img src={g.src} alt="" loading="lazy" decoding="async" width="800" height="600" /><div className="gallery-overlay"><h3>{g.title}</h3></div></div>
             ))}
           </div>
         </section>
@@ -379,3 +379,4 @@ const MissionAtmanirbhar = () => {
 };
 
 export default MissionAtmanirbhar;
+

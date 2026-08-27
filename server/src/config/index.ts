@@ -10,7 +10,7 @@ const envSchema = z.object({
   CLIENT_URL: z
     .string()
     .default(
-      'http://localhost:5173,http://localhost:5174,https://web-crm-green.vercel.app',
+      'http://localhost:5173,http://localhost:5174,http://localhost:5175,http://localhost:5176,https://web-crm-green.vercel.app,https://web-crm-api-fix.vercel.app,https://beingsevak.org,https://www.beingsevak.org',
     ),
 
   DATABASE_URL: z.string().min(1),

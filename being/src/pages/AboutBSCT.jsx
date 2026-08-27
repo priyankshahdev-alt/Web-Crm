@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+﻿import { useEffect } from 'react';
 import { useSite } from '../context/SiteContext';
 import { usePageContent } from '../hooks/usePageContent';
 
@@ -378,7 +378,7 @@ const AboutBSCT = () => {
               <h3>{heroCard2Value}</h3>
               <p>{heroCard2Label}</p>
             </div>
-            <img src={heroImage} alt="BSCT" />
+            <img src={heroImage} alt="BSCT" loading="eager" fetchPriority="high" decoding="async" width="800" height="600" />
           </div>
 
           <div className="blur blur1"></div>
@@ -388,7 +388,7 @@ const AboutBSCT = () => {
         {/* ABOUT US 2-COL GRID */}
         <section className="about-grid-wrap reveal" id="about">
           <div className="about-image-col">
-            <img src={aboutImage} alt="BSCT Community Work" loading="lazy" />
+            <img src={aboutImage} alt="BSCT Community Work" loading="lazy" decoding="async" width="800" height="600" />
           </div>
           <div className="about-content-col">
             <h2 className="section-label section-label-custom">{missionLabel}</h2>
@@ -475,3 +475,4 @@ const AboutBSCT = () => {
 };
 
 export default AboutBSCT;
+

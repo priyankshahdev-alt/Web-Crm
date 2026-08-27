@@ -29,8 +29,12 @@ export function NotificationDropdown() {
   const [notifications, setNotifications] = useState<Notification[]>([])
 
   const load = useCallback(async () => {
-    const items = await notificationService.list()
-    setNotifications(items)
+    try {
+      const items = await notificationService.list()
+      setNotifications(items)
+    } catch {
+      setNotifications([])
+    }
   }, [])
 
   useEffect(() => {
@@ -40,13 +44,21 @@ export function NotificationDropdown() {
   const unread = notifications.filter((item) => !item.isRead).length
 
   const markAll = async () => {
-    await notificationService.markAllRead()
+    try {
+      await notificationService.markAllRead()
+    } catch {
+      /* silent */
+    }
     setNotifications((current) => current.map((item) => ({ ...item, isRead: true })))
     toast('All notifications marked as read', { variant: 'info' })
   }
 
   const markOne = async (id: string) => {
-    await notificationService.markRead(id)
+    try {
+      await notificationService.markRead(id)
+    } catch {
+      /* silent */
+    }
     setNotifications((current) =>
       current.map((item) => (item.id === id ? { ...item, isRead: true } : item)),
     )

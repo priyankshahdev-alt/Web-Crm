@@ -1,11 +1,11 @@
-import { Link } from 'react-router-dom';
+﻿import { Link } from 'react-router-dom';
 import { usePageContent } from '../hooks/usePageContent';
 
 export default function Anndaan() {
   const content = usePageContent('anndaan');
 
   const bannerImage = content('anndaan-hero', 'image') ?? '/images/anndan.jpeg';
-  const bannerHeading = content('anndaan-hero', 'heading') ?? 'Annदान';
+  const bannerHeading = content('anndaan-hero', 'heading') ?? 'Annà¤¦à¤¾à¤¨';
   const bannerTagline = content('anndaan-hero', 'tagline') ?? 'Serving Humanity With Love & Food';
 
   const introMiniTitle = content('anndaan-intro', 'miniTitle') ?? 'Being Sevak Charitable Trust';
@@ -254,7 +254,7 @@ export default function Anndaan() {
           margin-bottom: 15px; list-style: none; font-weight: 600; color: #222;
           position: relative; padding-left: 30px;
         }
-        .anndaan-page .rotiseva-content ul li::before { content: '✓'; position: absolute; left: 0; color: #00a3da; font-size: 20px; }
+        .anndaan-page .rotiseva-content ul li::before { content: 'âœ“'; position: absolute; left: 0; color: #00a3da; font-size: 20px; }
 
         .anndaan-page .kitcare-btn {
           display: flex; justify-content: center; align-items: center; margin-top: 20px; margin-left: auto; margin-right: auto; width: fit-content; background: #00a3da; color: #fff; text-decoration: none;
@@ -339,7 +339,7 @@ export default function Anndaan() {
 
       <div className="anndaan-page">
         <section className="anndaan-hero-banner">
-          <img src={bannerImage} alt="Annदान Banner" />
+          <img src={bannerImage} alt="Annà¤¦à¤¾à¤¨ Banner" loading="lazy" decoding="async" width="800" height="600" />
           <div className="anndaan-overlay"></div>
           <div className="anndaan-content">
             <br /><br />
@@ -376,7 +376,7 @@ export default function Anndaan() {
             </div>
             <div className="kitcare-gallery">
               {kitImages.map((img, i) => (
-                <img key={i} src={img.src} alt={img.alt} />
+                <img key={i} src={img.src} alt={img.alt} loading="lazy" decoding="async" width="800" height="600" />
               ))}
             </div>
           </section>
@@ -390,7 +390,7 @@ export default function Anndaan() {
             </div>
             <div className="sweetmeal-grid">
               {snackImages.map((img, i) => (
-                <img key={i} src={img.src} alt={img.alt} />
+                <img key={i} src={img.src} alt={img.alt} loading="lazy" decoding="async" width="800" height="600" />
               ))}
             </div>
           </section>
@@ -398,7 +398,7 @@ export default function Anndaan() {
           <section className="rotiseva-zone">
             <div className="rotiseva-gallery">
               {mealImages.map((img, i) => (
-                <img key={i} src={img.src} alt={img.alt} />
+                <img key={i} src={img.src} alt={img.alt} loading="lazy" decoding="async" width="800" height="600" />
               ))}
             </div>
             <div className="rotiseva-content">
@@ -430,7 +430,7 @@ export default function Anndaan() {
             </div>
             <div className="mealwave-gallery">
               {rotiImages.map((img, i) => (
-                <img key={i} src={img.src} alt={img.alt} />
+                <img key={i} src={img.src} alt={img.alt} loading="lazy" decoding="async" width="800" height="600" />
               ))}
             </div>
           </section>
@@ -444,7 +444,7 @@ export default function Anndaan() {
             </div>
             <div className="sweetmeal-grid">
               {festiveImages.map((img, i) => (
-                <img key={i} src={img.src} alt={img.alt} />
+                <img key={i} src={img.src} alt={img.alt} loading="lazy" decoding="async" width="800" height="600" />
               ))}
             </div>
           </section>
@@ -458,7 +458,7 @@ export default function Anndaan() {
             </div>
             <div className="snackdrive-images">
               {summerImages.map((img, i) => (
-                <img key={i} src={img.src} alt={img.alt} />
+                <img key={i} src={img.src} alt={img.alt} loading="lazy" decoding="async" width="800" height="600" />
               ))}
             </div>
           </section>
@@ -478,7 +478,7 @@ export default function Anndaan() {
             </div>
             <div className="nutritioncare-gallery">
               {thaliImages.map((img, i) => (
-                <img key={i} src={img.src} alt={img.alt} />
+                <img key={i} src={img.src} alt={img.alt} loading="lazy" decoding="async" width="800" height="600" />
               ))}
             </div>
           </section>
@@ -510,3 +510,4 @@ export default function Anndaan() {
     </>
   );
 }
+
