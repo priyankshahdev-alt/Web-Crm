@@ -65,7 +65,12 @@ export const approvalController = {
   }),
 
   pendingCount: asyncHandler(async (req: Request, res: Response) => {
-    const count = await approvalService.countPending(req.activeOrg?.id ?? '');
+    const organizationId = req.activeOrg?.id;
+    if (!organizationId) {
+      ok(res, { count: 0 }, 'OK');
+      return;
+    }
+    const count = await approvalService.countPending(organizationId);
     ok(res, { count }, 'OK');
   }),
 };
