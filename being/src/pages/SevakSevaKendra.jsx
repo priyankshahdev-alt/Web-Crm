@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+﻿import { Link } from 'react-router-dom';
 import { usePageContent } from '../hooks/usePageContent';
 
 export default function SevakSevaKendra() {
@@ -28,8 +28,8 @@ export default function SevakSevaKendra() {
     'Our library provides books, study material and peaceful learning spaces for children, students and community members to encourage education and growth.';
   const libraryFeatures =
     content('seva-kendra-library', 'features') ?? [
-      { icon: '📚', title: 'Study Resources', description: 'Books and learning material for students.' },
-      { icon: '📖', title: 'Reading Space', description: 'Quiet and comfortable learning environment.' },
+      { icon: 'ðŸ“š', title: 'Study Resources', description: 'Books and learning material for students.' },
+      { icon: 'ðŸ“–', title: 'Reading Space', description: 'Quiet and comfortable learning environment.' },
     ];
   const libraryImage = content('seva-kendra-library', 'image') ?? '/images/library.jpeg';
 
@@ -67,10 +67,10 @@ export default function SevakSevaKendra() {
     'Our Physiotherapy Centre provides rehabilitation and physical therapy support for elderly people, patients and individuals recovering from injuries.';
   const physioFeatures =
     content('seva-kendra-physiotherapy', 'features') ?? [
-      { icon: '🧑‍⚕️', title: 'Therapy Sessions', description: 'Professional physiotherapy and rehabilitation support.' },
-      { icon: '❤️', title: 'Patient Care', description: 'Helping patients recover with proper guidance.' },
-      { icon: '💪', title: 'Rehabilitation', description: 'Guided recovery exercises for injury patients.' },
-      { icon: '🏥', title: 'Elderly Care', description: 'Special therapy sessions for senior citizens.' },
+      { icon: 'ðŸ§‘â€âš•ï¸', title: 'Therapy Sessions', description: 'Professional physiotherapy and rehabilitation support.' },
+      { icon: 'â¤ï¸', title: 'Patient Care', description: 'Helping patients recover with proper guidance.' },
+      { icon: 'ðŸ’ª', title: 'Rehabilitation', description: 'Guided recovery exercises for injury patients.' },
+      { icon: 'ðŸ¥', title: 'Elderly Care', description: 'Special therapy sessions for senior citizens.' },
     ];
   const physioImage = content('seva-kendra-physiotherapy', 'image') ?? '/images/physio.jpeg';
 
@@ -362,7 +362,7 @@ export default function SevakSevaKendra() {
           </div>
           <div className="hero-right">
             <div className="main-image-card">
-              <img src={heroImage} alt="Sevak Niwas Kendra" />
+              <img src={heroImage} alt="Sevak Niwas Kendra" loading="eager" fetchPriority="high" decoding="async" width="800" height="600" />
               {heroStats.map((stat, i) => (
                 <div className={`floating-card card${i + 1}`} key={i}>
                   <h3>{stat.value}</h3>
@@ -375,7 +375,7 @@ export default function SevakSevaKendra() {
 
         <section className="about-section" id="about">
           <div className="about-image">
-            <img src={libraryImage} alt="Library" />
+            <img src={libraryImage} alt="Library" loading="lazy" decoding="async" width="800" height="600" />
           </div>
           <div className="about-content">
             <span className="mini-title">{libraryTag}</span>
@@ -411,7 +411,7 @@ export default function SevakSevaKendra() {
           <div className="techvision-container">
             <div className="techvision-image-side">
               <div className="techvision-image-box">
-                <img src={aiImage} alt="AI Digital Centre" />
+                <img src={aiImage} alt="AI Digital Centre" loading="lazy" decoding="async" width="800" height="600" />
               </div>
             </div>
             <div className="techvision-content-side">
@@ -450,7 +450,7 @@ export default function SevakSevaKendra() {
             </div>
           </div>
           <div className="about-image">
-            <img src={physioImage} alt="Physiotherapy" />
+            <img src={physioImage} alt="Physiotherapy" loading="lazy" decoding="async" width="800" height="600" />
           </div>
         </section>
 
@@ -470,7 +470,7 @@ export default function SevakSevaKendra() {
           <div className="techvision-container">
             <div className="techvision-image-side">
               <div className="techvision-image-box">
-                <img src={rasoiImage} alt="Rasoi Ghar" />
+                <img src={rasoiImage} alt="Rasoi Ghar" loading="lazy" decoding="async" width="800" height="600" />
               </div>
             </div>
             <div className="techvision-content-side">
@@ -540,3 +540,4 @@ export default function SevakSevaKendra() {
     </>
   );
 }
+

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useCallback } from 'react';
+﻿import { useEffect, useRef, useCallback } from 'react';
 import { usePageContent } from '../hooks/usePageContent';
 
 const WhereWeWork = () => {
@@ -383,7 +383,7 @@ const WhereWeWork = () => {
         <div className="hero-image">
           <div className="floating-card card1"><h3>{heroCard1Value}</h3><p>{heroCard1Label}</p></div>
           <div className="floating-card card2"><h3>{heroCard2Value}</h3><p>{heroCard2Label}</p></div>
-          <img src={heroImage} alt="Where We Work" />
+          <img src={heroImage} alt="Where We Work" loading="eager" fetchPriority="high" decoding="async" width="800" height="600" />
         </div>
       </section>
 
@@ -400,7 +400,7 @@ const WhereWeWork = () => {
           <div className="www-grid">
             <div className="www-map-col">
               <div className="www-map-wrap">
-                <img src={mapImage} alt="India Map" className="www-map-img" />
+                <img src={mapImage} alt="India Map" className="www-map-img" loading="lazy" decoding="async" width="800" height="600" />
                 {locations.map(loc => (
                   <div key={loc.loc} className="www-pin" data-loc={loc.loc} style={{ top: loc.top, left: loc.left }}>
                     <div className="www-pin-dot"></div>
@@ -422,7 +422,7 @@ const WhereWeWork = () => {
               <div className="www-list-scroll">
                 {locations.map(loc => (
                   <div key={loc.loc} className="www-card" data-loc={loc.loc}>
-                    <div className="www-card-icon"><i className={loc.icon}></i></div>
+                    <div className="www-card-icon">{loc.image ? <img src={loc.image} alt={loc.name} style={{width:'100%',height:'100%',objectFit:'cover',borderRadius:12}} /> : <i className={loc.icon}></i>}</div>
                     <div className="www-card-text"><h4>{loc.name}</h4><p>{loc.desc}</p></div>
                   </div>
                 ))}
@@ -437,7 +437,7 @@ const WhereWeWork = () => {
           <div style={{ textAlign: 'center' }}><span style={{ color: 'var(--cyan)', fontWeight: 700, fontSize: '1.5rem', letterSpacing: 1, display: 'block', marginBottom: 8 }}>{reachTag}</span><h2 style={{ fontFamily: "'Montserrat', sans-serif", fontSize: '2rem', color: 'var(--navy)' }}>{reachHeading}</h2></div>
           <div className="values-grid">
             {reachValues.map((v, i) => (
-              <div className="value-card reveal" key={i}><div className="val-icon"><i className={`fas ${v.icon}`}></i></div><h3>{v.title}</h3><p>{v.desc}</p></div>
+              <div className="value-card reveal" key={i}><div className="val-icon">{v.image ? <img src={v.image} alt={v.title} style={{width:'100%',height:'100%',objectFit:'contain',borderRadius:8}} /> : <i className={`fas ${v.icon}`}></i>}</div><h3>{v.title}</h3><p>{v.desc}</p></div>
             ))}
           </div>
         </div>
@@ -458,3 +458,4 @@ const WhereWeWork = () => {
 };
 
 export default WhereWeWork;
+

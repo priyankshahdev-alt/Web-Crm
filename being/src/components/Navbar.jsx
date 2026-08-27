@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useSite } from '../context/SiteContext';
 
@@ -118,9 +118,9 @@ export default function Navbar() {
         <div className="navbar-inner">
           <Link to="/" className="nav-logo">
             <div className="logo-circle">
-              <img src="/logo11.png" alt="MATW Logo" style={{width:'100%',height:'100%',objectFit:'contain'}} />
+              <img src="/logo11.png" alt="MATW Logo" style={{width:'100%',height:'100%',objectFit:'contain'}} loading="lazy" decoding="async" width="48" height="48" />
             </div>
-            <img src="/images/bs.png" alt="Text Logo" className="BS-text-logo" />
+            <img src="/images/bs.png" alt="Text Logo" className="BS-text-logo" loading="lazy" decoding="async" width="48" height="48" />
           </Link>
 
           <div className="nav-quick">
@@ -129,7 +129,7 @@ export default function Navbar() {
               <div className="zakat-pulse-ring ring2"></div>
               <Link to="/anndaan">
                 <button className="zakat-circle-btn">
-                  <img src="https://matwproject.org.uk/static/media/zakat.4b8e5d8777306e3a7621.png" alt="Anndaan" />
+                  <img src="https://matwproject.org.uk/static/media/zakat.4b8e5d8777306e3a7621.png" alt="Anndaan" loading="lazy" decoding="async" width="800" height="600" />
                 </button>
               </Link>
               <span className="zakat-label">Ann&#x0926;&#x093E;&#x0928;</span>
@@ -142,7 +142,7 @@ export default function Navbar() {
               <div className="zakat-pulse-ring ring2"></div>
               <Link to="/sevak-nivash">
                 <button className="zakat-circle-btn">
-                  <img src="https://matwproject.org.uk/static/media/zakat.4b8e5d8777306e3a7621.png" alt="Sevak Nivas" />
+                  <img src="https://matwproject.org.uk/static/media/zakat.4b8e5d8777306e3a7621.png" alt="Sevak Nivas" loading="lazy" decoding="async" width="800" height="600" />
                 </button>
               </Link>
               <span className="zakat-label">Sevak&#x0928;&#x093F;&#x0935;&#x093E;&#x0938;</span>
@@ -182,7 +182,7 @@ export default function Navbar() {
                   <i className="fab fa-youtube"></i>
                 </div>
               </a>
-              <img className="avatar-img" src="/images/host.png" alt="host" onError={e => e.target.style.display='none'} />
+              <img className="avatar-img" src="/images/host.png" alt="host" onError={e => e.target.style.display='none'} loading="lazy" decoding="async" width="48" height="48" />
             </div>
             <Link to="/donate" className="donate-btn">DONATE</Link>
           </div>
@@ -225,3 +225,4 @@ export default function Navbar() {
     </>
   );
 }
+

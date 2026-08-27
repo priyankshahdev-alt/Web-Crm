@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import type { CmsPage, PageSection, SectionTemplate, FieldDef } from '../../types'
 import { cmsService } from '../../services/cms'
-import { isLiveMode } from '../../services/api'
 import { useToast } from '../../context/ToastContext'
 import { Modal } from '../ui/Modal'
 import { Button } from '../ui/Button'
@@ -210,19 +209,7 @@ export function PageContentEditor({ page, onClose }: PageContentEditorProps) {
         </Button>
       }
     >
-      {!isLiveMode() ? (
-        <div className="rounded-xl border border-warning/30 bg-warning/5 p-4">
-          <div className="flex items-center gap-2">
-            <span className="text-warning">⚠</span>
-            <div>
-              <p className="font-medium text-ink">Live backend not connected</p>
-              <p className="text-sm text-muted">
-                Content editing requires the live server. Start the backend to manage page sections.
-              </p>
-            </div>
-          </div>
-        </div>
-      ) : loading ? (
+      {loading ? (
         <div className="space-y-3">
           {[0, 1, 2].map((item) => (
             <div key={item} className="h-14 animate-pulse rounded-xl bg-soft" />

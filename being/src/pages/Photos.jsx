@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+﻿import { Link } from 'react-router-dom';
 import { useEffect, useState, useCallback } from 'react';
 import { usePageContent } from '../hooks/usePageContent';
 
@@ -163,7 +163,7 @@ const Photos = () => {
         <div className="gallery-grid">
           {visibleItems.map((item, idx) => (
             <div key={idx} className={`gallery-item${item.wide ? ' wide' : ''}`} onClick={() => openLightbox(idx)}>
-              <img src={item.img} alt={item.title} loading="lazy" />
+              <img src={item.img} alt={item.title} loading="lazy" decoding="async" width="800" height="600" />
               <div className="overlay">
                 <h3>{item.title}</h3>
                 <p>{item.desc}</p>
@@ -184,9 +184,9 @@ const Photos = () => {
         <button className="lightbox-close" onClick={closeLightbox}><i className="fas fa-times"></i></button>
         <button className="lightbox-nav prev" onClick={() => navigateLightbox(-1)}><i className="fas fa-chevron-left"></i></button>
         <button className="lightbox-nav next" onClick={() => navigateLightbox(1)}><i className="fas fa-chevron-right"></i></button>
-        <img className="lightbox-img" src={visibleItems[lightboxIndex]?.img} alt="" />
+        <img className="lightbox-img" src={visibleItems[lightboxIndex]?.img} alt="" loading="lazy" decoding="async" width="800" height="600" />
         <div className="lightbox-caption">
-          {visibleItems[lightboxIndex]?.title} {visibleItems[lightboxIndex]?.desc ? `— ${visibleItems[lightboxIndex]?.desc}` : ''}
+          {visibleItems[lightboxIndex]?.title} {visibleItems[lightboxIndex]?.desc ? `â€” ${visibleItems[lightboxIndex]?.desc}` : ''}
         </div>
       </div>
     </>
@@ -194,3 +194,4 @@ const Photos = () => {
 };
 
 export default Photos;
+

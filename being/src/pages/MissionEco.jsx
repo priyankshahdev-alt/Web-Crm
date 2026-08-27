@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+﻿import { Link } from 'react-router-dom';
 import { useRef, useEffect } from 'react';
 import { usePageContent } from '../hooks/usePageContent';
 
@@ -285,7 +285,7 @@ export default function MissionEco() {
               </div>
             </div>
             <div className="hero-right">
-              <img src={heroImage} alt="Eco Warriors" />
+              <img src={heroImage} alt="Eco Warriors" loading="eager" fetchPriority="high" decoding="async" width="800" height="600" />
             </div>
           </div>
         </section>
@@ -311,7 +311,7 @@ export default function MissionEco() {
           <h2>{workHeading}</h2>
           <div className="grid">
             {workImages.map((img, i) => (
-              <div className="item" key={i}><img src={img.src} alt={img.alt} /></div>
+              <div className="item" key={i}><img src={img.src} alt={img.alt} loading="lazy" decoding="async" width="800" height="600" /></div>
             ))}
           </div>
         </section>
@@ -320,11 +320,11 @@ export default function MissionEco() {
           <div className="green-earth-container">
             <div className="green-earth-gallery">
               <div className="green-earth-main-img">
-                <img src={treeMainImage} alt="" />
+                <img src={treeMainImage} alt="" loading="lazy" decoding="async" width="800" height="600" />
               </div>
               <div className="green-earth-bottom-grid">
                 {treeSmallImages.map((img, i) => (
-                  <div className="green-earth-small-card" key={i}><img src={img.src} alt={img.alt} /></div>
+                  <div className="green-earth-small-card" key={i}><img src={img.src} alt={img.alt} loading="lazy" decoding="async" width="800" height="600" /></div>
                 ))}
               </div>
             </div>
@@ -359,7 +359,7 @@ export default function MissionEco() {
               </div>
             </div>
             <div className="hero-right">
-              <img src={beachImage} alt="Beach Sevak" />
+              <img src={beachImage} alt="Beach Sevak" loading="lazy" decoding="async" width="800" height="600" />
             </div>
           </div>
         </section>
@@ -376,7 +376,7 @@ export default function MissionEco() {
           <h2>{beachWorkHeading}</h2>
           <div className="grid">
             {beachWorkImages.map((img, i) => (
-              <div className="item" key={i}><img src={img.src} alt={img.alt} /></div>
+              <div className="item" key={i}><img src={img.src} alt={img.alt} loading="lazy" decoding="async" width="800" height="600" /></div>
             ))}
           </div>
         </section>
@@ -419,3 +419,4 @@ export default function MissionEco() {
     </>
   );
 }
+

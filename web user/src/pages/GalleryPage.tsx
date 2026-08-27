@@ -2,7 +2,6 @@ import { useCallback, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { galleryService } from '../services/content'
 import { websiteService } from '../services/website'
-import { isLiveMode } from '../services/api'
 import { PUBLIC_SITE_ORIGIN } from '../config/api'
 import type { Gallery } from '../types'
 import { formatDate } from '../utils/format'
@@ -224,9 +223,7 @@ export function GalleryPage() {
                     <ActionMenu
                       ariaLabel={`Actions for ${item.title}`}
                       items={[
-                        ...(isLiveMode()
-                          ? [{ label: 'View on website', icon: <ExternalLinkIcon />, onClick: () => void viewOnWebsite() }]
-                          : []),
+                        { label: 'View on website', icon: <ExternalLinkIcon />, onClick: () => void viewOnWebsite() },
                         {
                           label: item.status === 'PUBLISHED' ? 'Unpublish' : 'Publish',
                           icon: <PublishIcon />,

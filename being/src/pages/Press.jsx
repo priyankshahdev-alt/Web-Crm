@@ -1,10 +1,10 @@
-import { Link } from 'react-router-dom';
+﻿import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { usePageContent } from '../hooks/usePageContent';
 
 const pressData = [
   { title: "Paryavaran Mitra", date: "11 September 2021", year: 2021, description: "Governor presents 'Paryavaran Mitra Samman' on National Forest Martyrs' Day", image: "/images/logos/rajbhawan.jpeg", source: "Raj Bhavan", link: "https://rajbhavan-maharashtra.gov.in/en/11-09-2021-governor-presents-paryavaran-mitra-samman-on-national-forest-martyrs-day/" },
-  { title: "दिव्यांग संगीतकार", date: "16 August 2021", year: 2021, description: "Shankar Mahadevan ने दिव्यांग संगीतकारों का समझा दर्द, बने Being Sevak", image: "/images/logos/aajtak.jpeg", source: "AajTak", link: "https://www.aajtak.in/entertainment/bollywood-news/video/bollywood-singer-shankar-mahadevan-distributs-food-kit-and-mobile-phones-to-the-blind-musicians-being-sevak-1310613-2021-08-16" },
+  { title: "à¤¦à¤¿à¤µà¥à¤¯à¤¾à¤‚à¤— à¤¸à¤‚à¤—à¥€à¤¤à¤•à¤¾à¤°", date: "16 August 2021", year: 2021, description: "Shankar Mahadevan à¤¨à¥‡ à¤¦à¤¿à¤µà¥à¤¯à¤¾à¤‚à¤— à¤¸à¤‚à¤—à¥€à¤¤à¤•à¤¾à¤°à¥‹à¤‚ à¤•à¤¾ à¤¸à¤®à¤à¤¾ à¤¦à¤°à¥à¤¦, à¤¬à¤¨à¥‡ Being Sevak", image: "/images/logos/aajtak.jpeg", source: "AajTak", link: "https://www.aajtak.in/entertainment/bollywood-news/video/bollywood-singer-shankar-mahadevan-distributs-food-kit-and-mobile-phones-to-the-blind-musicians-being-sevak-1310613-2021-08-16" },
   { title: "Social Responsibility", date: "14 September 2021", year: 2021, description: "Being Sevak Charitable Trust ensuring commitments to social responsibility and humanity", image: "/images/logos/midday.jpeg", source: "Mid-Day", link: "https://www.mid-day.com/lifestyle/infotainment/article/being-sevak-charitable-trust-ensuring-commitments-to-social-responsibility-and-humanity-23192304" },
   { title: "National Award", date: "20 October 2021", year: 2021, description: "Being Sevak Charitable Trust hosts the National Awards function to recognise the talent of India's visually challenged achievers", image: "/images/logos/lokmat.jpeg", source: "Lokmat Times", link: "https://www.lokmattimes.com/business/being-sevak-charitable-trust-hosts-the-national-awards-function-to-recognise-the-talent-of-indias/" },
   { title: "Pandemic", date: "19 August 2021", year: 2021, description: "Shankar Mahadevan Joins Hands With Charitable Trust 'Being Sevak' To Help Blind Musicians During Pandemic", image: "/images/logos/zee5.jpeg", source: "Zee5", link: "https://www.zee5.com/zee5news/shankar-mahadevan-joins-hands-with-charitable-trust-being-sevak-to-help-blind-musicians-during-pandemic/" },
@@ -145,7 +145,7 @@ const Press = () => {
             <h3>{stat2Value}</h3>
             <p>{stat2Label}</p>
           </div>
-          <img src={heroImage} alt="Press" />
+          <img src={heroImage} alt="Press" loading="eager" fetchPriority="high" decoding="async" width="800" height="600" />
         </div>
         <div className="blur blur1"></div>
         <div className="blur blur2"></div>
@@ -178,7 +178,7 @@ const Press = () => {
             filtered.map((item, i) => (
               <div key={i} className="press-card" style={{animationDelay: `${(i % 14) * 0.05}s`}}>
                 <div className="press-card-img-wrap">
-                  <img src={item.image} alt={item.title} loading="lazy" />
+                  <img src={item.image} alt={item.title} loading="lazy" decoding="async" width="800" height="600" />
                 </div>
                 <div className="press-card-body">
                   <div className="press-card-date">
@@ -203,3 +203,4 @@ const Press = () => {
 };
 
 export default Press;
+

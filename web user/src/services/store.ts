@@ -23,7 +23,6 @@ import type {
 } from '../types'
 import { buildSeed } from '../data/seed'
 import { uuid } from '../utils/uuid'
-import { getSession } from '../lib/session'
 
 const STORAGE_PREFIX = 'webcms.'
 const SEED_VERSION = 'v1'
@@ -59,13 +58,12 @@ function keyOf(name: StoreKey): string {
 }
 
 /**
- * Namespace the local repo per organization so switching accounts can never
- * leak or share another website's data. Falls back to a shared key only when
- * no session exists yet (e.g. pre-login writes).
+ * Deprecated: previously isolated data per-organization via localStorage.
+ * Now forced to a shared namespace so any leftover store usage is global.
+ * All live data should use backend APIs directly (crud.ts) instead.
  */
 function namespaceOf(): string {
-  const session = getSession()
-  return session?.currentOrgId ?? session?.currentOrgSlug ?? 'anonymous'
+  return 'shared'
 }
 
 function readRaw<T>(name: StoreKey): T {

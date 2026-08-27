@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+﻿import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
 import { usePageContent } from '../hooks/usePageContent';
 
@@ -58,14 +58,14 @@ const MissionVision = () => {
       <section className="hero-banner">
         <div className="hero-content">
           <h1>{heroTitle}</h1>
-          <div className="breadcrumb">Home <span>»</span> {breadcrumb}</div>
+          <div className="breadcrumb">Home <span>Â»</span> {breadcrumb}</div>
         </div>
       </section>
 
       <section className="mv-section">
         <div className="mv-container">
           <div className="mv-card">
-            <img src={missionImage} alt={missionHeading}/>
+            <img src={missionImage} alt={missionHeading} loading="lazy" decoding="async" width="800" height="600" />
             <h2>{missionHeading}</h2>
             <p>{missionText}</p>
           </div>
@@ -76,7 +76,7 @@ const MissionVision = () => {
             ))}
           </div>
           <div className="mv-card">
-            <img src={visionImage} alt={visionHeading}/>
+            <img src={visionImage} alt={visionHeading} loading="lazy" decoding="async" width="800" height="600" />
             <h2>{visionHeading}</h2>
             <p>{visionText}</p>
           </div>
@@ -87,3 +87,4 @@ const MissionVision = () => {
 };
 
 export default MissionVision;
+

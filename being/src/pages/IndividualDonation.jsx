@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+﻿import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { usePageContent } from '../hooks/usePageContent';
 
@@ -564,11 +564,11 @@ export default function IndividualDonation() {
             </button>
           ))}
           <div className="payment-icons">
-            <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/paypal.svg" alt="PayPal" className="pay-icon" />
-            <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/visa.svg" alt="VISA" className="pay-icon visa" />
+            <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/paypal.svg" alt="PayPal" className="pay-icon" loading="lazy" decoding="async" width="800" height="600" />
+            <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/visa.svg" alt="VISA" className="pay-icon visa" loading="lazy" decoding="async" width="800" height="600" />
             <span className="pay-icon-text mc">MC</span>
-            <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/applepay.svg" alt="Apple Pay" className="pay-icon" />
-            <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/googlepay.svg" alt="Google Pay" className="pay-icon" />
+            <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/applepay.svg" alt="Apple Pay" className="pay-icon" loading="lazy" decoding="async" width="800" height="600" />
+            <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/googlepay.svg" alt="Google Pay" className="pay-icon" loading="lazy" decoding="async" width="800" height="600" />
           </div>
           <div className="quick-donate-pulse-wrap">
             <div className="quick-donate-pulse-ring"></div>
@@ -661,3 +661,4 @@ export default function IndividualDonation() {
     </>
   );
 }
+

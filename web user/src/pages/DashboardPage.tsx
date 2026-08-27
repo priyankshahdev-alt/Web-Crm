@@ -138,7 +138,7 @@ function InventoryRow({ label, total, published, draft }: { label: string; total
 }
 
 export function DashboardPage() {
-  const { session, liveMode } = useSession()
+  const { session } = useSession()
   const [stats, setStats] = useState<DashboardStats | null>(null)
   const [activity, setActivity] = useState<ActivityLog[]>([])
   const [loading, setLoading] = useState(true)
@@ -194,10 +194,6 @@ export function DashboardPage() {
           <p className="mt-1 max-w-xl text-[13px] leading-relaxed text-slate-500">Here&apos;s what&apos;s happening across your public website today.</p>
           <p className="mt-1.5 text-xs text-slate-400">{dateLine}</p>
         </div>
-        <span className="inline-flex shrink-0 items-center gap-2 self-start rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-medium text-slate-600 shadow-sm">
-          <span className={`h-2 w-2 rounded-full ${liveMode ? 'bg-emerald-500 animate-pulse' : 'bg-slate-300'}`} />
-          {liveMode ? 'Live API' : 'Offline'}
-        </span>
       </div>
 
       {/* Overview */}
@@ -223,9 +219,9 @@ export function DashboardPage() {
         )}
       </div>
 
-      <div className="mt-2.5 grid grid-cols-2 gap-2.5 lg:grid-cols-4">
+      <div className="mt-2.5 grid grid-cols-2 gap-2.5 lg:grid-cols-5">
         {loading || !stats ? (
-          Array.from({ length: 4 }, (_, i) => <Skeleton key={i} className="h-[64px] rounded-xl" />)
+          Array.from({ length: 5 }, (_, i) => <Skeleton key={i} className="h-[64px] rounded-xl" />)
         ) : (
           <>
             <div className="flex items-center justify-between rounded-xl border border-slate-200/60 bg-white px-3.5 py-3 shadow-[0_1px_2px_rgba(16,24,40,0.04)]">
@@ -253,6 +249,16 @@ export function DashboardPage() {
               </div>
               <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-slate-50 text-slate-500">
                 <MonitorIcon className="h-3.5 w-3.5" />
+              </span>
+            </div>
+            <div className="flex items-center justify-between rounded-xl border border-violet-200 bg-gradient-to-br from-violet-50 to-white px-3.5 py-3 shadow-[0_1px_2px_rgba(16,24,40,0.04)]">
+              <div>
+                <p className="text-[10px] font-semibold uppercase tracking-widest text-violet-600">BeingSevak Images</p>
+                <p className="mt-1 text-[15px] font-semibold tabular-nums text-slate-900">{formatCompact(stats.beingSevakImages?.total ?? 0)}</p>
+                <p className="text-[10px] text-slate-500">Actual website (373)</p>
+              </div>
+              <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-violet-600 text-white">
+                <ImageIcon className="h-3.5 w-3.5" />
               </span>
             </div>
             <div className="flex items-center justify-between rounded-xl border border-slate-200/60 bg-white px-3.5 py-3 shadow-[0_1px_2px_rgba(16,24,40,0.04)]">
@@ -694,7 +700,7 @@ export function DashboardPage() {
           <div className="px-4 pb-3">
             {!stats ? (
               <div className="space-y-1 py-2">
-                {Array.from({ length: 8 }, (_, i) => <Skeleton key={i} className="h-8 rounded-xl" />)}
+                {Array.from({ length: 9 }, (_, i) => <Skeleton key={i} className="h-8 rounded-xl" />)}
               </div>
             ) : (
               <div className="divide-y divide-slate-100">
@@ -703,7 +709,8 @@ export function DashboardPage() {
                 <InventoryRow label="Events" total={stats.events.total} published={stats.events.published} draft={stats.events.draft} />
                 <InventoryRow label="Blogs" total={stats.blogs.total} published={stats.blogs.published} draft={stats.blogs.draft} />
                 <InventoryRow label="Galleries" total={stats.galleries.total} published={stats.galleries.published} draft={0} />
-                <InventoryRow label="Images" total={stats.media.total} published={stats.media.images} draft={stats.media.documents} />
+                <InventoryRow label="Images (DB)" total={stats.media.total} published={stats.media.images} draft={stats.media.documents} />
+                <InventoryRow label="BeingSevak Website Images" total={stats.beingSevakImages?.total ?? 0} published={stats.beingSevakImages?.total ?? 0} draft={0} />
                 <InventoryRow label="Team" total={stats.team.total} published={stats.team.active} draft={0} />
                 <InventoryRow label="Testimonials" total={stats.testimonials.total} published={stats.testimonials.active} draft={0} />
               </div>

@@ -28,6 +28,7 @@ const EMPTY_STATS: DashboardStats = {
   testimonials: { total: 0, active: 0 },
   partners: { total: 0, active: 0 },
   faqs: { total: 0, active: 0 },
+  beingSevakImages: { total: 0 },
   upcomingEvents: [],
   recentForms: [],
 }
@@ -96,6 +97,7 @@ export const dashboardService = {
         testimonials: counts.testimonials ?? { total: 0, active: 0 },
         partners: counts.partners ?? { total: 0, active: 0 },
         faqs: counts.faqs ?? { total: 0, active: 0 },
+        beingSevakImages: counts.beingSevakImages ?? { total: 0 },
         upcomingEvents: body?.upcomingEvents ?? [],
         recentForms: body?.recentForms ?? [],
       }

@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+﻿import { Link } from 'react-router-dom';
 import { useRef, useEffect } from 'react';
 import { usePageContent } from '../hooks/usePageContent';
 
@@ -32,10 +32,10 @@ const MissionBezubaan = () => {
   const aboutImage = content('bezubaan-about', 'image') ?? '/images/b2.jpg';
   const aboutItems =
     content('bezubaan-about', 'items') ?? [
-      { title: '🐾 Daily Feeding', description: 'Nutritious meals for hungry street animals.' },
-      { title: '❤️ Medical Care', description: 'Emergency treatment and healthcare support.' },
-      { title: '🚑 Rescue Support', description: 'Helping injured and abandoned animals.' },
-      { title: '🏠 Safe Shelter', description: 'Providing warmth, care and protection.' },
+      { title: 'ðŸ¾ Daily Feeding', description: 'Nutritious meals for hungry street animals.' },
+      { title: 'â¤ï¸ Medical Care', description: 'Emergency treatment and healthcare support.' },
+      { title: 'ðŸš‘ Rescue Support', description: 'Helping injured and abandoned animals.' },
+      { title: 'ðŸ  Safe Shelter', description: 'Providing warmth, care and protection.' },
     ];
 
   const impactTag = content('bezubaan-impact', 'tag') ?? 'Our Impact';
@@ -82,10 +82,10 @@ const MissionBezubaan = () => {
     'Through continuous feeding drives and rescue efforts, Mission Bezubaan is creating hope and comfort for thousands of stray animals across communities.';
   const careItems =
     content('bezubaan-care-about', 'items') ?? [
-      { title: '🐕 Food Distribution', description: 'We regularly distribute food and water to hungry animals.' },
-      { title: '🏥 Rescue Activities', description: 'Our team rescues injured and helpless animals.' },
-      { title: '💕 Care & Awareness', description: 'We encourage kindness towards animals in communities.' },
-      { title: '🏡 Shelter Support', description: 'Providing safe homes for abandoned animals.' },
+      { title: 'ðŸ• Food Distribution', description: 'We regularly distribute food and water to hungry animals.' },
+      { title: 'ðŸ¥ Rescue Activities', description: 'Our team rescues injured and helpless animals.' },
+      { title: 'ðŸ’• Care & Awareness', description: 'We encourage kindness towards animals in communities.' },
+      { title: 'ðŸ¡ Shelter Support', description: 'Providing safe homes for abandoned animals.' },
     ];
   const careImage = content('bezubaan-care-about', 'image') ?? '/images/b7.jpeg';
 
@@ -443,7 +443,7 @@ const MissionBezubaan = () => {
             </div>
             <div className="hero-right">
               <div className="image-box">
-                <img src={heroImage} alt="Dog" />
+                <img src={heroImage} alt="Dog" loading="eager" fetchPriority="high" decoding="async" width="800" height="600" />
                 {heroStats.map((stat, i) => (
                   <div className={`floating-card card${i + 1}`} key={i}>
                     <h3>{stat.value}</h3>
@@ -466,7 +466,7 @@ const MissionBezubaan = () => {
 
         <section className="about-section" id="about">
           <div className="about-image">
-            <img src={aboutImage} alt="Animals" />
+            <img src={aboutImage} alt="Animals" loading="lazy" decoding="async" width="800" height="600" />
           </div>
           <div className="about-content">
             <span className="mini-title">{aboutTag}</span>
@@ -500,7 +500,7 @@ const MissionBezubaan = () => {
               </div>
             </div>
             <div className="impact-image">
-              <img src={impactImage} alt="Impact" />
+              <img src={impactImage} alt="Impact" loading="lazy" decoding="async" width="800" height="600" />
             </div>
           </div>
         </section>
@@ -509,11 +509,11 @@ const MissionBezubaan = () => {
           <div className="pawzen-container">
             <div className="pawzen-image-side">
               <div className="pawzen-main-image">
-                <img src={pawMainImage} alt="Paw Care Center" />
+                <img src={pawMainImage} alt="Paw Care Center" loading="lazy" decoding="async" width="800" height="600" />
               </div>
               <div className="pawzen-gallery-row">
                 {pawGalleryImages.map((g, i) => (
-                  <img key={i} src={g.src} alt={g.alt} />
+                  <img key={i} src={g.src} alt={g.alt} loading="lazy" decoding="async" width="800" height="600" />
                 ))}
               </div>
             </div>
@@ -552,7 +552,7 @@ const MissionBezubaan = () => {
             </div>
           </div>
           <div className="about-image">
-            <img src={careImage} alt="Impact" />
+            <img src={careImage} alt="Impact" loading="lazy" decoding="async" width="800" height="600" />
           </div>
         </section>
 
@@ -563,7 +563,7 @@ const MissionBezubaan = () => {
           </div>
           <div className="gallery-grid">
             {galleryImages.map((g, i) => (
-              <div className="gallery-card" key={i}><img src={g.src} alt={g.alt} /></div>
+              <div className="gallery-card" key={i}><img src={g.src} alt={g.alt} loading="lazy" decoding="async" width="800" height="600" /></div>
             ))}
           </div>
         </section>
@@ -606,3 +606,4 @@ const MissionBezubaan = () => {
 };
 
 export default MissionBezubaan;
+

@@ -626,7 +626,6 @@ export function ProgramsPage() {
         eyebrow="Content"
         title="Programs"
         description="Manage your NGO's programs and missions."
-        liveChip={false}
         actions={
           <Button icon={<PlusIcon />} onClick={openCreateModal}>
             New Program

@@ -377,9 +377,14 @@ export function SectionFieldEditor({
   onChange: (name: string, value: unknown) => void
 }) {
   const ordered = [...fields].sort((a, b) => a.displayOrder - b.displayOrder)
+  // Fallback: when template fields are missing/empty (e.g. legacy or org mismatch), infer editors from actual content keys so Edit always shows image/text options
+  const effective = ordered.length > 0 ? ordered : Object.keys(content).map((name, idx) => ({ name, label: humanize(name), value: content[name], displayOrder: idx + 1, type: 'inferred', imageUrl: null } as WebsiteSectionField))
+  if (effective.length === 0) {
+    return <p className="rounded-xl border border-dashed border-slate-200 bg-slate-50 p-4 text-center text-xs text-slate-400">No fields — add keys in JSON or re-seed templates.</p>
+  }
   return (
     <div className="space-y-4">
-      {ordered.map((field) => {
+      {effective.map((field) => {
         const value = content[field.name] !== undefined ? content[field.name] : field.value
         const label = field.label || humanize(field.name)
         return (

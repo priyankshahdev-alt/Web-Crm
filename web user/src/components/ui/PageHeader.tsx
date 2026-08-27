@@ -33,16 +33,11 @@ export function PageHeader({ eyebrow, title, description, actions, liveChip = tr
               className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold ${
                 liveMode ? 'bg-success/10 text-success' : 'bg-warning/10 text-warning'
               }`}
+              title={liveMode ? 'Connected to Live API' : 'Offline — showing last successful data, will reconnect automatically'}
             >
-              <span
-                className={`relative flex h-1.5 w-1.5 ${liveMode ? '' : ''}`}
-              >
-                <span
-                  className={`absolute inline-flex h-full w-full animate-ping rounded-full opacity-60 ${liveMode ? 'bg-success' : 'bg-warning'}`}
-                />
-                <span
-                  className={`relative inline-flex h-1.5 w-1.5 rounded-full ${liveMode ? 'bg-success' : 'bg-warning'}`}
-                />
+              <span className="relative flex h-1.5 w-1.5">
+                <span className={`absolute inline-flex h-full w-full animate-ping rounded-full opacity-60 ${liveMode ? 'bg-success' : 'bg-warning'}`} />
+                <span className={`relative inline-flex h-1.5 w-1.5 rounded-full ${liveMode ? 'bg-success' : 'bg-warning'}`} />
               </span>
               {liveMode ? 'Live API' : 'Offline demo'}
             </span>

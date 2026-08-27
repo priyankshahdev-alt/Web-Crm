@@ -1,0 +1,187 @@
+﻿/bsct trust document/booklet/2016.png
+/bsct trust document/booklet/2017.png
+/bsct trust document/booklet/2018.png
+/bsct trust document/booklet/2019.png
+/bsct trust document/booklet/2020.png
+/bsct trust document/booklet/2021.png
+/bsct trust document/booklet/2022.png
+/bsct trust document/booklet/2023.png
+/bsct trust document/booklet/2024.png
+/bsct trust document/booklet/2025.png
+/icons.svg
+/images/02.png
+/images/03.png
+/images/04.png
+/images/05.png
+/images/06.png
+/images/07.png
+/images/08.png
+/images/09.png
+/images/1.jpg
+/images/10.jpg
+/images/11.png
+/images/12.png
+/images/13.png
+/images/14.png
+/images/15.png
+/images/16.png
+/images/17.png
+/images/18.png
+/images/19.png
+/images/2.jpg
+/images/20.png
+/images/21.png
+/images/22.png
+/images/23.png
+/images/24.png
+/images/25.png
+/images/3.jpg
+/images/4.jpg
+/images/5.jpg
+/images/6.jpg
+/images/7.jpg
+/images/8.jpg
+/images/9.jpg
+/images/aatmnirbhar 1.png
+/images/about1.png
+/images/achievement award.jpg
+/images/activity1.jpg
+/images/animalfeedingcenter.jpg
+/images/annapurna 2.png
+/images/anndan.png
+/images/ashutosh pawar.jpeg
+/images/aurat 2.png
+/images/awarenesscampaign.jpg
+/images/babycare.jpg
+/images/babyfeedig.png
+/images/beachcleaning.png
+/images/bench.png
+/images/blind.jpg
+/images/blooddonation.jpg
+/images/borivali blood centre  award.jpg
+/images/bottelmetro.jpeg
+/images/bottle.jpg
+/images/bottlecrusherani.gif
+/images/bottlecrushermachineinitiative.jpg
+/images/bsct.jpeg
+/images/business award 2023 (1).jpg
+/images/business award 2023.jpg
+/images/celebrationofnationalprograms.jpg
+/images/celebritynote/1.jpg
+/images/celebritynote/2.jpg
+/images/celebritynote/3.jpg
+/images/celebritynote/4.jpg
+/images/chhatrapati shivaji   maharaj gaurav award 2021.jpg
+/images/covid warrior.jpg
+/images/d.e.c.jpg
+/images/d.e.c2.jpg
+/images/dada saheb.jpg
+/images/dialysis centre.png
+/images/dialysis.png
+/images/dog2.jpeg
+/images/dog3.jpeg
+/images/dog4.jpg
+/images/dryrationkitdistribution.jpg
+/images/eco main..jpg
+/images/educationfacilitiesforblind&underprivilegedchildren.jpg
+/images/eye.jpeg
+/images/eyecamp.jpg
+/images/financialassistanceprogram.jpg
+/images/floormill.png
+/images/flourmilldistribution.jpg
+/images/g21 (1).webp
+/images/g22 (1).webp
+/images/g24 (1).webp
+/images/g31.webp
+/images/g32.webp
+/images/g33.webp
+/images/g34.webp
+/images/g81.webp
+/images/g82.webp
+/images/g83.webp
+/images/g84.webp
+/images/guru bharat bharti   award.jpg
+/images/h1.jpeg
+/images/h1.jpg
+/images/h2.jpeg
+/images/h2img.png
+/images/h2new.jpeg
+/images/h3.jpg
+/images/h3.png
+/images/h6.png
+/images/h8.png
+/images/handwashingstationinstallation.jpg
+/images/hero1.jpg
+/images/hero3.jpg
+/images/hero4.jpg
+/images/hero5.jpg
+/images/hero6.jpeg
+/images/hero6.jpg
+/images/hero7.jpeg
+/images/hero7.jpg
+/images/hero8.jpg
+/images/hospitalization&healthcareimg.jpg
+/images/houserepair.jpg
+/images/hygienekitdistribution.jpg
+/images/i1.jpg
+/images/i2.jpg
+/images/i3.jpg
+/images/i4.jpg
+/images/i5.jpg
+/images/i6.jpg
+/images/i7.jpg
+/images/i8.jpg
+/images/i9.png
+/images/iiia award.jpg
+/images/img1.jpg
+/images/img3.jpg
+/images/jignapatel.jpeg
+/images/kit 2.png
+/images/li.jpeg
+/images/logos/cash incentive 2026 (1).png
+/images/logos/cash incentive 2026.png
+/images/mahatma gandhi ratna award.jpg
+/images/map.jpeg
+/images/maratha life foundation award.jpg
+/images/matrimonial.jpeg
+/images/medical.jpeg
+/images/medicalemer.jpeg
+/images/medicalemer.png
+/images/mid-daymealprogram.jpg
+/images/newclothingdistribution.jpg
+/images/pandemic-1.jpg
+/images/physiotherepy.jpeg
+/images/popular civilian   award.jpg
+/images/pride of india icon award.jpg
+/images/priyank shah.jpeg
+/images/projecth2.png
+/images/rasaoighar.jpeg
+/images/relieffordialysispatients.jpg
+/images/rojgharbooth.jpg
+/images/rozgharnew.jpeg
+/images/sanitary.jpg
+/images/sanitarypadkit.jpg
+/images/schoolrenovationproject.jpg
+/images/sevak star award.jpg
+/images/sevakgameswithmembers.jpg
+/images/sevakmemcard.jpg
+/images/sevakniwas.jpg
+/images/sewingmachinedistribution.jpg
+/images/snackskit.jpg
+/images/stationarykit.jpg
+/images/supportedu.png
+/images/swachhbharatawarenesscampaign.jpg
+/images/t2.jpg
+/images/t3.jpg
+/images/tree plantion 2.png
+/images/treeplantationdrive.jpg
+/images/v3.jpeg
+/images/v7.jpg
+/images/vidhya 1.png
+/images/where we work1.jpeg
+/images/womenempoerment.jpeg
+/latesupdates/april 2026.jpg
+/latesupdates/feb 2026.jpg
+/latesupdates/jan 2026.jpg
+/latesupdates/march 2026.jpg
+/logo11.png

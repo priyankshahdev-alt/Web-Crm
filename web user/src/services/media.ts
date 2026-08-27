@@ -7,22 +7,25 @@ import {
   updateEntity,
 } from './crud'
 import { http } from './api'
-import { getSession } from '../lib/session'
 import type { ListParams, Paginated } from './store'
-
-function resolveSiteSlug(): string {
-  const session = getSession()
-  const slug = session?.currentOrgSlug
-  if (slug) return slug
-  throw new Error('No active website in session')
-}
 
 export const mediaService = {
   async list(params: ListParams = {}): Promise<Paginated<MediaAsset>> {
-    return listEntities<MediaAsset>('media', 'media', params)
+    const { data } = await http.get('/media', {
+      params: {
+        page: params.page ?? 1,
+        limit: params.pageSize ?? 200,
+        search: params.search || undefined,
+        folder: params.folder || undefined,
+        status: (params as any).status || undefined,
+      },
+    })
+    const payload = data.data
+    return { items: (payload.items as MediaAsset[]) ?? [], total: (payload.total as number) ?? 0 }
   },
   async all(): Promise<MediaAsset[]> {
-    return getAllEntities<MediaAsset>('media', 'media')
+    const { data } = await http.get('/media', { params: { limit: 500 } })
+    return (data.data.items as MediaAsset[]) ?? []
   },
   async folders(): Promise<MediaFolder[]> {
     const { data } = await http.get('/media', { params: { limit: 500 } })
@@ -34,8 +37,7 @@ export const mediaService = {
     return Array.from(names).sort().map((name, i) => ({
       id: `folder-${i}`,
       name,
-      createdAt: '',
-      updatedAt: '',
+      count: items.filter((it) => it.folder === name).length,
     }))
   },
   async create(payload: Partial<MediaAsset>): Promise<MediaAsset> {

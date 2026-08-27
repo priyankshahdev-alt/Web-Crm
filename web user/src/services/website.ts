@@ -32,8 +32,15 @@ export const websiteService = {
   },
 
   async getContentTree(): Promise<WebsiteContent> {
-    const { data } = await http.get(`/websites/${resolveSiteSlug()}/content`)
-    return data.data as WebsiteContent
+    try {
+      const { data } = await http.get(`/websites/${resolveSiteSlug()}/content`)
+      return data.data as WebsiteContent
+    } catch (err) {
+      const status = (err as { response?: { status?: number } })?.response?.status
+      // For transient gateway/rate-limit, let the caller decide — don't log as uncaught
+      if (status === 502 || status === 503 || status === 429) throw err
+      throw err
+    }
   },
 
   async getPage(pageSlug: string): Promise<WebsitePage> {

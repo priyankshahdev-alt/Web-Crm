@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+﻿import { Link } from 'react-router-dom';
 import { useRef, useEffect } from 'react';
 import { usePageContent } from '../hooks/usePageContent';
 
@@ -392,7 +392,7 @@ export default function MissionWellness() {
             </div>
             <div className="hero-right">
               <div className="image-box">
-                <img src={heroImage} alt="Mission Aarogya" />
+                <img src={heroImage} alt="Mission Aarogya" loading="eager" fetchPriority="high" decoding="async" width="800" height="600" />
                 {heroStats.map((stat, i) => (
                   <div className={`floating-card card${i + 1}`} key={i}>
                     <h3>{stat.value}</h3>
@@ -415,7 +415,7 @@ export default function MissionWellness() {
 
         <section className="about-section" id="about">
           <div className="about-image">
-            <img src={aboutImage} alt="Healthcare Support" />
+            <img src={aboutImage} alt="Healthcare Support" loading="lazy" decoding="async" width="800" height="600" />
           </div>
           <div className="about-content">
             <span className="mini-title">{aboutTag}</span>
@@ -451,7 +451,7 @@ export default function MissionWellness() {
           <div className="mission-cards" style={{ marginTop: '40px' }}>
             {projectImages.map((img, i) => (
               <div className="project-image-card" key={i}>
-                <img src={img.src} alt={img.alt} />
+                <img src={img.src} alt={img.alt} loading="lazy" decoding="async" width="800" height="600" />
               </div>
             ))}
           </div>
@@ -474,7 +474,7 @@ export default function MissionWellness() {
             </div>
           </div>
           <div className="about-image">
-            <img src={babyImage} alt="Baby Care Center" />
+            <img src={babyImage} alt="Baby Care Center" loading="lazy" decoding="async" width="800" height="600" />
           </div>
         </section>
 
@@ -485,7 +485,7 @@ export default function MissionWellness() {
           </div>
           <div className="gallery-grid">
             {galleryImages.map((g, i) => (
-              <div className={g.big ? 'gallery-item large' : 'gallery-item'} key={i}><img src={g.src} alt={g.alt} /></div>
+              <div className={g.big ? 'gallery-item large' : 'gallery-item'} key={i}><img src={g.src} alt={g.alt} loading="lazy" decoding="async" width="800" height="600" /></div>
             ))}
           </div>
         </section>
@@ -526,3 +526,4 @@ export default function MissionWellness() {
     </>
   );
 }
+

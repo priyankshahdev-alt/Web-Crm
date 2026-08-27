@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+﻿import { Link } from 'react-router-dom';
 import { useRef, useEffect } from 'react';
 import { usePageContent } from '../hooks/usePageContent';
 
@@ -319,7 +319,7 @@ const MissionAnnapurna = () => {
                 <p>{stat.label}</p>
               </div>
             ))}
-            <img src={heroImage} alt="ngo" />
+            <img src={heroImage} alt="ngo" loading="eager" fetchPriority="high" decoding="async" width="800" height="600" />
           </div>
           <div className="blur blur1"></div>
           <div className="blur blur2"></div>
@@ -336,7 +336,7 @@ const MissionAnnapurna = () => {
 
         <section className="about-section" id="about">
           <div className="about-image">
-            <img src={aboutImage} alt="food distribution" />
+            <img src={aboutImage} alt="food distribution" loading="lazy" decoding="async" width="800" height="600" />
           </div>
           <div className="about-content">
             <span className="small-title">{aboutTag}</span>
@@ -372,7 +372,7 @@ const MissionAnnapurna = () => {
         <section className="gallery-section">
           <div className="gallery-grid">
             {galleryImages.map((src, i) => (
-              <div className="gallery-card" key={i}><img src={src} alt="gallery" /></div>
+              <div className="gallery-card" key={i}><img src={src} alt="gallery" loading="lazy" decoding="async" width="800" height="600" /></div>
             ))}
           </div>
         </section>
@@ -413,3 +413,4 @@ const MissionAnnapurna = () => {
 };
 
 export default MissionAnnapurna;
+

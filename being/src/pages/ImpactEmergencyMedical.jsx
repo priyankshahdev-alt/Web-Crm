@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+﻿import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
 import { usePageContent } from '../hooks/usePageContent';
 
@@ -106,7 +106,7 @@ export default function ImpactEmergencyMedical() {
 
           <div className="medical-grid">
             <div className="medical-image">
-              <img src={mainImage} alt="Emergency Medical Support" />
+              <img src={mainImage} alt="Emergency Medical Support" loading="lazy" decoding="async" width="800" height="600" />
             </div>
             <div className="medical-content">
               {cards.map((card, i) => (
@@ -144,10 +144,11 @@ export default function ImpactEmergencyMedical() {
         </div>
         <div className="shital-gallery">
           {galleryImages.map((src, i) => (
-            <div className="shital-gallery-item" key={i}><img src={src} alt="" /></div>
+            <div className="shital-gallery-item" key={i}><img src={src} alt="" loading="lazy" decoding="async" width="800" height="600" /></div>
           ))}
         </div>
       </section>
     </>
   );
 }
+

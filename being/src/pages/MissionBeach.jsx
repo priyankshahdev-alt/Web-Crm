@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+﻿import { Link } from 'react-router-dom';
 import { usePageContent } from '../hooks/usePageContent';
 
 export default function MissionBeach() {
@@ -179,7 +179,7 @@ export default function MissionBeach() {
               </div>
             </div>
             <div className="hero-right">
-              <img src={heroImage} alt="Beach Sevak" />
+              <img src={heroImage} alt="Beach Sevak" loading="eager" fetchPriority="high" decoding="async" width="800" height="600" />
             </div>
           </div>
         </section>
@@ -196,7 +196,7 @@ export default function MissionBeach() {
           <h2>{workHeading}</h2>
           <div className="grid">
             {workImages.map((img, i) => (
-              <div className="item" key={i}><img src={img.src} alt={img.alt} /></div>
+              <div className="item" key={i}><img src={img.src} alt={img.alt} loading="lazy" decoding="async" width="800" height="600" /></div>
             ))}
           </div>
         </section>
@@ -239,3 +239,4 @@ export default function MissionBeach() {
     </>
   );
 }
+

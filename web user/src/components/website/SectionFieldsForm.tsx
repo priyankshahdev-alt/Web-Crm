@@ -5,7 +5,6 @@ import { Toggle } from '../ui/Toggle'
 import { MediaPickerModal } from './MediaPickerModal'
 import { RichTextEditor } from '../programs/RichTextEditor'
 import { getAllEntities } from '../../services/crud'
-import type { StoreKey } from '../../services/store'
 import type { TemplateFieldDef, WebsiteSectionField } from '../../types'
 
 const IMAGE_VALUE_PATTERN = /\.(jpe?g|png|webp|gif|svg|avif|bmp)(\?.*)?$/i
@@ -225,16 +224,16 @@ interface FetchedEntity {
   [key: string]: unknown
 }
 
-const ENTITY_SOURCES: Record<string, { resource: string; storeKey: StoreKey }> = {
-  project: { resource: 'projects', storeKey: 'projects' },
-  team: { resource: 'team', storeKey: 'team' },
-  blog: { resource: 'blogs', storeKey: 'blogs' },
-  blogCategory: { resource: 'blog-categories', storeKey: 'blogCategories' },
-  gallery: { resource: 'galleries', storeKey: 'galleries' },
-  partner: { resource: 'partners', storeKey: 'partners' },
-  faq: { resource: 'faqs', storeKey: 'faqs' },
-  event: { resource: 'events', storeKey: 'events' },
-  testimonial: { resource: 'testimonials', storeKey: 'testimonials' },
+const ENTITY_SOURCES: Record<string, { resource: string }> = {
+  project: { resource: 'projects' },
+  team: { resource: 'team' },
+  blog: { resource: 'blogs' },
+  blogCategory: { resource: 'blog-categories' },
+  gallery: { resource: 'galleries' },
+  partner: { resource: 'partners' },
+  faq: { resource: 'faqs' },
+  event: { resource: 'events' },
+  testimonial: { resource: 'testimonials' },
 }
 
 function labelOf(entity: Record<string, unknown>): string {
@@ -275,7 +274,7 @@ function EntityRefField({
     setOptions(null)
     const source = def.entityType ? ENTITY_SOURCES[def.entityType] : undefined
     if (!source) return undefined
-    getAllEntities<FetchedEntity>(source.resource, source.storeKey)
+    getAllEntities<FetchedEntity>(source.resource, source.resource)
       .then((items) => {
         if (cancelled) return
         setOptions(

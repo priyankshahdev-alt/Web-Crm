@@ -664,6 +664,7 @@ export interface DashboardStats {
   testimonials: { total: number; active: number }
   partners: { total: number; active: number }
   faqs: { total: number; active: number }
+  beingSevakImages: { total: number }
 
   // Widget data
   upcomingEvents: { id: string; title: string; startDate: string; endDate?: string; location?: string; status: string; slug: string }[]

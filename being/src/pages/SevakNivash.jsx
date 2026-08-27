@@ -1,11 +1,11 @@
-import { Link } from 'react-router-dom';
+﻿import { Link } from 'react-router-dom';
 import { usePageContent } from '../hooks/usePageContent';
 
 export default function SevakNivash() {
   const content = usePageContent('sevak-nivash');
 
   const bannerImage = content('sevak-nivash-hero', 'image') ?? '/images/sevaknivash.jpeg';
-  const bannerHeading = content('sevak-nivash-hero', 'heading') ?? 'Sevakनिवास';
+  const bannerHeading = content('sevak-nivash-hero', 'heading') ?? 'Sevakà¤¨à¤¿à¤µà¤¾à¤¸';
   const bannerTagline =
     content('sevak-nivash-hero', 'tagline') ?? 'Providing Shelter, Care & Opportunities for Independent Living';
 
@@ -44,7 +44,7 @@ export default function SevakNivash() {
         desc: 'Professional guidance, emotional support and counseling services for individuals in need.',
         fullDesc:
           'Your support helps us provide professional counseling, emotional assistance, guidance, and rehabilitation services for visually impaired, disabled, and underprivileged individuals. Through this facility, we empower beneficiaries to overcome challenges, build confidence, and lead independent lives with dignity and hope.',
-        amount: '₹1,50,000',
+        amount: 'â‚¹1,50,000',
         img: '/images/nivash9.jpeg',
         side: 'left',
       },
@@ -53,16 +53,16 @@ export default function SevakNivash() {
         desc: 'Supporting skill development and livelihood opportunities for a brighter future.',
         fullDesc:
           'This facility provides vocational education, practical skill training, and career guidance to youth and individuals from underserved communities. Your contribution helps create employment opportunities, encourage self-reliance, and empower beneficiaries with the skills needed for a sustainable future.',
-        amount: '₹3,00,000',
+        amount: 'â‚¹3,00,000',
         img: '/images/nivash6.jpeg',
         side: 'right',
       },
       {
-        title: 'Library – Study and Explore',
+        title: 'Library â€“ Study and Explore',
         desc: 'Providing accessible books, learning resources, and educational opportunities for all.',
         fullDesc:
           'This facility provides an inclusive learning space equipped with books, study materials, Braille resources, audio learning tools, and digital educational content. Your support helps visually impaired, disabled, and underprivileged individuals access knowledge, enhance their education, and unlock new opportunities for personal and professional growth.',
-        amount: '₹2,00,000',
+        amount: 'â‚¹2,00,000',
         img: '/images/nivash1.jpeg',
         side: 'left',
       },
@@ -71,7 +71,7 @@ export default function SevakNivash() {
         desc: 'Creating employment opportunities through professional training and workplace readiness.',
         fullDesc:
           'This facility equips visually impaired, disabled, and underprivileged individuals with professional communication, computer, and workplace skills required for BPO and corporate employment opportunities. Your support helps beneficiaries gain industry-relevant training, improve employability, and achieve financial independence through sustainable careers.',
-        amount: '₹3,00,000',
+        amount: 'â‚¹3,00,000',
         img: '/images/nivash3.jpeg',
         side: 'right',
       },
@@ -80,7 +80,7 @@ export default function SevakNivash() {
         desc: 'Providing digital education, computer skills, and technology-based learning opportunities.',
         fullDesc:
           "This facility equips visually impaired, disabled, and underprivileged individuals with essential computer and digital skills required in today's technology-driven world. Your support helps provide access to computers, assistive technologies, software training, and digital literacy programs, enabling beneficiaries to pursue education, employment, and greater independence.",
-        amount: '₹5,00,000',
+        amount: 'â‚¹5,00,000',
         img: '/images/nivash2.jpeg',
         side: 'left',
       },
@@ -89,7 +89,7 @@ export default function SevakNivash() {
         desc: 'Building confidence, communication skills, and leadership qualities for a brighter future.',
         fullDesc:
           'This facility helps individuals enhance their communication, leadership, confidence, and interpersonal skills through structured training and personal development programs. Your support empowers beneficiaries to build self-confidence, improve public interaction, and prepare for educational, professional, and social success.',
-        amount: '₹3,00,000',
+        amount: 'â‚¹3,00,000',
         img: '/images/nivash7.jpeg',
         side: 'right',
       },
@@ -98,7 +98,7 @@ export default function SevakNivash() {
         desc: 'Guiding individuals towards meaningful careers and sustainable employment opportunities.',
         fullDesc:
           'This facility provides career counseling, job readiness training, placement support, and professional guidance for visually impaired, disabled, and underprivileged individuals. Your support helps beneficiaries identify suitable career paths, develop workplace skills, and connect with employment opportunities, paving the way for financial independence and long-term success.',
-        amount: '₹3,50,000',
+        amount: 'â‚¹3,50,000',
         img: '/images/nivash6.jpeg',
         side: 'left',
       },
@@ -107,7 +107,7 @@ export default function SevakNivash() {
         desc: 'Empowering future innovators through AI, technology, and digital skill development.',
         fullDesc:
           'This facility provides access to emerging technologies, artificial intelligence, digital tools, and innovation-driven learning opportunities. Your support helps individuals develop future-ready skills, explore digital careers, and participate in a technology-enabled world with confidence and independence.',
-        amount: '₹4,00,000',
+        amount: 'â‚¹4,00,000',
         img: '/images/nivash4.jpeg',
         side: 'right',
       },
@@ -116,7 +116,7 @@ export default function SevakNivash() {
         desc: 'Supporting physical well-being, mobility, and rehabilitation through specialized care.',
         fullDesc:
           'This facility provides physiotherapy, rehabilitation support, and wellness services for visually impaired, disabled, and underprivileged individuals. Your contribution helps improve mobility, physical health, independence, and overall quality of life by ensuring access to essential therapeutic care and wellness resources.',
-        amount: '₹2,00,000',
+        amount: 'â‚¹2,00,000',
         img: '/images/nivash10.jpeg',
         side: 'left',
       },
@@ -125,7 +125,7 @@ export default function SevakNivash() {
         desc: 'Empowering women with skills, confidence, and opportunities for self-reliance.',
         fullDesc:
           'This facility supports women through skill development, entrepreneurship training, and livelihood opportunities. Your contribution helps women become financially independent, build self-confidence, and create sustainable sources of income for themselves and their families.',
-        amount: '₹2,00,000',
+        amount: 'â‚¹2,00,000',
         img: '/images/nivash12.jpeg',
         side: 'right',
       },
@@ -134,7 +134,7 @@ export default function SevakNivash() {
         desc: 'Providing nutritious meals and food support to those in need with dignity and care.',
         fullDesc:
           'This facility serves freshly prepared and nutritious meals to visually impaired individuals, persons with disabilities, underprivileged families, and those facing food insecurity. Your support helps ensure that no one goes hungry while promoting health, dignity, and community care through regular meal assistance programs.',
-        amount: '₹3,00,000',
+        amount: 'â‚¹3,00,000',
         img: '/images/nivash5.jpeg',
         side: 'left',
       },
@@ -143,7 +143,7 @@ export default function SevakNivash() {
         desc: 'Providing a safe and supportive home for visually impaired students.',
         fullDesc:
           'This facility provides safe, accessible, and comfortable temporary accommodation for visually impaired students pursuing education and skill development opportunities. Your support helps create a secure living environment where students can focus on learning, personal growth, and building a brighter future with dignity and independence.',
-        amount: '₹4,00,000',
+        amount: 'â‚¹4,00,000',
         img: '/images/nivash11.jpeg',
         side: 'right',
       },
@@ -299,7 +299,7 @@ export default function SevakNivash() {
 
       <div className="sevak-nivash">
         <section className="anndaan-hero-banner">
-          <img src={bannerImage} alt="Sevak Nivas Banner" />
+          <img src={bannerImage} alt="Sevak Nivas Banner" loading="lazy" decoding="async" width="800" height="600" />
           <div className="anndaan-overlay"></div>
           <div className="anndaan-content">
             <br /><br />
@@ -358,7 +358,7 @@ export default function SevakNivash() {
                   <>
                     <div className="donation-card">
                       <div className="facility-image">
-                        <img src={f.img} alt={f.title} />
+                        <img src={f.img} alt={f.title} loading="lazy" decoding="async" width="800" height="600" />
                       </div>
                       <h3>{f.title}</h3>
                       <p>{f.desc}</p>
@@ -380,7 +380,7 @@ export default function SevakNivash() {
                     </div>
                     <div className="donation-card">
                       <div className="facility-image">
-                        <img src={f.img} alt={f.title} />
+                        <img src={f.img} alt={f.title} loading="lazy" decoding="async" width="800" height="600" />
                       </div>
                       <h3>{f.title}</h3>
                       <p>{f.desc}</p>
@@ -397,3 +397,4 @@ export default function SevakNivash() {
     </>
   );
 }
+
