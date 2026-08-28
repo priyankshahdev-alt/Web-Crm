@@ -1,0 +1,35 @@
+{
+  "slug": "legal-certificate",
+  "title": "Legal Certificate",
+  "metaTitle": "Legal Certificate | Mann Care Foundation",
+  "template": "inner",
+  "sortOrder": 4,
+  "sections": [
+    {
+      "type": "page-hero",
+      "name": "Page Hero",
+      "sortOrder": 1,
+      "content": {
+        "heading": "Certificates",
+        "subheading": "Legal & Compliance Documents",
+        "imageUrl": "/about/hero3.jpeg",
+        "mobileImageUrl": "/about/mobile-slide3.jpeg",
+        "altText": "Legal Certificates"
+      }
+    },
+    {
+      "type": "certificates",
+      "name": "Our Certificates",
+      "sortOrder": 2,
+      "content": {
+        "tag": "Legal & Compliance Documents",
+        "title": "Our Certificates",
+        "sub": "Transparency, compliance, and accountability are at the core of MANN Care Foundation. Explore our registration and certification documents.",
+        "items": [
+          { "icon": "description", "title": "PAN Certificate", "href": "/pdf/pan-card.pdf" },
+          { "icon": "handshake", "title": "NGO Registration", "href": "/pdf/ngo-registration.pdf" }
+        ]
+      }
+    }
+  ]
+}

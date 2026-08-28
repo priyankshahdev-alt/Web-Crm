@@ -6,8 +6,9 @@ import SectionHead from "../../components/SectionHead";
 import DonateSection from "../../components/DonateSection";
 import Icon from "../../components/Icon";
 import { img } from "../../utils/images";
+import { usePageContent } from "../../hooks/usePageContent";
 
-const areas = [
+const fallbackAreas = [
   { icon: "📚", title: "Education CSR", desc: "School kits, digital learning, scholarships, and skill development." },
   { icon: "🍲", title: "Nutrition Programs", desc: "Food distribution, hunger relief, and malnutrition support." },
   { icon: "🩺", title: "Health Initiatives", desc: "Medical camps, hygiene awareness, and healthcare support." },
@@ -16,7 +17,7 @@ const areas = [
   { icon: "🐾", title: "Animal Welfare", desc: "Feeding, rescue, and medical support for animals in need." },
 ];
 
-const benefits = [
+const fallbackBenefits = [
   { title: "CSR compliance & reporting support", desc: "We provide complete documentation and reporting to meet your CSR compliance requirements with transparency." },
   { title: "Transparent impact documentation", desc: "Get detailed impact reports with data, photos, and stories showing the real difference your partnership makes." },
   { title: "Brand visibility in social initiatives", desc: "Your brand gets recognized across our campaigns, events, and communication channels as a socially responsible partner." },
@@ -30,22 +31,30 @@ const cardCls =
 export default function CorporatePartnership() {
   const [openIndex, setOpenIndex] = useState(null);
   const toggle = (i) => setOpenIndex(openIndex === i ? null : i);
+  const content = usePageContent("corporate-partnership");
+
+  const hero = {
+    heading: content("page-hero", "heading", "Corporate Partnership"),
+    desktop: img(content("page-hero", "imageUrl", "/get-involved/hero2.jpeg")),
+    mobile: img(content("page-hero", "mobileImageUrl", "/get-involved/mobile-slide2.jpeg")),
+  };
+  const areas = content("areas-grid", "items", fallbackAreas) || fallbackAreas;
+  const steps = content("steps", "steps", fallbackBenefits) || fallbackBenefits;
 
   return (
     <>
-      <PageHero desktop={img("/get-involved/hero2.jpeg")} mobile={img("/get-involved/mobile-slide2.jpeg")} alt="Corporate Partnership" />
+      <PageHero desktop={hero.desktop} mobile={hero.mobile} alt={hero.heading} title={hero.heading} />
 
       <section className="py-section-padding-mobile md:py-section-padding-desktop px-6 lg:px-8 bg-surface">
         <div className="max-w-[900px] mx-auto text-center">
           <span className="inline-block px-4 py-1.5 bg-secondary-fixed text-primary font-label-bold text-xs uppercase tracking-widest rounded-full mb-6">
-            CSR &amp; Collaboration
+            {content("involved-hero", "tag", "CSR & Collaboration")}
           </span>
           <h1 className="font-display-lg font-extrabold text-6xl md:text-8xl text-on-surface leading-[0.9] tracking-tighter uppercase mb-6">
-            Corporate Partnership
+            {content("involved-hero", "title", "Corporate Partnership")}
           </h1>
           <p className="text-2xl md:text-3xl text-on-surface-variant">
-            Partner with us to create sustainable social impact through CSR initiatives, community
-            programs, and long-term development projects.
+            {content("involved-hero", "paragraph") || "Partner with us to create sustainable social impact through CSR initiatives, community programs, and long-term development projects."}
           </p>
         </div>
       </section>
@@ -55,15 +64,14 @@ export default function CorporatePartnership() {
           <Reveal>
             <div className={`${cardCls} p-6 md:p-12`}>
               <h2 className="font-display-lg font-extrabold text-4xl md:text-5xl uppercase text-on-surface tracking-tight mb-6">
-                Why Partner With Us?
+                {content("body-card", "heading", "Why Partner With Us?")}
               </h2>
-              <p className="flex items-start gap-4 text-lg md:text-xl text-on-surface-variant leading-relaxed">
-                <Icon name="arrow_right_alt" className="text-primary mt-1 shrink-0" />
-                MANN Care Foundation works at the grassroots level focusing on women, children,
-                education, health, hygiene, animal welfare, and environment. Through corporate
-                partnerships, we aim to scale impact and create measurable social change aligned with
-                CSR goals.
-              </p>
+              {(content("body-card", "paragraphs") || []).map((p, i) => (
+                <p key={i} className="flex items-start gap-4 text-lg md:text-xl text-on-surface-variant leading-relaxed">
+                  <Icon name="arrow_right_alt" className="text-primary mt-1 shrink-0" />
+                  {p}
+                </p>
+              ))}
             </div>
           </Reveal>
         </div>
@@ -71,10 +79,10 @@ export default function CorporatePartnership() {
 
       <section className="py-10 md:py-16 px-6 lg:px-8 bg-surface-container-low">
         <div className="max-w-[1100px] mx-auto">
-          <SectionHead tag="CSR Focus Areas" title="Where You Can Contribute" />
+          <SectionHead tag={content("areas-grid", "tag", "CSR Focus Areas")} title={content("areas-grid", "heading", "Where You Can Contribute")} />
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {areas.map((a, i) => (
-              <Reveal key={a.title} delay={i * 60}>
+              <Reveal key={a.title || i} delay={i * 60}>
                 <div className={`${cardCls} p-8 hover:-translate-y-2 hover:shadow-[0_20px_40px_-10px_rgba(138,0,72,0.14)] transition-all h-full text-center`}>
                   <span className="text-5xl block mb-5">{a.icon}</span>
                   <h3 className="font-display-lg font-bold text-2xl uppercase text-on-surface tracking-tight mb-3">
@@ -93,11 +101,11 @@ export default function CorporatePartnership() {
           <Reveal>
             <div className={`${cardCls} p-6 md:p-12`}>
               <h2 className="font-display-lg font-extrabold text-4xl md:text-5xl uppercase text-on-surface tracking-tight mb-5">
-                Benefits For Your Organization
+                {content("steps", "heading", "Benefits For Your Organization")}
               </h2>
               <div className="space-y-4">
-                {benefits.map((b, i) => (
-                  <div key={b.title} className="rounded-2xl border border-primary/5 overflow-hidden bg-white">
+                {steps.map((b, i) => (
+                  <div key={b.title || i} className="rounded-2xl border border-primary/5 overflow-hidden bg-white">
                     <button
                       onClick={() => toggle(i)}
                       className="w-full flex items-center justify-between px-6 py-5 text-left font-label-bold text-base uppercase tracking-[0.08em] text-on-surface bg-surface-container-high hover:bg-secondary-fixed transition"
@@ -122,18 +130,18 @@ export default function CorporatePartnership() {
         <div className="max-w-[1200px] mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
           <div>
             <h2 className="font-display-lg font-extrabold text-5xl md:text-6xl uppercase tracking-tight mb-4">
-              Let's Create Impact Together
+              {content("cta", "heading", "Let's Create Impact Together")}
             </h2>
             <p className="text-xl text-white/90">
-              Partner with MANN Care Foundation for meaningful CSR collaboration.
+              {content("cta", "paragraph") || "Partner with MANN Care Foundation for meaningful CSR collaboration."}
             </p>
           </div>
           <Link
-            to="/contact/get-in-touch"
+            to={content("cta", "buttonUrl", "/contact/get-in-touch")}
             className="inline-flex items-center gap-3 bg-white text-primary font-label-bold text-base uppercase tracking-[0.15em] px-8 py-4 rounded-2xl shadow-[0_10px_30px_-5px_rgba(0,0,0,0.3)] hover:scale-105 transition shrink-0"
           >
             <Icon name="handshake" />
-            Become a Partner
+            {content("cta", "buttonLabel", "Become a Partner")}
           </Link>
         </div>
       </section>

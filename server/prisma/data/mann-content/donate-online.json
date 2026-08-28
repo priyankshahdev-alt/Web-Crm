@@ -1,0 +1,40 @@
+{
+  "slug": "donate-online",
+  "title": "Donate Online",
+  "metaTitle": "Donate Online | Mann Care Foundation",
+  "template": "inner",
+  "sortOrder": 22,
+  "sections": [
+    {
+      "type": "page-hero",
+      "name": "Page Hero",
+      "sortOrder": 1,
+      "content": {
+        "heading": "Donate Online",
+        "subheading": "Make a donation to support our mission.",
+        "imageUrl": "/get-involved/hero3.jpeg",
+        "mobileImageUrl": "/get-involved/mobile-slide3.jpeg",
+        "altText": "Donate Online"
+      }
+    },
+    {
+      "type": "donate-section",
+      "name": "Donate Section",
+      "sortOrder": 2,
+      "content": {
+        "heading": "Join Hands With MANN CARE FOUNDATION",
+        "subheading": "Your support makes our work possible.",
+        "amounts": ["500", "1000", "2500", "5000"],
+        "projects": [
+          "Project Poshan", "Project Gyaan", "Project Sakhi",
+          "Project Swasth", "Project Pashu", "Project Paryavaran"
+        ],
+        "points": [
+          { "icon": "verified", "title": "100% Transparent", "desc": "Every rupee is tracked and reported for full transparency." },
+          { "icon": "receipt", "title": "Tax Benefits Available", "desc": "Receive 80G tax exemption receipts on your donations." },
+          { "icon": "public", "title": "Nationwide Impact", "desc": "From Mumbai to rural India, your support creates change everywhere." }
+        ]
+      }
+    }
+  ]
+}

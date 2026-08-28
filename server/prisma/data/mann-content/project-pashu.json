@@ -1,0 +1,90 @@
+{
+  "slug": "project-pashu",
+  "title": "Project Pashu",
+  "metaTitle": "Project Pashu | Mann Care Foundation",
+  "template": "inner",
+  "sortOrder": 11,
+  "sections": [
+    {
+      "type": "page-hero",
+      "name": "Page Hero",
+      "sortOrder": 1,
+      "content": {
+        "heading": "Project Pashu",
+        "subheading": "Caring For Animals Through Compassion, Protection & Humane Action",
+        "imageUrl": "/projects/hero5.jpeg",
+        "mobileImageUrl": "/projects/mobile-slide5.jpeg",
+        "altText": "Project Pashu"
+      }
+    },
+    {
+      "type": "project-detail",
+      "name": "Project Detail",
+      "sortOrder": 2,
+      "content": {
+        "name": "Project Pashu",
+        "badge": "Every Life Matters",
+        "subtitle": "Caring For Animals Through Compassion, Protection & Humane Action",
+        "heroImg": "/projects/hero5.jpeg",
+        "heroImgMobile": "/projects/mobile-slide5.jpeg",
+        "cardTitle": "Every Living Being Deserves Care & Dignity",
+        "cardText": "Project Pashu is a compassionate animal welfare initiative dedicated to the care, protection, and well-being of animals in need. Through feeding drives, medical assistance, rescue support, and community awareness, the initiative works to ensure that vulnerable animals receive the care, safety, and compassion they deserve.",
+        "aboutHeading": "Protecting & Caring For Our Voiceless Companions",
+        "mission": "Project Pashu is committed to improving the lives of animals through care, protection, feeding support, medical assistance, and awareness initiatives that promote kindness and responsible coexistence.",
+        "whyItMatters": "Countless animals face hunger, injury, illness, abandonment, and cruelty every day. Project Pashu works to reduce suffering and create safer, healthier environments where animals can live with dignity and care.",
+        "servicesHeading": "Animal Welfare & Care Programs",
+        "servicesTag": "What We Provide",
+        "services": [
+          {
+            "icon": "🐾",
+            "title": "Feeding Drives",
+            "desc": "Regular food distribution and clean water support for stray, abandoned, and vulnerable animals."
+          },
+          {
+            "icon": "🏥",
+            "title": "Medical Assistance",
+            "desc": "Treatment support, emergency care, first aid, and veterinary coordination for injured and sick animals."
+          },
+          {
+            "icon": "🛡️",
+            "title": "Preventive Care",
+            "desc": "Promoting animal health, safety awareness, and humane treatment through community engagement."
+          },
+          {
+            "icon": "🏠",
+            "title": "Seasonal Protection",
+            "desc": "Water bowls, shelter support, and weather protection during extreme summer, monsoon, and winter conditions."
+          }
+        ],
+        "beneficiariesHeading": "Supporting Animals In Need Of Care & Protection",
+        "beneficiariesTag": "Who We Serve",
+        "beneficiaries": [
+          "🐕 Stray Dogs",
+          "🐄 Abandoned Cattle",
+          "🐾 Injured Animals",
+          "🩺 Sick & Distressed Animals",
+          "🏘️ Community Animals",
+          "❤️ Vulnerable & Neglected Animals"
+        ],
+        "impactHeading": "Creating A More Humane & Compassionate Society",
+        "impact": [
+          {
+            "title": "Reduced Animal Suffering",
+            "desc": "Providing timely food, care, and medical support to improve the quality of life for vulnerable animals."
+          },
+          {
+            "title": "Community Awareness",
+            "desc": "Encouraging compassion, responsible coexistence, and reporting of cruelty, neglect, and injury cases."
+          },
+          {
+            "title": "Protection & Care",
+            "desc": "Creating safer environments where animals receive respect, dignity, and protection throughout their lives."
+          }
+        ],
+        "ctaTitle": "Join The Mission To Protect Every Life",
+        "ctaText": "Every meal provided, every animal treated, and every act of kindness brings us closer to a world where compassion extends to all living beings. Together, we can create safer and more caring communities for animals.",
+        "ctaBtn": "Support Project Pashu"
+      }
+    }
+  ]
+}

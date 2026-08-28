@@ -1,0 +1,65 @@
+{
+  "slug": "project-poshan",
+  "title": "Project Poshan",
+  "metaTitle": "Project Poshan | Mann Care Foundation",
+  "template": "inner",
+  "sortOrder": 10,
+  "sections": [
+    {
+      "type": "page-hero",
+      "name": "Page Hero",
+      "sortOrder": 1,
+      "content": {
+        "heading": "Project Poshan",
+        "subheading": "Nourishing Lives, Restoring Hope & Building Healthier Communities",
+        "imageUrl": "/projects/hero1.jpeg",
+        "mobileImageUrl": "/projects/mobile-slide1.jpeg",
+        "altText": "Project Poshan"
+      }
+    },
+    {
+      "type": "project-detail",
+      "name": "Project Detail",
+      "sortOrder": 2,
+      "content": {
+        "name": "Project Poshan",
+        "badge": "Nutrition Support Initiative",
+        "subtitle": "Nourishing Lives, Restoring Hope & Building Healthier Communities",
+        "heroImg": "/projects/hero1.jpeg",
+        "heroImgMobile": "/projects/mobile-slide1.jpeg",
+        "cardTitle": "Everyone Deserves Nutritious Food",
+        "cardText": "Project Poshan is a flagship humanitarian initiative of MANN Foundation dedicated to addressing hunger, malnutrition, and food insecurity among vulnerable individuals and families. Through ration support, nutritious meals, healthy snacks, and refreshment assistance, we ensure that nourishment reaches those who need it most.",
+        "aboutHeading": "Fighting Hunger With Compassion",
+        "mission": "Access to nutritious food is not a privilege—it is a fundamental human necessity. Project Poshan works to ensure that every individual receives the nourishment required to live with dignity, health, and hope.",
+        "whyItMatters": "Hunger and poor nutrition affect physical health, productivity, mental well-being, and overall quality of life. By providing food support, we help families break the cycle of hardship and insecurity.",
+        "servicesHeading": "Nutritional Support Programs",
+        "servicesTag": "What We Provide",
+        "services": [
+          { "icon": "🥖", "title": "Dry Ration Kits", "desc": "Essential monthly food supplies for families facing financial hardship." },
+          { "icon": "🍲", "title": "Cooked Meals", "desc": "Fresh and nutritious meals distributed to individuals in need." },
+          { "icon": "🥗", "title": "Healthy Snack Kits", "desc": "Nutritional snacks designed to support energy and wellness." },
+          { "icon": "☕", "title": "Refreshment Support", "desc": "Timely refreshment assistance during outreach and relief activities." }
+        ],
+        "beneficiariesHeading": "Supporting Those Who Need It Most",
+        "beneficiariesTag": "Who We Serve",
+        "beneficiaries": [
+          "👴 Elderly Citizens",
+          "👷 Daily Wage Workers",
+          "🚚 Migrant Families",
+          "♿ Persons with Disabilities",
+          "🏠 Economically Marginalized Families",
+          "🤝 Individuals in Crisis"
+        ],
+        "impactHeading": "Creating Stronger Communities Through Nutrition",
+        "impact": [
+          { "title": "Health & Wellbeing", "desc": "Improving nutrition, immunity, and overall physical wellness." },
+          { "title": "Dignity & Stability", "desc": "Ensuring food support reaches every person with respect and inclusion." },
+          { "title": "Hope For Tomorrow", "desc": "Building resilient families and healthier communities for the future." }
+        ],
+        "ctaTitle": "Join The Mission To End Hunger",
+        "ctaText": "Every meal served is an act of compassion. Every ration kit delivered is a step toward a healthier and more humane society.",
+        "ctaBtn": "Support Project Poshan"
+      }
+    }
+  ]
+}

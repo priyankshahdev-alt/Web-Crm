@@ -1,0 +1,86 @@
+{
+  "slug": "our-story",
+  "title": "Our Story",
+  "metaTitle": "Our Story | Mann Care Foundation",
+  "template": "inner",
+  "sortOrder": 2,
+  "sections": [
+    {
+      "type": "page-hero",
+      "name": "Page Hero",
+      "sortOrder": 1,
+      "content": {
+        "heading": "Our Story",
+        "subheading": "Empowering Women & Children",
+        "imageUrl": "/about/hero1.jpeg",
+        "mobileImageUrl": "/about/mobile-slide1.jpeg",
+        "altText": "Our Story"
+      }
+    },
+    {
+      "type": "home-intro",
+      "name": "Transforming Communities",
+      "sortOrder": 2,
+      "content": {
+        "tag": "Empowering Women & Children",
+        "title": "Transforming Communities",
+        "tagline": "Building a future where every woman lives with dignity and every child has the opportunity to learn, grow, and thrive."
+      }
+    },
+    {
+      "type": "story",
+      "name": "How It All Began",
+      "sortOrder": 3,
+      "content": {
+        "tag": "Our Story",
+        "heading": "How It All Began",
+        "paragraphs": [
+          "MANN Care Foundation believes that true social progress begins with the well-being of women and children. A healthy woman nurtures a strong family, and an educated child shapes a brighter future.",
+          "Guided by this belief, the Foundation was established to address essential yet often overlooked needs such as nutrition, education, menstrual hygiene, healthcare awareness, and women empowerment.",
+          "Through compassionate action and community-driven solutions, MANN Care Foundation works to create meaningful and lasting change in the lives of underserved individuals and families."
+        ]
+      }
+    },
+    {
+      "type": "mission-vision",
+      "name": "Vision & Mission",
+      "sortOrder": 4,
+      "content": {
+        "vision": {
+          "title": "Our Vision",
+          "description": "To build an inclusive society where every woman and child has access to opportunities, resources, health, education, and dignity."
+        },
+        "mission": {
+          "title": "Our Mission",
+          "description": "To empower women and children through sustainable programs focused on nutrition, education, health, hygiene, and self-reliance."
+        }
+      }
+    },
+    {
+      "type": "values",
+      "name": "Our Core Focus Areas",
+      "sortOrder": 5,
+      "content": {
+        "heading": "Our Core Focus Areas",
+        "items": [
+          { "icon": "restaurant", "title": "Nutrition", "description": "Ensuring no woman or child is deprived of nutritious food." },
+          { "icon": "school", "title": "Education", "description": "Creating equal learning opportunities for every child." },
+          { "icon": "medical_services", "title": "Health & Hygiene", "description": "Promoting preventive healthcare and healthy living practices." },
+          { "icon": "female", "title": "Women Empowerment", "description": "Building confidence, skills, independence, and leadership." }
+        ]
+      }
+    },
+    {
+      "type": "cta",
+      "name": "Be A Part Of The Change",
+      "sortOrder": 6,
+      "content": {
+        "heading": "Be A Part Of The Change",
+        "paragraph": "Together, we can build healthier families, stronger communities, and brighter futures for women and children.",
+        "buttonLabel": "Support Our Mission",
+        "buttonUrl": "/get-involved/donate-online",
+        "align": "left"
+      }
+    }
+  ]
+}

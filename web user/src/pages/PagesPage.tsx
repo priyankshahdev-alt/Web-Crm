@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useState, type ReactNode } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { cmsService } from '../services/cms'
 import { settingsService, approvalService } from '../services/settings'
 import type { CmsPage, PublishStatus } from '../types'
 import { slugify, formatDate } from '../utils/format'
 import { uuid } from '../utils/uuid'
 import { useToast } from '../context/ToastContext'
-import { useSession } from '../context/SessionContext'
 import { PageHeader } from '../components/ui/PageHeader'
 import { Button } from '../components/ui/Button'
 import { Modal } from '../components/ui/Modal'
@@ -19,8 +19,6 @@ import { SelectDropdown } from '../components/ui/Dropdown'
 import { Pagination } from '../components/ui/Pagination'
 import { EmptyState } from '../components/ui/EmptyState'
 import { CardSkeleton } from '../components/ui/Skeleton'
-import { Tabs } from '../components/ui/Tabs'
-import { PageContentEditor } from '../components/pages/PageContentEditor'
 import {
   PlusIcon,
   PencilIcon,
@@ -114,7 +112,7 @@ const emptyForm: PageFormState = {
 
 export function PagesPage() {
   const { toast } = useToast()
-  const { session } = useSession()
+  const navigate = useNavigate()
   const [pages, setPages] = useState<CmsPage[]>([])
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState('')
@@ -127,7 +125,6 @@ export function PagesPage() {
   const [form, setForm] = useState<PageFormState>(emptyForm)
   const [saving, setSaving] = useState(false)
   const [showAdvanced, setShowAdvanced] = useState(false)
-  const [activeTab, setActiveTab] = useState<'settings' | 'content'>('settings')
 
   const [deleteTarget, setDeleteTarget] = useState<CmsPage | null>(null)
   const [deleting, setDeleting] = useState(false)
@@ -171,7 +168,6 @@ export function PagesPage() {
     setEditing(null)
     setForm(emptyForm)
     setShowAdvanced(false)
-    setActiveTab('settings')
     setModalOpen(true)
   }
 
@@ -187,7 +183,6 @@ export function PagesPage() {
       isHome: item.isHome,
     })
     setShowAdvanced(Boolean(item.metaTitle || item.metaDescription || item.isHome))
-    setActiveTab('settings')
     setModalOpen(true)
   }
 
@@ -312,9 +307,7 @@ export function PagesPage() {
   }
 
   const openContentEditor = (item: CmsPage) => {
-    setEditing(item)
-    setActiveTab('content')
-    setModalOpen(true)
+    navigate(`/page/${item.slug.replace(/^\/+/, '')}`)
   }
 
   const filteredView = search.trim() !== '' || status !== 'all'
@@ -534,58 +527,40 @@ export function PagesPage() {
         onClose={() => setModalOpen(false)}
         title={editing ? 'Edit page' : 'New page'}
         description={
-          activeTab === 'settings'
-            ? editing
-              ? `Editing "${editing.title}"`
-              : 'Just a name is enough — you can add content afterwards.'
-            : `Manage sections for "${editing?.title}"`
+          editing
+            ? `Editing "${editing.title}"`
+            : 'Just a name is enough — you can add content afterwards.'
         }
-        size={activeTab === 'content' ? 'xl' : 'lg'}
+        size="lg"
         footer={
-          activeTab === 'settings' ? (
-            <>
-              <Button variant="secondary" onClick={() => setModalOpen(false)}>
-                Cancel
-              </Button>
-              <Button variant="secondary" loading={saving} icon={<SendIcon className="h-4 w-4" />} onClick={() => void handleSubmitForReview()}>
-                Submit for Review
-              </Button>
-              <Button loading={saving} onClick={() => void handleSave()}>
-                {editing ? 'Save changes' : 'Create page'}
-              </Button>
-            </>
-          ) : (
+          <>
             <Button variant="secondary" onClick={() => setModalOpen(false)}>
-              Done
+              Cancel
             </Button>
-          )
+            <Button variant="secondary" loading={saving} icon={<SendIcon className="h-4 w-4" />} onClick={() => void handleSubmitForReview()}>
+              Submit for Review
+            </Button>
+            <Button loading={saving} onClick={() => void handleSave()}>
+              {editing ? 'Save changes' : 'Create page'}
+            </Button>
+          </>
         }
       >
-        <Tabs
-          tabs={[
-            { id: 'settings', label: 'Page settings' },
-            { id: 'content', label: 'Page content', icon: <LayersIcon className="h-4 w-4" /> },
-          ]}
-          active={activeTab}
-          onChange={(id) => setActiveTab(id as 'settings' | 'content')}
-          className="mb-4"
-        />
-        {activeTab === 'settings' ? (
-          <div className="space-y-5">
-            <Field
-              label="Page name"
-              htmlFor="page-title"
-              required
-              hint="Shown in menus, headings and the browser tab."
-            >
-              <Input
-                id="page-title"
-                value={form.title}
-                placeholder="e.g. Our Impact"
-                autoFocus
-                onChange={(event) => setField('title', event.target.value)}
-              />
-            </Field>
+        <div className="space-y-5">
+          <Field
+            label="Page name"
+            htmlFor="page-title"
+            required
+            hint="Shown in menus, headings and the browser tab."
+          >
+            <Input
+              id="page-title"
+              value={form.title}
+              placeholder="e.g. Our Impact"
+              autoFocus
+              onChange={(event) => setField('title', event.target.value)}
+            />
+          </Field>
 
             <Field
               label="Web address"
@@ -725,9 +700,6 @@ export function PagesPage() {
               ) : null}
             </div>
           </div>
-        ) : (
-          <PageContentEditor page={editing!} onClose={() => setModalOpen(false)} />
-        )}
       </Modal>
 
       <ConfirmDialog

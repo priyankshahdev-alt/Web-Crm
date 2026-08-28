@@ -4,6 +4,7 @@ import { AppShell } from './components/layout/AppShell'
 import { LoginPage } from './pages/LoginPage'
 import { DashboardPage } from './pages/DashboardPage'
 import { PagesPage } from './pages/PagesPage'
+import { PageSiteEditorPage } from './pages/PageSiteEditorPage'
 import { HomepageEditorPage } from './pages/HomepageEditorPage'
 import { WebsiteEditorPage } from './pages/WebsiteEditorPage'
 import { AboutPage } from './pages/AboutPage'
@@ -58,6 +59,7 @@ export default function App() {
         <Route element={<AppShell />}>
           <Route path="/" element={<DashboardPage />} />
           <Route path="/pages" element={<PagesPage />} />
+          <Route path="/page/:slug" element={<PageSiteEditorPage />} />
           <Route path="/homepage" element={<HomepageEditorPage />} />
           <Route path="/website-editor" element={<WebsiteEditorPage />} />
 
