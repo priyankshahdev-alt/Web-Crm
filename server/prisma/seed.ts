@@ -2055,6 +2055,22 @@ async function main(): Promise<void> {
       create: { organizationId: org.id, userId: adminsUser.id },
     });
 
+    // Platform admin is granted an active Website User membership on every
+    // organization so that admin@webcrm.com can see and switch between all
+    // sites (being-sevak, ashray, mann) in the Web User CMS. Mirrors how the
+    // per-site website user (siteUser) is linked to its own organization.
+    await prisma.organizationUser.upsert({
+      where: { organizationId_userId: { organizationId: org.id, userId: adminsUser.id } },
+      update: { roleId: websiteUserRoleId, isActive: true },
+      create: {
+        organizationId: org.id,
+        userId: adminsUser.id,
+        roleId: websiteUserRoleId,
+        isCurrent: false,
+        isActive: true,
+      },
+    });
+
     await prisma.location.upsert({
       where: {
         organizationId_name: {

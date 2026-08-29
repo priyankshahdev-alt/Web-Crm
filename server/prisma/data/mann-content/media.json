@@ -1,0 +1,64 @@
+{
+  "slug": "media",
+  "title": "Media",
+  "metaTitle": "Media | Mann Care Foundation",
+  "template": "inner",
+  "sortOrder": 5,
+  "sections": [
+    {
+      "type": "page-hero",
+      "name": "Page Hero",
+      "sortOrder": 1,
+      "content": {
+        "heading": "Media & Updates",
+        "subheading": "A glimpse into our on-ground work.",
+        "imageUrl": "/media/b1.JPG",
+        "mobileImageUrl": "/media/b1.JPG",
+        "altText": "Media & Updates"
+      }
+    },
+    {
+      "type": "media-heading",
+      "name": "Media Heading",
+      "sortOrder": 2,
+      "content": {
+        "tag": "Moments That Matter",
+        "title": "Media & Updates",
+        "sub": "A glimpse into our on-ground work — every image is a story of hope, dignity, and change."
+      }
+    },
+    {
+      "type": "media-gallery",
+      "name": "Gallery Sections",
+      "sortOrder": 3,
+      "content": {
+        "categories": [
+          {
+            "tag": "🥛 Cool & Healthy Hydration",
+            "title": "Buttermilk Distribution",
+            "desc": "Refreshing buttermilk distributed to beat the heat — keeping communities cool, hydrated & healthy.",
+            "images": ["/media/b1.JPG", "/media/b2.JPG", "/media/b3.JPG", "/media/b4.JPG", "/media/b5.JPG", "/media/b6.JPG"]
+          },
+          {
+            "tag": "🍉 Beat the Heat Initiative",
+            "title": "Watermelon Distribution",
+            "desc": "Cool relief in the summer heat — juicy watermelons shared to keep our community hydrated & happy.",
+            "images": ["/media/w1.jpg", "/media/w2.jpg", "/media/w3.jpg", "/media/w4.jpg", "/media/w5.jpg"]
+          },
+          {
+            "tag": "🍒 Summer Refreshment Drive",
+            "title": "Litchi Distribution",
+            "desc": "Spreading sweetness & nutrition — fresh Litchis distributed with love to children and families in need.",
+            "images": ["/media/l1.jpg", "/media/l2.jpg", "/media/l3.jpg", "/media/l4.jpg"]
+          },
+          {
+            "tag": "🍪 Nutrition on the Go",
+            "title": "Snack Distribution",
+            "desc": "Healthy snacks distributed to children — ensuring no child goes to school hungry.",
+            "images": ["/media/snack1.jpeg", "/media/snack2.jpeg", "/media/snack3.jpeg", "/media/snack4.jpeg", "/media/snack5.jpeg"]
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -2,10 +2,24 @@ import { useState, useEffect } from "react";
 import SectionHead from "../components/SectionHead";
 import Reveal from "../components/Reveal";
 import Icon from "../components/Icon";
+import PageHero from "../components/PageHero";
 import { gallerySections } from "../data/projects";
+import { img } from "../utils/images";
+import { usePageContent } from "../hooks/usePageContent";
 
 export default function Media() {
   const [lightbox, setLightbox] = useState(null);
+  const content = usePageContent("media");
+  const heroTitle = content("page-hero", "heading", "Media & Updates");
+  const hero = {
+    desktop: img(content("page-hero", "imageUrl", "/media/b1.JPG")),
+    mobile: img(content("page-hero", "mobileImageUrl", "/media/b1.JPG")),
+  };
+  const raw = content("media-gallery", "categories", null);
+  const mediaSections = (raw && raw.length ? raw : gallerySections).map((sec) => ({
+    ...sec,
+    images: (sec.images || []).map((s) => img(s)),
+  }));
 
   useEffect(() => {
     document.body.style.overflow = lightbox ? "hidden" : "";
@@ -19,19 +33,11 @@ export default function Media() {
 
   return (
     <>
-      <section className="pt-28 md:pt-40 px-6 lg:px-8 bg-surface">
-        <div className="max-w-[1150px] mx-auto">
-          <SectionHead
-            tag="Moments That Matter"
-            title="Media & Updates"
-            sub="A glimpse into our on-ground work — every image is a story of hope, dignity, and change."
-          />
-        </div>
-      </section>
+      <PageHero desktop={hero.desktop} mobile={hero.mobile} alt={heroTitle} title={heroTitle} />
 
-      <section className="py-10 md:py-16 px-6 lg:px-8 bg-surface">
+      <section className="py-section-padding-mobile md:py-section-padding-desktop px-6 lg:px-8 bg-surface">
         <div className="max-w-[1150px] mx-auto space-y-24">
-          {gallerySections.map((sec) => (
+          {mediaSections.map((sec) => (
             <section key={sec.title}>
               <SectionHead tag={sec.tag} title={sec.title} sub={sec.desc} />
 

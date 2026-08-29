@@ -30,7 +30,7 @@ function loadRazorpayScript() {
 const inputCls =
   "w-full rounded-2xl border border-primary/10 bg-surface-container-low p-5 text-lg text-on-surface outline-none transition-colors focus:bg-white focus:ring-2 focus:ring-primary/30 placeholder:text-on-surface-variant/50";
 
-export default function DonateSection() {
+export default function DonateSection({ heading, subheading }) {
   const navigate = useNavigate();
   const [selected, setSelected] = useState("1000");
   const [custom, setCustom] = useState("");
@@ -108,11 +108,10 @@ export default function DonateSection() {
                 Make a Difference
               </span>
               <h2 className="font-display-lg font-extrabold text-4xl md:text-6xl leading-[0.9] tracking-tighter uppercase mb-6">
-                Join Hands With MANN CARE FOUNDATION
+                {heading || "Join Hands With MANN CARE FOUNDATION"}
               </h2>
               <p className="text-xl text-white/90 mb-6">
-                Become a reason someone lives with dignity, health, and hope. Every donation — big or
-                small — creates a ripple of change that transforms lives.
+                {subheading || "Become a reason someone lives with dignity, health, and hope. Every donation — big or small — creates a ripple of change that transforms lives."}
               </p>
             </div>
             <div className="space-y-4 text-lg font-medium">

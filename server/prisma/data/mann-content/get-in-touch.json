@@ -1,0 +1,68 @@
+{
+  "slug": "get-in-touch",
+  "title": "Get In Touch",
+  "metaTitle": "Get In Touch | Mann Care Foundation",
+  "template": "inner",
+  "sortOrder": 30,
+  "sections": [
+    {
+      "type": "page-hero",
+      "name": "Page Hero",
+      "sortOrder": 1,
+      "content": {
+        "heading": "Get In Touch",
+        "subheading": "We would love to hear from you.",
+        "imageUrl": "/contact/hero1.jpeg",
+        "mobileImageUrl": "/contact/mobile-slide1.jpeg",
+        "altText": "Get In Touch"
+      }
+    },
+    {
+      "type": "contact-info",
+      "name": "Contact Info",
+      "sortOrder": 2,
+      "content": {
+        "heading": "Get In Touch",
+        "items": [
+          { "icon": "business", "title": "Registered Office", "value": "1708, One World, S.V. Road, Near N.M. High School, Malad West, Mumbai - 400064", "type": "address" },
+          { "icon": "call", "title": "Contact", "value": "+91 7039006300", "type": "phone" },
+          { "icon": "mail", "title": "Email", "value": "manncarefoundation@gmail.com", "type": "email" }
+        ]
+      }
+    },
+    {
+      "type": "about-text",
+      "name": "About Us",
+      "sortOrder": 3,
+      "content": {
+        "tag": "Our Promise",
+        "heading": "About Us",
+        "paragraphs": [
+          "Mann Care Foundation is committed to empowering underprivileged and marginalized individuals through education, healthcare, livelihood support, skill development, and community welfare initiatives.",
+          "Our mission is to create opportunities, restore dignity, and build a more inclusive and compassionate society."
+        ]
+      }
+    },
+    {
+      "type": "map",
+      "name": "Map",
+      "sortOrder": 4,
+      "content": {
+        "heading": "Our Location",
+        "embedUrl": "https://www.google.com/maps?q=Malad%20West%20Mumbai&output=embed"
+      }
+    },
+    {
+      "type": "form",
+      "name": "Contact Form",
+      "sortOrder": 5,
+      "content": {
+        "heading": "Contact Us",
+        "subheading": "Get In Touch",
+        "formType": "contact",
+        "submitLabel": "SEND MESSAGE",
+        "successMessage": "Thank you for reaching out. We will get back to you soon."
+      }
+    }
+  ]
+}

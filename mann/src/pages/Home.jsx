@@ -4,6 +4,7 @@ import Reveal from "../components/Reveal";
 import Icon from "../components/Icon";
 import SeamlessGallery from "../components/SeamlessGallery";
 import { useSiteData } from "../api/useSiteData";
+import { usePageContent } from "../hooks/usePageContent";
 
 // ============================================================
 // MANN CARE – SOFT MODERN HOME (reference design)
@@ -114,6 +115,29 @@ function HeroCarousel({ slides }) {
 export default function Home() {
   const { data } = useSiteData();
   const { slides, stats, initiatives, activities, getInvolved, causes, partners, contact } = data;
+  const content = usePageContent("home");
+
+  const narrative = {
+    tag: content("home-about", "tag", "OUR PURPOSE"),
+    heading: content("home-about", "heading", "BEYOND SURVIVAL."),
+    paragraph: content("home-about", "paragraph", "We don't just provide aid; we build dignity. Radical presence in rural India through direct action."),
+    missionTitle: content("home-about", "missionTitle", "The Mission"),
+    missionText: content("home-about", "missionText", "Restoring dignity via consistent nutrition, quality education, and accessible healthcare. No excuses, only results."),
+  };
+
+  const aboutDetail = {
+    badge: content("home-about-detailed", "badge", "Who We Are"),
+    badge2: content("home-about-detailed", "badge2", "Trusted NGO"),
+    heading: content("home-about-detailed", "heading", "About MANN CARE FOUNDATION"),
+    description: content("home-about-detailed", "description", "MANN CARE FOUNDATION is a compassionate non-profit committed to transforming lives of women and children from underprivileged and marginalized communities."),
+    missionTitle: content("home-about-detailed", "missionTitle", "Our Mission"),
+    missionText: content("home-about-detailed", "missionText", "Addressing fundamental needs — nutritious food, quality education, menstrual hygiene, and self-reliance."),
+    visionTitle: content("home-about-detailed", "visionTitle", "Our Vision"),
+    visionText: content("home-about-detailed", "visionText", "An inclusive society where every woman is empowered and every child is nourished and educated."),
+  };
+
+  const getInvolvedHeading = data.getInvolved?.[0]?.heading || content("home-get-involved", "heading", "Get Involved");
+  const getInvolvedSubheading = data.getInvolved?.[0]?.subheading || content("home-get-involved", "subheading") || "Every act of kindness has the power to transform lives. Together, we can provide food, education, and hope.";
 
   const homeSections = [
     <HeroCarousel key="hero" slides={slides} />,
@@ -134,23 +158,20 @@ export default function Home() {
           <Reveal delay={100}>
             <div className="space-y-10">
               <div className="inline-block px-4 py-1.5 bg-secondary-fixed text-primary font-label-bold text-xs uppercase tracking-widest rounded-full">
-                OUR PURPOSE
+                {narrative.tag}
               </div>
               <h2 className="font-display-lg text-5xl md:text-8xl text-on-surface leading-[0.85] tracking-tighter uppercase font-extrabold">
-                BEYOND <br />
-                <span className="italic text-stroke-primary">SURVIVAL.</span>
+                {narrative.heading}
               </h2>
               <p className="font-body-lg text-on-surface-variant text-2xl md:text-3xl leading-snug font-medium max-w-lg">
-                We don't just provide aid; we build dignity. Radical presence in rural India
-                through direct action.
+                {narrative.paragraph}
               </p>
               <div className="soft-modern-card max-w-xl">
                 <h4 className="font-headline-sm text-2xl mb-4 text-primary uppercase">
-                  The Mission
+                  {narrative.missionTitle}
                 </h4>
                 <p className="text-lg leading-relaxed text-on-surface-variant">
-                  Restoring dignity via consistent nutrition, quality education, and accessible
-                  healthcare. No excuses, only results.
+                  {narrative.missionText}
                 </p>
               </div>
             </div>
@@ -195,44 +216,41 @@ export default function Home() {
             <Reveal>
               <div className="flex flex-wrap gap-4">
                 <span className="font-label-bold text-xs uppercase bg-primary text-white px-6 py-2.5 rounded-full tracking-widest">
-                  Who We Are
+                  {aboutDetail.badge}
                 </span>
                 <span className="font-label-bold text-xs uppercase bg-white text-primary border border-primary/20 px-6 py-2.5 rounded-full tracking-widest">
-                  Trusted NGO
+                  {aboutDetail.badge2}
                 </span>
               </div>
             </Reveal>
             <Reveal>
               <h2 className="font-display-lg text-4xl md:text-7xl text-on-surface leading-none uppercase tracking-tighter font-extrabold">
-                About MANN CARE FOUNDATION
+                {aboutDetail.heading}
               </h2>
             </Reveal>
             <Reveal>
               <p className="font-body-lg text-2xl md:text-3xl leading-snug text-on-surface-variant max-w-3xl">
-                MANN CARE FOUNDATION is a compassionate non-profit committed to transforming
-                lives of women and children from underprivileged and marginalized communities.
+                {aboutDetail.description}
               </p>
             </Reveal>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-6">
               <Reveal>
                 <div className="soft-modern-card">
                   <h4 className="font-headline-sm text-xl mb-4 text-primary uppercase tracking-tight">
-                    Our Mission
+                    {aboutDetail.missionTitle}
                   </h4>
                   <p className="font-body-md text-on-surface-variant opacity-90">
-                    Addressing fundamental needs — nutritious food, quality education, menstrual
-                    hygiene, and self-reliance.
+                    {aboutDetail.missionText}
                   </p>
                 </div>
               </Reveal>
               <Reveal delay={100}>
                 <div className="soft-modern-card">
                   <h4 className="font-headline-sm text-xl mb-4 text-primary uppercase tracking-tight">
-                    Our Vision
+                    {aboutDetail.visionTitle}
                   </h4>
                   <p className="font-body-md text-on-surface-variant opacity-90">
-                    An inclusive society where every woman is empowered and every child is
-                    nourished and educated.
+                    {aboutDetail.visionText}
                   </p>
                 </div>
               </Reveal>
@@ -322,13 +340,12 @@ export default function Home() {
         <div className="mb-20 text-center max-w-4xl mx-auto">
           <Reveal>
             <h2 className="font-display-lg text-4xl md:text-7xl text-on-surface uppercase leading-none mb-10 tracking-tighter font-extrabold">
-              Get Involved
+              {getInvolvedHeading}
             </h2>
           </Reveal>
           <Reveal>
             <p className="font-body-lg text-2xl text-on-surface-variant leading-snug">
-              Every act of kindness has the power to transform lives. Together, we can provide
-              food, education, and hope.
+              {getInvolvedSubheading}
             </p>
           </Reveal>
         </div>
@@ -354,10 +371,10 @@ export default function Home() {
           <Reveal>
             <div className="flex flex-col md:flex-row items-baseline justify-between gap-10 mb-16">
               <h2 className="font-display-lg text-4xl md:text-6xl text-on-surface uppercase tracking-tighter font-extrabold">
-                OUR <span className="italic text-primary">TRUSTED</span> PARTNERS.
+                {content("home-partners", "heading", "OUR TRUSTED PARTNERS.")}
               </h2>
               <p className="font-label-bold text-on-surface-variant opacity-80 uppercase tracking-widest text-xs max-w-xs">
-                Driving impact through collective action and strategic collaboration.
+                {content("home-partners", "tagline") || "Driving impact through collective action and strategic collaboration."}
               </p>
             </div>
           </Reveal>
@@ -398,9 +415,7 @@ export default function Home() {
         <div className="mb-20">
           <Reveal>
             <h2 className="font-display-lg text-5xl md:text-8xl text-stroke-primary leading-none uppercase tracking-tighter font-extrabold">
-              CAUSES TO
-              <br />
-              SUPPORT.
+              {content("home-causes", "heading", "CAUSES TO SUPPORT.")}
             </h2>
           </Reveal>
         </div>

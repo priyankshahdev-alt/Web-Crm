@@ -1,0 +1,86 @@
+{
+  "slug": "corporate-partnership",
+  "title": "Corporate Partnership",
+  "metaTitle": "Corporate Partnership | Mann Care Foundation",
+  "template": "inner",
+  "sortOrder": 21,
+  "sections": [
+    {
+      "type": "page-hero",
+      "name": "Page Hero",
+      "sortOrder": 1,
+      "content": {
+        "heading": "Corporate Partnership",
+        "subheading": "Partner with us to create sustainable social impact.",
+        "imageUrl": "/get-involved/hero2.jpeg",
+        "mobileImageUrl": "/get-involved/mobile-slide2.jpeg",
+        "altText": "Corporate Partnership"
+      }
+    },
+    {
+      "type": "involved-hero",
+      "name": "Hero Text",
+      "sortOrder": 2,
+      "content": {
+        "tag": "CSR & Collaboration",
+        "title": "Corporate Partnership",
+        "paragraph": "Partner with us to create sustainable social impact through CSR initiatives, community programs, and long-term development projects."
+      }
+    },
+    {
+      "type": "body-card",
+      "name": "Why Partner With Us?",
+      "sortOrder": 3,
+      "content": {
+        "heading": "Why Partner With Us?",
+        "paragraphs": [
+          "MANN Care Foundation works at the grassroots level focusing on women, children, education, health, hygiene, animal welfare, and environment. Through corporate partnerships, we aim to scale impact and create measurable social change aligned with CSR goals."
+        ]
+      }
+    },
+    {
+      "type": "areas-grid",
+      "name": "Where You Can Contribute",
+      "sortOrder": 4,
+      "content": {
+        "tag": "CSR Focus Areas",
+        "heading": "Where You Can Contribute",
+        "items": [
+          { "icon": "📚", "title": "Education CSR", "desc": "School kits, digital learning, scholarships, and skill development." },
+          { "icon": "🍲", "title": "Nutrition Programs", "desc": "Food distribution, hunger relief, and malnutrition support." },
+          { "icon": "🩺", "title": "Health Initiatives", "desc": "Medical camps, hygiene awareness, and healthcare support." },
+          { "icon": "👩", "title": "Women Empowerment", "desc": "Skill training, livelihood programs, and self-reliance support." },
+          { "icon": "🌳", "title": "Environment CSR", "desc": "Tree plantation, waste management, and sustainability drives." },
+          { "icon": "🐾", "title": "Animal Welfare", "desc": "Feeding, rescue, and medical support for animals in need." }
+        ]
+      }
+    },
+    {
+      "type": "steps",
+      "name": "Benefits For Your Organization",
+      "sortOrder": 5,
+      "content": {
+        "heading": "Benefits For Your Organization",
+        "steps": [
+          { "title": "CSR compliance & reporting support", "desc": "We provide complete documentation and reporting to meet your CSR compliance requirements with transparency." },
+          { "title": "Transparent impact documentation", "desc": "Get detailed impact reports with data, photos, and stories showing the real difference your partnership makes." },
+          { "title": "Brand visibility in social initiatives", "desc": "Your brand gets recognized across our campaigns, events, and communication channels as a socially responsible partner." },
+          { "title": "Community engagement opportunities", "desc": "Engage your employees in meaningful volunteering activities and on-ground visits to witness impact firsthand." },
+          { "title": "Long-term partnership model", "desc": "Build a sustainable, long-term collaboration that evolves with your CSR goals and creates lasting community impact." }
+        ]
+      }
+    },
+    {
+      "type": "cta",
+      "name": "Let's Create Impact Together",
+      "sortOrder": 6,
+      "content": {
+        "heading": "Let's Create Impact Together",
+        "paragraph": "Partner with MANN Care Foundation for meaningful CSR collaboration.",
+        "buttonLabel": "Become a Partner",
+        "buttonUrl": "/contact/get-in-touch",
+        "align": "left"
+      }
+    }
+  ]
+}

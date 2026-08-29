@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
 import type { ReactNode } from 'react'
 import {
@@ -10,25 +10,22 @@ import {
   ChevronDownIcon,
   DashboardIcon,
   FileTextIcon,
-  FormIcon,
   FolderIcon,
-  GlobeIcon,
+  FormIcon,
   HeartIcon,
-  HelpCircleIcon,
   HomeIcon,
   ImageIcon,
   InfoIcon,
   LayersIcon,
   LayoutIcon,
-  MailIcon,
   MenuIcon,
-  NewsIcon,
-  PaletteIcon,
   PhoneIcon,
   QuoteIcon,
   UsersIcon,
   UserIcon,
 } from '../icons'
+import { useSession } from '../../context/SessionContext'
+import { buildSiteNavigation, type SiteNavItem } from '../../services/navigation'
 
 export interface NavItem {
   to: string
@@ -108,7 +105,6 @@ export const NAV_GROUPS: NavGroup[] = [
         children: [
           { to: '/get-involved', label: 'Overview', icon: <HeartIcon /> },
           { to: '/get-involved/individual-donation', label: 'Individual Donation', icon: <HeartIcon /> },
-          { to: '/get-involved/careers', label: 'Careers', icon: <BuildingIcon /> },
           { to: '/get-involved/volunteers', label: 'Volunteers', icon: <UsersIcon /> },
           { to: '/get-involved/csr', label: 'CSR', icon: <FileTextIcon /> },
           { to: '/get-involved/school-collaboration', label: 'School Collaboration', icon: <FileTextIcon /> },
@@ -160,6 +156,35 @@ const subLinkClass = ({ isActive }: { isActive: boolean }): string =>
       ? 'bg-brand-soft text-brand'
       : 'text-muted hover:bg-soft hover:text-ink'
   }`
+
+function iconFor(label: string, type: 'group' | 'child', hasChildren: boolean): ReactNode {
+  if (hasChildren || type === 'group') return <LayersIcon />
+  const l = label.toLowerCase()
+  if (l.includes('home')) return <HomeIcon />
+  if (l.includes('gallery') || l.includes('photo') || l.includes('image')) return <ImageIcon />
+  if (l.includes('team') || l.includes('people') || l.includes('member')) return <UsersIcon />
+  if (l.includes('testimonial') || l.includes('quote')) return <QuoteIcon />
+  if (l.includes('event') || l.includes('calendar')) return <CalendarIcon />
+  if (l.includes('blog') || l.includes('news') || l.includes('story')) return <BlogIcon />
+  if (l.includes('media')) return <ImageIcon />
+  if (l.includes('about')) return <InfoIcon />
+  if (l.includes('contact')) return <PhoneIcon />
+  if (l.includes('involved') || l.includes('donate') || l.includes('volunteer') || l.includes('support')) return <HeartIcon />
+  if (l.includes('program') || l.includes('project') || l.includes('mission') || l.includes('what')) return <LayersIcon />
+  return <FileTextIcon />
+}
+
+function toNavItem(item: SiteNavItem): NavItem {
+  return {
+    to: item.to,
+    label: item.label,
+    icon: iconFor(item.label, item.to === '' ? 'group' : 'child', Boolean(item.children?.length)),
+    end: item.to === '/',
+    ...(item.children && item.children.length > 0
+      ? { children: item.children.map(toNavItem) }
+      : {}),
+  }
+}
 
 interface SidebarProps {
   onNavigate?: () => void
@@ -222,7 +247,8 @@ function NavItemComponent({ item, onNavigate }: { item: NavItem; onNavigate?: ()
                 onClick={onNavigate}
                 className={subLinkClass}
               >
-                {child.label}
+                {child.icon}
+                <span className="flex-1">{child.label}</span>
               </NavLink>
             </li>
           ))}
@@ -232,10 +258,82 @@ function NavItemComponent({ item, onNavigate }: { item: NavItem; onNavigate?: ()
   )
 }
 
+function useSiteNav(): NavGroup[] {
+  const { session } = useSession()
+  const [groups, setGroups] = useState<NavGroup[] | null>(null)
+  const orgId = session?.currentOrgId ?? ''
+
+  useEffect(() => {
+    let active = true
+    setGroups(null)
+    if (!orgId) {
+      setGroups([
+        { label: 'Overview', items: [{ to: '/', label: 'Dashboard', icon: <DashboardIcon />, end: true }] },
+      ])
+      return
+    }
+    ;(async () => {
+      try {
+        const nav = await buildSiteNavigation()
+        if (!active) return
+        setGroups([
+          { label: 'Overview', items: nav.overview.map(toNavItem) },
+          { label: 'Content', items: nav.content.map(toNavItem) },
+          { label: 'Build', items: nav.build.map(toNavItem) },
+          { label: 'Optimize', items: nav.optimize.map(toNavItem) },
+          { label: 'System', items: nav.system.map(toNavItem) },
+        ])
+      } catch {
+        if (!active) return
+        setGroups([
+          { label: 'Overview', items: [{ to: '/', label: 'Dashboard', icon: <DashboardIcon />, end: true }] },
+          { label: 'Content', items: [navFallbackContent()] },
+          { label: 'Build', items: [
+            { to: '/media', label: 'Media Library', icon: <FolderIcon /> },
+            { to: '/forms', label: 'Forms', icon: <FormIcon /> },
+            { to: '/menus', label: 'Menus', icon: <MenuIcon /> },
+          ] },
+          { label: 'System', items: [
+            { to: '/activity', label: 'Activity Logs', icon: <ActivityIcon /> },
+            { to: '/approvals', label: 'Approvals', icon: <CheckCircleIcon /> },
+            { to: '/profile', label: 'Profile', icon: <UserIcon /> },
+          ] },
+        ])
+      }
+    })()
+    return () => {
+      active = false
+    }
+  }, [orgId])
+
+  return groups ?? []
+}
+
+function navFallbackContent(): NavItem {
+  return { to: '/pages', label: 'Pages', icon: <FileTextIcon /> }
+}
+
 export function SidebarNav({ onNavigate }: SidebarProps) {
+  const groups = useSiteNav()
+
+  if (groups.length === 0) {
+    return (
+      <nav className="flex flex-col gap-5">
+        {[0, 1, 2, 3, 4].map((i) => (
+          <div key={i} className="space-y-1.5">
+            <div className="h-2.5 w-16 animate-pulse rounded-full bg-soft" />
+            {[0, 1, 2].map((j) => (
+              <div key={j} className="h-8 animate-pulse rounded-full bg-soft/70" />
+            ))}
+          </div>
+        ))}
+      </nav>
+    )
+  }
+
   return (
     <nav className="flex flex-col gap-5">
-      {NAV_GROUPS.map((group) => (
+      {groups.map((group) => (
         <div key={group.label}>
           <p className="mb-1.5 px-3.5 text-[10px] font-bold uppercase tracking-[0.1em] text-faint">
             {group.label}

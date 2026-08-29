@@ -1,0 +1,86 @@
+{
+  "slug": "individual-support",
+  "title": "Individual Support",
+  "metaTitle": "Individual Support | Mann Care Foundation",
+  "template": "inner",
+  "sortOrder": 20,
+  "sections": [
+    {
+      "type": "page-hero",
+      "name": "Page Hero",
+      "sortOrder": 1,
+      "content": {
+        "heading": "Individual Support",
+        "subheading": "Support one life, change one future.",
+        "imageUrl": "/get-involved/hero1.jpeg",
+        "mobileImageUrl": "/get-involved/mobile-slide1.jpeg",
+        "altText": "Individual Support"
+      }
+    },
+    {
+      "type": "involved-hero",
+      "name": "Hero Text",
+      "sortOrder": 2,
+      "content": {
+        "tag": "Together we can, we will...",
+        "title": "Individual Support",
+        "paragraph": "Support one life, change one future. Direct impact, real change, real people."
+      }
+    },
+    {
+      "type": "body-card",
+      "name": "What is Individual Support?",
+      "sortOrder": 3,
+      "content": {
+        "heading": "What is Individual Support?",
+        "paragraphs": [
+          "Individual Support is a transparent way of helping a specific child, woman, family, or animal directly. Your contribution goes toward real people in need through structured programs like education, food, healthcare, empowerment, and emergency support."
+        ]
+      }
+    },
+    {
+      "type": "areas-grid",
+      "name": "What You Can Support",
+      "sortOrder": 4,
+      "content": {
+        "tag": "Choose Impact Area",
+        "heading": "What You Can Support",
+        "items": [
+          { "icon": "👶", "title": "Child Education", "desc": "Support school fees, kits, books & learning resources." },
+          { "icon": "🍲", "title": "Nutrition Support", "desc": "Provide meals and essential food support to needy families." },
+          { "icon": "🧕", "title": "Women Support", "desc": "Empower women with skills, hygiene and livelihood support." },
+          { "icon": "🏥", "title": "Medical Help", "desc": "Assist in treatment, medicines and healthcare needs." },
+          { "icon": "🐾", "title": "Animal Care", "desc": "Support rescue, feeding and treatment of animals." },
+          { "icon": "🏠", "title": "Emergency Help", "desc": "Help families in crisis situations and urgent needs." }
+        ]
+      }
+    },
+    {
+      "type": "steps",
+      "name": "How It Works",
+      "sortOrder": 5,
+      "content": {
+        "heading": "How It Works",
+        "steps": [
+          { "title": "1. Choose support category", "desc": "Select the area you want to support — education, nutrition, healthcare, or any cause close to your heart." },
+          { "title": "2. Make contribution", "desc": "Complete your secure donation online via UPI, card, or net banking. Every contribution counts." },
+          { "title": "3. We assign real beneficiary", "desc": "We identify and assign a verified beneficiary who needs support in your chosen category." },
+          { "title": "4. Support is delivered on ground", "desc": "Your contribution is delivered directly to the beneficiary through our field programs." },
+          { "title": "5. You receive updates/report", "desc": "We share updates, photos, and impact reports so you can see the change you made." }
+        ]
+      }
+    },
+    {
+      "type": "cta",
+      "name": "Be Someone's Hope Today",
+      "sortOrder": 6,
+      "content": {
+        "heading": "Be Someone's Hope Today",
+        "paragraph": "Join us in creating real change, one life at a time.",
+        "buttonLabel": "Support Now",
+        "buttonUrl": "/get-involved/donate-online",
+        "align": "left"
+      }
+    }
+  ]
+}

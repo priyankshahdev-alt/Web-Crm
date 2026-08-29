@@ -98,6 +98,35 @@ function mapActivities(page) {
   return images.map((image) => ({ image: img(image), caption: "" }));
 }
 
+function mapGetInvolved(page) {
+  const section = findSection(page, "home-get-involved");
+  const items = section?.content?.items || [];
+  if (!items.length) return null;
+  return items.map((it, i) => ({
+    icon: it.icon || "volunteer_activism",
+    title: it.title,
+    to: validNavUrl(it.to) || "/",
+    desc: it.desc || "",
+    btn: it.btn || "",
+    heading: section.content.heading,
+    subheading: section.content.subheading,
+  }));
+}
+
+function mapCauses(page) {
+  const section = findSection(page, "home-causes");
+  const items = section?.content?.items || [];
+  if (!items.length) return null;
+  return items.map((it) => ({ icon: it.icon || "favorite", label: it.label }));
+}
+
+function mapPartners(page) {
+  const section = findSection(page, "home-partners");
+  const images = section?.content?.images || [];
+  if (!images.length) return null;
+  return images.map((im) => img(im));
+}
+
 function mapNav(site) {
   const menu = (site.menus || []).find((m) => m.location === "main-nav");
   const items = (menu?.items || []).filter((it) => it && it.label);
@@ -120,7 +149,9 @@ function mapNav(site) {
 
 function mapFooter(site) {
   const settings = site.settings || {};
-  const menu = (site.menus || []).find((m) => m.location === "footer");
+  const menu =
+    (site.menus || []).find((m) => m.location === "footer-nav") ||
+    (site.menus || []).find((m) => m.location === "footer");
   const programs = (menu?.items || [])
     .map((it) => {
       const to = validNavUrl(it.url);
@@ -175,6 +206,9 @@ function buildData(site) {
     stats: mapStats(home) || staticData.stats,
     initiatives: mapInitiatives(home) || staticData.initiatives,
     activities: mapActivities(home) || staticData.activities,
+    getInvolved: mapGetInvolved(home) || staticData.getInvolved,
+    causes: mapCauses(home) || staticData.causes,
+    partners: mapPartners(home) || staticData.partners,
     navMenu: mapNav(site) || staticData.navMenu,
     footer: mapFooter(site),
     contact: mapContact(settings, staticData.contact),

@@ -1,0 +1,38 @@
+{
+  "slug": "privacy-policy",
+  "title": "Privacy Policy",
+  "metaTitle": "Privacy Policy | Mann Care Foundation",
+  "template": "inner",
+  "sortOrder": 31,
+  "sections": [
+    {
+      "type": "page-hero",
+      "name": "Page Hero",
+      "sortOrder": 1,
+      "content": {
+        "heading": "Privacy Policy",
+        "subheading": "Legal Notice",
+        "imageUrl": "/contact/hero2.jpeg",
+        "mobileImageUrl": "/contact/mobile-slide2.jpeg",
+        "altText": "Privacy Policy"
+      }
+    },
+    {
+      "type": "legal",
+      "name": "Privacy Policy",
+      "sortOrder": 2,
+      "content": {
+        "title": "Privacy Policy",
+        "tag": "Legal Notice",
+        "blocks": [
+          { "title": "Introduction", "text": "Mann Care Foundation respects your privacy and is committed to protecting your personal information." },
+          { "title": "Information We Collect", "text": "We may collect name, email, phone number, and donation details when you interact with us." },
+          { "title": "How We Use Information", "text": "We use data only for communication, donation processing, and improving services." },
+          { "title": "Data Protection", "text": "We do not sell or share your personal information with third parties." },
+          { "title": "Cookies", "text": "Our website may use cookies to improve user experience." },
+          { "title": "Contact Us", "text": "Email: manncarefoundation@gmail.com | Phone: +91 7039006300" }
+        ]
+      }
+    }
+  ]
+}

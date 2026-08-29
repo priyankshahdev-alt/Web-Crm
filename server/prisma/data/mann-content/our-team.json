@@ -1,0 +1,46 @@
+{
+  "slug": "our-team",
+  "title": "Our Team",
+  "metaTitle": "Our Team | Mann Care Foundation",
+  "template": "inner",
+  "sortOrder": 3,
+  "sections": [
+    {
+      "type": "page-hero",
+      "name": "Page Hero",
+      "sortOrder": 1,
+      "content": {
+        "heading": "Our Team",
+        "subheading": "The People Behind The Mission",
+        "imageUrl": "/about/hero2.jpeg",
+        "mobileImageUrl": "/about/mobile-slide2.jpeg",
+        "altText": "Our Team"
+      }
+    },
+    {
+      "type": "team-heading",
+      "name": "Team Heading",
+      "sortOrder": 2,
+      "content": {
+        "tag": "The People Behind The Mission",
+        "title": "Our Team",
+        "sub": "Compassionate leaders working relentlessly to empower women, children, and communities."
+      }
+    },
+    {
+      "type": "team-members",
+      "name": "Team Members",
+      "sortOrder": 3,
+      "content": {
+        "heading": "Our Team",
+        "members": [
+          { "image": "/about/team1.jpeg", "name": "Mrs. Anjana Vyas", "role": "PRESIDENT" },
+          { "image": "/about/team2.jpeg", "name": "Mrs. Archana Parmar", "role": "VICE PRESIDENT" },
+          { "image": "/about/team3.jpeg", "name": "Mrs. Deepali Gautam", "role": "CORE MEMBER" },
+          { "image": "/about/team4.jpeg", "name": "Mrs. Sushma Ambokar", "role": "CORE MEMBER" },
+          { "image": "/about/team6.jpeg", "name": "Mrs. Maya Jadhao", "role": "CORE MEMBER" }
+        ]
+      }
+    }
+  ]
+}

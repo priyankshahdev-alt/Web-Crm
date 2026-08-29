@@ -17,6 +17,7 @@
     "db:push": "prisma db push",
     "db:seed": "prisma db seed",
     "db:seed:website": "tsx prisma/seed-website.ts",
+    "db:seed:mann:website": "tsx prisma/seed-mann-website.ts",
     "vercel-build": "prisma generate && npm run build"
   },
   "prisma": {
