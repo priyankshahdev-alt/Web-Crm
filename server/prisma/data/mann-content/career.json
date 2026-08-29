@@ -1,0 +1,50 @@
+{
+  "slug": "career",
+  "title": "Career",
+  "metaTitle": "Career | Mann Care Foundation",
+  "template": "inner",
+  "sortOrder": 23,
+  "sections": [
+    {
+      "type": "page-hero",
+      "name": "Page Hero",
+      "sortOrder": 1,
+      "content": {
+        "heading": "Careers",
+        "subheading": "Turn Your Passion Into Impact",
+        "imageUrl": "/get-involved/hero4.jpeg",
+        "mobileImageUrl": "/get-involved/mobile-slide4.jpeg",
+        "altText": "Careers"
+      }
+    },
+    {
+      "type": "career-hero",
+      "name": "Hero Text",
+      "sortOrder": 2,
+      "content": {
+        "tag": "Join Our Team",
+        "title": "Turn Your Passion Into Impact",
+        "paragraph": "Join MANN CARE FOUNDATION and become part of a mission dedicated to empowering women, educating children, promoting health, and creating lasting change in communities across India."
+      }
+    },
+    {
+      "type": "career-points",
+      "name": "Why Join Us",
+      "sortOrder": 3,
+      "content": {
+        "tag": "Careers at MANN CARE FOUNDATION",
+        "heading": "Build a Career That Creates Impact",
+        "paragraph": "At MANN CARE FOUNDATION, every role contributes to creating meaningful change in the lives of women, children, and communities in need. Join a team that works with compassion, purpose, and dedication to build a better tomorrow.",
+        "items": [
+          { "icon": "🌸", "title": "Purpose Driven Work", "desc": "Make a real difference through projects that transform lives." },
+          { "icon": "📚", "title": "Growth & Learning", "desc": "Gain valuable experience while working on impactful initiatives." },
+          { "icon": "🤝", "title": "Collaborative Culture", "desc": "Work alongside passionate people who care about social change." },
+          { "icon": "❤️", "title": "Meaningful Impact", "desc": "Your work directly contributes to stronger communities." }
+        ],
+        "formTitle": "Apply Now",
+        "formHint": "Take the first step towards a meaningful career.",
+        "buttonLabel": "Send Application"
+      }
+    }
+  ]
+}

@@ -1,0 +1,236 @@
+{
+  "slug": "home",
+  "title": "Home",
+  "metaTitle": "Mann Care Foundation | Home",
+  "template": "home",
+  "sortOrder": 1,
+  "isHome": true,
+  "sections": [
+    {
+      "type": "hero-slider",
+      "name": "Hero Slider",
+      "sortOrder": 1,
+      "content": {
+        "heading": "Mann Care Foundation",
+        "subheading": "Creating opportunities, restoring dignity.",
+        "slides": [
+          {
+            "id": "welcome",
+            "eyebrow": "Welcome to Mann",
+            "title": "Empowering Women",
+            "accent": "& Children.",
+            "subtitle": "Mann Care Foundation works to create opportunities and restore dignity for underprivileged and marginalized individuals across Mumbai.",
+            "imageUrl": "/images/heroslide1.jpeg",
+            "mobileImageUrl": "/images/mobile-slide1.jpeg",
+            "altText": "Empowering Women & Children",
+            "ctaLabel": "Donate Now",
+            "ctaUrl": "/get-involved/donate-online"
+          },
+          {
+            "id": "poshan",
+            "eyebrow": "Project Poshan",
+            "title": "Nourishing Lives,",
+            "accent": "Restoring Hope.",
+            "subtitle": "Eradicating hunger with radical distribution networks across rural belts.",
+            "imageUrl": "/images/heroslide2.jpeg",
+            "mobileImageUrl": "/images/mobile-slide2.jpeg",
+            "altText": "Project Poshan",
+            "ctaLabel": "Support Poshan",
+            "ctaUrl": "/projects/poshan"
+          },
+          {
+            "id": "gyaan",
+            "eyebrow": "Project Gyaan",
+            "title": "Educating Every Child,",
+            "accent": "Building Tomorrow Today.",
+            "subtitle": "Digital literacy as a fundamental human right — opening doors to global knowledge.",
+            "imageUrl": "/images/heroslide3.jpeg",
+            "mobileImageUrl": "/images/mobile-slide3.jpeg",
+            "altText": "Project Gyaan",
+            "ctaLabel": "Support Gyaan",
+            "ctaUrl": "/projects/gyaan"
+          }
+        ]
+      }
+    },
+    {
+      "type": "stats",
+      "name": "Impact Stats",
+      "sortOrder": 2,
+      "content": {
+        "heading": "Our Impact",
+        "items": [
+          { "value": "12K+", "label": "Meals Distributed" },
+          { "value": "5K+", "label": "Students Taught" },
+          { "value": "850+", "label": "Women Skilled" }
+        ]
+      }
+    },
+    {
+      "type": "projects-grid",
+      "name": "Our Initiatives",
+      "sortOrder": 3,
+      "content": {
+        "heading": "Our Initiatives",
+        "subheading": "From nutrition to education, every project transforms lives.",
+        "layout": "cards",
+        "projects": [
+          {
+            "title": "Project Poshan",
+            "tag": "Nutrition Support Initiative",
+            "description": "Addressing hunger, malnutrition and food insecurity through Dry Ration Kits, Nutritious Cooked Meals, Healthy Snack Kits, and Refreshment Support.",
+            "image": "/projects/hero1.jpeg",
+            "url": "/projects/poshan"
+          },
+          {
+            "title": "Project Gyaan",
+            "tag": "Education Support Initiative",
+            "description": "Ensuring inclusive, continuous, quality education for children from marginalized communities through academic and digital learning support.",
+            "image": "/projects/hero2.jpeg",
+            "url": "/projects/gyaan"
+          },
+          {
+            "title": "Project Sakhi",
+            "tag": "Women Empowerment Initiative",
+            "description": "Empowering women holistically through skill development, livelihood training, hygiene support, and confidence-building at the grassroots level.",
+            "image": "/projects/hero3.jpeg",
+            "url": "/projects/sakhi"
+          },
+          {
+            "title": "Project Swasth",
+            "tag": "Health & Hygiene Initiative",
+            "description": "Promoting preventive healthcare, hygiene awareness, and access to essential health support — including oral health, menstrual hygiene, and medical assistance.",
+            "image": "/projects/hero4.jpeg",
+            "url": "/projects/swasth"
+          },
+          {
+            "title": "Project Pashu",
+            "tag": "Animal Support Initiative",
+            "description": "Dedicated to the care, protection, and well-being of animals — stray dogs, abandoned cattle, injured animals — with feeding drives, medical support, and community awareness.",
+            "image": "/projects/hero5.jpeg",
+            "url": "/projects/pashu"
+          },
+          {
+            "title": "Project Paryavaran",
+            "tag": "Environment & Sustainability Initiative",
+            "description": "Promoting environmental protection through tree plantation, cleanliness drives, and awareness programs to build a greener and healthier future for all.",
+            "image": "/projects/hero6.jpeg",
+            "url": "/projects/paryavaran"
+          }
+        ]
+      }
+    },
+    {
+      "type": "gallery",
+      "name": "Impact in Action",
+      "sortOrder": 4,
+      "content": {
+        "heading": "Impact in Action",
+        "layout": "marquee",
+        "images": [
+          "/media/b1.JPG", "/media/w1.jpg", "/media/l1.jpg", "/media/snack1.jpeg",
+          "/media/b2.JPG", "/media/w2.jpg", "/media/l2.jpg", "/media/snack2.jpeg",
+          "/media/b3.JPG", "/media/w3.jpg", "/media/l3.jpg", "/media/snack3.jpeg"
+        ]
+      }
+    },
+    {
+      "type": "cta",
+      "name": "Your Turn to Lead",
+      "sortOrder": 5,
+      "content": {
+        "heading": "Your Turn to Lead",
+        "paragraph": "Your support creates opportunities and restores dignity — one life at a time.",
+        "buttonLabel": "Donate Now",
+        "buttonUrl": "/get-involved/donate-online",
+        "align": "center"
+      }
+    },
+    {
+      "type": "home-about",
+      "name": "Our Purpose",
+      "sortOrder": 6,
+      "content": {
+        "tag": "OUR PURPOSE",
+        "heading": "BEYOND SURVIVAL.",
+        "paragraph": "We don't just provide aid; we build dignity. Radical presence in rural India through direct action.",
+        "missionTitle": "The Mission",
+        "missionText": "Restoring dignity via consistent nutrition, quality education, and accessible healthcare. No excuses, only results.",
+        "image": "/images/heroslide1.jpeg"
+      }
+    },
+    {
+      "type": "home-about-detailed",
+      "name": "About Mann Care Foundation",
+      "sortOrder": 7,
+      "content": {
+        "badge": "Who We Are",
+        "badge2": "Trusted NGO",
+        "heading": "About MANN CARE FOUNDATION",
+        "description": "MANN CARE FOUNDATION is a compassionate non-profit committed to transforming lives of women and children from underprivileged and marginalized communities.",
+        "missionTitle": "Our Mission",
+        "missionText": "Addressing fundamental needs — nutritious food, quality education, menstrual hygiene, and self-reliance.",
+        "visionTitle": "Our Vision",
+        "visionText": "An inclusive society where every woman is empowered and every child is nourished and educated.",
+        "image": "/images/heroslide3.jpeg"
+      }
+    },
+    {
+      "type": "home-get-involved",
+      "name": "Get Involved",
+      "sortOrder": 8,
+      "content": {
+        "heading": "Get Involved",
+        "subheading": "Every act of kindness has the power to transform lives. Together, we can provide food, education, and hope.",
+        "items": [
+          {
+            "icon": "volunteer_activism",
+            "title": "Donate",
+            "to": "/get-involved/donate-online",
+            "desc": "Directly support our nutrition and education initiatives to bring hope to marginalized families.",
+            "btn": "Donate Now"
+          },
+          {
+            "icon": "diversity_1",
+            "title": "Volunteer",
+            "to": "/get-involved/career",
+            "desc": "Join our grassroots activities and contribute your skills to create meaningful local impact.",
+            "btn": "Become a Volunteer"
+          },
+          {
+            "icon": "handshake",
+            "title": "Partner",
+            "to": "/get-involved/corporate-partnership",
+            "desc": "Collaborate via CSR initiatives to scale our community-first programs sustainably.",
+            "btn": "Partner With Us"
+          }
+        ]
+      }
+    },
+    {
+      "type": "home-partners",
+      "name": "Our Trusted Partners",
+      "sortOrder": 9,
+      "content": {
+        "heading": "OUR TRUSTED PARTNERS.",
+        "tagline": "Driving impact through collective action and strategic collaboration.",
+        "images": ["/images/11.png", "/images/12.png", "/images/13.png", "/images/14.png"]
+      }
+    },
+    {
+      "type": "home-causes",
+      "name": "Causes to Support",
+      "sortOrder": 10,
+      "content": {
+        "heading": "CAUSES TO SUPPORT.",
+        "items": [
+          { "icon": "school", "label": "Education" },
+          { "icon": "restaurant", "label": "Nutrition" },
+          { "icon": "female", "label": "Empowerment" },
+          { "icon": "medical_services", "label": "Health Care" },
+          { "icon": "emergency", "label": "Disaster" }
+        ]
+      }
+    }
+  ]
+}

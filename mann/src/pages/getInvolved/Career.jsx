@@ -3,8 +3,9 @@ import PageHero from "../../components/PageHero";
 import SectionHead from "../../components/SectionHead";
 import Icon from "../../components/Icon";
 import { img } from "../../utils/images";
+import { usePageContent } from "../../hooks/usePageContent";
 
-const points = [
+const fallbackPoints = [
   { icon: "🌸", title: "Purpose Driven Work", desc: "Make a real difference through projects that transform lives." },
   { icon: "📚", title: "Growth & Learning", desc: "Gain valuable experience while working on impactful initiatives." },
   { icon: "🤝", title: "Collaborative Culture", desc: "Work alongside passionate people who care about social change." },
@@ -13,25 +14,30 @@ const points = [
 
 export default function Career() {
   const [submitted, setSubmitted] = useState(false);
+  const content = usePageContent("career");
+  const heroTitle = content("page-hero", "heading", "Careers");
+  const hero = {
+    desktop: img(content("page-hero", "imageUrl", "/get-involved/hero4.jpeg")),
+    mobile: img(content("page-hero", "mobileImageUrl", "/get-involved/mobile-slide4.jpeg")),
+  };
+  const points = content("career-points", "items", fallbackPoints) || fallbackPoints;
   const inputCls =
     "w-full rounded-2xl border border-primary/10 bg-surface-container-low p-5 text-lg text-on-surface outline-none transition-colors focus:bg-white focus:ring-2 focus:ring-primary/30 placeholder:text-on-surface-variant/50";
 
   return (
     <>
-      <PageHero desktop={img("/get-involved/hero4.jpeg")} mobile={img("/get-involved/mobile-slide4.jpeg")} alt="Careers" />
+      <PageHero desktop={hero.desktop} mobile={hero.mobile} alt={heroTitle} title={heroTitle} />
 
       <section className="py-section-padding-mobile md:py-section-padding-desktop px-6 lg:px-8 bg-surface">
         <div className="max-w-[900px] mx-auto text-center">
           <span className="inline-block px-4 py-1.5 bg-secondary-fixed text-primary font-label-bold text-xs uppercase tracking-widest rounded-full mb-6">
-            Join Our Team
+            {content("career-hero", "tag", "Join Our Team")}
           </span>
           <h1 className="font-display-lg font-extrabold text-6xl md:text-8xl text-on-surface leading-[0.9] tracking-tighter uppercase mb-6">
-            Turn Your Passion Into Impact
+            {content("career-hero", "title", "Turn Your Passion Into Impact")}
           </h1>
           <p className="text-2xl md:text-3xl text-on-surface-variant">
-            Join MANN CARE FOUNDATION and become part of a mission dedicated to empowering women,
-            educating children, promoting health, and creating lasting change in communities across
-            India.
+            {content("career-hero", "paragraph") || "Join MANN CARE FOUNDATION and become part of a mission dedicated to empowering women, educating children, promoting health, and creating lasting change in communities across India."}
           </p>
         </div>
       </section>
@@ -39,11 +45,9 @@ export default function Career() {
       <section className="py-10 md:py-16 px-6 lg:px-8 bg-surface-container-low">
         <div className="max-w-[1150px] mx-auto grid lg:grid-cols-2 gap-8 items-start">
           <div>
-            <SectionHead tag="Careers at MANN CARE FOUNDATION" title="Build a Career That Creates Impact" align="left" />
+            <SectionHead tag={content("career-points", "tag", "Careers at MANN CARE FOUNDATION")} title={content("career-points", "heading", "Build a Career That Creates Impact")} align="left" />
             <p className="text-xl text-on-surface-variant mb-6">
-              At MANN CARE FOUNDATION, every role contributes to creating meaningful change in the
-              lives of women, children, and communities in need. Join a team that works with
-              compassion, purpose, and dedication to build a better tomorrow.
+              {content("career-points", "paragraph") || "At MANN CARE FOUNDATION, every role contributes to creating meaningful change in the lives of women, children, and communities in need. Join a team that works with compassion, purpose, and dedication to build a better tomorrow."}
             </p>
             <div className="grid sm:grid-cols-2 gap-6">
               {points.map((pt) => (
@@ -72,10 +76,10 @@ export default function Career() {
             ) : (
               <>
                 <h2 className="font-display-lg font-extrabold text-4xl uppercase text-on-surface tracking-tight mb-2">
-                  Apply Now
+                  {content("career-points", "formTitle", "Apply Now")}
                 </h2>
                 <p className="text-lg text-on-surface-variant mb-5">
-                  Take the first step towards a meaningful career.
+                  {content("career-points", "formHint") || "Take the first step towards a meaningful career."}
                 </p>
                 <div className="space-y-5">
                   <input type="text" placeholder="Your Full Name" className={inputCls} required />
@@ -87,7 +91,7 @@ export default function Career() {
                     onClick={() => setSubmitted(true)}
                     className="w-full rounded-2xl bg-primary text-white py-5 font-label-bold text-lg uppercase tracking-widest transition-all hover:bg-primary-container hover:scale-[1.01] shadow-[0_10px_30px_-5px_rgba(138,0,72,0.4)]"
                   >
-                    Send Application
+                    {content("career-points", "buttonLabel", "Send Application")}
                   </button>
                 </div>
               </>
