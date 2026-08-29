@@ -1,0 +1,9 @@
+[
+  { "label": "Our Story", "url": "/about/our-story" },
+  { "label": "Our Team", "url": "/about/our-team" },
+  { "label": "Legal Certificate", "url": "/about/legal-certificate" },
+  { "label": "Media", "url": "/media" },
+  { "label": "Donate Online", "url": "/get-involved/donate-online" },
+  { "label": "Get In Touch", "url": "/contact/get-in-touch" },
+  { "label": "Privacy Policy", "url": "/contact/privacy-policy" }
+]

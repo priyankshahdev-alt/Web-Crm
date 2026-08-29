@@ -1,0 +1,90 @@
+{
+  "slug": "project-sakhi",
+  "title": "Project Sakhi",
+  "metaTitle": "Project Sakhi | Mann Care Foundation",
+  "template": "inner",
+  "sortOrder": 11,
+  "sections": [
+    {
+      "type": "page-hero",
+      "name": "Page Hero",
+      "sortOrder": 1,
+      "content": {
+        "heading": "Project Sakhi",
+        "subheading": "Empowering Women Through Confidence, Skills, Health & Independence",
+        "imageUrl": "/projects/hero3.jpeg",
+        "mobileImageUrl": "/projects/mobile-slide3.jpeg",
+        "altText": "Project Sakhi"
+      }
+    },
+    {
+      "type": "project-detail",
+      "name": "Project Detail",
+      "sortOrder": 2,
+      "content": {
+        "name": "Project Sakhi",
+        "badge": "Women Empowerment Initiative",
+        "subtitle": "Empowering Women Through Confidence, Skills, Health & Independence",
+        "heroImg": "/projects/hero3.jpeg",
+        "heroImgMobile": "/projects/mobile-slide3.jpeg",
+        "cardTitle": "Strong Women Build Strong Communities",
+        "cardText": "Project Sakhi is a holistic women empowerment initiative dedicated to strengthening confidence, self-reliance, health awareness, and economic independence among women from marginalized communities. Through skills, knowledge, and support, the project enables women to become active contributors and leaders in society.",
+        "aboutHeading": "Empowering Women Beyond Limitations",
+        "mission": "Project Sakhi works to empower women economically, socially, physically, and emotionally by providing opportunities, awareness, resources, and support systems that enable them to live with dignity and confidence.",
+        "whyItMatters": "Many women face challenges such as financial dependence, limited access to opportunities, lack of health awareness, and social barriers. Project Sakhi helps overcome these challenges through a comprehensive empowerment approach.",
+        "servicesHeading": "Women Empowerment Support Programs",
+        "servicesTag": "What We Provide",
+        "services": [
+          {
+            "icon": "🧵",
+            "title": "Skill Development",
+            "desc": "Training programs that help women acquire income-generating and livelihood skills."
+          },
+          {
+            "icon": "💼",
+            "title": "Livelihood Support",
+            "desc": "Opportunities for sustainable employment and self-employment initiatives."
+          },
+          {
+            "icon": "🩺",
+            "title": "Health & Hygiene Support",
+            "desc": "Access to menstrual hygiene products, personal care resources, and health essentials."
+          },
+          {
+            "icon": "📢",
+            "title": "Awareness Campaigns",
+            "desc": "Sessions on health, sanitation, nutrition, rights awareness, safety, and financial literacy."
+          }
+        ],
+        "beneficiariesHeading": "Supporting Women At Every Stage Of Growth",
+        "beneficiariesTag": "Who We Serve",
+        "beneficiaries": [
+          "👩 Women From Marginalized Communities",
+          "💪 Aspiring Entrepreneurs",
+          "🏡 Homemakers Seeking Opportunities",
+          "🩷 Women Requiring Health & Hygiene Support",
+          "📚 Women Seeking Knowledge & Awareness",
+          "🌟 Future Women Leaders"
+        ],
+        "impactHeading": "Creating Confident, Healthy & Independent Women",
+        "impact": [
+          {
+            "title": "Economic Independence",
+            "desc": "Equipping women with skills and opportunities to achieve financial stability."
+          },
+          {
+            "title": "Health & Wellbeing",
+            "desc": "Promoting awareness, hygiene practices, and access to essential health resources."
+          },
+          {
+            "title": "Leadership & Confidence",
+            "desc": "Encouraging women to participate actively in decision-making and community leadership."
+          }
+        ],
+        "ctaTitle": "Join The Movement For Women Empowerment",
+        "ctaText": "Every woman empowered creates a ripple effect that strengthens families, uplifts communities, and builds a more inclusive and sustainable future.",
+        "ctaBtn": "Support Project Sakhi"
+      }
+    }
+  ]
+}

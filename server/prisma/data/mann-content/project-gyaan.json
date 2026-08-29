@@ -1,0 +1,90 @@
+{
+  "slug": "project-gyaan",
+  "title": "Project Gyaan",
+  "metaTitle": "Project Gyaan | Mann Care Foundation",
+  "template": "inner",
+  "sortOrder": 11,
+  "sections": [
+    {
+      "type": "page-hero",
+      "name": "Page Hero",
+      "sortOrder": 1,
+      "content": {
+        "heading": "Project Gyaan",
+        "subheading": "Empowering Children Through Education, Technology & Opportunity",
+        "imageUrl": "/projects/hero2.jpeg",
+        "mobileImageUrl": "/projects/mobile-slide2.jpeg",
+        "altText": "Project Gyaan"
+      }
+    },
+    {
+      "type": "project-detail",
+      "name": "Project Detail",
+      "sortOrder": 2,
+      "content": {
+        "name": "Project Gyaan",
+        "badge": "Education Support Initiative",
+        "subtitle": "Empowering Children Through Education, Technology & Opportunity",
+        "heroImg": "/projects/hero2.jpeg",
+        "heroImgMobile": "/projects/mobile-slide2.jpeg",
+        "cardTitle": "Every Child Deserves The Right To Learn",
+        "cardText": "Project Gyaan is a transformative education initiative focused on ensuring inclusive, continuous, and quality education for children from marginalized and underserved communities. Through academic support, digital learning, educational resources, and skill development opportunities, the project empowers children to build brighter futures and achieve their full potential.",
+        "aboutHeading": "Transforming Lives Through Education",
+        "mission": "Project Gyaan aims to ensure that every child, regardless of economic background, has access to quality education, learning resources, digital opportunities, and the support needed to succeed academically and personally.",
+        "whyItMatters": "Financial hardship, lack of educational resources, and limited digital access prevent many children from reaching their full potential. Project Gyaan bridges these gaps and creates equal opportunities for learning and growth.",
+        "servicesHeading": "Education & Learning Support Programs",
+        "servicesTag": "What We Provide",
+        "services": [
+          {
+            "icon": "📚",
+            "title": "School Kits",
+            "desc": "Distribution of school bags, notebooks, stationery, textbooks and learning materials."
+          },
+          {
+            "icon": "👕",
+            "title": "Uniform Support",
+            "desc": "Providing school uniforms and essential educational supplies to children in need."
+          },
+          {
+            "icon": "💻",
+            "title": "Digital Education",
+            "desc": "Access to computers, e-learning platforms, smart classrooms and online learning tools."
+          },
+          {
+            "icon": "🎓",
+            "title": "Learning Guidance",
+            "desc": "Mentorship, motivation, academic encouragement and educational support programs."
+          }
+        ],
+        "beneficiariesHeading": "Supporting Young Learners & Future Leaders",
+        "beneficiariesTag": "Who We Serve",
+        "beneficiaries": [
+          "👧 School Children",
+          "🧒 Underprivileged Students",
+          "🏘️ Children From Marginalized Communities",
+          "💻 First-Time Digital Learners",
+          "📖 Students At Risk Of Dropping Out",
+          "🌟 Aspiring Young Achievers"
+        ],
+        "impactHeading": "Building Futures Through Knowledge & Technology",
+        "impact": [
+          {
+            "title": "Access To Education",
+            "desc": "Ensuring every child receives educational resources and opportunities to learn."
+          },
+          {
+            "title": "Digital Empowerment",
+            "desc": "Bridging the digital divide through technology access and computer literacy."
+          },
+          {
+            "title": "Confidence & Growth",
+            "desc": "Encouraging children to believe in their abilities and pursue brighter futures."
+          }
+        ],
+        "ctaTitle": "Join The Mission To Educate Every Child",
+        "ctaText": "Every book distributed, every digital resource provided, and every child empowered through education brings us one step closer to a brighter and more equitable future.",
+        "ctaBtn": "Support Project Gyaan"
+      }
+    }
+  ]
+}

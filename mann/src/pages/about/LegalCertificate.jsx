@@ -2,28 +2,37 @@ import PageHero from "../../components/PageHero";
 import SectionHead from "../../components/SectionHead";
 import Icon from "../../components/Icon";
 import { img } from "../../utils/images";
+import { usePageContent } from "../../hooks/usePageContent";
 
-const certs = [
+const fallbackCerts = [
   { icon: "description", title: "PAN Certificate", href: "/pdf/pan-card.pdf" },
   { icon: "handshake", title: "NGO Registration", href: "/pdf/ngo-registration.pdf" },
 ];
 
 export default function LegalCertificate() {
+  const content = usePageContent("legal-certificate");
+  const heroTitle = content("page-hero", "heading", "Certificates");
+  const hero = {
+    desktop: img(content("page-hero", "imageUrl", "/about/hero3.jpeg")),
+    mobile: img(content("page-hero", "mobileImageUrl", "/about/mobile-slide3.jpeg")),
+  };
+  const certs = content("certificates", "items", fallbackCerts) || fallbackCerts;
+
   return (
     <>
       <PageHero
-        desktop={img("/about/hero3.jpeg")}
-        mobile={img("/about/mobile-slide3.jpeg")}
-        alt="Legal Certificates"
-        title="Certificates"
+        desktop={hero.desktop}
+        mobile={hero.mobile}
+        alt={heroTitle}
+        title={heroTitle}
       />
 
       <section className="py-section-padding-mobile md:py-section-padding-desktop px-6 lg:px-8 bg-surface">
         <div className="max-w-[900px] mx-auto text-center">
           <SectionHead
-            tag="Legal & Compliance Documents"
-            title="Our Certificates"
-            sub="Transparency, compliance, and accountability are at the core of MANN Care Foundation. Explore our registration and certification documents."
+            tag={content("certificates", "tag", "Legal & Compliance Documents")}
+            title={content("certificates", "title", "Our Certificates")}
+            sub={content("certificates", "sub") || "Transparency, compliance, and accountability are at the core of MANN Care Foundation. Explore our registration and certification documents."}
           />
 
           <div className="grid sm:grid-cols-2 gap-6 max-w-xl mx-auto">

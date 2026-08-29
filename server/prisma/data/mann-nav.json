@@ -1,0 +1,39 @@
+[
+  { "label": "Home", "url": "/" },
+  {
+    "label": "About us",
+    "children": [
+      { "label": "Our Story", "url": "/about/our-story" },
+      { "label": "Our Team", "url": "/about/our-team" },
+      { "label": "Legal Certificate", "url": "/about/legal-certificate" }
+    ]
+  },
+  {
+    "label": "Projects",
+    "children": [
+      { "label": "Project Poshan", "url": "/projects/poshan" },
+      { "label": "Project Gyaan", "url": "/projects/gyaan" },
+      { "label": "Project Sakhi", "url": "/projects/sakhi" },
+      { "label": "Project Swasth", "url": "/projects/swasth" },
+      { "label": "Project Pashu", "url": "/projects/pashu" },
+      { "label": "Project Paryavaran", "url": "/projects/paryavaran" }
+    ]
+  },
+  {
+    "label": "Get Involved",
+    "children": [
+      { "label": "Individual Support", "url": "/get-involved/individual-support" },
+      { "label": "Corporate Partnership", "url": "/get-involved/corporate-partnership" },
+      { "label": "Donate Online", "url": "/get-involved/donate-online" },
+      { "label": "Career", "url": "/get-involved/career" }
+    ]
+  },
+  { "label": "Media", "url": "/media" },
+  {
+    "label": "Contact",
+    "children": [
+      { "label": "Get In Touch", "url": "/contact/get-in-touch" },
+      { "label": "Privacy Policy", "url": "/contact/privacy-policy" }
+    ]
+  }
+]

@@ -1,0 +1,90 @@
+{
+  "slug": "project-swasth",
+  "title": "Project Swasth",
+  "metaTitle": "Project Swasth | Mann Care Foundation",
+  "template": "inner",
+  "sortOrder": 11,
+  "sections": [
+    {
+      "type": "page-hero",
+      "name": "Page Hero",
+      "sortOrder": 1,
+      "content": {
+        "heading": "Project Swasth",
+        "subheading": "Promoting Health, Hygiene, Awareness & Dignity For Every Individual",
+        "imageUrl": "/projects/hero4.jpeg",
+        "mobileImageUrl": "/projects/mobile-slide4.jpeg",
+        "altText": "Project Swasth"
+      }
+    },
+    {
+      "type": "project-detail",
+      "name": "Project Detail",
+      "sortOrder": 2,
+      "content": {
+        "name": "Project Swasth",
+        "badge": "Health & Hygiene Initiative",
+        "subtitle": "Promoting Health, Hygiene, Awareness & Dignity For Every Individual",
+        "heroImg": "/projects/hero4.jpeg",
+        "heroImgMobile": "/projects/mobile-slide4.jpeg",
+        "cardTitle": "Healthy Communities Begin With Awareness",
+        "cardText": "Project Swasth is a comprehensive health and hygiene initiative focused on preventive healthcare, hygiene awareness, and access to essential health support. Through education, medical assistance, hygiene resources, and community outreach, the initiative empowers individuals to lead healthier, safer, and more dignified lives.",
+        "aboutHeading": "Building Healthier Communities Through Prevention",
+        "mission": "Project Swasth aims to improve community health by promoting hygiene, preventive healthcare, health education, and access to essential medical support for vulnerable individuals and families.",
+        "whyItMatters": "Poor hygiene awareness, limited healthcare access, and untreated medical conditions often lead to preventable illnesses and long-term health complications. Project Swasth addresses these challenges through awareness, support, and timely intervention.",
+        "servicesHeading": "Health & Hygiene Support Programs",
+        "servicesTag": "What We Provide",
+        "services": [
+          {
+            "icon": "🩺",
+            "title": "Health Awareness",
+            "desc": "Educational sessions on hygiene, sanitation, nutrition, disease prevention, and healthy lifestyle practices."
+          },
+          {
+            "icon": "🩷",
+            "title": "Menstrual Hygiene Support",
+            "desc": "Distribution of sanitary pads and awareness programs promoting safe, healthy, and dignified menstrual practices."
+          },
+          {
+            "icon": "🦷",
+            "title": "Oral Health Education",
+            "desc": "Dental hygiene awareness for children, including proper brushing habits and preventive oral care practices."
+          },
+          {
+            "icon": "🏥",
+            "title": "Medical Assistance",
+            "desc": "Support for identified medical cases, treatment guidance, healthcare referrals, and access to essential care services."
+          }
+        ],
+        "beneficiariesHeading": "Supporting Health & Wellbeing For All",
+        "beneficiariesTag": "Who We Serve",
+        "beneficiaries": [
+          "👨‍👩‍👧 Vulnerable Families",
+          "👧 School Children",
+          "🩷 Women & Adolescent Girls",
+          "🏘️ Underserved Communities",
+          "👴 Elderly Individuals",
+          "🤝 Individuals Requiring Medical Support"
+        ],
+        "impactHeading": "Creating A Healthier & More Informed Society",
+        "impact": [
+          {
+            "title": "Preventive Healthcare",
+            "desc": "Encouraging healthy habits and early intervention to reduce preventable diseases and health complications."
+          },
+          {
+            "title": "Improved Hygiene Practices",
+            "desc": "Promoting awareness and access to hygiene resources that support dignity, confidence, and overall wellbeing."
+          },
+          {
+            "title": "Accessible Health Support",
+            "desc": "Helping individuals access medical guidance, treatment support, and essential healthcare services when needed."
+          }
+        ],
+        "ctaTitle": "Join The Mission For Better Health & Hygiene",
+        "ctaText": "Every awareness session, hygiene kit, medical intervention, and act of care brings us closer to building healthier communities where every individual can live with dignity, confidence, and wellbeing.",
+        "ctaBtn": "Support Project Swasth"
+      }
+    }
+  ]
+}

@@ -40,6 +40,7 @@ export default function App() {
 
           <Route path="contact/get-in-touch" element={<GetInTouch />} />
           <Route path="contact/policy" element={<Policy />} />
+          <Route path="contact/privacy-policy" element={<Policy />} />
 
           <Route path="payment-success" element={<PaymentSuccess />} />
 

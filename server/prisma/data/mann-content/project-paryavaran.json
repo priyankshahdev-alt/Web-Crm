@@ -1,0 +1,90 @@
+{
+  "slug": "project-paryavaran",
+  "title": "Project Paryavaran",
+  "metaTitle": "Project Paryavaran | Mann Care Foundation",
+  "template": "inner",
+  "sortOrder": 11,
+  "sections": [
+    {
+      "type": "page-hero",
+      "name": "Page Hero",
+      "sortOrder": 1,
+      "content": {
+        "heading": "Project Paryavaran",
+        "subheading": "Protecting Nature, Preserving Resources & Building A Sustainable Future",
+        "imageUrl": "/projects/hero6.jpeg",
+        "mobileImageUrl": "/projects/mobile-slide6.jpeg",
+        "altText": "Project Paryavaran"
+      }
+    },
+    {
+      "type": "project-detail",
+      "name": "Project Detail",
+      "sortOrder": 2,
+      "content": {
+        "name": "Project Paryavaran",
+        "badge": "Save Nature Today",
+        "subtitle": "Protecting Nature, Preserving Resources & Building A Sustainable Future",
+        "heroImg": "/projects/hero6.jpeg",
+        "heroImgMobile": "/projects/mobile-slide6.jpeg",
+        "cardTitle": "Nature Is The Foundation Of Life",
+        "cardText": "Project Paryavaran is an environmental conservation and sustainability initiative dedicated to protecting, preserving, and restoring our natural ecosystem. Through tree plantation, environmental awareness, waste management, and water conservation efforts, the initiative inspires communities to embrace sustainable living and safeguard the planet for future generations.",
+        "aboutHeading": "Creating Greener Communities Through Action",
+        "mission": "Project Paryavaran aims to promote environmental conservation, sustainability, and responsible living practices that protect air, water, land, and biodiversity while encouraging communities to actively participate in preserving nature.",
+        "whyItMatters": "Climate change, pollution, deforestation, and water scarcity are growing challenges affecting ecosystems and communities. Project Paryavaran addresses these concerns through awareness, conservation, and collective environmental action.",
+        "servicesHeading": "Environmental Conservation Programs",
+        "servicesTag": "What We Do",
+        "services": [
+          {
+            "icon": "🌳",
+            "title": "Tree Plantation",
+            "desc": "Increasing green cover through plantation drives in schools, communities, and public spaces to improve environmental health."
+          },
+          {
+            "icon": "♻️",
+            "title": "Waste Management",
+            "desc": "Promoting waste segregation, reducing plastic usage, and encouraging sustainable alternatives for cleaner surroundings."
+          },
+          {
+            "icon": "📚",
+            "title": "Environmental Education",
+            "desc": "Awareness programs, workshops, and campaigns that encourage eco-friendly habits and climate responsibility."
+          },
+          {
+            "icon": "💧",
+            "title": "Water Conservation",
+            "desc": "Promoting rainwater harvesting, water-saving practices, and protection of natural water resources."
+          }
+        ],
+        "beneficiariesHeading": "Creating A Better Environment For All",
+        "beneficiariesTag": "Who Benefits",
+        "beneficiaries": [
+          "🌱 Future Generations",
+          "🏘️ Local Communities",
+          "🎓 Students & Youth",
+          "🌳 Urban & Rural Ecosystems",
+          "🐦 Wildlife & Biodiversity",
+          "🌍 Society As A Whole"
+        ],
+        "impactHeading": "Building A Cleaner, Greener & Sustainable Planet",
+        "impact": [
+          {
+            "title": "Greener Communities",
+            "desc": "Enhancing green cover, improving air quality, and restoring ecological balance through tree plantation and conservation efforts."
+          },
+          {
+            "title": "Environmental Awareness",
+            "desc": "Inspiring individuals and communities to adopt eco-friendly habits and become responsible environmental stewards."
+          },
+          {
+            "title": "Sustainable Future",
+            "desc": "Encouraging responsible use of natural resources and reducing ecological impact for generations to come."
+          }
+        ],
+        "ctaTitle": "Join The Mission To Save Nature Today",
+        "ctaText": "Every tree planted, every drop of water saved, and every eco-friendly action contributes to a healthier environment. Together, we can create a greener, cleaner, and more sustainable future for all.",
+        "ctaBtn": "Support Project Paryavaran"
+      }
+    }
+  ]
+}
