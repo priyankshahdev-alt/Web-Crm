@@ -29,6 +29,7 @@ import { ContactInfoPage } from './pages/sub/ContactInfoPage'
 import { EnquiryPage } from './pages/sub/EnquiryPage'
 import { GetInvolvedOverviewPage } from './pages/sub/GetInvolvedOverviewPage'
 import { IndividualDonationPage } from './pages/sub/IndividualDonationPage'
+import { CareersPage } from './pages/sub/CareersPage'
 import { VolunteersPage } from './pages/sub/VolunteersPage'
 import { CsrPage } from './pages/sub/CsrPage'
 import { SchoolCollaborationPage } from './pages/sub/SchoolCollaborationPage'
@@ -91,6 +92,7 @@ export default function App() {
           {/* Get Involved */}
           <Route path="/get-involved" element={<GetInvolvedOverviewPage />} />
           <Route path="/get-involved/individual-donation" element={<IndividualDonationPage />} />
+          <Route path="/get-involved/careers" element={<CareersPage />} />
           <Route path="/get-involved/volunteers" element={<VolunteersPage />} />
           <Route path="/get-involved/csr" element={<CsrPage />} />
           <Route path="/get-involved/school-collaboration" element={<SchoolCollaborationPage />} />

@@ -4,6 +4,7 @@ import type { ReactNode } from 'react'
 import {
   ActivityIcon,
   BlogIcon,
+  BuildingIcon,
   CalendarIcon,
   CheckCircleIcon,
   ChevronDownIcon,
@@ -107,6 +108,7 @@ export const NAV_GROUPS: NavGroup[] = [
         children: [
           { to: '/get-involved', label: 'Overview', icon: <HeartIcon /> },
           { to: '/get-involved/individual-donation', label: 'Individual Donation', icon: <HeartIcon /> },
+          { to: '/get-involved/careers', label: 'Careers', icon: <BuildingIcon /> },
           { to: '/get-involved/volunteers', label: 'Volunteers', icon: <UsersIcon /> },
           { to: '/get-involved/csr', label: 'CSR', icon: <FileTextIcon /> },
           { to: '/get-involved/school-collaboration', label: 'School Collaboration', icon: <FileTextIcon /> },
