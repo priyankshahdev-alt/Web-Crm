@@ -4,6 +4,7 @@ import type { ReactNode } from 'react'
 import {
   ActivityIcon,
   BlogIcon,
+  BuildingIcon,
   CalendarIcon,
   CheckCircleIcon,
   ChevronDownIcon,
@@ -38,6 +39,109 @@ interface NavGroup {
   label: string
   items: NavItem[]
 }
+
+export const NAV_GROUPS: NavGroup[] = [
+  {
+    label: 'Overview',
+    items: [
+      { to: '/', label: 'Dashboard', icon: <DashboardIcon />, end: true },
+    ],
+  },
+  {
+    label: 'Content',
+    items: [
+      { to: '/homepage', label: 'Homepage Editor', icon: <HomeIcon /> },
+      {
+        to: '/about',
+        label: 'About Us',
+        icon: <InfoIcon />,
+        children: [
+          { to: '/about', label: 'About BSCT', icon: <InfoIcon /> },
+          { to: '/about/management', label: 'Management', icon: <UsersIcon /> },
+          { to: '/about/trust-documents', label: 'Trust Documents', icon: <FileTextIcon /> },
+          { to: '/about/where-we-work', label: 'Where We Work', icon: <GlobeIcon /> },
+        ],
+      },
+      {
+        to: '/what-we-do',
+        label: 'What We Do',
+        icon: <LayersIcon />,
+        children: [
+          { to: '/what-we-do', label: 'All Programs', icon: <LayersIcon /> },
+          { to: '/what-we-do/annapurna', label: 'Mission Annapurna', icon: <LayersIcon /> },
+          { to: '/what-we-do/vidhya', label: 'Mission Vidhya', icon: <LayersIcon /> },
+          { to: '/what-we-do/aurat', label: 'Mission Aurat', icon: <LayersIcon /> },
+          { to: '/what-we-do/bezubaan', label: 'Mission Bezubaan', icon: <LayersIcon /> },
+          { to: '/what-we-do/atmanirbhar', label: 'Mission Atmanirbhar', icon: <LayersIcon /> },
+          { to: '/what-we-do/arogya', label: 'Mission Arogya', icon: <LayersIcon /> },
+          { to: '/what-we-do/sevak-seva-kendra', label: 'Sevak Seva Kendra', icon: <LayersIcon /> },
+          { to: '/what-we-do/eco-warriors', label: 'Mission Eco-Warriors', icon: <LayersIcon /> },
+        ],
+      },
+      {
+        to: '/news',
+        label: 'News & Stories',
+        icon: <NewsIcon />,
+        children: [
+          { to: '/news', label: 'All News', icon: <NewsIcon /> },
+          { to: '/news/awards', label: 'Awards & Achievements', icon: <CheckCircleIcon /> },
+          { to: '/news/press', label: 'Press Releases', icon: <FileTextIcon /> },
+          { to: '/news/newspaper', label: 'In Newspaper', icon: <FileTextIcon /> },
+        ],
+      },
+      {
+        to: '/contact',
+        label: 'Contact Us',
+        icon: <PhoneIcon />,
+        children: [
+          { to: '/contact', label: 'Contact Info', icon: <PhoneIcon /> },
+          { to: '/contact/enquiry', label: 'Enquiry Form', icon: <MailIcon /> },
+        ],
+      },
+      {
+        to: '/get-involved',
+        label: 'Get Involved',
+        icon: <HeartIcon />,
+        children: [
+          { to: '/get-involved', label: 'Overview', icon: <HeartIcon /> },
+          { to: '/get-involved/individual-donation', label: 'Individual Donation', icon: <HeartIcon /> },
+          { to: '/get-involved/volunteers', label: 'Volunteers', icon: <UsersIcon /> },
+          { to: '/get-involved/csr', label: 'CSR', icon: <FileTextIcon /> },
+          { to: '/get-involved/school-collaboration', label: 'School Collaboration', icon: <FileTextIcon /> },
+          { to: '/get-involved/ngo-collaboration', label: 'NGO Collaboration', icon: <FileTextIcon /> },
+        ],
+      },
+      { to: '/gallery', label: 'Gallery', icon: <ImageIcon /> },
+      { to: '/team', label: 'Team Members', icon: <UsersIcon /> },
+      { to: '/testimonials', label: 'Testimonials', icon: <QuoteIcon /> },
+      { to: '/events', label: 'Events', icon: <CalendarIcon /> },
+      { to: '/blogs', label: 'Blogs', icon: <BlogIcon /> },
+    ],
+  },
+  {
+    label: 'Build',
+    items: [
+      { to: '/media', label: 'Media Library', icon: <FolderIcon /> },
+      { to: '/forms', label: 'Forms', icon: <FormIcon /> },
+      { to: '/menus', label: 'Menus', icon: <MenuIcon /> },
+    ],
+  },
+  {
+    label: 'Optimize',
+    items: [
+      { to: '/seo', label: 'SEO Manager', icon: <GlobeIcon /> },
+      { to: '/settings', label: 'Settings', icon: <PaletteIcon /> },
+    ],
+  },
+  {
+    label: 'System',
+    items: [
+      { to: '/activity', label: 'Activity Logs', icon: <ActivityIcon /> },
+      { to: '/approvals', label: 'Approvals', icon: <CheckCircleIcon /> },
+      { to: '/profile', label: 'Profile', icon: <UserIcon /> },
+    ],
+  },
+]
 
 const linkClass = ({ isActive }: { isActive: boolean }): string =>
   `group flex items-center gap-3 rounded-full px-3.5 py-2 text-[13px] font-semibold transition-all duration-150 ${

@@ -26,7 +26,7 @@ const text = (value: unknown): string => (typeof value === 'string' ? value : ''
 
 interface Benefit { id: string; icon: string; title: string; description: string }
 
-export function VolunteersPage() {
+export function CareersPage() {
   const { toast } = useToast()
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
@@ -64,18 +64,18 @@ export function VolunteersPage() {
     const read = (component: string): Record<string, unknown> =>
       site.sections.find((s) => s.component === component)?.content ?? {}
 
-    setBannerHeading(text(read('volunteers-banner').heading) || 'Careers')
+    setBannerHeading(text(read('careers-banner').heading) || 'Careers')
 
-    const heading = read('volunteers-heading')
+    const heading = read('careers-heading')
     setSectionHeading(text(heading.heading) || 'Join Our')
     setSectionHeadingSpan(text(heading.headingSpan) || 'Mission')
     setSectionText(text(heading.description) || 'Be part of a team dedicated to selfless service and social change. Explore career opportunities or volunteer with us.')
 
-    const why = read('volunteers-why')
+    const why = read('careers-why')
     setWhyTitle(text(why.title) || 'Why Join Us?')
     setWhyText(text(why.description) || 'Being Sevak Charitable Trust offers a meaningful work environment where you can make a real difference. We value passion, integrity, and a commitment to serving communities.')
 
-    const openings = read('volunteers-openings')
+    const openings = read('careers-openings')
     setOpeningsTitle(text(openings.title) || 'Current Openings')
     setOpenings(
       Array.isArray(openings.items)
@@ -83,7 +83,7 @@ export function VolunteersPage() {
         : ['Program Manager', 'Social Media Coordinator', 'Field Volunteer', 'Fundraising Associate', 'Content Writer'],
     )
 
-    const benefits = read('volunteers-benefits')
+    const benefits = read('careers-benefits')
     setBenefitsTitle(text(benefits.title) || 'Volunteer Benefits')
     setBenefits(
       Array.isArray(benefits.items)
@@ -96,11 +96,11 @@ export function VolunteersPage() {
           ],
     )
 
-    const form = read('volunteers-form')
+    const form = read('careers-form')
     setFormTitle(text(form.title) || 'Volunteer Application')
     setFormText(text(form.description) || 'Fill out the form below and our team will get back to you.')
 
-    const popup = read('volunteers-popup')
+    const popup = read('careers-popup')
     setPopupTitle(text(popup.title) || 'Form Submitted!')
     setPopupText(text(popup.description) || 'Thank you for your interest. Our team will get back to you soon.')
   }
@@ -108,11 +108,11 @@ export function VolunteersPage() {
   const load = useCallback(async () => {
     setLoading(true)
     try {
-      const page = await websiteService.getPage('volunteers')
+      const page = await websiteService.getPage('careers')
       hydrateFromWebsite(page)
     } catch (err) {
       console.error('Failed to load page', err)
-      toast('Could not load the Volunteers page', { variant: 'error' })
+      toast('Could not load the Careers page', { variant: 'error' })
     } finally {
       setLoading(false)
     }
@@ -125,18 +125,18 @@ export function VolunteersPage() {
   const save = async () => {
     setSaving(true)
     const updates: Array<{ component: string; content: Record<string, unknown> }> = [
-      { component: 'volunteers-banner', content: { heading: bannerHeading } },
-      { component: 'volunteers-heading', content: { heading: sectionHeading, headingSpan: sectionHeadingSpan, description: sectionText } },
-      { component: 'volunteers-why', content: { title: whyTitle, description: whyText } },
-      { component: 'volunteers-openings', content: { title: openingsTitle, items: openings } },
-      { component: 'volunteers-benefits', content: { title: benefitsTitle, items: benefits.map((b) => ({ icon: b.icon, title: b.title, description: b.description })) } },
-      { component: 'volunteers-form', content: { title: formTitle, description: formText } },
-      { component: 'volunteers-popup', content: { title: popupTitle, description: popupText } },
+      { component: 'careers-banner', content: { heading: bannerHeading } },
+      { component: 'careers-heading', content: { heading: sectionHeading, headingSpan: sectionHeadingSpan, description: sectionText } },
+      { component: 'careers-why', content: { title: whyTitle, description: whyText } },
+      { component: 'careers-openings', content: { title: openingsTitle, items: openings } },
+      { component: 'careers-benefits', content: { title: benefitsTitle, items: benefits.map((b) => ({ icon: b.icon, title: b.title, description: b.description })) } },
+      { component: 'careers-form', content: { title: formTitle, description: formText } },
+      { component: 'careers-popup', content: { title: popupTitle, description: popupText } },
     ]
 
     try {
       for (const update of updates) {
-        await websiteService.saveSection('volunteers', update.component, {
+        await websiteService.saveSection('careers', update.component, {
           name: update.component,
           isActive: true,
           settings: {},
@@ -146,10 +146,10 @@ export function VolunteersPage() {
           },
         })
       }
-      toast('Volunteers page saved successfully', { variant: 'success' })
+      toast('Careers page saved successfully', { variant: 'success' })
     } catch (err) {
       console.error('Failed to save page', err)
-      toast('Failed to save the Volunteers page', { variant: 'error' })
+      toast('Failed to save the Careers page', { variant: 'error' })
     } finally {
       setSaving(false)
     }
@@ -200,9 +200,9 @@ export function VolunteersPage() {
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <PageHeader
-        title="Volunteers"
+        title="Careers"
         eyebrow="Website"
-        description="Edit the Volunteers page. Changes will be saved to the live website."
+        description="Edit the Careers page. Changes will be saved to the live website."
         actions={<Button icon={<SaveIcon />} loading={saving} onClick={() => void save()}>Save changes</Button>}
       />
       <div className="mt-4 rounded-xl border border-brand bg-brand-soft px-4 py-3 text-sm text-brand">
@@ -212,7 +212,7 @@ export function VolunteersPage() {
       <div className="mt-6 grid grid-cols-1 gap-5 xl:grid-cols-2">
         {/* Section 1: Banner */}
         <Card className="xl:col-span-2">
-          <CardHeader icon={<TypeIcon />} eyebrow="Banner" title="Volunteers Banner" iconClassName="bg-brand-soft text-brand" />
+          <CardHeader icon={<TypeIcon />} eyebrow="Banner" title="Careers Banner" iconClassName="bg-brand-soft text-brand" />
           <div className="p-6">
             <Field label="Banner Heading">
               <Input value={bannerHeading} onChange={(e) => setBannerHeading(e.target.value)} placeholder="Careers" />

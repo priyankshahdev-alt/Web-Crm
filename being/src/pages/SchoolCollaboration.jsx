@@ -40,6 +40,16 @@ export default function SchoolCollaboration() {
       { title: 'Student Engagement', description: 'Meaningful participation programs that encourage kindness and empathy among students.' },
       { title: 'Social Responsibility', description: 'Inspiring children to become responsible citizens dedicated to building a better society.' },
     ];
+  const stats =
+    content('school-stats', 'items') ?? [
+      { number: '100+', label: 'Schools Engaged' },
+      { number: '10,000+', label: 'Students Reached' },
+      { number: '5+', label: 'States Covered' },
+    ];
+  const impactHeading = content('school-impact', 'heading') ?? 'Impact Beyond the Classroom';
+  const impactText =
+    content('school-impact', 'text') ??
+    'Every session and activity is designed to leave a lasting impression, shaping students into compassionate, responsible, and socially aware citizens who carry the spirit of service into their everyday lives.';
 
   return (
     <>
@@ -207,6 +217,16 @@ export default function SchoolCollaboration() {
         .school-card-one { margin-top: 40px; }
         .school-card-two { margin-left: 40px; }
         .school-card-three { margin-top: 10px; }
+        .school-impact-section { margin-top: 60px; width: 100%; }
+        .school-impact-head { text-align: center; margin-bottom: 30px; }
+        .school-impact-head h3 { font-size: 30px; color: #111; font-weight: 800; margin-bottom: 12px; }
+        .school-impact-head h3 span { color: #00a3d4; }
+        .school-impact-head p { font-size: 16px; color: #555; line-height: 1.8; max-width: 800px; margin: 0 auto; }
+        .school-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; margin: 15px 0 10px; }
+        .school-stat { text-align: center; background: #fff; padding: 35px 20px; border-radius: 25px; box-shadow: 0 15px 35px rgba(0,0,0,0.06); border-bottom: 4px solid #00a3d4; }
+        .school-stat .num { font-size: 42px; font-weight: 800; color: #00a3d4; margin-bottom: 8px; }
+        .school-stat .lbl { font-size: 16px; font-weight: 600; color: #4a5568; }
+        @media(max-width: 760px){ .school-stats { grid-template-columns: 1fr; } .school-impact-head h3 { font-size: 24px; } }
         @media(max-width: 991px) {
           .school-collab-container { grid-template-columns: 1fr; }
           .school-collab-left h2 { font-size: 40px; }
@@ -294,6 +314,21 @@ export default function SchoolCollaboration() {
             </div>
           </div>
         </div>
+
+        <section className="school-impact-section">
+          <div className="school-impact-head">
+            <h3>{impactHeading.split(' ')[0]} <span>{impactHeading.split(' ').slice(1).join(' ')}</span></h3>
+            <p>{impactText}</p>
+          </div>
+          <div className="school-stats">
+            {stats.map((s, i) => (
+              <div className="school-stat" key={i}>
+                <div className="num">{s.number}</div>
+                <div className="lbl">{s.label}</div>
+              </div>
+            ))}
+          </div>
+        </section>
       </section>
     </>
   );
